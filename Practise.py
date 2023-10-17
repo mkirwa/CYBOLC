@@ -16,6 +16,10 @@ def IfStatements():
     if a==5:
         print(f'{a} is equal to 5')
 
+
+# TODO: Complete these functions
+
+
 def playGame():
   while(True):
     action = input("Action? ")
