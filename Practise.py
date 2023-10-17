@@ -16,24 +16,23 @@ def IfStatements():
     if a==5:
         print(f'{a} is equal to 5')
 
-
-# TODO: Complete these functions
-
+# TODO: Function for class assignments
+def classAssignments():
+    pass
 
 def playGame():
-  while(True):
-    action = input("Action? ")
-    if action == 'help':
-      print("N S E W help quit")
-      continue
-    elif action == 'quit':
-      print('Thanks for playing')
-      break
-    elif action in ['N','S','E','W']:
-      print(f'You moved {action}')
-    elif action not in ['N','S','E','W']:
-        print('That was not a valid option')
-        pass
+    Temp = True 
+    while Temp == True:
+        action = input("Enter a value or a string to play a game: ")
+        if action == 'quit':
+            print("Thanks for playing")
+            Temp = False
+        elif action == 'help':
+            print('N S E W help quit')
+        elif action in ['N','S','E','W']:
+            print(f'You moved to {action}')
+        elif action not in ['N','S','E','W']:
+            print(f'{action} is an invalid option')
 
 
 if __name__== "__main__":
