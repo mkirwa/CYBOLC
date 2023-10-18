@@ -1,3 +1,64 @@
+************************ 01 ***************************************
+Use python to produce code below that will create several named variables with the specified value:
+
+Variable	        Value	Type
+hello	            hello	string
+is_python_awesome	true	boolean
+days_in_python	    6	    integer
+pie_size	        3.14	float
+
+NOTE: Do not indent your code
+
+************************ 02 ***************************************
+
+Use Python to produce code below that will convert the provided literal ("Starting Value"), convert it to the indicated data type by using the appropriate Python Built-in Function(s), and assign the output to the named variable as designated below.
+
+Task	Variable	Starting Value	Convert to Type
+string to int	int_input	"345"	int
+string to float	pi_4	"3.1415"	float
+int to string	hours_str	40	string
+int to float	hourly_rate	15	float
+NOTE: Conversion functions must be called
+NOTE: Do not indent your code
+
+************************ 03 ***************************************
+
+Use python to produce code below that will create several named variables with the specified value using math operators:
+
+Variable	Value	                    Type
+x	        16	                        integer
+y	        3	                        integer
+xysum	    sum of x and y	            integer
+xydiff	    difference of x and y	    integer
+xyprod	    product of x and y	        integer
+xyquo	    quotient of x and y	        float
+xyintquo	integer quotient of x and y	integer
+xymod	    modulus of x and y	        integer
+NOTE: Do not indent your code
+
+************************ 04 ***************************************
+
+Use python to produce code below that will create several named variables with the specified value using the str.format member function. You may assign any value for the variables other than output. The output variable must use the same boilerplate text and include the appropriate values assigned to the first three.
+
+Identifier	Example Value	                                            Type
+name	    Jerry	                                                    str
+greeting	Sir	                                                        str
+time	    noon	                                                    str
+output	    Hello Jerry! Sir, will you be arriving by noon?	            str
+NOTE: Do not indent your code
+
+************************ 05 ***************************************
+
+Use python to produce code below that will perform the following:
+
+    Create a variable named sentence and assign the value 'good for all'
+    Turn the sentence variable into a list of individual characters and assign this to a variable named sent_list.
+    Change the first (index 0) character in the list to 'f'
+    Change the last (index -1) character in the list to '?'
+    Combine the list into a new string with periods ('.') in between each character and assign the result to a new variable named output.
+
+NOTE: Do not indent your code
+
 ************************ 06 ***************************************
 #Read multiple numbers separated by spaces on the same line from the user.
 #Change all spaces to a plus sign.
@@ -10,3 +71,36 @@
 numbers = input()
 numbers = numbers.replace(' ','+')
 print(numbers)
+
+
+************************ 07 ***************************************
+
+Use python to produce code below that will:
+
+    Given an email address in email
+    Convert the email into a list named `lst'
+    The list will contain all individual parts of the email
+    Example: email = 'alan.m.turing@genius.com' -> lst = ['alan','m','turing', 'genius', 'com']
+    NOTE: A variable named email will be available to your code when running.
+    NOTE: You must create a variable named lst which contains the required data.
+    NOTE: Do not indent your code
+
+************************ 08 ***************************************
+
+Use python to produce code below that will perform the following:
+
+    Read multiple numbers separated by spaces on the same line from the user.
+    Change all spaces to a plus sign.
+    Print the resulting string to the user.
+NOTE: Do not indent your code
+
+
+************************ 09 ***************************************
+Use python to produce code below that will perform the following:
+Create a function named domath that will accept 3 parameters.
+The function will add the first two parameters and multiply this sum by the third parameter.
+You can select the identifiers for each of the parameters.
+The resulting product will be returned to the caller.
+
+************************ 10 ***************************************
+
