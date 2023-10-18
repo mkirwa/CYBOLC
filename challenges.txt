@@ -164,4 +164,18 @@ def domath(param1,param2,param3):
     return sum
 
 ************************ 10 ***************************************
+Use python to produce code below that will perform the following:
 
+Read multiple lines from the user on standard input until an empty string is read.
+Return a list of all these lines without line terminators
+Each line should be reversed from how it is read in.
+
+############################# SOLUTION ##############################
+
+
+def domath(param1,param2,param3):
+    sum = (param1+param2)*param3
+    return sum
+
+
+************************ 10 ***************************************
