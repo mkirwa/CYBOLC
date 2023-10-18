@@ -9,6 +9,13 @@ pie_size	        3.14	float
 
 NOTE: Do not indent your code
 
+############################# SOLUTION ##############################
+
+hello = 'hello'
+is_python_awesome = True
+days_in_python = 6
+pie_size = 3.14
+
 ************************ 02 ***************************************
 
 Use Python to produce code below that will convert the provided literal ("Starting Value"), convert it to the indicated data type by using the appropriate Python Built-in Function(s), and assign the output to the named variable as designated below.
@@ -20,6 +27,13 @@ int to string	hours_str	40	string
 int to float	hourly_rate	15	float
 NOTE: Conversion functions must be called
 NOTE: Do not indent your code
+
+############################# SOLUTION ##############################
+
+int_input = int("345")
+pi_4 = float("3.1415")
+hours_str = str(40)
+hourly_rate = float(15)
 
 ************************ 03 ***************************************
 
@@ -36,6 +50,17 @@ xyintquo	integer quotient of x and y	integer
 xymod	    modulus of x and y	        integer
 NOTE: Do not indent your code
 
+############################# SOLUTION ##############################
+
+x = 16
+y = 3
+xysum = x + y
+xydiff = x - y 
+xyprod = x * y 
+xyquo = x / y 
+xyintquo = x // y 
+xymod = x % y
+
 ************************ 04 ***************************************
 
 Use python to produce code below that will create several named variables with the specified value using the str.format member function. You may assign any value for the variables other than output. The output variable must use the same boilerplate text and include the appropriate values assigned to the first three.
@@ -46,6 +71,13 @@ greeting	Sir	                                                        str
 time	    noon	                                                    str
 output	    Hello Jerry! Sir, will you be arriving by noon?	            str
 NOTE: Do not indent your code
+
+############################# SOLUTION ##############################
+
+name='Jerry'
+greeting='Sir'
+time='noon'
+output = f'Hello {name}! {greeting}, will you be arriving by {time}?'
 
 ************************ 05 ***************************************
 
@@ -59,6 +91,14 @@ Use python to produce code below that will perform the following:
 
 NOTE: Do not indent your code
 
+############################# SOLUTION ##############################
+
+sentence = 'good for all'
+sent_list = list(sentence)
+sent_list[0] = 'f'
+sent_list[-1] = '?'
+output = str('.'.join(sent_list))
+
 ************************ 06 ***************************************
 #Read multiple numbers separated by spaces on the same line from the user.
 #Change all spaces to a plus sign.
@@ -68,10 +108,13 @@ NOTE: Do not indent your code
 #Read multiple numbers separated by spaces on the same line from the user.
 #Change all spaces to a plus sign.
 #Print the resulting string to the user.
+
+
+############################# SOLUTION ##############################
+
 numbers = input()
 numbers = numbers.replace(' ','+')
 print(numbers)
-
 
 ************************ 07 ***************************************
 
@@ -85,6 +128,12 @@ Use python to produce code below that will:
     NOTE: You must create a variable named lst which contains the required data.
     NOTE: Do not indent your code
 
+############################# SOLUTION ##############################
+
+temp = email.split('.')
+temp2 = '@'.join(temp)
+lst = temp2.split('@')
+
 ************************ 08 ***************************************
 
 Use python to produce code below that will perform the following:
@@ -94,13 +143,25 @@ Use python to produce code below that will perform the following:
     Print the resulting string to the user.
 NOTE: Do not indent your code
 
+############################# SOLUTION ##############################
+
+numbers = input()
+numbers = numbers.replace(' ','+')
+print(numbers)
 
 ************************ 09 ***************************************
 Use python to produce code below that will perform the following:
-Create a function named domath that will accept 3 parameters.
-The function will add the first two parameters and multiply this sum by the third parameter.
-You can select the identifiers for each of the parameters.
+    Create a function named domath that will accept 3 parameters.
+    The function will add the first two parameters and multiply this sum by the third parameter.
+    You can select the identifiers for each of the parameters.
 The resulting product will be returned to the caller.
+
+############################# SOLUTION ##############################
+
+
+def domath(param1,param2,param3):
+    sum = (param1+param2)*param3
+    return sum
 
 ************************ 10 ***************************************
 
