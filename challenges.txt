@@ -1,0 +1,12 @@
+************************ 06 ***************************************
+#Read multiple numbers separated by spaces on the same line from the user.
+#Change all spaces to a plus sign.
+#Print the resulting string to the user.
+
+
+#Read multiple numbers separated by spaces on the same line from the user.
+#Change all spaces to a plus sign.
+#Print the resulting string to the user.
+numbers = input()
+numbers = numbers.replace(' ','+')
+print(numbers)
