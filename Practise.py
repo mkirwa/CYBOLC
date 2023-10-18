@@ -5,6 +5,11 @@ def StringManipulation():
     lst = temp2.split(",")
     print(lst)
 
+
+    temp = email.split('.')
+    temp2 = '@'.join(temp)
+    lst = temp2.split('@')
+
 def IfStatements():
     a = 5
     if a < 10 :
