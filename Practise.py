@@ -27,11 +27,12 @@ def classAssignments():
 
 def playGame():
     Temp = True 
-    while Temp == True:
+    while Temp:
         action = input("Enter a value or a string to play a game: ")
 
         if action in ['N','S','E','W']:
             print(f'You moved to {action}')
+            continue
         elif action not in ['N','S','E','W','help','quit']:
             print(f'{action} is an invalid option')
         elif action == 'quit':
