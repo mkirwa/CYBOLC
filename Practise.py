@@ -29,15 +29,16 @@ def playGame():
     Temp = True 
     while Temp == True:
         action = input("Enter a value or a string to play a game: ")
-        if action == 'quit':
+
+        if action in ['N','S','E','W']:
+            print(f'You moved to {action}')
+        elif action not in ['N','S','E','W','help','quit']:
+            print(f'{action} is an invalid option')
+        elif action == 'quit':
             print("Thanks for playing")
             Temp = False
         elif action == 'help':
             print('N S E W help quit')
-        elif action in ['N','S','E','W']:
-            print(f'You moved to {action}')
-        elif action not in ['N','S','E','W']:
-            print(f'{action} is an invalid option')
 
 
 if __name__== "__main__":
