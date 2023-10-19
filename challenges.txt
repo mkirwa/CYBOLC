@@ -1,3 +1,14 @@
+Day 3: Iterables/Slicing/File(I/O)
+Day 4: Libraries/name==main /sorting
+Day 5: Sets, Dictionaries/Args:kwargs
+Day 6: Binary
+Day 7: Classes
+Day 8: Error Handling /Review
+Day 9: Review/Practises 
+Day 10: Exam
+
+
+
 ************************ 01 ***************************************
 Use python to produce code below that will create several named variables with the specified value:
 

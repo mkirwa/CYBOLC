@@ -41,6 +41,58 @@ def playGame():
         elif action == 'help':
             print('N S E W help quit')
 
+def leetString(s):
+    emptyList = []
+    lists = list(s)
+
+    for i in range(0,len(lists)):
+        if(i%2==0):
+            emptyList.append(lists[i].upper())
+        if(i%2!=0):
+            emptyList.append(lists[i].lower())
+    newword = ''.join(emptyList)
+    return newword
+
+def reverse_string(strng):
+    '''
+    Returns a copy of the given string reversed
+    Args:
+        strng (str): a string of alphanumeric characters
+    Returns:
+        str: a copy of the given string reversed
+    '''    
+    return strng[::-1]
+
+def make_tuples():
+    '''
+     Returns a tuple of the multiples of 10 from 1 to 100 inclusive.
+     Args:
+         None
+     Returns:
+         tuple: a tuple of the multiples of 10 from 1 to 100 inclusive
+     '''
+    pass
+
+def make_tuple(a,b):
+    listTuple = []
+    for i in range(a,b+1):
+        if i%10==0:
+            listTuple.append(i)
+    return tuple(listTuple)
+
+def disect(lst):
+    numberLength = len(lst)
+    halve = numberLength/2
+    print(halve)
+    tuple1 = lst[0:int(halve)]
+    tuple2 = lst[int(halve):numberLength]
+
+    finalList = tuple([tuple1,tuple2])
+    print(finalList)
+    
+
+
 
 if __name__== "__main__":
-    playGame()
+    temp = [1,2,3,4,5,6]
+    disect(temp)
