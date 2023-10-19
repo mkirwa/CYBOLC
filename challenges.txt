@@ -189,4 +189,117 @@ def domath(param1,param2,param3):
     return sum
 
 
-************************ 10 ***************************************
+************************ 18 ***************************************
+"Sometimes my cousin is just mean. He sent me a file with a special message but made it into a crazy series of ones and zeros. He told me each letter was on its own line, and could be converted into an Unicode character. Can you help me by decoding his message?"
+
+Each line will be a string character. You will need to convert the string Ones and Zeros into an integer (but these are not base 10, so keep that in mind) and then pass that data to code that will convert it to its corresponding Unicode character. Thanks to Python's "batteries included" philosophy, there are two Python built-in functions that can help handle this for you.
+
+Hint: https://docs.python.org/3/library/functions.html#int
+Hint: https://docs.python.org/3/library/functions.html#chr
+def tough_read(fname):
+    '''
+    Args:
+        fname (str): path to a file where the input is located
+    Returns:
+        str: Sentence that was decoded
+    '''
+    pass 
+NOTE: If you wish to create a file in the format that fname is in, the following code can create the file from a Bash Shell. This command will place the file in the directory of wherever this command is ran, and you will have to assign fname to the file name (either absolute or relative paths) in order to verify your code on your local system.
+
+
+python3 -c "with open('act18_1.txt','w') as fp: fp.writelines(['{:08b}\n'.format(ord(c)) for c in 'Be all that you can be']); fp.  close()"
+
+############################# SOLUTION ##############################
+
+def tough_read(fname):
+    """ Args: fname (str): path to a file where the input is located Returns: str: Sentence that was decoded """
+    integers = []
+    with open(fname, 'r') as f:
+        binary_string = f.readlines()
+
+
+    for b in binary_string:
+        integers.append(chr(int(b,base=2)))
+
+    # Convert the list of integers to a Unicode string
+    unicode_string = ''.join(integers)
+    
+    return unicode_string
+
+************************ 19 ***************************************
+
+"You have a artist friend that likes to jot down some inspirational words when the mood strikes. These fits of inspiration always have a theme that they need to remember with the messages. Your friend needs some help keeping track. Read each of the inspirational messages from the user and write them to the end of the file specified by fname. Since the theme is important and must be remembered, add the theme and a colon before each message and ensure each inspirational message is on its own line. An empty input will indicate no more entries and the end of the theme."
+
+Example:
+
+If theme was "Razzmatazz", and the input from the user was "I like nonsense; it wakes up the brain cells. - Dr. Seuss", the resulting string would be formated as follows: Razzmatazz:I like nonsense; it wakes up the brain cells. - Dr. Seuss
+
+Important:
+
+What if there are other lines to be added? What else seperates lines in a file? What needs to be added to the example line above?
+Do not overwrite the file. What mode should you open the file in?
+def log_to_file(fname, theme):
+    '''
+    Args:
+        fname (str): Path to an existing file that includes previous inspirational messages to keep.
+        theme (str): Theme to be placed on each line.
+    Returns:
+        None
+    '''
+    pass 
+
+############################# SOLUTION ##############################
+
+def log_to_file(fname, theme):
+    '''
+    Args:
+        fname (str): Path to an existing file that includes previous inspirational messages to keep.
+        theme (str): Theme to be placed on each line.
+    Returns:
+        None
+    '''
+    # Open the file in 'append' mode
+    with open(fname, 'a') as file:
+        while True:
+            user_input = input("Enter an inspirational message (or leave it empty to finish): ")
+            if not user_input:
+                break  # Exit the loop if the input is empty
+            formatted_message = f'{theme}:{user_input}\n'  # Format the message
+            file.write(formatted_message)  # Write the message to the file
+
+
+#with open('new.txt','w') as new:
+    #lines = ['line 1\n','line 2\n','line 3\n']
+    #new.writelines(lines)
+
+************************ 20 ***************************************
+
+Replace all found instances of the individual tuple entries in the file found at in_path. Replacements will be in the list reps as a list of tuples. Each tuple entry will contain the 'find' as the first element and the 'replace' will be the second element. Write the result to the file specified with out_path.
+
+Example:
+
+List of Tuples example - [("taken","delivered"),("cat","dog"),("outside","beyond"),("straightaway","forthwith"),("possibly","perchance")]
+Original string example - "The cat possibly needs to be taken outside, straightaway."
+Changed string example - "The dog perchance needs to be delivered beyond, forthwith."
+def replace_in_file(in_path, out_path, reps):
+    '''
+    Args:
+        in_path (str): input file path
+        out_path (str): output file path
+        reps (list): list of tuples containing ("find", "replace") mappings
+    Returns:
+        None
+    '''
+    pass 
+
+############################# SOLUTION ##############################
+
+def replace_in_file(in_path, out_path, reps):
+    temporary_values = dict(reps)
+    with open(in_path, 'r') as newOne, open(out_path, 'w') as newOneTwo:
+        for line in newOne:
+            for find, replace in temporary_values.items():
+                line = line.replace(find, replace)
+            newOneTwo.write(line)
+            
+************************ 21 ***************************************
