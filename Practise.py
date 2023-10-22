@@ -125,6 +125,14 @@ def log_to_file(fname, theme):
             file.write(formatted_message)  # Write the message to the file
 
 
+def replace_in_file_2(in_path, out_path, reps):
+    temporary_values = dict(reps)
+    with open(in_path, 'r') as newOne, open(out_path, 'w') as newOneTwo:
+        for line in newOne:
+            for find, replace in temporary_values.items():
+                line = line.replace(find, replace)
+            newOneTwo.write(line)
+
 
 def replace_in_file(in_path, out_path, reps):
     # Read the input file and create a dictionary from the replacements
@@ -268,6 +276,13 @@ def sort_embedded(filepath):
 def round_to_position(lst):
     return [round(value, index) for index, value in enumerate(lst)]
 
+# def replace_in_file(in_path, out_path, reps):
+#     temporary_values = dict(reps)
+#     with open(in_path, 'r') as newOne, open(out_path, 'w') as newOneTwo:
+#         for line in newOne:
+#             for find, replace in temporary_values.items():
+#                 line = line.replace(find, replace)
+#             newOneTwo.write(line)
 
 if __name__== "__main__":
     # in_path = 'assignment2.txt'
