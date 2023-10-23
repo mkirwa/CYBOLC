@@ -285,19 +285,47 @@ def round_to_position(lst):
 #                 line = line.replace(find, replace)
 #             newOneTwo.write(line)
 
+def count_words(filepath):
+    
+    #with open(filepath, 'r') as new_file:
+        #read_new_file = new_file.read()
+    read_new_file = open(filepath, "r") 
+    # Create an empty dictionary 
+    d = dict() 
 
+    # Loop through each line of the file 
+    for line in read_new_file: 
+        # Remove the leading spaces and newline character 
+        line = line.strip() 
 
+        # Split the line into words 
+        words = line.split(" ") 
 
+        # Iterate over each word in line 
+        for word in words: 
+            print(word)
+            # Check if the word is already in dictionary 
+            # crayons['orange'] = 'mango' 
+            if word in d: 
+                # Increment count of word by 1 
+                d[word] = d[word] + 1
+            else: 
+                # Add the word to dictionary with count 1 
+                d[word] = 1
 
+    return d
+    
 
 
 if __name__== "__main__":
-    # in_path = 'assignment2.txt'
+    in_path = 'assignment2.txt'
     # out_path = 'assignment3.txt'
     # reps = [("taken","delivered"),("cat","dog"),("outside","beyond"),("straightaway","forthwith"),("possibly","perchance")]
     # replace_in_file_2(in_path,out_path,reps)
     # user_input_1 = int(input("Enter a number 1: "))
     # user_input_2 = int(input("Enter a number 2: "))
     # print(findProduct(user_input_1,user_input_2))
-    print(get_hash())
+    #print(get_hash())
+    
+    count_words(in_path)
 
