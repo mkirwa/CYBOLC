@@ -127,7 +127,34 @@ numbers = input()
 numbers = numbers.replace(' ','+')
 print(numbers)
 
+
 ************************ 07 ***************************************
+
+Use python to produce code below that will perform the following:
+
+    Read input from the user, the input will be an integer.
+    Determine which of the following categories the number fits into an print this to the user:
+        Negative Even
+        Negative Odd
+        Zero
+        Positive Even
+        Positive Odd
+
+############################# SOLUTION ##############################
+    
+    num = int(input())
+    if num%2==0 and num<0:
+        print("Negative Even")
+    elif num%2==0 and num>0: 
+        print("Positive Even")
+    elif num==0: 
+        print("Zero")
+    elif num%2!=0 and num>0: 
+        print("Positive Odd")
+    elif num%2!=0 and num<0: 
+        print("Negative Odd")
+
+************************ 00 ***************************************
 
 Use python to produce code below that will:
 
@@ -145,6 +172,24 @@ temp = email.split('.')
 temp2 = '@'.join(temp)
 lst = temp2.split('@')
 
+************************ 00A ***************************************
+
+FizzBuzz is an interview question that is said to filter out 99.5% of programming job candidates.
+
+Add code so that it takes a number from the user and prints it (the number) if it isn’t divisible by 3 or 5. For multiples of 3 print 'fizz' instead. For multiples of 5 print 'buzz' instead. For multiples of 3 and 5 print 'fizzbuzz'.
+
+############################# SOLUTION ##############################
+
+num = int(input())
+if (num%3==0 and num%5==0):
+    print('fizzbuzz')
+elif(num%3==0):
+    print('fizz')
+elif (num%5==0):
+    print('buzz')
+else:
+    print(num)
+
 ************************ 08 ***************************************
 
 Use python to produce code below that will perform the following:
@@ -160,7 +205,9 @@ numbers = input()
 numbers = numbers.replace(' ','+')
 print(numbers)
 
-************************ 09 ***************************************
+
+
+************************ 08 ***************************************
 Use python to produce code below that will perform the following:
     Create a function named domath that will accept 3 parameters.
     The function will add the first two parameters and multiply this sum by the third parameter.
@@ -173,6 +220,289 @@ The resulting product will be returned to the caller.
 def domath(param1,param2,param3):
     sum = (param1+param2)*param3
     return sum
+
+************************ 09 ***************************************
+
+Use python to produce code below that will perform the following:
+
+Read multiple lines from the user on standard input until an empty string is read.
+Return a list of all these lines without line terminators
+Each line should be reversed from how it is read in.
+def reverseit():
+    pass 
+
+############################# SOLUTION ##############################
+
+def reverseit():
+    word2 = []
+    word4 = []
+    while True:
+        word = input()
+        if not word:
+            break
+        for i in range(len(word)):
+            word2.append(word[-i-1])
+        word3 = ''.join(word2)
+        print(word3)
+        word4.append(word3)
+
+        word2.clear()
+        
+    return word4
+
+************************ OOB ***************************************
+
+Modify code below and implement guess_number so that it repeatedly asks the user for a number between 0 and 100, inclusive. If the user correctly guesses the value of the given argument n, print 'WIN' and return. Otherwise, indicate whether the guess was too high or too low.
+
+def guess_number(n):
+    pass
+
+guess_number(23)
+
+############################# SOLUTION ##############################
+
+def guess_number(n):
+
+    temp = True
+    while temp:
+        num = int(input())
+        if num==n:
+            print('WIN')
+            temp = False
+        elif num>n:
+            print('too high')
+        elif num<n:
+            print('too low')
+
+guess_number(23)
+
+
+************************ 10 ***************************************
+
+Use python to produce code below that will perform the following:
+
+Given a mixed case string as parameter s
+Capitalize every letter with an even index within the string.
+Lowercase every letter with an odd index within the string.
+Return the resulting string.
+Example - Given: "ABCDEF ghijkl" Return: "AbCdEf gHiJkL"
+def leetString(s):
+    pass
+
+############################# SOLUTION ##############################
+
+def leetString(s):
+    emptyList = []
+    lists = list(s)
+
+    for i in range(0,len(lists)):
+        if(i%2==0):
+            emptyList.append(lists[i].upper())
+        if(i%2!=0):
+            emptyList.append(lists[i].lower())
+    newword = ''.join(emptyList)
+    return newword
+
+************************ 11 ***************************************
+
+Use python to produce code that will perform the following:
+
+First, print out every even number on a separate line from provided parameter first to parameter last, inclusive.
+Next, print out every odd number from first to last, inclusive.
+def evensandodds(first, last):
+   pass 
+
+
+############################# SOLUTION ##############################
+
+def evensandodds(first, last):
+    for i in range(first, last + 1):
+        if i % 2 == 0:
+            print(i)
+
+    
+    for i in range(first, last + 1):
+        if i % 2 != 0:
+            print(i)
+
+************************ 12 ***************************************
+
+def user_io():
+    '''
+    Returns a list of items read from the user until the user enters an empty string.
+
+    Args:
+        None
+    Returns:
+        list: a list of strings
+    '''    
+    pass
+
+############################# SOLUTION ##############################
+
+def user_io():
+    '''
+    Returns a list of items read from the user until the user enters an empty string.
+
+    Args:
+        None
+    Returns:
+        list: a list of strings
+    '''  
+    word2 = []
+    while True:
+        word = list(input())
+        if not word:
+            break
+        word2.append(''.join(word))
+    return word2
+
+************************ 13 ***************************************
+
+def make_tuple():
+    '''
+     Returns a tuple of the multiples of 10 from 1 to 100 inclusive.
+     Args:
+         None
+     Returns:
+         tuple: a tuple of the multiples of 10 from 1 to 100 inclusive
+     '''
+     pass    
+
+############################# SOLUTION ##############################
+
+def make_tuple():
+    return tuple(range(10,101,10))
+
+************************ 13-1- ***************************************
+
+def make_tuple(a,b):
+    '''
+    Returns a tuple of the multiples of 10 from a to b inclusive.
+    Args:
+        None
+    Returns:
+        tuple: a tuple of the multiples of 10 from a to b inclusive
+    '''      
+
+############################# SOLUTION ##############################
+
+def make_tuple(a,b):
+    listTuple = []
+    for i in range(a,b+1):
+        if i%10==0:
+            listTuple.append(i)
+    return tuple(listTuple)
+
+************************ 14 ***************************************
+
+def strings():
+    '''
+    Returns a tuple of the following two strings:
+
+    
+
+    Physics is the universe's operating system
+
+    Args:
+        None
+    Returns:
+        tuple: a tuple of strings
+     '''
+    pass   
+
+############################# SOLUTION ##############################
+
+def strings():
+    word = ('',"Physics is the universe's operating system")
+    return word
+
+************************ 15 ***************************************
+
+def disect(lst):
+    '''
+    Returns a tuple of the given list split into two equally sized halves.
+    The given list will always consist of an even number of elements.
+    Args:
+        lst (lst): a list of elements
+    Returns:
+        tuple: a tuple of two lists
+    '''
+    pass     
+
+############################# SOLUTION ##############################
+
+def disect(lst):
+    numberLength = len(lst)
+    halve = numberLength/2
+    print(halve)
+    tuple1 = lst[0:int(halve)]
+    tuple2 = lst[int(halve):numberLength]
+
+    finalList = tuple([tuple1,tuple2])
+    return finalList
+
+************************ 16 ***************************************
+
+def reverse_string(strng):
+    '''
+    Returns a copy of the given string reversed
+    Args:
+        strng (str): a string of alphanumeric characters
+    Returns:
+        str: a copy of the given string reversed
+    '''    
+    pass   
+
+############################# SOLUTION ##############################
+
+def reverse_string(strng):
+    '''
+    Returns a copy of the given string reversed
+    Args:
+        strng (str): a string of alphanumeric characters
+    Returns:
+        str: a copy of the given string reversed
+    '''    
+    return strng[::-1]
+
+************************ 17 ***************************************
+
+Return a list of ordinals for every character in the given string
+
+Hint: https://docs.python.org/3/library/functions.html#ord
+def code_points(strng):
+   pass   
+
+############################# SOLUTION ##############################
+
+def code_points(strng):
+    listtemp_points = []
+    tempcode_points = list(strng)
+    for i in tempcode_points:
+        listtemp_points.append(ord(i))
+
+    return listtemp_points
+
+************************ 18 ***************************************
+
+Use python to produce code below that will perform the following:
+
+Read file specified by the path in inpath parameter and write all lines to the file specified by the outpath parameter.
+Before writing out each line, add the line number starting with 1 follow by colon and space.
+def linenums(inpath, outpath):
+    pass 
+
+############################# SOLUTION ##############################
+
+
+def linenums(inpath, outpath):
+    with open(inpath, 'r') as inpath_file:
+        inpath_file_outpt = inpath_file.readlines()
+
+    with open(outpath, 'w') as outfile:
+        for index, line in enumerate(inpath_file_outpt, start=1):
+            outfile.write(f"{index}: {line}")
 
 ************************ 10 ***************************************
 Use python to produce code below that will perform the following:
@@ -189,7 +519,7 @@ def domath(param1,param2,param3):
     return sum
 
 
-************************ 18 ***************************************
+************************ 18-1 ***************************************
 "Sometimes my cousin is just mean. He sent me a file with a special message but made it into a crazy series of ones and zeros. He told me each letter was on its own line, and could be converted into an Unicode character. Can you help me by decoding his message?"
 
 Each line will be a string character. You will need to convert the string Ones and Zeros into an integer (but these are not base 10, so keep that in mind) and then pass that data to code that will convert it to its corresponding Unicode character. Thanks to Python's "batteries included" philosophy, there are two Python built-in functions that can help handle this for you.
@@ -226,7 +556,7 @@ def tough_read(fname):
     
     return unicode_string
 
-************************ 19 ***************************************
+************************ 18-2 ***************************************
 
 "You have a artist friend that likes to jot down some inspirational words when the mood strikes. These fits of inspiration always have a theme that they need to remember with the messages. Your friend needs some help keeping track. Read each of the inspirational messages from the user and write them to the end of the file specified by fname. Since the theme is important and must be remembered, add the theme and a colon before each message and ensure each inspirational message is on its own line. An empty input will indicate no more entries and the end of the theme."
 
@@ -272,7 +602,7 @@ def log_to_file(fname, theme):
     #lines = ['line 1\n','line 2\n','line 3\n']
     #new.writelines(lines)
 
-************************ 20 ***************************************
+************************ 18-3 ***************************************
 
 Replace all found instances of the individual tuple entries in the file found at in_path. Replacements will be in the list reps as a list of tuples. Each tuple entry will contain the 'find' as the first element and the 'replace' will be the second element. Write the result to the file specified with out_path.
 
@@ -301,6 +631,77 @@ def replace_in_file(in_path, out_path, reps):
             for find, replace in temporary_values.items():
                 line = line.replace(find, replace)
             newOneTwo.write(line)
+
+
+************************ 19 ***************************************
+
+def grab(lst):
+    '''
+    Returns a randomly chosen item from the given list (lst).
+    Args:
+        lst (list): a list of items
+    Returns:
+        item (?): an item from the list
+    '''    
+
+############################# SOLUTION ##############################
+
+import random
+def grab(lst):
+    '''
+    Returns a randomly chosen item from the given list (lst).
+    Args:
+        lst (list): a list of items
+    Returns:
+        item (?): an item from the list
+    '''    
+    return random.choice(lst)
+
+
+************************ 20 ***************************************
+
+def get_hash(data="python"):
+    '''
+    Returns the SHA3 256-bit hash of the data provided.
+    You will need to use the hashlib python library to complete this challenge.
+       
+    NOTE: The first call will use the string "python" later calls will use random strings
+    NOTE: You can convert a string into a bytes-like object which is needed for hashing with: 
+             
+    data.encode("utf-8")
+    
+    NOTE: You can create a bytes-like object out of a literal by adding a b in front of the string, ie b"python" or b'python'
+       
+    Args:
+        data (str): data to be encoded
+    Returns:
+        str : The SHA3 256-bit hash of the provided data
+    '''    
+
+############################# SOLUTION ##############################
+
+import hashlib
+
+def get_hash(data="python"):
+    '''
+    Returns the SHA3 256-bit hash of the data provided.
+    You will need to use the hashlib python library to complete this challenge.
+       
+    NOTE: The first call will use the string "python" later calls will use random strings
+    NOTE: You can convert a string into a bytes-like object which is needed for hashing with: 
+             
+    data.encode("utf-8")
+    
+    NOTE: You can create a bytes-like object out of a literal by adding a b in front of the string, ie b"python" or b'python'
+       
+    Args:
+        data (str): data to be encoded
+    Returns:
+        str : The SHA3 256-bit hash of the provided data
+    '''    
+    temp1 = data.encode('utf-8')
+    temp2 = hashlib.sha3_256(temp1)
+    return temp2.hexdigest()
 
 ************************ 21 ***************************************
 
@@ -451,9 +852,9 @@ def count_words(filepath):
 
 Use python to produce code below that will perform the following:
 
-Create a function called infinitearguments that will:
-Print to standard output all positional arguments, in the order received, on separate lines.
-Followed immediately by all keyword arguments in the form keyword=value in keyword alphabetic order.
+    Create a function called infinitearguments that will:
+    Print to standard output all positional arguments, in the order received, on separate lines.
+    Followed immediately by all keyword arguments in the form keyword=value in keyword alphabetic order.
 
 ############################# SOLUTION ##############################
 
@@ -549,7 +950,13 @@ def sort_embedded(filepath):
         
     return sorted_temp
 
-    
+
+
+
+
+
+
+
 
 ################################### Challenges Website Solutions ##############################
 def zap(list1, list2):
