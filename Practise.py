@@ -259,6 +259,12 @@ def sort_embedded(filepath):
         
     return sorted_temp
 
+
+
+
+
+
+
 def sort_embedded(filepath):
     
     with open(filepath,'r') as filepath:
@@ -284,6 +290,9 @@ def round_to_position(lst):
 #                 line = line.replace(find, replace)
 #             newOneTwo.write(line)
 
+
+
+
 if __name__== "__main__":
     # in_path = 'assignment2.txt'
     # out_path = 'assignment3.txt'
@@ -293,3 +302,4 @@ if __name__== "__main__":
     # user_input_2 = int(input("Enter a number 2: "))
     # print(findProduct(user_input_1,user_input_2))
     print(get_hash())
+
