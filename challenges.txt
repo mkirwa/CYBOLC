@@ -303,3 +303,49 @@ def replace_in_file(in_path, out_path, reps):
             newOneTwo.write(line)
             
 ************************ 21 ***************************************
+
+
+
+
+
+
+
+
+
+
+
+
+################################### Challenges Website Solutions ##############################
+def zap(list1, list2):
+    #list_temp = []
+    #newTuple = ()
+    
+    #for i,j in enumerate(list2):
+        #newTuple+=[list1[i],list2[i]]
+        #list_temp.append(list1[i],list2[i])
+    new_tuple = list(map(lambda x,y:(x,y), list1,list2))
+    return new_tuple
+#def zap(list1, list2):
+#    zipped = zip(list1,list2)
+#    return list(zipped)
+
+list1_ = [0, 1, 2, 3]
+list2_ = [5, 6, 7, 8]
+zap(list1_,list2_)
+
+
+
+
+
+
+
+
+
+def convert(list_numbers):
+    return list(map(str,list_numbers))
+    
+list_numbers = [1,2,3,4]
+print(convert(list_numbers))
+
+
+
