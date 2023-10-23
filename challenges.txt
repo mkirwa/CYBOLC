@@ -31,11 +31,11 @@ pie_size = 3.14
 
 Use Python to produce code below that will convert the provided literal ("Starting Value"), convert it to the indicated data type by using the appropriate Python Built-in Function(s), and assign the output to the named variable as designated below.
 
-Task	Variable	Starting Value	Convert to Type
-string to int	int_input	"345"	int
-string to float	pi_4	"3.1415"	float
-int to string	hours_str	40	string
-int to float	hourly_rate	15	float
+Task	            Variable	    Starting Value	    Convert to Type
+string to int	    int_input	    "345"	            int
+string to float	    pi_4	        "3.1415"	        float
+int to string	    hours_str	    40	                string
+int to float	    hourly_rate	    15	                float
 NOTE: Conversion functions must be called
 NOTE: Do not indent your code
 
@@ -301,19 +301,255 @@ def replace_in_file(in_path, out_path, reps):
             for find, replace in temporary_values.items():
                 line = line.replace(find, replace)
             newOneTwo.write(line)
-            
+
 ************************ 21 ***************************************
 
+Write a script that implements a function, find_product, which takes two numbers and returns the product. Use the name=='__main__' idiom to prompt the user for two integers a print the result of calling find_product using those integers.
+
+############################# SOLUTION ##############################
+
+def find_product(a,b):
+    return a * b
+if __name__== "__main__":
+    user_input_1 = int(input())
+    user_input_2 = int(input())
+    print(find_product(user_input_1,user_input_2))
+
+************************ 22 ***************************************
+
+Write a function, round_to_position, which takes a list of floats and returns a new list with the original floats each rounded to the number of digits of precision after the decimal point corresponding to the original float's position in the list.
+
+def round_to_position(lst):
+    pass
+
+############################# SOLUTION ##############################
+
+def round_to_position(lst):
+    return [round(value, index) for index, value in enumerate(lst)]
+
+************************ 23 ***************************************
+
+def get_type_str(obj):
+    '''
+    Returns the type of the parameter as a string.
+    Possible types are:
+    
+
+      
+string
+
+      
+boolean
+
+      
+integer
+
+      
+float
+
+      
+list
+
+      
+tuple
+
+    
+
+    NOTE: Any other types should be identified with 'unknown'
+       
+    Args:
+        obj (?): The object that should be classified
+    Returns:
+        str : The type of the provided data
+    '''   
+
+############################# SOLUTION ##############################
+
+def get_type_str(obj):
+    obj = type(obj)
+    if obj == str:
+        return "string"
+    elif obj == bool:
+        return "boolean"
+    elif obj == int:
+        return "integer"
+    elif obj == float:
+        return "float"
+    elif obj == list:
+        return "list"
+    elif obj == tuple:
+        return "tuple"
+    else:
+        return str("unknown")
+
+************************ 24 ***************************************
+
+Use python to produce code below that will perform the following:
+
+The file specified by fname contains some text.
+A list of words is provided as the parameter words.
+Return a list of all the words found in the file that are NOT contained in the list of words in parameter.
+Each word in the file will be separated by at least one character of whitespace.
+def diffwords(fname, words):
+    pass 
+
+############################# SOLUTION ##############################
+
+def diffwords(fname, words):
+    with open(fname, 'r') as filein:
+        text = set(filein.read().split())
+        diff = text.difference(words)
+    
+    return diff
+
+************************ 25 ***************************************
+def count_words(filepath):
+    '''
+    Count the occurrences of each word in the file. Create a dictionary that contains each word in the file as a key
+    and the value for each key will contain the number of times each words is found in the file. Words will be
+    separated by one or more whitespace characters spread over multiple lines.
+       
+    Args:
+        filepath (str): The path to the file
+    Returns:
+        dict : keys - words
+               values - number of times each word appears
+    '''
+
+############################# SOLUTION ##############################
+
+def count_words(filepath):
+        #with open(filepath, 'r') as new_file:
+        #read_new_file = new_file.read()
+    read_new_file = open(filepath, "r") 
+    # Create an empty dictionary 
+    d = dict() 
+
+    # Loop through each line of the file 
+    for line in read_new_file: 
+        # Remove the leading spaces and newline character 
+        line = line.strip() 
+
+        # Split the line into words 
+        words = line.split(" ") 
+
+        # Iterate over each word in line 
+        for word in words: 
+            print(word)
+            # Check if the word is already in dictionary 
+            # crayons['orange'] = 'mango' 
+            if word in d: 
+                # Increment count of word by 1 
+                d[word] = d[word] + 1
+            else: 
+                # Add the word to dictionary with count 1 
+                d[word] = 1
+
+    return d
+
+************************ 26 ***************************************
+
+Use python to produce code below that will perform the following:
+
+Create a function called infinitearguments that will:
+Print to standard output all positional arguments, in the order received, on separate lines.
+Followed immediately by all keyword arguments in the form keyword=value in keyword alphabetic order.
+
+############################# SOLUTION ##############################
+
+def infinitearguments(*args, **kwargs):
+    for arg in args:
+        print(arg)
+    
+    myKeys = list(kwargs.keys())
+    myKeys.sort()
+    sorted_dict = {i: kwargs[i] for i in myKeys}
+    
+    for key, value in sorted_dict.items():
+        print(f'{key}={value}')
+
+************************ 27 ***************************************
+
+def sort_ascii(filepath):
+    '''
+    Read all lines from file in `filepath` and return a list of all lines in case-insensitive ASCII order.
+    Remove all linebreaks before sorting.
+       
+    Args:
+        filepath (str): The path to the file
+    Returns:
+        list : lines from input file sorted into ASCII order without linebreaks
+    '''
+
+############################# SOLUTION ##############################
+
+def sort_ascii(filepath):
+    with open(filepath, 'r') as file:
+        temp = []
+        for line in file.readlines():
+            temp.append(line.strip())
+        sorted_temp = sorted(temp, key=lambda s: s.lower())
+        return sorted_temp
+
+************************ 28 ***************************************
+
+def sort_length(filepath):
+    '''
+    Read all lines from file in `filepath` and return a list of all lines sorted longest to shortest.
+    Remove all linebreaks before sorting.
+       
+    Args:
+        filepath (str): The path to the file
+    Returns:
+        list : lines from input file sorted longest to shortest without linebreaks
+    '''
+
+############################# SOLUTION ##############################
+
+def sort_length(filepath):
+    with open(filepath, 'r') as file:
+        temp = []
+        for line in file.readlines():
+            temp.append(line.strip())
+        
+    sorted_temp = sorted(temp, key=len, reverse=True)
+    
+    return sorted_temp
+
+************************ 29 ***************************************
+
+def sort_embedded(filepath):
+    '''
+    Read all lines from file in `filepath` and return a list of all lines sorted numerically by
+    the number at character positions 10 to 15 in each line..
+    Remove all linebreaks before sorting.
+    
+    Example: The embedded number is 561234 below. Copy and paste this into a text file to test your function:
+		
+    Here is a561234 long line of text from the file.
+       
+    Args:
+        filepath (str): The path to the file
+    Returns:
+        list : lines from input file numerically sorted on the embedded number without linebreaks
+    '''
 
 
+############################# SOLUTION ##############################
 
+def sort_embedded(filepath):
+    with open(filepath, 'r') as file:
+        temp = []
+        for line in file.readlines():
+            temp.append(line.strip())
+    def extract_embedded_number(line):
+        return int(line[9:15]) 
+    
+    sorted_temp = sorted(temp, key=extract_embedded_number)
+        
+    return sorted_temp
 
-
-
-
-
-
-
+    
 
 ################################### Challenges Website Solutions ##############################
 def zap(list1, list2):
