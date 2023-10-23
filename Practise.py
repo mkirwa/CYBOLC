@@ -260,11 +260,6 @@ def sort_embedded(filepath):
     return sorted_temp
 
 
-
-
-
-
-
 def sort_embedded(filepath):
     
     with open(filepath,'r') as filepath:

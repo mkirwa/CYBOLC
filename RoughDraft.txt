@@ -178,23 +178,21 @@ tuple
        
     Args:
         obj (?): The object that should be classified
-    Returns:
-        str : The type of the provided data
-    '''   
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    Returns:    if "def" not in code:
+        return "missing def"
+    if ":" not in code:
+        return "missing :"
+    if "(" not in code or ")" not in code:
+        return "missing paren"
+    if "(" + ")" in code:
+        return "missing param"
+    if "    " not in code:
+        return "missing indent"
+    if "validate" not in code:
+        return "wrong name"
+    if "return" not in code:
+        return "missing return"
+    return True
 
 
 
@@ -309,3 +307,53 @@ def sort_embedded(filepath):
         filepath (str): The path to the file
     Returns:
         list : lines from input file numerically sorted on the embedded number without linebreaks
+
+
+
+def validate(code):
+
+    if "def" not in code:
+        return "missing def"
+    if ":" not in code:
+        return "missing :"
+    if "(" not in code or ")" not in code:
+        return "missing paren"
+    if "(" + ")" in code:
+        return "missing param"
+    if "    " not in code:
+        return "missing indent"
+    if "validate" not in code:
+        return "wrong name"
+    if "return" not in code:
+        return "missing return"
+    return True
+
+
+def validate(code):
+    if "def" not in code:
+        return "missing def"
+    if ":" not in code:
+        return "missing :"
+    if "(" not in code or ")" not in code:
+        return "missing paren"
+    if "("+")" in code:
+        return "missing param"
+    if "    " not in code:
+        return "missing indent"
+    if "validate" not in code:
+        return "wrong name"
+    if "return" not in code:
+        return "missing return"
+    
+    return True
+
+code_to_validate = 'def validate(one):\n    return print(123)\n'
+
+print(validate(code_to_validate))  # Output should be True
+
+#print(validate('def foo():\n print(123)'))
+#The call validate('def foo():\n print(123)') 
+#should return 'missing param', but it returned 'wrong name'
+
+
+
