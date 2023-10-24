@@ -425,7 +425,23 @@ def q1_new(filename):
     
     # return len(read_new_file.strip())
 
+def turn_to_capita_letters(filepath, out_path):
 
+    # with open(in_path, 'r') as newOne, open(out_path, 'w') as newOneTwo:
+    #     for line in newOne:
+    #         for find, replace in temporary_values.items():
+    #             line = line.replace(find, replace)
+    #         newOneTwo.write(line)
+    
+    with open(filepath, 'r') as new_file, open(out_path, 'w') as newOneTwo:
+        read_new_file = new_file.readlines()
+        for line in read_new_file:
+            newOneTwo.write(line.upper())
+    
+    
+    #read_new_file = open(filepath, "r") 
+    # Create an empty dictionary 
+    #d = dict() 
 
     # with open(filename, 'r') as new_file:
     #     read_new_file = new_file.read()
@@ -467,6 +483,7 @@ if __name__== "__main__":
     in_path = 'qi_08.txt'
     lst = ['one','two','three','stop','four']
     q1_08(in_path,lst)
+    #in_path = 'assignment2.txt'
     # out_path = 'assignment3.txt'
     # reps = [("taken","delivered"),("cat","dog"),("outside","beyond"),("straightaway","forthwith"),("possibly","perchance")]
     # replace_in_file_2(in_path,out_path,reps)
@@ -486,4 +503,8 @@ if __name__== "__main__":
     #          ('Intel Core i9-9900K', 3)]
     # print(q6(catalog,order))
 
+    in_path = 'pythonprinciples2.txt'
+    out_path = 'pythonprinciples3.txt'
+    turn_to_capita_letters(in_path,out_path)
+    #count_words(in_path)
 

@@ -1,0 +1,141 @@
+*************** CAPITAL INDEXES SOLUTION ***************
+
+def capital_indexes(param):
+    listCapital = []
+    for i in range(0,len(param)):
+        if param[i].isupper():
+            listCapital.append(i)
+    return listCapital
+        
+capital_indexes('reNTal')
+
+*************** MIDDLE LETTER SOLUTION ***************
+
+import math
+
+def mid(string_mid):
+    list_mid_string = list(string_mid)
+    if len(list_mid_string)%2==0:
+        return ""
+    else:
+        index_string = math.ceil(len(list_mid_string)/2)
+        return list_mid_string[index_string-1]
+
+print(mid("abc"))
+print(mid("aaaa"))
+
+
+*************** ONLINE STATUS SOLUTION ***************
+
+def online_count(statuses):
+    count = 0
+    for key, value in statuses.items():
+        if value=='online':
+            count+=1
+    return count
+
+statuses = {
+    "Alice": "online",
+    "Bob": "offline",
+    "Eve": "online",
+}
+online_count(statuses)
+
+
+*************** RANDOMNESS SOLUTION ***************
+
+import random
+def random_number():
+    return random.randint(0,101)
+print(random_number())
+
+*************** TYPE CHECK SOLUTION ***************
+
+def only_ints(param1, param2):
+    param1_type = type(param1)
+    param2_type = type(param2)
+    if 'int' in str(param1_type) and 'int' in str(param2_type):
+        return True
+    else:
+        return False
+    
+only_ints(1,2)
+
+*************** DOUBLE LETTERS SOLUTION ***************
+
+def double_letters(param_1):
+    param_1_new = list(str(param_1))
+    temp_1 = len(param_1_new)
+    double_letters_present = False
+    for i in range(temp_1):
+        if i<temp_1-1:
+            if param_1_new[i]==param_1_new[i+1]:
+                double_letters_present = True
+    return double_letters_present
+                
+print(double_letters('helo'))  
+
+*************** ADDING AND REMOVING DOTS SOLUTION ***************
+
+def add_dots(string_dots):
+    new_string = '.'.join(string_dots)
+    return new_string
+    
+def remove_dots(string_dots):
+    new_string = string_dots.replace('.','')
+    return new_string
+    
+
+*************** COUNTING SYLLABLES SOLUTION ***************
+
+def count(string_new):
+    count_dash = 0
+    num = string_new.count('-')
+    if num==0:
+        count_dash = 1
+    else:
+        count_dash = num + 1
+    return count_dash
+
+
+*************** ANAGRAMS SOLUTION ***************
+
+def is_anagram(param1, param2):
+    list_1 = list(param1)
+    list_1.sort()
+    list_2 = list(param2)
+    list_2.sort()
+    return list_1==list_2
+        
+
+*************** FLATTEN A LIST SOLUTION ***************
+
+def flatten(list_1):
+    new_list = []
+    for i in range(0,len(list_1)):
+        new_list = new_list + list_1[i]
+    return new_list
+
+*************** Min-maxing SOLUTION ***************
+
+def largest_difference(list_1):
+    new_list = list_1
+    new_list.sort()
+    return new_list[-1] - new_list[0]
+
+
+*************** Divisible by 3 SOLUTION ***************
+*************** Tic tac toe input SOLUTION ***************
+*************** Palindrome SOLUTION ***************
+*************** Up and down SOLUTION ***************
+*************** Consecutive zeros SOLUTION ***************
+*************** All equal SOLUTION ***************
+*************** Boolean and SOLUTION ***************
+*************** Writing short code SOLUTION ***************
+*************** Custom zip SOLUTION ***************
+*************** Solution validation SOLUTION ***************
+*************** List xor SOLUTION ***************
+*************** Counting parameters SOLUTION ***************
+*************** Thousands separator SOLUTION ***************
+
+
