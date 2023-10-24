@@ -303,22 +303,170 @@ def count_words(filepath):
 
         # Iterate over each word in line 
         for word in words: 
-            print(word)
-            # Check if the word is already in dictionary 
-            # crayons['orange'] = 'mango' 
             if word in d: 
                 # Increment count of word by 1 
                 d[word] = d[word] + 1
             else: 
                 # Add the word to dictionary with count 1 
                 d[word] = 1
-
     return d
-    
 
+# def numsys(startint):
+#     pass
+
+# def getints(binnum, octnum, decnum, hexnum):
+#     pass
+# def literals():
+#     pass
+    
+import string
+def complexity(password):
+    correct_password = 0 
+    if len(password) >=15:
+        correct_password|= 0x1
+    
+    for char in password:
+        if any(char.isdigit()):
+            correct_password |= 0x2
+
+    for char in password:
+        if any(char.isupper()):
+            correct_password |= 0x4
+    
+    for char in password:
+        if any(char.islower()):
+            correct_password |= 0x8
+
+    for char in password:
+        if any(char in string.punctuation):
+            correct_password |= 0x10
+
+    return correct_password
+
+
+    correct_password = 0
+
+    if len(password) >= 15:
+        correct_password |= 0x1
+    if any(char.isdigit() for char in password):
+        correct_password |= 0x2
+    if any(char.isupper() for char in password):
+        correct_password |= 0x4
+    if any(char.islower() for char in password):
+        correct_password |= 0x8
+    if any(char in string.punctuation for char in password):
+        correct_password |= 0x10
+
+    return correct_password
+
+def q1_kjhk(floatstr):  
+    list_conv = list(floatstr)
+    return list(floatstr)
+    return [float(value) for value in floatstr.split(",")]
+
+def q1_another(*args):
+    return int(sum(args))/len(args)
+
+def q1_03(lst,n):
+    return lst[-n:]
+
+def q1_04(strng):
+    list_ord = []
+    for i in strng:
+        list_ord.append(ord(i))
+    return list_ord
+
+def q1_05(strng):
+    list_temp = []
+    for value in strng.split(" "):
+        list_temp.append(value)
+    return tuple(list_temp)
+
+def perms(mode):
+
+    permissions = ['r', 'w', 'x']
+
+    permissions_1 = (mode >> 6) & 0b111
+    permissions_2 = (mode >> 3) & 0b111
+    permissions_3 = mode & 0b111
+
+    def converting_permission_bits_to_strings(permission_bits):
+        perm_str = ''
+        for idx, char in enumerate(permissions):
+            perm_str += char if permission_bits & (1 << (2 - idx)) else '-'
+        return perm_str
+
+    
+    permission_strings = converting_permission_bits_to_strings(permissions_1) + converting_permission_bits_to_strings(permissions_2) + converting_permission_bits_to_strings(permissions_3)
+    
+    return permission_strings
+
+def q6(catalog, order):
+    total = 0   
+    for key, value in catalog.items():
+        for i in order:
+            if key==i[0]:
+                print(f'value: {value} orders {i[1]}')
+                total = total + (i[1]*value) 
+    
+    return total
+
+def q1_new(filename):
+    new_file_name = filename.readlines()
+    return len(new_file_name.strip())
+
+    #  first_line = file.readline()
+        
+    #     # Return the length of the line excluding the line terminator
+    #     return len(first_line.strip())
+
+    # with open(filename, 'r') as new_file:
+    #     read_new_file = new_file.read()
+    
+    # return len(read_new_file.strip())
+
+
+
+    # with open(filename, 'r') as new_file:
+    #     read_new_file = new_file.read()
+    
+    # return len(read_new_file.strip())
+
+def q1_08(filename,lst):
+    with open(filename,'w') as new_file:
+        for i in lst:
+            if i!='stop':
+                new_file.writelines(f'{i}\n')
+            else:
+                break
+    
+def q1_09(miltime):
+    hour = int(miltime[:2])
+    if 3 <= hour <= 11:
+        return "Good Morning"
+    elif 12 <= hour <= 15:
+        return "Good Afternoon"
+    elif 16 <= hour <= 20:
+        return "Good Evening"
+    else:
+        return "Good Night"
+
+
+
+        # for i in lst:
+        #     if not 'stop':
+        #         new_file.writelines(i)
+        #         break
+
+
+
+        # new_file_name = new_file.readline()
+        # return len(new_file_name.strip())
 
 if __name__== "__main__":
-    in_path = 'assignment2.txt'
+    in_path = 'qi_08.txt'
+    lst = ['one','two','three','stop','four']
+    q1_08(in_path,lst)
     # out_path = 'assignment3.txt'
     # reps = [("taken","delivered"),("cat","dog"),("outside","beyond"),("straightaway","forthwith"),("possibly","perchance")]
     # replace_in_file_2(in_path,out_path,reps)
@@ -326,6 +474,16 @@ if __name__== "__main__":
     # user_input_2 = int(input("Enter a number 2: "))
     # print(findProduct(user_input_1,user_input_2))
     #print(get_hash())
-    
-    count_words(in_path)
+    #q1_another(1,2,3,4)
+    #count_words(in_path)
+    #print(q1_03([1,2,3,4],3))
+    #strng = "Long sentence to the test capabilities function's"
+    #print(q1_05(strng))
+    # catalog = {'AMD Ryzen 5 5600X': 289.99,\
+    #            'Intel Core i9-9900K': 363.50,\
+    #             'AMD Ryzen 9 5900X': 569.99}
+    # order = [('AMD Ryzen 5 5600X', 5), \
+    #          ('Intel Core i9-9900K', 3)]
+    # print(q6(catalog,order))
+
 

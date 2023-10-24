@@ -88,7 +88,10 @@ def get_hash(data="python"):
 
 
 
+************************ 18 ***************************************
 
+
+############################# SOLUTION ##############################
 
 
 
@@ -357,3 +360,272 @@ print(validate(code_to_validate))  # Output should be True
 
 
 
+
+
+
+def numsys(startint):
+    """ Given an integer `startint`, convert this integer to its 
+    binary version, octal version, and hexadecimal version and 
+    return these as a tuple in the order given. """
+    
+    # Convert to binary, octal, and hexadecimal
+    binary_num = bin(startint)[2:] # [2:] is used to remove the '0b' prefix
+    octal_num = oct(startint)[2:]  # [2:] is used to remove the '0o' prefix
+    hex_num = hex(startint)[2:].upper()  # [2:] is used to remove the '0x' prefix and upper() is used to make the letters uppercase
+
+    return (binary_num, octal_num, hex_num)
+
+
+def getints(binnum, octnum, decnum, hexnum):
+    """ Given the string parameters `binnum` (binary number), 
+    `octnum` (octal number), decnum` (decimal number), `hexnum` 
+    (hexadecimal number), convert each of these  to an integer and 
+    return them as a list in their parameter order. """
+    
+    # Convert each string to its respective integer
+    binary_int = int(binnum, 2)
+    octal_int = int(octnum, 8)
+    decimal_int = int(decnum)
+    hex_int = int(hexnum, 16)
+
+    return [binary_int, octal_int, decimal_int, hex_int]
+
+
+def literals():
+    """ Create a list and set the value using literals and return 
+    the list. All literals will represent the decimal integer value 
+    1,000,000 (one million). You must use a literal to represent 
+    the target value in binary, hexadecimal, decimal, and octal.
+    The order is not important. """
+    
+    # Using literals to represent 1,000,000
+    bin_literal = 0b11110100001001000000  # binary
+    hex_literal = 0xF4240                # hexadecimal
+    dec_literal = 1000000                # decimal
+    oct_literal = 0o3641100              # octal
+
+    return [bin_literal, hex_literal, dec_literal, oct_literal]
+
+# You can test the functions with appropriate values to see if they work correctly.
+
+
+def numsys(startint):
+    """ Given an integer `startint`, convert this integer to its 
+    binary version, octal version, and hexadecimal version and 
+    return these as a tuple in the order given. """
+    
+    # Convert to binary, octal, and hexadecimal with prefixes
+    binary_num = bin(startint)
+    octal_num = oct(startint)
+    hex_num = hex(startint)
+
+    return (binary_num, octal_num, hex_num)
+
+
+def getints(binnum, octnum, decnum, hexnum):
+    """ Given the string parameters `binnum` (binary number), 
+    `octnum` (octal number), decnum` (decimal number), `hexnum` 
+    (hexadecimal number), convert each of these  to an integer and 
+    return them as a list in their parameter order. """
+    
+    # Convert each string to its respective integer
+    binary_int = int(binnum, 2)
+    octal_int = int(octnum, 8)
+    decimal_int = int(decnum)
+    hex_int = int(hexnum, 16)
+
+    return [binary_int, octal_int, decimal_int, hex_int]
+
+
+def literals():
+    """ Create a list and set the value using literals and return 
+    the list. All literals will represent the decimal integer value 
+    1,000,000 (one million). You must use a literal to represent 
+    the target value in binary, hexadecimal, decimal, and octal.
+    The order is not important. """
+    
+    # Using literals to represent 1,000,000
+    bin_literal = 0b11110100001001000000  # binary
+    hex_literal = 0xf4240                # hexadecimal in lowercase
+    dec_literal = 1000000                # decimal
+    oct_literal = 0o3641100              # octal
+
+    return [bin_literal, hex_literal, dec_literal, oct_literal]
+
+
+
+
+
+import string
+
+def complexity(password):
+    """ Evaluate the complexity of a given password and return an integer
+    whose bits are set according to the defined rules. """
+
+    # Initialize the result to 0
+    result = 0
+
+    # Check each condition and set the appropriate bit
+    if len(password) >= 15:
+        result |= 0x1
+    if any(char.isdigit() for char in password):
+        result |= 0x2
+    if any(char.isupper() for char in password):
+        result |= 0x4
+    if any(char.islower() for char in password):
+        result |= 0x8
+    if any(char in string.punctuation for char in password):
+        result |= 0x10
+
+    return result
+
+# You can test the function with different passwords to check its correctness.
+
+
+
+
+
+def perms(mode):
+    """ Convert a Linux file mode (permissions) into its corresponding string representation. """
+
+    # Define the permission bits and their corresponding characters
+    PERMISSIONS = {
+        4: 'r',
+        2: 'w',
+        1: 'x',
+    }
+
+    # Extract the permission bits for user, group, and others
+    user_perms = (mode >> 6) & 0b111
+    group_perms = (mode >> 3) & 0b111
+    other_perms = mode & 0b111
+
+    # Convert the permission bits into their string representation
+    def get_perm_str(perms_bits):
+        return ''.join(PERMISSIONS.get(bit, '-') for bit in [4, 2, 1] if bit & perms_bits)
+
+    # Generate the full permission string
+    perm_str = get_perm_str(user_perms) + get_perm_str(group_perms) + get_perm_str(other_perms)
+
+    return perm_str
+
+# Test cases
+print(perms(511))  # Expected: 'rwxrwxrwx'
+print(perms(424))  # Expected: 'rw-r-x---'
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+def perms(mode):
+    """ Convert a Linux file mode (permissions) into its corresponding string representation. """
+
+    # Define the permission characters for each permission bit
+    PERMISSIONS = ['r', 'w', 'x']
+
+    # Convert the permission bits into their string representation
+    def get_perm_str(perms_bits):
+        perm_str = ''
+        for idx, char in enumerate(PERMISSIONS):
+            perm_str += char if perms_bits & (1 << (2 - idx)) else '-'
+        return perm_str
+
+    # Extract the permission bits for user, group, and others and generate the string
+    user_perms = (mode >> 6) & 0b111
+    group_perms = (mode >> 3) & 0b111
+    other_perms = mode & 0b111
+
+    return get_perm_str(user_perms) + get_perm_str(group_perms) + get_perm_str(other_perms)
+
+# Test cases
+print(perms(511))  # Expected: 'rwxrwxrwx'
+print(perms(424))  # Expected: 'rw-r-x---'
+
+
+
+print(q1("", True, 2000000))  # Should return 0x1 | 0x10 | 0x20 = 49
+print(q1("test.txt", False, 500000))  # Should return 0
+print(q1("", False, 500000))  # Should return 0x1 = 1
+
+
+def q1(filename, overwrite, bytestowrite):
+    """ Create and return a number based on the given conditions. """
+
+    # Initialize the result to 0
+    result = 0
+
+    # Check each condition and set the appropriate bit
+    if not filename:
+        result |= 0x1
+    if overwrite:
+        result |= 0x10
+    if bytestowrite > 1000000:
+        result |= 0x20
+
+    return result
+
+
+
+
+
+
+
+
+
+
+
+
+Given a dictionary (catalog) whose keys are product names and values are product prices per unit and a list of tuples (order) of product names and quantities, compute and return the total value of the order.
+
+Example catalog:
+
+{
+'AMD Ryzen 5 5600X': 289.99,
+'Intel Core i9-9900K': 363.50,
+'AMD Ryzen 9 5900X': 569.99
+}
+Example order:
+
+[
+('AMD Ryzen 5 5600X', 5), 
+('Intel Core i9-9900K', 3)
+]
+Example result:
+
+2540.45
+
+How the above result was computed:
+
+(289.99 * 5) + (363.50 * 3)
+
+def q6(catalog, order):
+    pass
+
+
+DO NOT USE ONE LINERS

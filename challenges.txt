@@ -951,13 +951,320 @@ def sort_embedded(filepath):
     return sorted_temp
 
 
+************************ 120 ***************************************
+
+def numsys(startint):
+    """ Given an integer `startint`, convert this integer to its 
+    binary version, octal version, and hexadecimal version and 
+    return these as a tuple in the order given. """
+    pass
+    
+def getints(binnum, octnum, decnum, hexnum):
+    """ Given the string parameters `binnum` (binary number), 
+    `octnum` (octal number), decnum` (decimal number), `hexnum` 
+    (hexadecimal number), convert each of these  to an integer and 
+    return them as a list in their parameter order. """
+    pass
+    
+def literals():
+    """ Create a list and set the value using literals and return 
+    the list. All literals will represent the decimal integer value 
+    1,000,000 (one million). You must use a literal to represent 
+    the target value in binary, hexadecimal, decimal, and octal.
+    The order is not important. """
+    pass
+    
+
+############################# SOLUTION ##############################
 
 
+def numsys(startint):
+    binary_num = bin(startint)
+    octal_num = oct(startint)
+    hex_num = hex(startint)
+    return (binary_num, octal_num, hex_num)
+
+def getints(binnum, octnum, decnum, hexnum):
+    integer_binary = int(binnum, 2)
+    integer_octa_number = int(octnum, 8)
+    integer_decimal = int(decnum)
+    hex_number = int(hexnum, 16)
+    
+    return [integer_binary, integer_octa_number,integer_decimal, hex_number]
+
+def literals():
+    binary_literal = 0b11110100001001000000
+    hexadecimal_literal = 0xf4240
+    decimal_literal = 1000000
+    octa_literal = 0o3641100
+    return [binary_literal, hexadecimal_literal, decimal_literal, octa_literal]
 
 
+************************ 120 ***************************************
+
+Given a password as a string, return an integer whose bits are set according to the following rules:
+
+0x1 - Consists of at least 15 characters
+0x2 - Consists of at least 1 number
+0x4 - Consists of at least 1 uppercase letter
+0x8 - Consists of at least 1 lowercase letter
+0x10 - Consists of at least 1 special character (~!"@#$%^&'*_-+=`|(){}[]:;<>,.?/)
+Note: The set of special characters corresponds exactly with those characters in string.punctuation
+
+def complexity(password):
+    pass
 
 
+############################# SOLUTION ##############################
 
+
+import string
+def complexity(password):
+    correct_password = 0
+
+    if len(password) >= 15:
+        correct_password |= 0x1
+    if any(char.isdigit() for char in password):
+        correct_password |= 0x2
+    if any(char.isupper() for char in password):
+        correct_password |= 0x4
+    if any(char.islower() for char in password):
+        correct_password |= 0x8
+    if any(char in string.punctuation for char in password):
+        correct_password |= 0x10
+
+    return correct_password
+
+************************ 101 ***************************************
+
+Given a linux file mode (permissions) as an integer, return the permission string that the mode represents.
+
+Example 1:
+mode = 511 
+511 == 0b111111111
+permissons = 'rwxrwxrwx'
+
+Example 2:
+mode = 424
+424 == 0b110101000
+permissions = 'rw-r-x---'
+def perms(mode):
+    pass
+
+############################# SOLUTION ##############################
+
+def perms(mode):
+    permissions = ['r', 'w', 'x']
+
+    permissions_1 = (mode >> 6) & 0b111
+    permissions_2 = (mode >> 3) & 0b111
+    permissions_3 = mode & 0b111
+
+    def converting_permission_bits_to_strings(permission_bits):
+        perm_str = ''
+        for idx, char in enumerate(permissions):
+            perm_str += char if permission_bits & (1 << (2 - idx)) else '-'
+        return perm_str
+
+    
+    permission_strings = converting_permission_bits_to_strings(permissions_1) + converting_permission_bits_to_strings(permissions_2) + converting_permission_bits_to_strings(permissions_3)
+
+    return permission_strings
+
+    def get_perm_str(perms_bits):
+        return ''.join(PERMISSIONS.get(bit, '-') for bit in [4, 2, 1] if bit & perms_bits)
+
+    perm_str = get_perm_str(user_perms) + get_perm_str(group_perms) + get_perm_str(other_perms)
+
+    return perm_str
+
+************************ 01 ***************************************
+
+Given the floatstr, which is a comma separated string of floats, return a list with each of the floats in the argument as elements in the list.
+
+def q1(floatstr):  
+    pass
+
+############################# SOLUTION ##############################
+
+def q1(floatstr):  
+    return [float(value) for value in floatstr.split(",")]
+
+************************ 02 ***************************************
+
+Given the variable length argument list, return the average of all the arguments as a float
+
+def q1(*args):
+    pass
+
+############################# SOLUTION ##############################
+
+def q1(*args):
+    return int(sum(args))/len(args)
+
+************************ 03 ***************************************
+
+Given a list (lst) and a number of items (n), return a new list containing the last n entries in lst.
+
+
+def q1(lst,n):
+    pass
+
+############################# SOLUTION ##############################
+
+def q1(lst,n):
+    return lst[-n:]
+
+************************ 04 ***************************************
+
+Given an input string, return a list containing the ordinal numbers of each character in the string in the order found in the input string.
+
+def q1(strng):
+    pass
+
+############################# SOLUTION ##############################
+
+def q1(strng):
+    list_ord = []
+    for i in strng:
+        list_ord.append(ord(i))
+    return list_ord
+
+************************ 05 ***************************************
+
+Given an input string, return a tuple with each element in the tuple containing a single word from the input string in order.
+
+def q1(strng):
+    pass
+
+############################# SOLUTION ##############################
+
+def q1(strng):
+    list_temp = []
+    for value in strng.split(" "):
+        list_temp.append(value)
+    #list_temp_new = sorted(list_temp)
+    return tuple(list_temp)
+
+************************ 06 ***************************************
+
+Given a dictionary (catalog) whose keys are product names and values are product prices per unit and a list of tuples (order) of product names and quantities, compute and return the total value of the order.
+
+Example catalog:
+
+{
+'AMD Ryzen 5 5600X': 289.99,
+'Intel Core i9-9900K': 363.50,
+'AMD Ryzen 9 5900X': 569.99
+}
+Example order:
+
+[
+('AMD Ryzen 5 5600X', 5), 
+('Intel Core i9-9900K', 3)
+]
+Example result:
+
+2540.45
+
+How the above result was computed:
+
+(289.99 * 5) + (363.50 * 3)
+
+def q6(catalog, order):
+    pass
+
+
+############################# SOLUTION ##############################
+
+
+def q6(catalog, order):
+    total = 0   
+    for key, value in catalog.items():
+        for i in order:
+            if key==i[0]:
+                print(f'value: {value} orders {i[1]}')
+                total = total + (i[1]*value) 
+    
+    return total
+
+************************ 07 ***************************************
+
+coding python
+Given a filename, open the file and return the length of the first line in the file excluding the line terminator.
+
+def q1(filename):
+    pass
+
+############################# SOLUTION ##############################
+
+def q1(filename):
+    with open(filename,'r') as new_file:
+        new_file_name = new_file.readline()
+        return len(new_file_name.strip())
+
+
+************************ 08 ***************************************
+
+Given a filename and a list, write each entry from the list to the file on separate lines until a case-insensitive entry of "stop" is found in the list. If "stop" is not found in the list, write the entire list to the file on separate lines.
+
+def q1(filename,lst):
+    pass
+
+############################# SOLUTION ##############################
+
+def q1(filename,lst):
+    with open(filename,'w') as new_file:
+        for i in lst:
+            if i!='stop':
+                new_file.writelines(i)
+                new_file.writelines('\n')
+            else:
+                break
+************************ 09 ***************************************
+
+Given the military time in the argument miltime, return a string containing the greeting of the day.
+
+0300-1159 "Good Morning"
+1200-1559 "Good Afternoon"
+1600-2059 "Good Evening"
+2100-0259 "Good Night"
+def q1(miltime):
+    pass
+
+############################# SOLUTION ##############################
+
+def q1(miltime):
+    hour_str = str(miltime).zfill(4)  
+    hour = int(hour_str[:2])
+    
+    if 3 <= hour <= 11:
+        return "Good Morning"
+    elif 12 <= hour <= 15:
+        return "Good Afternoon"
+    elif 16 <= hour <= 20:
+        return "Good Evening"
+    else:
+        return "Good Night"
+
+
+************************ 10 ***************************************
+
+Given the argument numlist as a list of numbers, return True if all numbers in the list are NOT negative. If any numbers in the list are negative, return False.
+
+def q1(numlist):
+    pass
+
+############################# SOLUTION ##############################
+
+def q1(numlist):
+    for i in numlist:
+        if int(i)<0:
+            return False
+        else:
+            return True
+
+            
 ################################### Challenges Website Solutions ##############################
 def zap(list1, list2):
     #list_temp = []
