@@ -766,3 +766,57 @@ class Calculator:
 
     def __str__(self):
         return str(self.last_result)
+
+
+
+
+#!/usr/bin/env python3
+
+class TicTacToe:
+
+    def __init__(self):
+        # Initialize a 3x3 board with zeros
+        self.board = [[0 for _ in range(3)] for _ in range(3)]
+        # Start with player 1
+        self.current_player = 1
+
+    def move(self, row, col):
+        # Check for invalid moves
+        if not (0 <= row < 3 and 0 <= col < 3) or self.board[row][col] != 0:
+            raise Exception("Invalid move!")
+        
+        # Update the board with the current player's move
+        self.board[row][col] = self.current_player
+
+        # Check for a win condition
+        if self.check_win(row, col):
+            winner = self.current_player
+            # Reset the game state
+            self.__init__()
+            return winner
+        
+        # Check for a draw
+        if self.check_draw():
+            # Reset the game state
+            self.__init__()
+            return 0
+        
+        # Alternate between player 1 and 2
+        self.current_player = 3 - self.current_player
+        return None
+    
+    def check_win(self, row, col):
+        # Check row, column, and diagonals for a win condition
+        return (all(self.board[row][i] == self.current_player for i in range(3))
+                or all(self.board[i][col] == self.current_player for i in range(3))
+                or all(self.board[i][i] == self.current_player for i in range(3))
+                or all(self.board[i][2-i] == self.current_player for i in range(3)))
+
+    def check_draw(self):
+        # Check if the board is full
+        return all(self.board[row][col] != 0 for row in range(3) for col in range(3))
+    
+if __name__=='__main__':
+    TTT = TicTacToe()
+    print(TTT.move(1,1))
+
