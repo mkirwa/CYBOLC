@@ -1336,15 +1336,274 @@ class Calculator:
             return self.memory
         else:
             return value
-            
-************************ 10 ***************************************
 
+************************ 102 ***************************************
+
+Given a username as a string, crack the user's 4 digit pin by repeatedly calling the provided login function. Incorrect attempts to login will raise PermissionError so this, and only this, exception must be caught. Return the pin used to successfully log in.
+
+login(username,pin)
+   
+Returns True if the username and pin are correct. Otherwise raises PermissionError.
+def crack(username):
+    pass
 
 ############################# SOLUTION ##############################
 
+def crack(username):
+    for i in range(10000):
+        pin = f"{i:04d}"
+        try:
+            if login(username, pin):
+                return pin
+        except PermissionError:
+            continue
+    return None
 
 ************************ 10 ***************************************
 
+Attempt to convert the string 'abc' into an integer
+
+Capture the error and print Error has been detected
+
+Then attempt to convert the string '123' into an integer
+
+When no errors are detected print No errors detected
+
+Include a statement that prints operations are complete whether errors are detected or not
 
 ############################# SOLUTION ##############################
 
+try:
+    new_string = int('abc')
+except ValueError:
+    print('Error has been detected')
+try: 
+    new_integer = int('123')
+except ValueError:
+    print('Error has been detected')
+else:
+    print('No errors detected')
+finally:
+    print('operations are complete')
+
+************************ 02 ***************************************
+
+Given a positive integer, return its string representation with commas seperating groups of 3 digits.
+
+For example, given 65535 the returned string should be '65,535'.
+
+def q1(n):
+    pass
+
+############################# SOLUTION ##############################
+
+def q1(n):
+    return '{:,}'.format(n)
+
+************************ 02 ***************************************
+
+Given two lists of integers, return a sorted list that contains all integers from both lists in descending order.
+
+For example, given [3,4,9] and [8,1,5] the returned list should be [9,8,5,4,3,1]. The returned list may contain duplicates.
+
+def q1(lst0, lst1):
+    pass
+
+############################# SOLUTION ##############################
+
+def q1(lst0, lst1):
+    #list_1 = list(lst0)
+    new_list = lst0 + lst1
+    #list_2 = list(lst1)
+    #list_2.sort()
+    new_list.sort(reverse=True)
+    return new_list
+
+************************ 04 Pass GO and collect $200
+ ***************************************
+
+Given 3 scores in the range [0-100] inclusive, return 'GO' if the average score is greater than 50. Otherwise return 'NOGO'.
+
+def q1(s1,s2,s3):
+    pass
+
+############################# SOLUTION ##############################
+
+def q1(s1,s2,s3):
+    if (s1>=0 and s1<=100) and (s2>=0 and s2<=100) and (s3>=0 and s3<=100):
+        total = (s1+s2+s3)/3
+
+        if total>50:
+            return 'GO'
+        else:
+            return 'NOGO'
+
+************************ 05 ***************************************
+
+Given an integer and limit, return a list of even multiples of the integer up to and including the limit.
+
+For example, if integer = 3 and limit = 30, the returned list should be [0,6,12,18,24,30]. Note, 0 is a multiple of any integer except 0 itself.
+
+def q1(integer, limit):
+    pass
+
+############################# SOLUTION ##############################
+
+def q1(integer, limit):
+    list_integers = []
+    for i in range(0, limit + 1):
+        if i%2==0 and i%integer==0:
+            list_integers.append(i)
+    return list_integers
+
+
+************************ 06 ***************************************
+
+Given two filenames, return a list whose elements consist of line numbers for which the two files differ. The first line is considered line 0.
+
+def q1(f0, f1):
+    pass
+
+############################# SOLUTION ##############################
+
+def q1(f0, f1):
+    differences_list = []
+    
+    with open(f0,'r') as file_1, open(f1,'r') as file_2:
+        lines_1 = file_1.readlines()
+        lines_2 = file_2.readlines()
+    
+    len_1 = len(lines_1)
+    len_2 = len(lines_2)
+
+    if len_1>len_2:
+        for i in range(len_1):
+            if lines_1[i]!=lines_2[i]:
+                differences_list.append(i)
+    elif len_2<len_1:
+        for i in range(len_2):
+            if lines_1[i]!=lines_2[i]:
+                differences_list.append(i)
+    else:
+        for i in range(len_1):
+            if lines_1[i]!=lines_2[i]:
+                differences_list.append(i)
+    
+    return differences_list
+
+file_1 = 'copy.txt'
+file_2 = 'copy1.txt'
+
+q1(file_1,file_2)
+
+************************ 07 ***************************************
+
+As you iterate through the given list, return the first duplicate value you come across.
+
+For example, if given [5,7,9,1,3,7,9,5], the returned value should be 7.
+
+def q1(lst):
+    pass
+
+############################# SOLUTION ##############################
+
+def q1(lst):
+    new_set = set()
+
+    for number in lst:
+        if number in new_set:
+            return number
+        new_set.add(number)
+   
+    return new_set
+
+
+set1= [5,7,9,1,3,7,9,5]
+print(q1(set1))
+
+
+************************ 08 ***************************************
+
+Given a sentence as a string with words being separated by a single space, return the length of the shortest word.
+
+def q1(strng):
+    pass
+
+############################# SOLUTION ##############################
+
+def q1(strng):
+    list_temp = []
+    for word in strng.split(" "):
+        list_temp.append(word)
+        
+    res = min(len(ele) for ele in list_temp) 
+    return res
+sentence = 'Name my Mahlon'
+q1(sentence)
+
+************************ 09 ***************************************
+
+Given an alphanumeric string, return the character whose ascii value is that of the integer represenation of all of the digits in the string concatenated in the order in which they appear.
+
+For example, given 'hell9oworld7', the returned character should be 'a' which has the ascii value of 97.
+
+
+def q1(strng):
+    pass
+
+############################# SOLUTION ##############################
+
+def q1(strng):
+    # Step 1: Extract all the digits from the string.
+    digits = []
+    for char in strng:
+        if char.isdigit():
+            digits.append(char)
+
+    # Step 2: Concatenate them to form a new number.
+    number_str = ""
+    for digit in digits:
+        number_str += digit
+
+    # Step 3: Convert this number to an integer.
+    ascii_val = int(number_str)
+
+    # Step 4: Use the `chr` function to get the character with the ASCII value of that integer.
+    result_char = chr(ascii_val)
+
+    return result_char
+
+************************ 10 ***************************************
+
+Given a list of positive integers sorted in ascending order, return the first non-consecutive value. If all values are consecutive, return None.
+
+For example, given [1,2,3,4,6,7], the returned value should be 6.
+
+def q1(arr):
+    pass
+
+############################# SOLUTION PART 1 ##############################
+
+temp_1 = len(arr)
+    for i in range(temp_1):
+         if i<temp_1-1:
+             if arr[i]!=arr[i+1]-1:
+                return arr[i+1]
+             
+    return None
+
+
+############################# SOLUTION PART 2 ##############################
+
+def q1(arr):
+    # Iterate over the list except the last element
+    for i in range(len(arr) - 1):
+        # If the difference between the current value and the next value is greater than 1
+        if arr[i + 1] - arr[i] > 1:
+            return arr[i + 1]
+
+    # If all values are consecutive, return None
+    return None
+
+# Test
+print(q1([1,2,3,4,6,7]))  # Expected output: 6

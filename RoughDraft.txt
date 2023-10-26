@@ -820,3 +820,89 @@ if __name__=='__main__':
     TTT = TicTacToe()
     print(TTT.move(1,1))
 
+
+def crack(username):
+    # Iterate over all possible 4-digit combinations
+    for i in range(10000):
+        # Format the number to be a 4-digit string, like "0012" or "1234"
+        pin = f"{i:04d}"
+        try:
+            # Try to login using the current pin
+            if login(username, pin):
+                # If login is successful, return the pin
+                return pin
+        except PermissionError:
+            # If PermissionError is raised, the pin was incorrect. Move on to the next pin.
+            continue
+
+    # If all attempts fail (should not happen), return None
+    return None
+
+
+def q1(strng):
+    # Extract digits and concatenate them
+    number_str = ''.join([char for char in strng if char.isdigit()])
+
+    # Convert concatenated digits to an integer
+    ascii_val = int(number_str)
+
+    # Return the character with the ASCII value of the number
+    return chr(ascii_val)
+
+# Test
+print(q1('hell9oworld7'))  # Expected output: 'a'
+
+
+def q1(strng):
+    # Step 1: Extract all the digits from the string.
+    digits = []
+    for char in strng:
+        if char.isdigit():
+            digits.append(char)
+
+    # Step 2: Concatenate them to form a new number.
+    number_str = ""
+    for digit in digits:
+        number_str += digit
+
+    # Step 3: Convert this number to an integer.
+    ascii_val = int(number_str)
+
+    # Step 4: Use the `chr` function to get the character with the ASCII value of that integer.
+    result_char = chr(ascii_val)
+
+    return result_char
+
+# Test
+print(q1('hell9oworld7'))  # Expected output: 'a'
+
+
+def q1(integer, limit):
+    # Create an empty list to store even multiples
+    even_multiples = []
+
+    # Iterate through numbers from 0 to the limit
+    for i in range(0, limit + 1):
+        # Check if the current number is a multiple of the integer and is even
+        if i % integer == 0 and i % 2 == 0:
+            even_multiples.append(i)
+
+    return even_multiples
+
+# Test
+print(q1(3, 30))  # Expected output: [0, 6, 12, 18, 24, 30]
+
+
+
+def q1(arr):
+    # Iterate over the list except the last element
+    for i in range(len(arr) - 1):
+        # If the difference between the current value and the next value is greater than 1
+        if arr[i + 1] - arr[i] > 1:
+            return arr[i + 1]
+
+    # If all values are consecutive, return None
+    return None
+
+# Test
+print(q1([1,2,3,4,6,7]))  # Expected output: 6
