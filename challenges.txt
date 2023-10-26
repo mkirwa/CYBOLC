@@ -1264,38 +1264,87 @@ def q1(numlist):
         else:
             return True
 
+
+************************ 105 ***************************************
+
+Implement a class named Calculator
+
+__init__ should not take additional arguments and should be used to initialize the internal state.
+Provide add, sub, mul, and div member functions and each accepts two operands
+The last result must be available for the next operation.
+A single memory value must also be available.
+Provide a store function to store the current last result to memory
+Provide a recall function to recall the current memory value into the last result
+Each member function can use the following as values to each math operation:
+A number for a normal operation
+An empty string '' to denote the last result
+'memory' to denote the memory location
+Each member function must return the numeric result of the operation
+String conversion of a Calculator instance should be the last result as a string
+All values provided will be valid and should be handled.
+#!/usr/bin/env python3
+
+class Calculator:
+    
+    def __init__(self):
+        pass
+
+
+############################# SOLUTION ##############################
+
+#!/usr/bin/env python3
+
+class Calculator:
+    def __init__(self):
+        self.result = 0
+        self.memory = 0
+
+    def add(self,param1, param2):
+        total = self.inputvalue(param1) + self.inputvalue(param2)
+        self.result = total
+        return total
+    
+    def sub(self,param1, param2):
+        total = self.inputvalue(param1) - self.inputvalue(param2)
+        self.result = total
+        return total
+
+    def mul(self,param1, param2):
+        total = self.inputvalue(param1) * self.inputvalue(param2)
+        self.result = total
+        return total
+
+    def div(self,param1, param2):
+        total = self.inputvalue(param1) / self.inputvalue(param2)
+        self.result = total
+        return total
+    
+    def recall(self):
+        self.result = self.memory
+        return self.result
+    
+    def store(self):
+        self.memory = self.result
+    
+    def __str__(self):
+        return str(self.result)
+    
+    def inputvalue(self, value):
+        if value == '':
+            return self.result
+        elif value == 'memory':
+            return self.memory
+        else:
+            return value
             
-################################### Challenges Website Solutions ##############################
-def zap(list1, list2):
-    #list_temp = []
-    #newTuple = ()
-    
-    #for i,j in enumerate(list2):
-        #newTuple+=[list1[i],list2[i]]
-        #list_temp.append(list1[i],list2[i])
-    new_tuple = list(map(lambda x,y:(x,y), list1,list2))
-    return new_tuple
-#def zap(list1, list2):
-#    zipped = zip(list1,list2)
-#    return list(zipped)
-
-list1_ = [0, 1, 2, 3]
-list2_ = [5, 6, 7, 8]
-zap(list1_,list2_)
+************************ 10 ***************************************
 
 
+############################# SOLUTION ##############################
 
 
+************************ 10 ***************************************
 
 
-
-
-
-def convert(list_numbers):
-    return list(map(str,list_numbers))
-    
-list_numbers = [1,2,3,4]
-print(convert(list_numbers))
-
-
+############################# SOLUTION ##############################
 
