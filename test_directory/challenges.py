@@ -1,3 +1,72 @@
+'''IMPORTANT CLASS NOTES'''
+
+fname = 'Albert'
+day = "today"
+
+sentence = "Hello {}. How are you {}?".format(fname,day)
+print(sentence)
+
+sentence = f'Hello {fname}. How are you {day}'
+print(sentence)
+
+PI = 3.14159265359
+trim = f'String Formated to 2 decimal places: PI = {PI:.2f}'
+print(trim)
+
+
+'''USING SPLIT'''
+
+string = "Hello World"
+print(string.split())
+
+#######  PRINTS ######
+['Hello', 'World']
+
+# ***************************
+
+string = "Hello:World:Water:Mark"
+print(string.split(':'))
+
+#######  PRINTS ######
+['Hello', 'World', 'Water', 'Mark']
+
+# ***************************
+
+userline = 'syslog:x:104:110::/home/syslog:/usr/sbin/nologin'
+print(userline.split(':'))
+print(userline.split(':')[3])
+print(userline.split(':')[:3])
+
+#######  PRINTS ######
+
+['syslog', 'x', '104', '110', '', '/home/syslog', '/usr/sbin/nologin']
+110
+['syslog', 'x', '104']
+
+# ***************************
+print('word one'.replace('o','a')) # replace 0 with a
+#######  PRINTS ######
+# ward ane
+# ***************************
+print('word one'.replace('o','a',1)) # replace 0 with a. Do the replacement just once 
+# ward one
+
+
+# ***************************
+sentence = 'good for all'
+sent_list = list(sentence)
+sent_list[0] = 'f'
+sent_list[-1] = '?'
+output = str(','.join(sent_list))
+print(output)
+#######  PRINTS ######
+# f,o,o,d, ,f,o,r, ,a,l,?
+
+# *********** HOW TO INPUT A NUMBER ****************
+numbers = input()
+numbers = numbers.replace(' ','+')
+print(numbers)
+
 ''' 
 Day 3: Iterables/Slicing/File(I/O)
 Day 4: Libraries/name==main /sorting
