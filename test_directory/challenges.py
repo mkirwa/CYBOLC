@@ -1480,6 +1480,8 @@ def crack(username):
     
 '''
 ############################# SOLUTION ##############################
+def login():
+    pass
 
 def crack(username):
     for i in range(10000):
