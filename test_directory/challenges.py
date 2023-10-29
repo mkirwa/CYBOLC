@@ -67,6 +67,94 @@ numbers = input()
 numbers = numbers.replace(' ','+')
 print(numbers)
 
+# *********** MANIPULATING A LIST ****************
+
+c = [1,2,1,1,3,'word']
+print(c[-1][1])
+
+#######  PRINTS ######
+# o
+
+# *********** HOW TO DO THE POWERS - Gives Exponential  ****************
+
+a = 3
+b = 2
+
+print(b ** a ) # Gives the exponential 
+
+
+# *********** MANIPULATING PRINT STATEMEMNTS ****************
+
+var = "hello"
+var2 = "world"
+print(var,var2,end=" : ")
+print(var,var2,sep=" whatever ")
+print('words'); print('more words')
+print(f'Var is: {var}, var2 is: {var2}')
+
+# CONTROL QUESTION MARK highlights multiple lines together. 
+
+#######  PRINTS ######
+
+# hello world : hello whatever world
+# words
+# more words
+# Var is: hello, var2 is: world
+
+#Changing lower case to upper case and upper case to lower case
+
+# *********** HOW TO REVERSE A LIST ***********
+
+nametemp = "elephant"
+print(nametemp)
+nametempnew = list(nametemp)
+print(nametempnew)
+nametempnew.reverse()
+print(nametempnew)
+
+#######  PRINTS ######
+# elephant
+# ['e', 'l', 'e', 'p', 'h', 'a', 'n', 't']
+# ['t', 'n', 'a', 'h', 'p', 'e', 'l', 'e']
+
+# *********** Another way to reverse lists  ***********
+list = ['one', 'two', 'three', 'four', 'five']
+list[::-1]
+
+# *********** Indexing Lists  ***********
+
+primes = [1, 2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31]
+print(len(primes))
+one = primes[0:6]
+two = primes[6:12]
+print(one)
+print(two)
+
+# *********** Asking for user input until an empty string is entered ***********
+
+def user_io():
+    '''
+    Returns a list of items read from the user until the user enters an empty string.
+
+    Args:
+        None
+    Returns:
+        list: a list of strings
+    '''  
+    while True:  
+        word = list(input())
+        if not word:
+            break
+        return word
+
+print('I WANT THIS LOWER CASE'.lower())
+print('i want this upper case'.upper())
+
+
+# *********** File manipulation ***********
+
+
+
 ''' 
 Day 3: Iterables/Slicing/File(I/O)
 Day 4: Libraries/name==main /sorting
@@ -266,6 +354,7 @@ Use python to produce code below that will:
     
 ############################# SOLUTION ##############################
 email = 'mahlonkibiwott@gmail.com'
+email = 'alan.m.turing@genius.com'
 temp = email.split('.')
 temp2 = '@'.join(temp)
 lst = temp2.split('@')
