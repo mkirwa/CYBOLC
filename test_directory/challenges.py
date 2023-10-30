@@ -169,8 +169,153 @@ two = primes[6:12]
 print(one)
 print(two)
 
+#### unpacking and adding lists ######
+
+lst = [10,20,30,40] 
+lst2 = [10,20] 
+print(*lst) #unpacking a list 
+
+def doSum(a, b, c=0, d = 0):
+    print(f'Sum of a:{a} + b:{b} + c:{c} + d:{d} is {a+b+c+d}')
+
+doSum(*lst2)
+doSum(100,*lst2)
 
 
+d = {'a':10, 'b':20, 'c':30, 'd':40}
+d2 = {'a':10, 'b':20}
+doSum(**d)
+doSum(**d2)
+
+def doSum(*args):
+    answer = 0 
+    for i in args:
+        answer += i
+    print(answer)
+
+doSum(1,2,3,4,5,56,85,96,455555,253685)
+lst = [10,20,30,40] 
+doSum(*lst)
+
+def doSum3(*args):
+    answer = sum (args)
+    return answer
+
+doSum3(1,2,3,4,5,56,85,96,455555,253685)
+
+crayons = {'red':'apple','yellow':'lemon','purple':'grape', 'green':'grape'}
+
+def buildbox(**kwargs):
+    for key, value in kwargs.items():
+        print(f'The color {key} tastes like {value}!')
+
+buildbox(red='apple',green='grape')
+print("\n")
+buildbox(**crayons)
+
+# Results 
+# The color red tastes like apple!
+# The color green tastes like grape!
+
+
+# The color red tastes like apple!
+# The color yellow tastes like lemon!
+# The color purple tastes like grape!
+# The color green tastes like grape!
+
+# *********** Working with sets  ***********
+
+s = {1,2,3,4,5}
+
+# Adding to a set 
+s.add(100)
+
+# *********** combining two sets ***********
+t = {4,5,6,7,8}
+u = {0,2,9}
+
+s.union(t) # Combines two sets 
+s.union(t,u) # Combines three sets 
+t.difference(s) # Shows the difference between two sets 
+
+# *********** Working with Dictionaries  ***********
+
+crayons = {'red':'apple','yellow':'lemon','purple':'grape', 'green':'grape'}
+#print(crayons)
+#print(crayons.keys())
+#print(crayons.values())
+#print(crayons.items())
+crayons['red'] # Accessing using key 
+crayons['orange'] = 'mango' # Adding a key, value
+del crayons['red'] # deleting a key value pair in a dictionary 
+'grape' in crayons.values() # checking if something is in values in python
+
+# Iterating over a dictionanry 
+for key in crayons:
+    new_key = key
+
+for key in crayons: # Accessing values using keys 
+    new_key_1, new_key_2 = key, crayons[key]
+
+for key, values in crayons.items(): # Accessing key and values ... 
+    new_key_2, new_value_2 = key,values
+
+found_or_not_found = crayons.get('blue', 'not found in list')# Searching through a dictionary to find if something exits 
+
+lottery = {'Mega Millions':11111, 'GA lotter':222222}
+
+total = 0
+
+for i in lottery.values():
+    total+=i
+
+lottery_sum_total = sum(lottery.values())
+print(lottery_sum_total)
+
+# ************************** Taking Multiple Arguments ***************************************
+
+# * extracts unlimited number of positional arguments 
+# ** extracts values ....
+def multiple_args(*args, **kwargs):
+    for arg in args:
+        print(arg)
+    
+    print("\n")
+
+    for value in kwargs.values():
+        print(value)
+
+multiple_args(1,2,3, a=5, b='word')
+
+# prints 
+# 1
+# 2
+# 3
+
+
+# 5
+# word
+
+def infinitearguments(*args, **kwargs):
+    for arg in args:
+        print(arg)
+    
+    myKeys = list(kwargs.keys())
+    myKeys.sort()
+    sorted_dict = {i: kwargs[i] for i in myKeys}
+    
+    for key, value in sorted_dict.items():
+        print(f'{key}={value}')
+
+infinitearguments(1,2,3, a=5, b='word')
+
+# prints
+# 1
+# 2
+# 3
+# 
+# a=5
+# b=word
 # *********** Asking for user input until an empty string is entered ***********
 
 def user_io():
@@ -268,6 +413,319 @@ list_temp = ["one","two","three","four","five"]
 with open('file2.txt','w') as new:
     for i in range(len(list_temp)):
         new.write(list_temp[i]+'\n')
+
+# *********** How to remove leading spaces and newline characters ***********
+
+def count_words(filepath):
+    
+    with open(filepath, 'r') as new_file:
+        read_new_file = new_file.read()
+    
+    # Create an empty dictionary 
+    d = dict() 
+
+    # Loop through each line of the file 
+    for line in read_new_file: 
+        # Remove the leading spaces and newline character 
+        line = line.strip() 
+
+        # Split the line into words 
+        words = line.split(" ") 
+    
+    # Iterate over each word in line 
+        for word in words: 
+            # Check if the word is already in dictionary 
+            if word in d: 
+                # Increment count of word by 1 
+                d[word] = d[word] + 1
+            else: 
+                # Add the word to dictionary with count 1 
+                d[word] = 1
+
+    return d
+
+# ***************************************** CLASSES *******************************************
+
+class MyClass:
+    def __init__(self):
+        self.first = 'Albert'
+        self.last = 'Einstein'
+
+    def __str__(self):
+        return f'My name is {self.first} {self.last}'
+
+    # define a method 
+    # def print_name(self):
+    #     print('{},{}'.format(self.last), self.first)
+
+
+if __name__=='__main__':
+    me = MyClass()
+    print(me)
+    me.first = 'Mike'
+    me.last = 'Jeffrey'
+    print(me)
+    #my = MyClass()
+
+# output
+# My name is Albert Einstein
+# My name is Mike Jeffrey
+
+class Human():
+    def __init__(self, name, age, height, haircolor):
+        self.name = name
+        self.age = age
+        self.height = height 
+        self.haircolor = haircolor
+        
+    
+    def hobbies(self, hobby1, hobby2):
+        self.hobby1 = hobby1
+        self.hobby2 = hobby2
+
+    def __str__(self):
+        return f'{self.name} is {self.age} years old, {self.height} inches tall, with {self.haircolor} hair. Their hobbies include {self.hobby1} and {self.hobby2}'
+    
+    
+    
+if __name__=='__main__':
+    instructor = Human('Chelsea',35,63,'brown')
+    instructor.hobbies('sleeping','eating')
+    print(instructor)
+    student = Human('Joe',20,70,'blonde')
+    student.hobbies('running','movies')
+    print(student)
+
+class cyber_truck():
+    def __init__(self):
+        self.currentspeed = 0
+
+    def setspeed(self,speed):
+        self.currentspeed = speed
+
+    def slow_down(self, slow = 1):
+        if self.currentspeed>= 1 + slow:
+            self.currentspeed -=slow
+
+    def speedup(self):
+        self.currentspeed +=1
+
+    def stop(self):
+        self.currentspeed=0
+
+    def __str__(self):
+        return f'Current speed is {self.currentspeed}'
+    
+if __name__=='__main__':
+    truck1 = cyber_truck()
+    truck1.setspeed(50)
+    print(truck1)
+    truck1.slow_down(20)
+    print(truck1)
+    truck1.slow_down()
+    print(truck1)
+    truck1.stop()
+    print(truck1)
+
+class Drone():
+    def __init__(self):
+        self.currentaltitude = 0
+
+    def setaltitude(self,set_current_altitude):
+        self.currentaltitude = set_current_altitude
+    
+    def increasealtitude(self, param_set_altitude=100):
+        self.currentaltitude +=param_set_altitude
+
+    def decreasealtitude(self, param_set_altitude=50):
+        self.currentaltitude -=param_set_altitude
+    
+    def land(self):
+        self.currentaltitude = 0
+
+    def __str__(self):
+        return f'Current altitude: {self.currentaltitude}'
+    
+if __name__=='__main__':
+    drone = Drone()
+    print(drone)
+    drone.setaltitude(50)
+    print(drone)
+    drone.increasealtitude()
+    print(drone)
+    drone.increasealtitude(50)
+    print(drone)
+    drone.decreasealtitude()
+    print(drone)
+    drone.decreasealtitude(40)
+    print(drone)
+    drone.land()
+    print(drone)
+
+
+class Calculator:
+    def __init__(self):
+        self.result = 0
+        self.memory = 0
+
+    def add(self,param1, param2):
+        total = self.inputvalue(param1) + self.inputvalue(param2)
+        self.result = total
+        return total
+    
+    def sub(self,param1, param2):
+        total = self.inputvalue(param1) - self.inputvalue(param2)
+        self.result = total
+        return total
+
+    def mul(self,param1, param2):
+        total = self.inputvalue(param1) * self.inputvalue(param2)
+        self.result = total
+        return total
+
+    def div(self,param1, param2):
+        total = self.inputvalue(param1) / self.inputvalue(param2)
+        self.result = total
+        return total
+    
+    def recall(self):
+        self.result = self.memory
+        return self.result
+    
+    def store(self):
+        self.memory = self.result
+    
+    def __str__(self):
+        return str(self.result)
+    
+    def inputvalue(self, value):
+        if value == '':
+            return self.result
+        elif value == 'memory':
+            return self.memory
+        else:
+            return value
+
+if __name__=='__main__':
+    calc = Calculator()
+    print("addition: ",calc.add('memory',5))
+    print("subtraction: ",calc.sub(5,5))
+    print("multiplication: ",calc.mul(5,5))
+    print("division: ",calc.div(5,5))
+    print("Recall: ",calc.recall())
+
+num1 = 10
+num2 = 5
+
+try:
+    print(num1/num2)
+    with open('nope.txt') as nope:
+        print(nope.read())
+except ZeroDivisionError:
+    print('Cannot divide by zero')
+except FileNotFoundError:
+    print('file does not exist')
+else:
+    print('executes no matter what')
+finally:
+    print('executes no matter what')
+
+# When building multiple things into a try 
+
+num1 = 10
+num2 = 0
+try:
+    print(num1/num2)
+except ZeroDivisionError:
+    print('Cannot divide by zero')
+else:
+    print('no math errors')
+finally:
+    print('executing with math try')
+try:
+    file = open("copy.txt")
+    print(file.read())
+except FileNotFoundError:
+    print('file does not exist')
+else:
+    print('no errors')
+finally:
+    print('executes no matter what')
+    file.close()
+
+# Printing specific errors
+
+try:
+    print(10/0)
+except Exception as err:
+    print('Errors Detected:',err)
+
+# ***************************************** SOCKETS *******************************************
+
+
+#!/usr/bin/env python3
+import socket
+
+def tcp_qotd_service():
+    s = socket.socket() 
+    s.bind(('',12346)) #allow all ips to bind to my socket 
+    s.listen()
+    print("server is listening")
+    # the loop makes it work continously; i.e. it is now a "service"
+    while True:
+        client_socket, address = s.accept()
+        quote = b'Object oriented programs are offered as alternatives to correct ones.'
+        # .sendall() will divide up your message if it is larger than the buffer,
+        # it sends until complete
+        client_socket.sendall(quote)
+        client_socket.close()
+
+if __name__ == '__main__':
+    tcp_qotd_service()
+
+
+#!/usr/bin/env python3
+import socket
+
+def tcp_qotd_client():
+    s = socket.socket()
+    s.connect(('127.0.0.1',12345))
+    msg = bytearray() # <- A bytearray to store the parts of message
+    chunk = s.recv(4) # <- Receive the first message piece
+    while chunk:
+        print(msg) # <- To see the message grow
+        msg.extend(chunk) # <- adds to bytearray
+        chunk = s.recv(4) # <- receives next chunk of msg
+    print(msg) # <- prints the completed message
+
+if __name__ == '__main__':
+    tcp_qotd_client()
+
+
+import socket
+
+def clientTCP(address, port):
+    s = socket.socket()
+    try:
+        s.connect((address,port))
+        name_temp = True
+        msg = bytearray(b'DDOS ATTACK - YOU ARE HACKED BY WINSTON CHURCHILL ')
+        while name_temp:
+            s.sendall(msg)
+        rcv_msg = bytearray()
+        chunk = s.recv(2)
+
+        while chunk:
+            rcv_msg.extend(chunk)
+            print(rcv_msg)
+            chunk = s.recv(2)
+        print(rcv_msg)
+    except Exception as err:
+        print('Error found',err)
+        return False
+
+clientTCP("10.50.29.207",59878)
+
 
 ''' 
 Day 3: Iterables/Slicing/File(I/O)
