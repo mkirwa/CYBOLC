@@ -238,6 +238,33 @@ s.union(t) # Combines two sets
 s.union(t,u) # Combines three sets 
 t.difference(s) # Shows the difference between two sets 
 
+# *********** WORKING WITH TUPLES  ***********
+
+t = (1,2,3,4)
+
+# Change to a list
+t = list(t)
+print("Changed to a list: ",t)
+t[0]=9
+
+# Change to back to a tuple
+t = tuple(t)
+print("Change to a tuple: ",t)
+
+# *********** Returning a range of tuples ***********
+
+def make_tuple():
+    return tuple(range(10,101,10))
+
+# ***********  Returns a tuple of the multiples of 10 from a to b inclusive ******* 
+
+def make_tuple(a,b):
+    listTuple = []
+    for i in range(a,b+1):
+        if i%10==0:
+            listTuple.append(i)
+    return tuple(listTuple)
+
 # *********** Working with Dictionaries  ***********
 
 crayons = {'red':'apple','yellow':'lemon','purple':'grape', 'green':'grape'}
