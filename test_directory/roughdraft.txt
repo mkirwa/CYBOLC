@@ -1,0 +1,64 @@
+Extract the three groups of permission bits from mode:
+
+permissions_1 gets the user's permissions by right-shifting mode 6 bits and then bitwise-ANDing with 0b111 (binary for 7) to keep only the last 3 bits.
+
+permissions_2 gets the group's permissions in a similar manner but only right-shifts 3 bits.
+
+permissions_3 gets the world's permissions by directly bitwise-ANDing mode with 0b111.
+The nested function converting_permission_bits_to_strings:
+
+Takes an integer argument permission_bits which represents a 3-bit permission value.
+Initializes an empty string perm_str.
+Iterates over the indices and characters of the permissions list and checks if the corresponding bit in permission_bits is set (using bitwise operations).
+If set, it adds the permission character to perm_str.
+If not set, it adds a '-' (indicating no permission).
+Finally, it returns the constructed perm_str.
+The line permission_strings = ...:
+
+Constructs the final string representation by calling the converting_permission_bits_to_strings function for each of the three groups (permissions_1, permissions_2, and permissions_3) and concatenating the results.
+return permission_strings:
+
+The function returns the final string representation of the permissions.
+Example:
+If the mode is given as 0b110101000 (or 424 in decimal), the returned value will be rwxr-x---. This indicates the user has read, write, and execute permissions; the group has read and execute permissions; and the world has no permissions.
+
+
+Right-shifting and then bitwise-ANDing is a common technique in bitwise manipulation to extract specific bits from a number. Let's delve into why the given code uses this technique:
+
+Right-shifting: In Unix-style file permissions, the permission bits are usually structured as follows:
+
+lua
+Copy code
+rwxrwxrwx
+^^^ ^^^ ^^^
+ |   |   |
+ |   |   +-- World (Others) permissions
+ |   +------ Group permissions
+ +---------- User (Owner) permissions
+Each group of rwx represents 3 bits (for read, write, and execute, respectively).
+
+If we have a number, let's say 0b110101000:
+
+makefile
+Copy code
+bits:   1 1 0  1 0 1  0 0 0
+index:  8 7 6  5 4 3  2 1 0
+To extract the user permissions, which are the leftmost three bits, we need to right-shift the number by 6 positions to move these bits to the least significant bit positions.
+
+After right-shifting by 6 positions:
+
+makefile
+Copy code
+bits:  0 0 0  0 0 0  1 1 0
+index:  8 7 6  5 4 3  2 1 0
+Bitwise-ANDing with 0b111: After right-shifting, the 3 bits of interest are at the least significant bit positions, but we still have the other bits in the number (all of which are now 0 in this case, but they might not be in other examples). To ensure that we only take the 3 bits of interest and set everything else to zero, we perform a bitwise-AND with 0b111.
+
+This operation will keep the last three bits unchanged, and all the preceding bits will become 0:
+
+markdown
+Copy code
+number:     0 0 0  0 0 0  1 1 0
+AND with:   0 0 0  0 0 0  1 1 1
+------------------------------
+result:     0 0 0  0 0 0  1 1 0
+Therefore, right-shifting by 6 bits moves the user permissions to the rightmost positions, and bitwise-ANDing with 0b111 ensures we extract only those 3 bits, effectively isolating the user permission bits from the original mode.

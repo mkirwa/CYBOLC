@@ -1917,16 +1917,33 @@ def perms(mode):
 ############################# SOLUTION ##############################
 
 def perms(mode):
+    # This list defines the basic permission characters in Unix, where 'r' stands for read, 'w' stands for write, and 'x' stands for execute.
     permissions = ['r', 'w', 'x']
 
+    # See note for why we are bit shifting 
+
+    # permissions_1 gets the user's permissions by right-shifting mode 6 bits and then bitwise-ANDing with 0b111 (binary for 7) to keep only the last 3 bits.
     permissions_1 = (mode >> 6) & 0b111
+
+    # permissions_2 gets the group's permissions in a similar manner but only right-shifts 3 bits.
     permissions_2 = (mode >> 3) & 0b111
+
+    # permissions_3 gets the world's permissions by directly bitwise-ANDing mode with 0b111.
     permissions_3 = mode & 0b111
 
+    # The nested function converting_permission_bits_to_strings:
+    # Takes an integer argument permission_bits which represents a 3-bit permission value.
     def converting_permission_bits_to_strings(permission_bits):
+        # Initializes an empty string perm_str.
         perm_str = ''
+        # Iterates over the indices and characters of the permissions list and checks if the corresponding bit in permission_bits is set (using bitwise operations).
         for idx, char in enumerate(permissions):
+            # If set, it adds the permission character to perm_str.
+            # If not set, it adds a '-' (indicating no permission).
             perm_str += char if permission_bits & (1 << (2 - idx)) else '-'
+        
+        # Finally, it returns the constructed perm_str.
+        # The line permission_strings = ...:
         return perm_str
 
     
@@ -2126,7 +2143,11 @@ def q1(miltime):
 ############################# SOLUTION ##############################
 
 def q1(miltime):
-    hour_str = str(miltime).zfill(4)  
+    # str(miltime) converts the integer representation of miltime into a string.
+    # .zfill(4) pads the string with zeros on the left to ensure it's 4 characters long. 
+    hour_str = str(miltime).zfill(4) 
+    # hour_str[:2] takes the first two characters of the hour_str, which represent the hour portion of the time.
+    # int() then converts this string representation of the hour back into an integer. So, if hour_str is "0315", hour will be set to the integer 3.
     hour = int(hour_str[:2])
     
     if 3 <= hour <= 11:
@@ -2250,8 +2271,8 @@ def login():
     pass
 
 def crack(username):
-    for i in range(10000):
-        pin = f"{i:04d}"
+    for i in range(10000): # Goes through a loop of 10,000 iterations 
+        pin = f"{i:04d}"   # generates a 4-digit string representation of the number i. For example, when i is 7, pin will be "0007"
         try:
             if login(username, pin):
                 return pin
