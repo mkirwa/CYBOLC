@@ -1337,9 +1337,18 @@ Each line should be reversed from how it is read in.
 ############################# SOLUTION ##############################
 
 
-def domath(param1,param2,param3):
-    sum = (param1+param2)*param3
-    return sum
+def read_and_reverse_lines():
+    lines = []
+    while True:
+        line = input("Enter a line (or press Enter to finish): ")
+        if not line:
+            break
+        lines.append(line[::-1])  # Reversing the line before appending to the list
+    return lines
+
+reversed_lines = read_and_reverse_lines()
+for line in reversed_lines:
+    print(line)
 
 '''
 
