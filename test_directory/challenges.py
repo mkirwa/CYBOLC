@@ -121,6 +121,45 @@ print(nametempnew)
 list = ['one', 'two', 'three', 'four', 'five']
 list[::-1]
 
+# *********** Another way to reverse lists  ***********
+
+numlist = [13,9,0,7,55,20,91]
+numlist.sort(reverse=True)
+print(numlist)
+
+# *********** Another way to reverse lists  ***********
+
+numlist = [13,9,0,85,47,7,55,20,91]
+reverse_numlist = sorted(numlist, reverse=True)
+print(reverse_numlist)
+
+# *********** Sort the list based on capital letters  ***********
+cars = ['Ford','bMW','volvo','Audi']
+print(sorted(cars, key=str.upper))
+
+cars = ['Ford','BMW','Volvo','Audi']
+print(sorted(cars, key=str.upper))
+
+# *********** Sort the list based on capital on the length of the words, smaller to larger words ***********
+
+cars = ['Ford','BMW','Volvo','Audi']
+for i in sorted(cars, key=len):
+    print(i)
+
+# *********** Sort the list based on capital on the length of the words, larger to smaller words ***********
+
+cars = ['Ford','BMW','Volvo','Audi']
+for i in sorted(cars, key=len, reverse=True):
+    print(i)
+# *********** Sort the list based on the SECOND letter of each word ***********
+
+cars = ['Ford','BMW','Volvo','Audi']
+
+def second_letter(car):
+    return car[1]
+
+print(sorted(cars, key=second_letter))
+
 # *********** Indexing Lists  ***********
 
 primes = [1, 2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31]
@@ -129,6 +168,8 @@ one = primes[0:6]
 two = primes[6:12]
 print(one)
 print(two)
+
+
 
 # *********** Asking for user input until an empty string is entered ***********
 
@@ -151,9 +192,82 @@ print('I WANT THIS LOWER CASE'.lower())
 print('i want this upper case'.upper())
 
 
-# *********** File manipulation ***********
+# *********** File manipulation - writing to an existing file ***********
+
+with open('file2.txt','w') as new:
+    new.write('line 1\n')
+    new.write('line 2')
+
+    # Another way to write this two 
+    lines = ['line 1\n','line 2\n','line 3\n']
+    new.writelines(lines)
+
+# *********** File manipulation - apending to an existing file ***********
+
+with open('file2.txt','a') as new:
+    lines = ['\nline 4\n']
+    new.writelines(lines)
+
+#######  what file2 looks like ######
+# line 1
+# line 2
+
+# *********** File manipulation - overwriting and adding to a new file ***********
+
+with open('file2.txt','w+') as file:
+    file.write('line45\n')
+    file.seek(0) # Changes the file back to the top!!! 
+    print(file.read())
+
+# *********** Copying contents from one file to another ***********
+
+with open('file1.txt','r') as new, open('file2.txt', 'w+') as copy:
+    copy.write(new.read())
+    copy.seek(0)
+    print(copy.read())
+
+# *********** Opening a file in read and write mode. Over ***********
 
 
+
+# *********** Opening a file in read mode and reading each line ***********
+with open('file1.txt','r') as test:
+    #print(test.read(5)) # Reads through the first 5 bytes
+    #print(test.readline()) # Reads one line at a time.... Has to be called over and over and over
+    #print(test.readlines()) # Reads all the lines in one line ['line 1\n', 'line 2\n', 'line 3']
+    print(test.read())
+    print(test.tell()) # Tells you where you are with the file 
+    test.seek(0)
+    print(test.read())
+    print(test.tell())
+
+# *********** Code to read each line at a time ***********
+with open('file1.txt','r') as test:
+    for line in test:
+        print(line.strip()) 
+###### -- output ####
+#line 1
+#line 2
+#line 3
+
+# *********** open a file and write in a new line - writes new lines to a file ***********
+with open('file2.txt','w') as new:
+    new.write('line 1\n')
+    new.write('line 2')
+
+# *********** Writing from a list to a file and write in one long line in a file  ***********
+
+list_temp = ["one","two","three","four"]
+with open('file2.txt','w') as new:
+    #lines = ['line 1\n','line 2\n','line 3\n']
+    new.writelines(list_temp)
+
+# *********** Writing from a list to a file and write to a file in a new line on the file  ***********
+
+list_temp = ["one","two","three","four","five"]
+with open('file2.txt','w') as new:
+    for i in range(len(list_temp)):
+        new.write(list_temp[i]+'\n')
 
 ''' 
 Day 3: Iterables/Slicing/File(I/O)
