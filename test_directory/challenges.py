@@ -735,10 +735,8 @@ def clientTCP(address, port):
     s = socket.socket()
     try:
         s.connect((address,port))
-        name_temp = True
         msg = bytearray(b'DDOS ATTACK - YOU ARE HACKED BY WINSTON CHURCHILL ')
-        while name_temp:
-            s.sendall(msg)
+        s.sendall(msg)
         rcv_msg = bytearray()
         chunk = s.recv(2)
 
