@@ -1,3 +1,18 @@
 Windows_PowerShell_Help1 5 - What is the basic cmdlet that displays help about Windows Powershell cmdlets and concepts? - Get-help
 
+Go from Get-Item then Get-ChildItem and Get-ItemProperty
 
+ Get-ItemProperty HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run
+
+ net use * http://live.sysinternals.com
+    has to be run from the z, directory that is automatically set, directory. 
+    cd to the z directory   
+    .\autoruns.exe --> pops up the user friendly gui. Dispalys GUI tools
+
+Type *autoruns -accepteula*(accepteula exemps permission runs. Used when a command doesn't run)
+
+HIVEs perform similar to a drive. 
+check usbs in the registry = 
+
+
+dir
