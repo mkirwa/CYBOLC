@@ -1,3 +1,22 @@
+///////////////////////////////// USING THE PIPE ////////////////////////////////
+
+The | symbol, often referred to as a "pipe," is used in PowerShell (and other shell environments) to pass the output of one command as input to another command. This allows for the chaining of commands, where the result of one command can be processed or transformed by subsequent commands.
+
+The concept of piping is fundamental to shell scripting and command-line usage, enabling the composition of complex operations from simpler ones without the need to create intermediate files or variables.
+
+Here's a basic example to illustrate the concept:
+
+Get-Process | Where-Object { $_.CPU -gt 10 } | Sort-Object CPU -Descending
+
+In this example:
+
+Get-Process retrieves a list of all running processes.
+The output of Get-Process (which is a list of processes) is passed to Where-Object via the pipe (|). Where-Object filters this list to only include processes where the CPU usage is greater than 10.
+The filtered list of processes is then passed to Sort-Object (again via a pipe), which sorts the processes based on CPU usage in descending order.
+The entire command thus retrieves a sorted list of processes with a CPU usage greater than 10, all achieved through a combination of three simpler commands connected by pipes.
+
+///////////////////////////////// USING THE PIPE END ////////////////////////////////
+
 cd C:\Users\CTF\Desktop\CTF
 Get-Content -Path .\words.txt | Where-Object { $_ -match "aa[a-g]" } | Measure-Object | ForEach-Object { $_.Count }
 
@@ -146,4 +165,161 @@ Count the number of folders in the Music folder in the CTF user’s profile.
 (Get-ChildItem -Path C:\Users\CTF\Music -Directory).Count
 
 ######################################################### Windows_Powershell_Logic9 10 #########################################################
+
+
+
+
+???????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????
+
+######################################################### Windows_PowerShell_Help4 10 #########################################################
+
+When requesting the help file for the get-process cmdlet, what full command is the 9th example given?
+
+********************************************************* SOLUTION *********************************************************
+
+(Get-Help Get-Process -Examples).examples.example | Select-Object -Index 8 | ForEach-Object { $_.code.cdata }
+
+Get-Help Get-Process -Examples - Retrieves the examples section of the help file for Get-Process.
+.examples.example - Accesses the individual examples.
+Select-Object -Index 8 - Retrieves the 9th example (since indexing starts from 0).
+ForEach-Object { $_.code.cdata } - Extracts the code of the selected example.
+
+######################################################### Windows_PowerShell_Logic4 10 #########################################################
+
+Count the number of files in the Videos folder in the CTF user's home directory.
+
+********************************************************* SOLUTION *********************************************************
+
+(Get-ChildItem -Path C:\Users\CTF\Videos -File).Count
+
+Get-ChildItem is a core cmdlet in PowerShell for item listing and retrieval from a variety of data sources and is fundamental to many scripting and automation tasks. It is a versatile cmdlet in PowerShell used primarily to retrieve a list of items from a provider's location, such as from a file system (like directories and files) or the registry.
+
+Get-ChildItem C:\Users\CTF\Documents --> List Files and Directories: At its most basic level, when used against the file system, Get-ChildItem behaves similarly to the dir command in CMD or the ls command in Unix-based systems. It lists files and directories in the current or specified directory.
+
+Get-ChildItem C:\Users\CTF\Documents -Recurse --> Recursive Listings: With the -Recurse parameter, it can retrieve items from a location and its sublocations (similar to ls -R).
+
+Get-ChildItem C:\Users\CTF\Documents -Filter *.txt --> Filtering: You can use the -Filter parameter to retrieve only specific items based on a wildcard pattern.
+
+Get-ChildItem C:\ -Force --> Hidden and System Items: By default, Get-ChildItem won't show hidden or system files. You can make them visible using the -Force parameter.
+
+Get-ChildItem C:\Users\CTF\Documents -File --> Item Types: Using parameters like -File or -Directory, you can choose to list only files or only directories.
+
+Get-ChildItem HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall --> Other Providers: Apart from the file system, Get-ChildItem can also list items from other providers, such as the registry, certificates, environment variables, etc. For example, to list items from the registry:
+
+Get-ChildItem C:\Users\CTF\Documents | Select-Object Name, Length, CreationTime --> Listing Properties: It can also be used in conjunction with Select-Object to list specific properties of items.
+
+######################################################### Windows_PowerShell_Logic7 10 #########################################################
+
+Count the number of unique words in words.txt
+
+**Note: File Location - C:\Users\CTF\Desktop\CTF
+
+********************************************************* SOLUTION *********************************************************
+
+$uniqueWordsCount = (Get-Content -Path C:\Users\CTF\Desktop\CTF\words.txt | ForEach-Object { $_ -split '\s+' } | Sort-Object -Unique).Count
+$uniqueWordsCount
+
+ForEach-Object { $_ -split '\s+'} -->  Splits each line into individual words using whitespace as a delimiter.
+
+Sort-Object -Unique --> Sorts the words and filters out duplicates.
+
+.Count --> Counts the number of unique words.
+
+######################################################### Windows_PowerShell_Regex_2 10 #########################################################
+
+Count the number of times, case-insensitive, gaab is listed in words.txt **Note: File Location - C:\Users\CTF\Desktop\CTF
+
+********************************************************* SOLUTION *********************************************************
+
+(Get-Content -Path C:\Users\CTF\Desktop\CTF\words.txt | Select-String -Pattern "gaab" -CaseSensitive:$false -AllMatches).Matches.Count
+
+Select-String -Pattern "gaab": Searches for the pattern "gaab".
+-CaseSensitive:$false: Makes the search case-insensitive.
+-AllMatches: Captures all matches in the file.
+.Matches.Count: Counts the number of matching instances.
+
+
+######################################################### Windows_PowerShell_Logic8 15 #########################################################
+
+Use a PowerShell loop to unzip the Omega file 1,000 times and read what is inside.
+
+Note: Make sure you back up the .zip file to a different directory before attempting this challenge.
+
+********************************************************* SOLUTION *********************************************************
+
+Backup the .zip file:
+Copy-Item -Path "path_to_the_Omega_file.zip" -Destination "backup_directory_path"
+
+
+For this step, let's assume that every time you unzip the Omega file, you get another .zip file until you've done this 1,000 times and then you get a readable file (e.g., a .txt file). Here's how you can do this with a loop:
+$iteration = 0
+$unzipPath = "path_where_you_want_to_unzip"
+
+while ($iteration -lt 1000) {
+    # Unzipping
+    Expand-Archive -Path "path_to_the_Omega_file.zip" -DestinationPath $unzipPath -Force
+
+    # Assuming the unzipped content gives another zip file named 'Omega.zip'
+    $newZipPath = Join-Path -Path $unzipPath -ChildPath "Omega.zip"
+
+    if (Test-Path $newZipPath) {
+        # Preparing for the next iteration
+        Move-Item -Path $newZipPath -Destination "path_to_the_Omega_file.zip" -Force
+        $iteration++
+    } else {
+        # If we don't find a zip file, we break out of the loop assuming we've reached the final content
+        break
+    }
+}
+
+# At this point, the final unzipped content should be in the $unzipPath directory. We'll display it:
+Get-ChildItem $unzipPath
+
+# If it's a text file, you can read it with:
+Get-Content "path_to_final_unzipped_text_file.txt"
+
+>>>>>>>>>>>>>>>>>>> If you need to search for the omega file >>>>>>>>>>>>>
+
+Get-ChildItem -Path "StartingDirectory" -Recurse -File | Where-Object { $_.Name -eq "FileName.ext" }
+
+StartingDirectory: Replace this with the directory where you want to start your search. For example, C:\ to start from the root of the C drive.
+FileName.ext: Replace this with the name of the file you're searching for, including its extension.
+
+Get-ChildItem -Path "C:\" -Recurse -File | Where-Object { $_.Name -eq "document.txt" }
+
+To search for a file ending in .zip files -- Get-ChildItem -Path "C:\" -Recurse -File -Filter "*.zip"
+
+
+######################################################### Windows_PowerShell_Regex_5 15 #########################################################
+
+Count the number of words in words.txt that meet the following criteria:
+
+    a appears at least twice consecutively
+    and is followed immediately by any of the letters a through g
+    Note: File Location - C:\Users\CTF\Desktop\CTF
+    Example: aac...aaa...
+
+********************************************************* SOLUTION *********************************************************
+
+(Get-Content -Path 'C:\Users\CTF\Desktop\CTF\words.txt' | 
+    ForEach-Object { $_ -split '\s+' } | 
+    Where-Object { $_ -match 'aa[a-g]' }).Count
+
+ForEach-Object { $_ -split '\s+' }: Splits the content into individual words based on whitespace.
+Where-Object { $_ -match 'aa[a-g]' }: Filters the words based on the regex pattern. This pattern matches words where a appears consecutively at least twice and is followed immediately by any letter from a to g.
+
+######################################################### Windows_PowerShell_Regex_4 10 #########################################################
+
+Count the number of words in words.txt that meet the following criteria:
+
+    a appears at least twice consecutively
+    and is followed immediately by any of the letters a through g
+    Note: File Location - C:\Users\CTF\Desktop\CTF
+    Example: aac...aaa...
+
+********************************************************* SOLUTION *********************************************************
+
+(Get-Content -Path 'C:\Users\CTF\Desktop\CTF\words.txt' | Where-Object { $_ -match 'az' }).Count
+
+Where-Object { $_ -match 'az' }: Filters the lines based on the presence of the substring "az".
 
