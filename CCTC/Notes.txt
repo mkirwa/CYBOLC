@@ -1039,7 +1039,11 @@ Reminder: All challenges are done using Workstation2.
 
 ********************************************************* SOLUTION *********************************************************
 
+THIS GETS YOU THE USER ID 
 
+(Get-WmiObject -Class Win32_UserAccount -Filter "Name='$env:USERNAME'").SID
+
+HKU\S-1-5-21-2881336348-3190591231-4063445930-1004
 
 
 ######################################################### Windows_Registry_Basics_5 5 #########################################################
@@ -1047,8 +1051,7 @@ Reminder: All challenges are done using Workstation2.
 What PowerShell command will list all the subkeys and contents in the current directory and/or will list all the subkeys and the contents of a directory you specify?
 
 ********************************************************* SOLUTION *********************************************************
-
-
+Get-ChildItem
 
 
 
@@ -1057,6 +1060,9 @@ What PowerShell command will list all the subkeys and contents in the current di
 What PowerShell command will list only the contents of a registry key or subkey?
 
 ********************************************************* SOLUTION *********************************************************
+HKEY_LOCAL_MACHINE\SOFTWARE\MICROSOFT\WINDOWS\CURRENTVERSION\RUN
+
+
 
 
 
@@ -1069,7 +1075,7 @@ What registry subkey runs every time the machine reboots? The flag is the full p
 Flag format: FULL\PATH\ALL\CAPS
 
 ********************************************************* SOLUTION *********************************************************
-
+HKEY_CURRENT_USER\SOFTWARE\MICROSOFT\WINDOWS\CURRENTVERSION\RUN
 
 
 
