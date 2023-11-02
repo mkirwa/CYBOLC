@@ -241,135 +241,28 @@ Zip file is located at C:\Users\CTF\Documents and is called Omega1000.zip copy t
 ********************************************************* SOLUTION *********************************************************
 
 
+#FIND THE PATH TO OMEGA FILE
 
-Copy-Item -Path "C:\Users\CTF\Desktop\Omega1000.zip" -Destination "C:\Users\CTF\Documents\Omega1000.zip"
+Compress-Archive -LiteralPath 'C:\Users\CTF\Documents\Omega1000.zip' -DestinationPath 'C:\Users\CTF\Desktop\Omega.zip' #COPY OMEGA ZIP TO A NEW LOCATION
 
+Expand-Archive -LiteralPath 'C:\Users\CTF\Desktop\Omega1000.zip' -DestinationPath 'C:\Users\CTF\Desktop\UnzippedToFolder'
 
+#UNZIP THE FIRST ITERATION - you now have a zipped folder (Omega999.zip) inside of an unzipped folder
 
-Expand-Archive -Path "C:\path_to_zip\sample.zip" -DestinationPath "C:\path_to_extracted_folder\extracted"
+· for($i = 0; $i -lt 1001; $i++){@(Get-ChildItem 'C:\Users\CTF\Desktop\UnzippedToFolder'| Sort-Object {$_.length})[0]| Expand-Archive -DestinationPath 'C:\Users\CTF\Desktop\UnzippedToFolder' -Force}
 
+#UNZIP THE FILE 1000 TIMES
 
+Expand-Archive -LiteralPath ‘C:\Users\CTF\Desktop\UnzippedToFolder\Omega1.zip’ -DestinationPath ‘‘C:\Users\CTF\Desktop\UnzippedToFolder
 
+#UNZIP THE FINAL FILE (Omega1.zip)
 
+Get-Content C:\Users\CTF\Desktop\UnzippedToFolder\Omega.txt
 
+#READ THE LAST UNZIPPED FILE
 
+kung-fu
 
-for ($i = 0; $i -lt 1000; $i++) {
-    # Unzip the file
-    Expand-Archive -Path "C:\Users\CTF\Documents\Omega1000.zip" -DestinationPath "C:\Users\CTF\Documents\temporary_folder" -Force
-}
-
-
-
-for ($i = 0; $i -lt 1000; $i++) {
-    Expand-Archive -Path . -Filter "*.zip" -DestinationPath "C:\Users\CTF\Documents\temporary_folder" -Force
-}
-
-
-$zipFiles = Get-ChildItem -Path . -Filter "*.zip"
-
-# Define the directory path
-$directoryPath = "C:\Users\CTF\Documents\temporary_folder\"
-
-# Get all .zip files in the directory
-$zipFiles = Get-ChildItem -Path $directoryPath -Filter "*.zip"
-
-# Loop through each zip file and unzip it
-foreach ($zip in $zipFiles) {
-    # Define the destination folder for extraction (same name as the zip file but without the .zip extension)
-    $destinationFolder = Join-Path -Path $directoryPath -ChildPath ($zip.BaseName)
-    
-    # Extract the zip file to the destination folder
-    Expand-Archive -Path $zip.FullName -DestinationPath $destinationFolder
-}
-
-
-# Get all .zip files in the current directory
-$zipFiles = Get-ChildItem -Path . -Filter "*.zip"
-
-# Loop through each zip file and unzip it
-foreach ($zip in $zipFiles) {
-    # Define the destination folder for extraction (same name as the zip file but without the .zip extension)
-    $destinationFolder = Join-Path -Path $zip.DirectoryName -ChildPath ($zip.BaseName)
-    
-    # Extract the zip file to the destination folder
-    Expand-Archive -Path $zip.FullName -DestinationPath $destinationFolder
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# Backup the zip file
-Copy-Item -Path "C:\Users\CTF\Documents\Omega1000.zip" -Destination "C:\Users\CTF\Desktop\Omega1000.zip"
-
-# Set the initial zip file path
-$zipFilePath = "C:\Users\CTF\Documents\Omega1000.zip"
-
-# Loop to unzip the file 1,000 times
-for ($i = 0; $i -lt 1000; $i++) {
-    # Unzip the file
-    Expand-Archive -Path $zipFilePath -DestinationPath "C:\Users\CTF\Documents"
-    
-    # Update the zipFilePath to the newly extracted file (assuming there's only one file in each zip)
-    $zipFilePath = Get-ChildItem -Path "C:\Users\CTF\Documents" | Where-Object { $_.Name -ne "Omega1000.zip" } | Select-Object -First 1 -ExpandProperty FullName
-}
-
-# At the end of the loop, read the contents of the file
-Get-Content -Path $zipFilePath
-
-
-
-
-
-
-
-
-
-
-Backup the .zip file:
-Copy-Item -Path "path_to_the_Omega_file.zip" -Destination "backup_directory_path"
-
-
-For this step, let's assume that every time you unzip the Omega file, you get another .zip file until you've done this 1,000 times and then you get a readable file (e.g., a .txt file). Here's how you can do this with a loop:
-$iteration = 0
-$unzipPath = "path_where_you_want_to_unzip"
-
-while ($iteration -lt 1000) {
-    # Unzipping
-    Expand-Archive -Path "C:\Users\CTF\Documents" -C:\Users\CTF\Desktop $unzipPath -Force
-
-    # Assuming the unzipped content gives another zip file named 'Omega.zip'
-    $newZipPath = Join-Path -Path $unzipPath -ChildPath "Omega.zip"
-
-    if (Test-Path $newZipPath) {
-        # Preparing for the next iteration
-        Move-Item -Path $newZipPath -Destination "path_to_the_Omega_file.zip" -Force
-        $iteration++
-    } else {
-        # If we don't find a zip file, we break out of the loop assuming we've reached the final content
-        break
-    }
-}
-
-# At this point, the final unzipped content should be in the $unzipPath directory. We'll display it:
-Get-ChildItem $unzipPath
-
-# If it's a text file, you can read it with:
-Get-Content "path_to_final_unzipped_text_file.txt"
 
 >>>>>>>>>>>>>>>>>>> If you need to search for the omega file >>>>>>>>>>>>>
 
@@ -558,227 +451,6 @@ powershell
  
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# Backup the zip file
-Copy-Item -Path "C:\Users\CTF\Documents\Omega1000.zip" -Destination "C:\Users\CTF\Desktop\Omega1000.zip"
-
-# Initial directory to work in
-$workDirectory = "C:\Users\CTF\Documents"
-
-# Loop to unzip the file 1,000 times
-for ($i = 0; $i -lt 1000; $i++) {
-    # Get the path of the zip file in the current iteration
-    $currentZip = Get-ChildItem -Path $workDirectory -Filter "*.zip" | Select-Object -First 1 -ExpandProperty FullName
-    
-    # Unzip the file
-    Expand-Archive -Path $currentZip -DestinationPath $workDirectory
-
-    # Remove the original zip file of this iteration to avoid c$onfusion in the next iteration
-    Remove-Item -Path $currentZip
-}
-
-# At the end of the loop, assuming the final file is not a zip, read its contents
-$finalFile = Get-ChildItem -Path $workDirectory | Where-Object { $_.Extension -ne ".zip" } | Select-Object -First 1 -ExpandProperty FullName
-Get-Content -Path $finalFile
-
-
-
-
-$workDirectory = "C:\Users\CTF\Documents"
-
-for ($i = 0; $i -lt 1000; $i++) {
-    $currentZip = Get-ChildItem -Path $workDirectory -Filter "*.zip" | Select-Object -First 1 -ExpandProperty FullName
-    Expand-Archive -Path $currentZip -DestinationPath $workDirectory
-    Remove-Item -Path $currentZip
-}
-$finalFile = Get-ChildItem -Path $workDirectory | Where-Object { $_.Extension -ne ".zip" } | Select-Object -First 1 -ExpandProperty FullName
-Get-Content -Path $finalFile
-
-
-
-# Backup the zip file
-Copy-Item -Path "C:\Users\CTF\Documents\Omega1000.zip" -Destination "C:\Users\CTF\Desktop\Omega1000.zip"
-
-# Initial directory to work in
-$workDirectory = "C:\Users\CTF\Documents"
-
-# Loop to unzip the file 1,000 times
-for ($i = 0; $i -lt 1000; $i++) {
-    # Get the path of the zip file in the current iteration
-    $currentZip = Get-ChildItem -Path $workDirectory -Filter "*.zip" | Select-Object -First 1 -ExpandProperty FullName
-    
-    # If no zip file found, break out of the loop
-    if (-not $currentZip) {
-        Write-Host "No zip file found in iteration $i"
-        break
-    }
-
-    # Unzip the file
-    Expand-Archive -Path $currentZip -DestinationPath $workDirectory
-
-    # Remove the original zip file of this iteration to avoid confusion in the next iteration
-    Remove-Item -Path $currentZip
-}
-
-# At the end of the loop, assuming the final file is not a zip, read its contents
-$finalFile = Get-ChildItem -Path $workDirectory | Where-Object { $_.Extension -ne ".zip" } | Select-Object -First 1 -ExpandProperty FullName
-Get-Content -Path $finalFile
-
-
-Copy-Item -Path "C:\Users\CTF\Desktop\Omega1000.zip" -Destination "C:\Users\CTF\Documents\Omega1000.zip"
-
-
-
-
-
-Copy-Item -Path "C:\Users\CTF\Documents\Omega1000.zip" -Destination "C:\Users\CTF\Desktop\Omega1000.zip"
-$workDirectory = "C:\Users\CTF\Documents"
-for ($i = 0; $i -lt 1000; $i++) {
-    $currentZip = Get-ChildItem -Path $workDirectory -Filter "*.zip" | Select-Object -First 1 -ExpandProperty FullName
-    if (-not $currentZip) {
-        Write-Host "No zip file found in iteration $i"
-        break
-    }
-    Expand-Archive -Path $currentZip -DestinationPath $workDirectory
-
-    Remove-Item -Path $currentZip
-}
-$finalFile = Get-ChildItem -Path $workDirectory | Where-Object { $_.Extension -ne ".zip" } | Select-Object -First 1 -ExpandProperty FullName
-Get-Content -Path $finalFile
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# Backup the zip file
-Copy-Item -Path "C:\Users\CTF\Documents\Omega1000.zip" -Destination "C:\Users\CTF\Desktop\Omega1000.zip"
-
-# Initial directory to work in
-$workDirectory = "C:\Users\CTF\Documents"
-
-# Loop to unzip the file 1,000 times
-for ($i = 0; $i -lt 1000; $i++) {
-    # Get the path of the zip file in the current iteration
-    $currentZip = Get-ChildItem -Path $workDirectory -Filter "*.zip" | Select-Object -First 1 -ExpandProperty FullName
-    
-    # If no zip file found, break out of the loop
-    if (-not $currentZip) {
-        Write-Host "No zip file found in iteration $i"
-        break
-    }
-
-    # Create a unique temporary directory for the extraction
-    $tempDirectory = Join-Path $workDirectory ("tempUnzip" + $i)
-    New-Item -Path $tempDirectory -ItemType Directory -Force
-
-    # Unzip the file to the temporary directory
-    Expand-Archive -Path $currentZip -DestinationPath $tempDirectory -Force
-
-    # Move the contents from the temporary directory back to the working directory
-    Move-Item -Path "$tempDirectory\*" -Destination $workDirectory -Force
-
-    # Remove the original zip file of this iteration and the temporary directory
-    Remove-Item -Path $currentZip -Force
-    Remove-Item -Path $tempDirectory -Force
-}
-
-# At the end of the loop, assuming the final file is not a zip, read its contents
-$finalFile = Get-ChildItem -Path $workDirectory | Where-Object { $_.Extension -ne ".zip" } | Select-Object -First 1 -ExpandProperty FullName
-Get-Content -Path $finalFile
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Copy-Item -Path "C:\Users\CTF\Documents\Omega1000.zip" -Destination "C:\Users\CTF\Desktop\Omega1000.zip"
-
-$workDirectory = "C:\Users\CTF\Documents"
-
-for ($i = 0; $i -lt 1000; $i++) {
-    $currentZip = Get-ChildItem -Path $workDirectory -Filter "*.zip" | Select-Object -First 1 -ExpandProperty FullName
-    if (-not $currentZip) {
-        Write-Host "No zip file found in iteration $i"
-        break
-    }
-    $tempDirectory = Join-Path $workDirectory ("tempUnzip" + $i)
-    New-Item -Path $tempDirectory -ItemType Directory -Force
-    Expand-Archive -Path $currentZip -DestinationPath $tempDirectory -Force
-    Move-Item -Path "$tempDirectory\*" -Destination $workDirectory -Force
-    Remove-Item -Path $currentZip -Force
-    Remove-Item -Path $tempDirectory -Force
-}
-
-$finalFile = Get-ChildItem -Path $workDirectory | Where-Object { $_.Extension -ne ".zip" } | Select-Object -First 1 -ExpandProperty FullName
-Get-Content -Path $finalFile
 
 
 
@@ -1120,6 +792,466 @@ Flag format: FULL\PATH\ALL\CAPS
 What is the value inside of the registry subkey from your previous challenge named registry_basics_7?
 
 ********************************************************* SOLUTION *********************************************************
+Go to workstation 2 
+
+Get-Item Registry::HKEY_LOCAL_MACHINE\SOFTWARE\MICROSOFT\WINDOWS\CURRENTVERSION\RUN
+
+malware.exe
+
+######################################################### Windows_Registry_Basics_12 15 #########################################################
+
+What is the value inside of the registry subkey that loads every time the "Student" user logs on?
+
+Get-ItemProperty -Path 'Registry::HKEY_USERS\S-1-5-21-2881336348-3190591231-4063445930-1004\SOFTWARE\Microsoft\Windows\CurrentVersion\Run'
+
+
+********************************************************* SOLUTION *********************************************************
+
+Get-LocalUser | select Name, SID #See all the SIDs and find the one for student
+get-Item -path Registry::HKEY_USERS\S-1-5-21-2881336348-3190591231-4063445930-1003\Software\Microsoft\Windows\CurrentVersion\Run
+C:\botnet.exe 
+
+
+######################################################### Windows_Registry_Basics_13 15 #########################################################
+
+What is the value inside of the registry subkey from registry_basics_9?
+
+********************************************************* SOLUTION *********************************************************
+
+Go to workstation 2 
+Get-Item Registry::HKEY_LOCAL_MACHINE\SOFTWARE\MICROSOFT\WINDOWS\CURRENTVERSION\RUNONCE 
+· C:\virus.exe
+
+
+######################################################### Windows_Registry_Basics_14 15 #########################################################
+
+What is the value inside of the registry subkey that loads a single time when the "student" user logs on?
+
+********************************************************* SOLUTION *********************************************************
+Get-Item -Path Registry::HKEY_USERS\S-1-5-21-2881336348-3190591231-4063445930-1003\SOFTWARE\Microsoft\Windows\CurrentVersion\RUNONCE
+
+
+
+######################################################### Windows_Registry_Basics_15 15 #########################################################
+
+Figure out the manufacturer's name of the only USB drive that was plugged into this machine.
+SanDisk
+
+********************************************************* SOLUTION *********************************************************
+
+Get-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Enum\USBSTOR
+
+######################################################### Windows_Registry_Basics_16 15 #########################################################
+
+What suspicious user profile, found in the registry, has connected to this machine?
+
+
+********************************************************* SOLUTION *********************************************************
+
+Get-ChildItem 'HKLM:\Software\Microsoft\Windows NT\CurrentVersion\ProfileList'
+
+· Hacker_McHackerson
+
+######################################################### Windows_Registry_Basics_17 15 #########################################################
+
+What suspicious wireless network, found in the registry, has this system connected to?
+
+********************************************************* SOLUTION *********************************************************
+
+· Get-ChildItem 'HKLM:\Software\Microsoft\Windows NT\CurrentVersion\NetworkList\Profiles'
+
+· Terror_cafe_network
+
+
+
+
+######################################################################################################################################################
+#########################################################                                    #########################################################
+#########################################################  06_WINDOWS_ALTERNATE_DATA_STREAM  #########################################################
+#########################################################                                    #########################################################
+######################################################################################################################################################
+
+
+
+#########################################################  #########################################################
+
+The ____ determines how the data is stored on disk.
+
+(Fill in the blank)
+
+Research: https://social.technet.microsoft.com/wiki/contents/articles/5375.windows-file-systems.aspx
+
+********************************************************* SOLUTION *********************************************************
+
+file system
+
+######################################################### Primer_NTFS_2 1 #########################################################
+
+What are NTFS partition sectors grouped into?
+
+Research: https://learn.microsoft.com/en-us/windows-server/storage/file-server/ntfs-overview
+
+
+********************************************************* SOLUTION *********************************************************
+clusters
+
+######################################################### Primer_NTFS_3 1 #########################################################
+
+What contains the metadata about all of the files and directories on a NTFS partition?
+
+Research: https://learn.microsoft.com/en-us/windows/win32/devnotes/master-file-table
+
+
+********************************************************* SOLUTION *********************************************************
+
+Master File Table
+
+######################################################### Primer_NTFS_4 1 #########################################################
+
+NTFS files are collections of what?
+
+(Hint: What are the user data streams? or all streams for that matter) Research: https://learn.microsoft.com/en-us/windows/win32/devnotes/master-file-table
+
+********************************************************* SOLUTION *********************************************************
+
+
+
+######################################################### Primer_NTFS_5 1 #########################################################
+
+Which NTFS attribute would store an alternate data stream?
+
+Research: https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-fscc/c54dec26-1551-4d3a-a0ea-4fa40f848eb3
+
+********************************************************* SOLUTION *********************************************************
+
+######################################################### Primer_NTFS_6 1 #########################################################
+
+Which NTFS attribute holds information about a file's encrypted attributes?
+
+Research:
+
+https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-fscc/a82e9105-2405-4e37-b2c3-28c773902d85
+
+
+********************************************************* SOLUTION *********************************************************
+
+######################################################### Primer_NTFS_7 1 #########################################################
+
+Which NTFS attribute that is composed of the file security and access control properties?
+
+Research: https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-fscc/a82e9105-2405-4e37-b2c3-28c773902d85
+
+
+********************************************************* SOLUTION *********************************************************
+
+######################################################### Primer_NTFS_8 1 #########################################################
+
+In NTFS, what is the type id, in hex, of the attribute that actually stores a NTFS files contents?
+
+Research: https://flatcap.github.io/linux-ntfs/ntfs/attributes/data.html
+
+********************************************************* SOLUTION *********************************************************
+
+######################################################### Primer_NTFS_9 1 #########################################################
+
+In NTFS what is the maximum number of bytes a MFT entry (containing the entirety of a file) can contain to be considered "Resident Data"?
+
+Research: https://en.wikipedia.org/wiki/NTFS https://unminioncurioso.blogspot.com/2019/05/dfir-one-byte-makes-difference-mft.html
+
+
+********************************************************* SOLUTION *********************************************************
+
+######################################################### Primer_NTFS_10 1 #########################################################
+
+NTFS permissions can be a assigned to a filesystem object in two ways. Which way is intentionally assigned on the file or folder?
+
+Research: https://devblogs.microsoft.com/scripting/weekend-scripter-use-powershell-to-get-add-and-remove-ntfs-permissions/
+
+
+********************************************************* SOLUTION *********************************************************
+
+######################################################### Primer_NTFS_11 1 #########################################################
+
+NTFS permissions can be a assigned to a filesystem object in two ways. Which way is the results of an object being assigned permissions as the result of being the child of another object?
+
+Research: https://devblogs.microsoft.com/scripting/weekend-scripter-manage-ntfs-inheritance-and-use-privileges/
+
+********************************************************* SOLUTION *********************************************************
+
+
+######################################################### Primer_NTFS_12 1 #########################################################
+
+Which NTFS file level permission is missing from the following list? Write, Read & Execute, Modify, Full Control
+
+Research: https://learn.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2003/cc783530(v=ws.10)?redirectedfrom=MSDN
+
+********************************************************* SOLUTION *********************************************************
+
+######################################################### Primer_NTFS_13 1 #########################################################
+
+Which NTFS folder level permission is missing from the following list?: Read, Write, Read & Execute, Modify, Full control
+
+Research: https://learn.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2003/cc783530(v=ws.10)?redirectedfrom=MSDN
+
+
+********************************************************* SOLUTION *********************************************************
+
+######################################################### Primer_NTFS_14 1 #########################################################
+
+Which NTFS file level permission permits changing the contents of a file, deleting the file but does not allow the ability to change the permissions on the file?
+
+Research: https://learn.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2003/cc783530(v=ws.10)?redirectedfrom=MSDN
+
+********************************************************* SOLUTION *********************************************************
+
+######################################################### Primer_NTFS_15 1 #########################################################
+
+
+Which NTFS folder level permission allows changing permissions?
+
+Research: https://learn.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2003/cc783530(v=ws.10)?redirectedfrom=MSDN
+
+********************************************************* SOLUTION *********************************************************
+
+######################################################### Primer_NTFS_16 1 #########################################################
+
+
+Which NTFS attribute stores the file times of an object?
+
+Research: https://flatcap.github.io/linux-ntfs/ntfs/attributes/standard_information.html
+
+********************************************************* SOLUTION *********************************************************
+
+######################################################### Primer_NTFS_17 1 #########################################################
+
+
+What CLI command will only show the letters of attached drives? **Hint command is 3 words
+
+Research: https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/fsutil-fsinfo
+
+********************************************************* SOLUTION *********************************************************
+
+
+######################################################### Windows_File_System_Basics_1 5 #########################################################
+
+Every file on a Windows system has attributes. What does the d attribute mean?
+
+********************************************************* SOLUTION *********************************************************
+
+directory
+
+######################################################### Windows_File_System_Basics_2 5 #########################################################
+
+Every file on a Windows system has attributes. What does the h attribute mean?
+
+********************************************************* SOLUTION *********************************************************
+
+hidden
+
+######################################################### Windows_File_System_Basics_3 5 #########################################################
+
+What PowerShell command will list all files in the current directory, regardless of their attributes?
+
+********************************************************* SOLUTION *********************************************************
+
+Get-Childitem -Force
+
+######################################################### Windows_File_System_Basics_4 5 #########################################################
+
+What PowerShell command will give you the sha512 hash of a file?
+
+Flag format: command -argument
+
+********************************************************* SOLUTION *********************************************************
+
+Get-FileHash -Algorithm SHA512
+
+#########################################################  Windows_File_System_Basics_5 5 #########################################################
+
+What PowerShell command will list permissions of a file?
+
+********************************************************* SOLUTION *********************************************************
+
+Get-Acl
+
+######################################################### Windows_File_System_Basics_6 5 #########################################################
+
+What Windows file maps hostnames to IP addresses?
+
+********************************************************* SOLUTION *********************************************************
+
+hosts
+
+######################################################### Windows_File_System_Basics_7 10 #########################################################
+
+Which group has ReadandExecute (RX) permissions to the file listed in the previous challenge, File_System_Basics_6?
+
+********************************************************* SOLUTION *********************************************************
+
+hosts
+
+#########################################################  #########################################################
+
+Get-ChildItem $Path "hosts" -Recurse #SEARCH FOR FILENAME hosts ensure to cd... all the way back to C:\
+
+cd C:\Windows\System32\drivers\etc #Change directory to location of hosts
+
+get-acl hosts |ft -Wrap #DISPLAY PERMISIONS
+
+BUILTIN\Users
+
+********************************************************* SOLUTION *********************************************************
+
+######################################################### Windows_File_System_Basics_8 10 #########################################################
+
+Find the last five characters of the MD5 hash of the hosts file.
+
+
+********************************************************* SOLUTION *********************************************************
+
+get-FileHash -Algorithm MD5 hosts
+
+7566D
+
+######################################################### Windows_File_System_Basics_9 10 #########################################################
+
+Examine the readme file somewhere in the CTF user’s home directory.
+
+Reminder: All challenges are done on the file-server.
+
+********************************************************* SOLUTION *********************************************************
+
+
+$readmePath = Get-ChildItem -Path C:\Users\CTF\ -Recurse -File -ErrorAction SilentlyContinue | Where-Object { $_.Name -eq 'readme' }
+
+Get-Content -Path $readmePath.FullName
+
+######################################################### Windows_File_System_Basics_10 10 #########################################################
+
+There is a hidden directory in the CTF user's home directory. The directory contains a file. Read the file.
+
+********************************************************* SOLUTION *********************************************************
+
+cd C:\Users\CTF
+cd .\secretsauce\
+Get-Content .\saucey
+Mustard
+
+######################################################### Windows_File_System_Basics_11 10 #########################################################
+
+
+Find a file in a directory on the desktop with spaces in it. FLAG is the contents of the file
+
+HINT: If you like to type the full names and paths of files, you better look for a shortcut.
+
+********************************************************* SOLUTION ********************************************************
+
+# Navigate to the specified directory
+Set-Location "C:\Users\CTF\Desktop"
+
+# List all items in the current directory, including hidden ones
+Get-ChildItem -Force
+
+# Change to the directory named 'z'
+Set-Location 'z*'
+
+# Display the content of the 'spaces.txt' file
+Get-Content '.\spaces.txt'
+
+
+######################################################### Windows_File_System_Basics_12 10 #########################################################
+
+Find the Alternate Data Stream in the CTF user's home, and read it.
+
+********************************************************* SOLUTION ********************************************************
+
+Get-ChildItem -recurse | ForEach { Get-Item $_.FullName -stream * } | Where stream -ne ':$DATA'
+
+Get-Content C:\Users\CTF\Documents\nothing_here -stream Hidden
+
+HIDD3NK3Y
+
+######################################################### Windows_File_System_Basics_13 15 #########################################################
+
+"Fortune cookies" have been left around the system so that you won't find the hidden password...
+
+********************************************************* SOLUTION ********************************************************
+
+######################################################### Windows_File_System_Basics_14 15 #########################################################
+
+
+There are plenty of phish in the C:\Users\CTF, but sometimes they're hidden in plain site.
+
+Find the phish.
+
+********************************************************* SOLUTION ********************************************************
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+######################################################################################################################################################
+#########################################################                                    #########################################################
+#########################################################            ROUGHT DRAFT            #########################################################
+#########################################################                                    #########################################################
+######################################################################################################################################################
+
+
+Get-Item Registry::HKEY_CURRENT_USER\SOFTWARE\MICROSOFT\WINDOWS\CURRENTVERSION\RUN
+
+
+
+$RegistryKey = $Registry.OpenSubKey('HKCU:HKEY_CURRENT_USER\SOFTWARE\MICROSOFT\WINDOWS\CURRENTVERSION\RUN', $true)
+
+
+path -> 'HKCU:HKEY_CURRENT_USER\SOFTWARE\MICROSOFT\WINDOWS\CURRE
+NTVERSION\RUN'
+
+path -> HKEY_CURRENT_USER\SOFTWARE\MICROSOFT\WINDOWS\CURRENTVERSION\RUN
+
 
 Get-item -Path 'HKCU:SOFTWARE\MICROSOFT\WINDOWS\CURRENTVERSION\RUN'
 
@@ -1137,129 +1269,154 @@ Get-ItemProperty -Path 'HKCU:\HKEY_CURRENT_USER\SOFTWARE\MICROSOFT\WINDOWS\CURRE
 
 Get-ChildItem -Path 'HKCU:\HKEY_CURRENT_USER\SOFTWARE\MICROSOFT\WINDOWS\CURRENTVERSION\RUN'
 
+reg query HKCU:HKEY_CURRENT_USER\SOFTWARE\MICROSOFT\WINDOWS\CURRENTVERSION\RUN
 
 
+# Backup the zip file
+Copy-Item -Path "C:\Users\CTF\Documents\Omega1000.zip" -Destination "C:\Users\CTF\Desktop\Omega1000.zip"
 
-Get-ItemProperty -Path 'HKU:\S-1-5-21-2881336348-3190591231-4063445930-1004\SOFTWARE\Microsoft\Windows\CurrentVersion\Run'
+# Initial directory to work in
+$workDirectory = "C:\Users\CTF\Documents"
 
-Get-ItemProperty : Cannot find drive. A drive with the name 'HKU' does not exist.
-At line:1 char:1
-+ Get-ItemProperty -Path 'HKU:\S-1-5-21-2881336348-3190591231-406344593 ...
-+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    + CategoryInfo          : ObjectNotFound: (HKU:String) [Get-ItemProperty], Dri
-   veNotFoundException
-    + FullyQualifiedErrorId : DriveNotFound,Microsoft.PowerShell.Commands.GetItemP
-   ropertyCommand
+# Loop to unzip the file 1,000 times
+for ($i = 0; $i -lt 1000; $i++) {
+    # Get the path of the zip file in the current iteration
+    $currentZip = Get-ChildItem -Path $workDirectory -Filter "*.zip" | Select-Object -First 1 -ExpandProperty FullName
+    
+    # Unzip the file
+    Expand-Archive -Path $currentZip -DestinationPath $workDirectory
 
-######################################################### Windows_Registry_Basics_12 15 #########################################################
-
-What is the value inside of the registry subkey that loads every time the "Student" user logs on?
-
-Get-ItemProperty -Path 'Registry::HKEY_USERS\S-1-5-21-2881336348-3190591231-4063445930-1004\SOFTWARE\Microsoft\Windows\CurrentVersion\Run'
-
-
-
-$path = 'Registry::HKEY_USERS\S-1-5-21-2881336348-3190591231-4063445930-1004\SOFTWARE\Microsoft\Windows\CurrentVersion\Run'
-$key = Get-Item -LiteralPath $path
-
-$key.GetValueNames() | ForEach-Object {
-    [PSCustomObject]@{
-        Name  = $_
-        Value = $key.GetValue($_)
-    }
+    # Remove the original zip file of this iteration to avoid c$onfusion in the next iteration
+    Remove-Item -Path $currentZip
 }
 
-
-********************************************************* SOLUTION *********************************************************
-
-
-
-
-
-
-######################################################### Windows_Registry_Basics_13 15 #########################################################
-
-What is the value inside of the registry subkey from registry_basics_9?
-
-********************************************************* SOLUTION *********************************************************
+# At the end of the loop, assuming the final file is not a zip, read its contents
+$finalFile = Get-ChildItem -Path $workDirectory | Where-Object { $_.Extension -ne ".zip" } | Select-Object -First 1 -ExpandProperty FullName
+Get-Content -Path $finalFile
 
 
 
 
+$workDirectory = "C:\Users\CTF\Documents"
 
-######################################################### Windows_Registry_Basics_14 15 #########################################################
-
-What is the value inside of the registry subkey that loads a single time when the "student" user logs on?
-
-********************************************************* SOLUTION *********************************************************
-
-
-
-
+for ($i = 0; $i -lt 1000; $i++) {
+    $currentZip = Get-ChildItem -Path $workDirectory -Filter "*.zip" | Select-Object -First 1 -ExpandProperty FullName
+    Expand-Archive -Path $currentZip -DestinationPath $workDirectory
+    Remove-Item -Path $currentZip
+}
+$finalFile = Get-ChildItem -Path $workDirectory | Where-Object { $_.Extension -ne ".zip" } | Select-Object -First 1 -ExpandProperty FullName
+Get-Content -Path $finalFile
 
 
-######################################################### Windows_Registry_Basics_15 15 #########################################################
 
-Figure out the manufacturer's name of the only USB drive that was plugged into this machine.
+# Backup the zip file
+Copy-Item -Path "C:\Users\CTF\Documents\Omega1000.zip" -Destination "C:\Users\CTF\Desktop\Omega1000.zip"
 
-********************************************************* SOLUTION *********************************************************
+# Initial directory to work in
+$workDirectory = "C:\Users\CTF\Documents"
 
-$USBStorRegistryPath = "HKLM:\SYSTEM\CurrentControlSet\Enum\USBSTOR\*"
-$USBDevices = Get-Item -Path $USBStorRegistryPath
-
-# Loop through each device to get its manufacturer's name
-foreach ($device in $USBDevices) {
-    $deviceInfo = Get-ItemProperty -Path $device.PSParentPath
-    if ($deviceInfo) {
-        $deviceInfo.FriendlyName
+# Loop to unzip the file 1,000 times
+for ($i = 0; $i -lt 1000; $i++) {
+    # Get the path of the zip file in the current iteration
+    $currentZip = Get-ChildItem -Path $workDirectory -Filter "*.zip" | Select-Object -First 1 -ExpandProperty FullName
+    
+    # If no zip file found, break out of the loop
+    if (-not $currentZip) {
+        Write-Host "No zip file found in iteration $i"
+        break
     }
+
+    # Unzip the file
+    Expand-Archive -Path $currentZip -DestinationPath $workDirectory
+
+    # Remove the original zip file of this iteration to avoid confusion in the next iteration
+    Remove-Item -Path $currentZip
 }
 
+# At the end of the loop, assuming the final file is not a zip, read its contents
+$finalFile = Get-ChildItem -Path $workDirectory | Where-Object { $_.Extension -ne ".zip" } | Select-Object -First 1 -ExpandProperty FullName
+Get-Content -Path $finalFile
+
+
+Copy-Item -Path "C:\Users\CTF\Desktop\Omega1000.zip" -Destination "C:\Users\CTF\Documents\Omega1000.zip"
 
 
 
 
-######################################################### Windows_Registry_Basics_16 15 #########################################################
 
-What suspicious user profile, found in the registry, has connected to this machine?
+Copy-Item -Path "C:\Users\CTF\Documents\Omega1000.zip" -Destination "C:\Users\CTF\Desktop\Omega1000.zip"
+$workDirectory = "C:\Users\CTF\Documents"
+for ($i = 0; $i -lt 1000; $i++) {
+    $currentZip = Get-ChildItem -Path $workDirectory -Filter "*.zip" | Select-Object -First 1 -ExpandProperty FullName
+    if (-not $currentZip) {
+        Write-Host "No zip file found in iteration $i"
+        break
+    }
+    Expand-Archive -Path $currentZip -DestinationPath $workDirectory
 
-
-********************************************************* SOLUTION *********************************************************
-
-######################################################### Windows_Registry_Basics_17 15 #########################################################
-
-What suspicious wireless network, found in the registry, has this system connected to?
-
-********************************************************* SOLUTION *********************************************************
-
-
-
-
-######################################################################################################################################################
-#########################################################                                    #########################################################
-#########################################################  06_WINDOWS_ALTERNATE_DATA_STREAM  #########################################################
-#########################################################                                    #########################################################
-######################################################################################################################################################
+    Remove-Item -Path $currentZip
+}
+$finalFile = Get-ChildItem -Path $workDirectory | Where-Object { $_.Extension -ne ".zip" } | Select-Object -First 1 -ExpandProperty FullName
+Get-Content -Path $finalFile
 
 
 
-#########################################################  #########################################################
+
+# Backup the zip file
+Copy-Item -Path "C:\Users\CTF\Documents\Omega1000.zip" -Destination "C:\Users\CTF\Desktop\Omega1000.zip"
+
+# Initial directory to work in
+$workDirectory = "C:\Users\CTF\Documents"
+
+# Loop to unzip the file 1,000 times
+for ($i = 0; $i -lt 1000; $i++) {
+    # Get the path of the zip file in the current iteration
+    $currentZip = Get-ChildItem -Path $workDirectory -Filter "*.zip" | Select-Object -First 1 -ExpandProperty FullName
+    
+    # If no zip file found, break out of the loop
+    if (-not $currentZip) {
+        Write-Host "No zip file found in iteration $i"
+        break
+    }
+
+    # Create a unique temporary directory for the extraction
+    $tempDirectory = Join-Path $workDirectory ("tempUnzip" + $i)
+    New-Item -Path $tempDirectory -ItemType Directory -Force
+
+    # Unzip the file to the temporary directory
+    Expand-Archive -Path $currentZip -DestinationPath $tempDirectory -Force
+
+    # Move the contents from the temporary directory back to the working directory
+    Move-Item -Path "$tempDirectory\*" -Destination $workDirectory -Force
+
+    # Remove the original zip file of this iteration and the temporary directory
+    Remove-Item -Path $currentZip -Force
+    Remove-Item -Path $tempDirectory -Force
+}
+
+# At the end of the loop, assuming the final file is not a zip, read its contents
+$finalFile = Get-ChildItem -Path $workDirectory | Where-Object { $_.Extension -ne ".zip" } | Select-Object -First 1 -ExpandProperty FullName
+Get-Content -Path $finalFile
 
 
-********************************************************* SOLUTION *********************************************************
 
-#########################################################  #########################################################
+Copy-Item -Path "C:\Users\CTF\Documents\Omega1000.zip" -Destination "C:\Users\CTF\Desktop\Omega1000.zip"
 
+$workDirectory = "C:\Users\CTF\Documents"
 
-********************************************************* SOLUTION *********************************************************
+for ($i = 0; $i -lt 1000; $i++) {
+    $currentZip = Get-ChildItem -Path $workDirectory -Filter "*.zip" | Select-Object -First 1 -ExpandProperty FullName
+    if (-not $currentZip) {
+        Write-Host "No zip file found in iteration $i"
+        break
+    }
+    $tempDirectory = Join-Path $workDirectory ("tempUnzip" + $i)
+    New-Item -Path $tempDirectory -ItemType Directory -Force
+    Expand-Archive -Path $currentZip -DestinationPath $tempDirectory -Force
+    Move-Item -Path "$tempDirectory\*" -Destination $workDirectory -Force
+    Remove-Item -Path $currentZip -Force
+    Remove-Item -Path $tempDirectory -Force
+}
 
-#########################################################  #########################################################
-
-
-********************************************************* SOLUTION *********************************************************
-
-#########################################################  #########################################################
-
-
-********************************************************* SOLUTION *********************************************************
-
+$finalFile = Get-ChildItem -Path $workDirectory | Where-Object { $_.Extension -ne ".zip" } | Select-Object -First 1 -ExpandProperty FullName
+Get-Content -Path $finalFile
