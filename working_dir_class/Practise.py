@@ -260,6 +260,11 @@ def sort_embedded(filepath):
     return sorted_temp
 
 
+
+
+
+
+
 def sort_embedded(filepath):
     
     with open(filepath,'r') as filepath:
@@ -479,6 +484,9 @@ def q1_09(miltime):
         # new_file_name = new_file.readline()
         # return len(new_file_name.strip())
 
+
+
+
 if __name__== "__main__":
     in_path = 'qi_08.txt'
     lst = ['one','two','three','stop','four']
@@ -507,4 +515,5 @@ if __name__== "__main__":
     out_path = 'pythonprinciples3.txt'
     turn_to_capita_letters(in_path,out_path)
     #count_words(in_path)
+    print(get_hash())
 
