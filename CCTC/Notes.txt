@@ -923,6 +923,8 @@ Which NTFS attribute would store an alternate data stream?
 Research: https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-fscc/c54dec26-1551-4d3a-a0ea-4fa40f848eb3
 
 ********************************************************* SOLUTION *********************************************************
+$DATA
+
 
 ######################################################### Primer_NTFS_6 1 #########################################################
 
@@ -935,6 +937,10 @@ https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-fscc/a82e9105-2
 
 ********************************************************* SOLUTION *********************************************************
 
+$LOGGED_UTILITY_STREAM
+
+
+
 ######################################################### Primer_NTFS_7 1 #########################################################
 
 Which NTFS attribute that is composed of the file security and access control properties?
@@ -943,6 +949,8 @@ Research: https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-fscc/
 
 
 ********************************************************* SOLUTION *********************************************************
+$SECURITY_DESCRIPTOR
+
 
 ######################################################### Primer_NTFS_8 1 #########################################################
 
@@ -952,6 +960,10 @@ Research: https://flatcap.github.io/linux-ntfs/ntfs/attributes/data.html
 
 ********************************************************* SOLUTION *********************************************************
 
+0x80
+
+
+
 ######################################################### Primer_NTFS_9 1 #########################################################
 
 In NTFS what is the maximum number of bytes a MFT entry (containing the entirety of a file) can contain to be considered "Resident Data"?
@@ -960,6 +972,8 @@ Research: https://en.wikipedia.org/wiki/NTFS https://unminioncurioso.blogspot.co
 
 
 ********************************************************* SOLUTION *********************************************************
+1024
+
 
 ######################################################### Primer_NTFS_10 1 #########################################################
 
@@ -978,6 +992,8 @@ Research: https://devblogs.microsoft.com/scripting/weekend-scripter-manage-ntfs-
 
 ********************************************************* SOLUTION *********************************************************
 
+inherited
+
 
 ######################################################### Primer_NTFS_12 1 #########################################################
 
@@ -986,6 +1002,8 @@ Which NTFS file level permission is missing from the following list? Write, Read
 Research: https://learn.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2003/cc783530(v=ws.10)?redirectedfrom=MSDN
 
 ********************************************************* SOLUTION *********************************************************
+Read
+
 
 ######################################################### Primer_NTFS_13 1 #########################################################
 
@@ -995,6 +1013,8 @@ Research: https://learn.microsoft.com/en-us/previous-versions/windows/it-pro/win
 
 
 ********************************************************* SOLUTION *********************************************************
+List Folder Contents
+
 
 ######################################################### Primer_NTFS_14 1 #########################################################
 
@@ -1003,6 +1023,9 @@ Which NTFS file level permission permits changing the contents of a file, deleti
 Research: https://learn.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2003/cc783530(v=ws.10)?redirectedfrom=MSDN
 
 ********************************************************* SOLUTION *********************************************************
+Modify
+
+
 
 ######################################################### Primer_NTFS_15 1 #########################################################
 
@@ -1012,6 +1035,8 @@ Which NTFS folder level permission allows changing permissions?
 Research: https://learn.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2003/cc783530(v=ws.10)?redirectedfrom=MSDN
 
 ********************************************************* SOLUTION *********************************************************
+ Full Control
+
 
 ######################################################### Primer_NTFS_16 1 #########################################################
 
@@ -1021,6 +1046,8 @@ Which NTFS attribute stores the file times of an object?
 Research: https://flatcap.github.io/linux-ntfs/ntfs/attributes/standard_information.html
 
 ********************************************************* SOLUTION *********************************************************
+$STANDARD_INFORMATION
+
 
 ######################################################### Primer_NTFS_17 1 #########################################################
 
@@ -1030,6 +1057,7 @@ What CLI command will only show the letters of attached drives? **Hint command i
 Research: https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/fsutil-fsinfo
 
 ********************************************************* SOLUTION *********************************************************
+fsutil fsinfo drives
 
 
 ######################################################### Windows_File_System_Basics_1 5 #########################################################
@@ -1169,7 +1197,7 @@ Get-ChildItem -recurse | ForEach { Get-Item $_.FullName -stream * } | Where stre
 
 Get-Content C:\Users\CTF\Documents\nothing_here -stream Hidden
 
-HIDD3NK3Y
+HIDD3NK3Yls 
 
 ######################################################### Windows_File_System_Basics_13 15 #########################################################
 
@@ -1177,8 +1205,15 @@ HIDD3NK3Y
 
 ********************************************************* SOLUTION ********************************************************
 
-######################################################### Windows_File_System_Basics_14 15 #########################################################
+$fortunepath = Get-ChildItem -Path C:\ -Recurse -Force -Include '*Fortune*' -ErrorAction SilentlyContinue
 
+Get-Item 'C:\Windows\PLA\not_anihc\The Fortune Cookie' -Stream *
+
+Get-Item 'C:\Windows\PLA\not_anihc\The Fortune Cookie' | Get-Content -stream none
+
+fortune_cookie
+
+######################################################### Windows_File_System_Basics_14 15 #########################################################
 
 There are plenty of phish in the C:\Users\CTF, but sometimes they're hidden in plain site.
 
@@ -1186,51 +1221,18 @@ Find the phish.
 
 ********************************************************* SOLUTION ********************************************************
 
+%%%%%%%%%%%%%%%%%%%%% ??????????????????????????? %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Get-ChildItem C:\ -Recurse -Force -Include www -ErrorAction SilentlyContinue
 
+cd C:\Users\CTF\Documents\WWW
 
+ls -Force
 
+for($i=0; $i -lt 400; $i++){get-content $i} #OR
 
+get-content 200 #LENGTH OF 200(30) GREATER THAN 0
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+Flag: phi5hy 
 
 
 ######################################################################################################################################################
