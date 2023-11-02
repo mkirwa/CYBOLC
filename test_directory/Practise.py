@@ -487,6 +487,9 @@ def q1_09(miltime):
 
 
 
+
+
+
 if __name__== "__main__":
     in_path = 'qi_08.txt'
     lst = ['one','two','three','stop','four']
