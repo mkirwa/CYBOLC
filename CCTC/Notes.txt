@@ -1062,7 +1062,7 @@ What PowerShell command will list only the contents of a registry key or subkey?
 ********************************************************* SOLUTION *********************************************************
 HKEY_LOCAL_MACHINE\SOFTWARE\MICROSOFT\WINDOWS\CURRENTVERSION\RUN
 
-
+Get-item
 
 
 
@@ -1121,13 +1121,54 @@ What is the value inside of the registry subkey from your previous challenge nam
 
 ********************************************************* SOLUTION *********************************************************
 
+Get-item -Path 'HKCU:SOFTWARE\MICROSOFT\WINDOWS\CURRENTVERSION\RUN'
+
+Get-ItemProperty -Path 'HKCU:\SOFTWARE\MICROSOFT\WINDOWS\CURRENTVERSION\RUN'
+
+Get-ItemProperty -Path 'HKLM:\SOFTWARE\MICROSOFT\WINDOWS\CURRENTVERSION\RUN'
+
+Get-ItemProperty -Path 'HKLM:\HKEY_LOCAL_MACHINE\SOFTWARE\MICROSOFT\WINDOWS\CURRENTVERSION\RUN'
+
+Get-item -Path 'HKCU:HKEY_CURRENT_USER\SOFTWARE\MICROSOFT\WINDOWS\CURRENTVERSION\RUN'
+
+Get-ItemProperty -Path 'HKCU:\HKEY_CURRENT_USER\SOFTWARE\MICROSOFT\WINDOWS\CURRENTVERSION\RUN'
 
 
 
+Get-ChildItem -Path 'HKCU:\HKEY_CURRENT_USER\SOFTWARE\MICROSOFT\WINDOWS\CURRENTVERSION\RUN'
+
+
+
+
+Get-ItemProperty -Path 'HKU:\S-1-5-21-2881336348-3190591231-4063445930-1004\SOFTWARE\Microsoft\Windows\CurrentVersion\Run'
+
+Get-ItemProperty : Cannot find drive. A drive with the name 'HKU' does not exist.
+At line:1 char:1
++ Get-ItemProperty -Path 'HKU:\S-1-5-21-2881336348-3190591231-406344593 ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : ObjectNotFound: (HKU:String) [Get-ItemProperty], Dri
+   veNotFoundException
+    + FullyQualifiedErrorId : DriveNotFound,Microsoft.PowerShell.Commands.GetItemP
+   ropertyCommand
 
 ######################################################### Windows_Registry_Basics_12 15 #########################################################
 
 What is the value inside of the registry subkey that loads every time the "Student" user logs on?
+
+Get-ItemProperty -Path 'Registry::HKEY_USERS\S-1-5-21-2881336348-3190591231-4063445930-1004\SOFTWARE\Microsoft\Windows\CurrentVersion\Run'
+
+
+
+$path = 'Registry::HKEY_USERS\S-1-5-21-2881336348-3190591231-4063445930-1004\SOFTWARE\Microsoft\Windows\CurrentVersion\Run'
+$key = Get-Item -LiteralPath $path
+
+$key.GetValueNames() | ForEach-Object {
+    [PSCustomObject]@{
+        Name  = $_
+        Value = $key.GetValue($_)
+    }
+}
+
 
 ********************************************************* SOLUTION *********************************************************
 
@@ -1162,6 +1203,21 @@ What is the value inside of the registry subkey that loads a single time when th
 Figure out the manufacturer's name of the only USB drive that was plugged into this machine.
 
 ********************************************************* SOLUTION *********************************************************
+
+$USBStorRegistryPath = "HKLM:\SYSTEM\CurrentControlSet\Enum\USBSTOR\*"
+$USBDevices = Get-Item -Path $USBStorRegistryPath
+
+# Loop through each device to get its manufacturer's name
+foreach ($device in $USBDevices) {
+    $deviceInfo = Get-ItemProperty -Path $device.PSParentPath
+    if ($deviceInfo) {
+        $deviceInfo.FriendlyName
+    }
+}
+
+
+
+
 
 ######################################################### Windows_Registry_Basics_16 15 #########################################################
 
