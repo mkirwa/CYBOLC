@@ -1551,6 +1551,24 @@ Hint: Not the hidden file...
 
 
 
+
+
+((((((((((((((((((((((((((((((((((((()))))))))))))))))))))))))))))))))))))
+To see the files in directory ls \(Directoryname)---
+
+To read the files with uses, group and access listed: ls -lh Bibliotheca/Bibliotheca_unus/
+
+Here, w is execute access so asnweis codex_Astartes
+
+cat group | grep "chapter”
+
+ls -R -la #long Version
+
+ls -R -la | tr ' ' '' |awk -F '' '{print$1$3$4$10}' |grep mephiston
+
+#Cleaned up notice user writes RW for mephiston and not group or other
+
+Codex_Astartes 
 ######################################################### Windows_File_System_Basics_13 15 #########################################################
 
 
