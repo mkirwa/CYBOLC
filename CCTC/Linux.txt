@@ -44,3 +44,10 @@ OFS="-": This sets the output field separator to a hyphen (-). This determines h
 {print $1,$2,$3}: This instructs awk to print the first, second, and third fields of each line (i.e., username, password, and UID).
 
 In summary, the command will read the /etc/passwd file and print the username, password, and UID for each line, separated by hyphens. For example, if a line in /etc/passwd reads:
+
+hardware abstraction layer - HALDLL
+
+bcdedit --> gives information about how the computer spins up.... 
+ntoskernel - windows version of kernel
+
+sc qdescription 

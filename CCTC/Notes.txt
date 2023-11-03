@@ -914,7 +914,7 @@ NTFS files are collections of what?
 
 ********************************************************* SOLUTION *********************************************************
 
-
+attributes
 
 ######################################################### Primer_NTFS_5 1 #########################################################
 
@@ -983,6 +983,9 @@ Research: https://devblogs.microsoft.com/scripting/weekend-scripter-use-powershe
 
 
 ********************************************************* SOLUTION *********************************************************
+
+Explicit
+
 
 ######################################################### Primer_NTFS_11 1 #########################################################
 
@@ -1238,7 +1241,7 @@ Flag: phi5hy
 
 #########################################################################################################################################
 #########################################################                       #########################################################
-#########################################################  05_WINDOWS_REGISTRY  #########################################################
+#########################################################    04_Linux_Basics2   #########################################################
 #########################################################                       #########################################################
 #########################################################################################################################################
 
@@ -1382,55 +1385,165 @@ Read the file that contains the user database for the machine. Identify a strang
 
 
 
+((()))((((((((((()))))))))))
+go to home dir
+
+ls to see all the files
+
+to find the length of the file in home dir
+
+find /home -type f –exec wc –l {} \;
+
+here, it means in home dir find file type in exec mode and give word count length
+
+To sort them numerically, sort –n output
+
+or
+
+cat passwd | awk -F ':' '{print$5}'
+
+Traitor 
+
+
+######################################################### Linux Basics Users and Groups2 10 #########################################################
+
+Identify all members of the lodge group. List their names in alphabetical order with a comma in between each name.
+
+Flag Format: name,name,name
+
+********************************************************* SOLUTION ********************************************************
+
+groups # lists the groups available 
+
+getent group lodge | cut -d: -f4 | tr ',' '\n' | sort | paste -sd, -
+
+aximand,erebus,ezekyle,garviel,sejanus,tarik
+
+
+######################################################### Linux Basics Users and Groups3 10 #########################################################
+
+Find the user with a unique login shell.
+
+
+********************************************************* SOLUTION ********************************************************
+
+users can use either bash, sh, find one that is unique or not being used by everyone else. 
+
+
+cat passwd | awk -F ':' '{print$1$7}' # lists the passwords available 
+
+cat passwd | awk -F ":" '{print$1","$7}' | grep -wv "nologin" # filters all nologins to remain with just a small amount
+
+nobody # Answer
+
+
 ######################################################### Windows_File_System_Basics_13 15 #########################################################
 
+Identify the algorithm, the amount of salted characters added, and the length of the hashed password in the file that stores passwords.
 
+Hint: Research 'padding'...
+
+Flag format: algorithm,#characters,#length
 
 ********************************************************* SOLUTION ********************************************************
 
 
 
-######################################################### Windows_File_System_Basics_13 15 #########################################################
 
+
+Flag format: algorithm,#characters,#length
+
+- /etc/shadow contains hashed password
+
+cat shadow -> show hashed passwords
+
+Pick the top hashed password -> root:$6$fSuf.jyW$NNZZMQkjGuu0S/gs0iQw8PbmRStlbJiJVT0fQc9JJa5SJztXAC9ehC.ym30ynWdwwiv8o/UABUHJdG
+
+root:$6 (algorithm)  $fSuf.jyW(salt) $NNZZMQkjGuu0S/gs0iQw8PbmRStlbJiJVT0fQc9JJa5SJztXAC9ehC.ym30ynWdwwiv8o/UABUHJdG (number of characters and the password)
+
+$6 -> SHA512
+$fSuf.jyW -> 8
+$fSuf.jyW(salt) $NNZZMQkjGuu0S/gs0iQw8PbmRStlbJiJVT0fQc9JJa5SJztXAC9ehC.ym30ynWdwwiv8o/UABUHJdG (the count of this) -> 86
+
+SHA512,8,86
+
+######################################################### Linux Basics Permissions1 10 #########################################################
+
+Find the directory named Bibliotheca. Enter the absolute path to the directory.
+
+********************************************************* SOLUTION ********************************************************
+
+find / -type d -name "Bibliotheca" 2>/dev/null # Run a command to first find the directory
+
+find / -type d -name "Bibliotheca" # find the directory but outputs a bunch of nonsense
+
+/media/Bibliotheca # This is the absolute path to the directory 
+
+
+######################################################### Linux Basics Permissions2 10 #########################################################
+
+Identify the number of users with valid login shells, who can list the contents of the Bibliotheca directory.
+
+********************************************************* SOLUTION ********************************************************
+
+getfacl /media/Bibliotheca # Gives information on the directory. Tells you who and what group has access to that directory
+
+getent group chapter # Lists the users in the group chapter that have access to the directory. Count the number of users manually 
+
+Answ: 7
+
+######################################################### Linux Basics Permissions3 10 #########################################################
+
+The permissions that user sejanus has on /media/Bibliotheca, in octal format.
+
+Flag format: #
+
+HINT: Think about groups...
 
 
 ********************************************************* SOLUTION ********************************************************
 
+if the read bit (r) is on the value is 4
+if the write bit(w) is on the value is 2
+if the execute bit (x) is on the value is 1
 
+drwxr-xr-x 6 mephiston chapter 12288 Feb 28  2022 Bibliotheca ---> directory Bibliotheca permissions
+The first 3 permissions belong to the owner, the next permissions belong to group members and the last 2 permissions belongs to anyone else 
 
-######################################################### Windows_File_System_Basics_13 15 #########################################################
+getent group chapter -> gives the users as garviel,tarik,aximand,ezekyle,sejanus,erebus,mephiston
 
+ls -l /media/Bibliotheca/ -> Gives the output below meaning that the owener of teh directory is mephiston. That makes sejanus just any other regular owner.  
 
+drwxr-xr-x 7 mephiston chapter 4096 Mar 22  2023 Bibliotheca_duo
+dr-xr-xr-x 2 mephiston chapter 4096 Mar 22  2023 Bibliotheca_quattuor
+dr-xr-xr-x 2 mephiston chapter 4096 Feb 28  2022 Bibliotheca_tribus
+dr-xr-xr-- 2 mephiston chapter 4096 Feb 28  2022 Bibliotheca_unus
 
-********************************************************* SOLUTION ********************************************************
+Being that the next 3 permissions belong to the group members, we have the last two r-x of the drwxr-x and adding those with their respective values we get 5
 
+ r(ead) has the value of 4
 
+- w(rite) has the value of 2
 
-######################################################### Windows_File_System_Basics_13 15 #########################################################
+- (e)x(ecute) has the value of 1
 
+- no permission has the value of 0
 
+So adding r+x = 5
 
-********************************************************* SOLUTION ********************************************************
+cd /media
 
+Ls -lisa #see permissions (rwxr-xr-x) rxr is user, r-x is group, r-x is other
 
+R-x is 5 in octal for the group Chapter
 
-######################################################### Windows_File_System_Basics_13 15 #########################################################
+Senjanus is in the group Chapter (5 is answer)
 
+######################################################### Linux Basics Permissions5 10 #########################################################
 
+Locate the file within /media/Bibliotheca that is modifiable by the only user that is part of the Chapter group, but not part of the Lodge group.
 
-********************************************************* SOLUTION ********************************************************
-
-
-
-######################################################### Windows_File_System_Basics_13 15 #########################################################
-
-
-
-********************************************************* SOLUTION ********************************************************
-
-
-
-######################################################### Windows_File_System_Basics_13 15 #########################################################
+Hint: Not the hidden file...
 
 
 
