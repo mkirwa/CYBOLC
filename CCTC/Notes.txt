@@ -2268,11 +2268,23 @@ What bootloader is responsible for restoring the system to its original state af
 
 winresume.exe
 
-######################################################### Windows_File_System_Basics_13 15 #########################################################
+######################################################### Windows_Boot_Remediate_1 10 #########################################################
 
+The system is booting into safe mode. Identify the flag from the command-line output of the command used to diagnose boot issues.
 
+Follow these instructions to boot the virtual image -- Click Here ---> Windows Bootkit Instructions
 
 ********************************************************* SOLUTION ********************************************************
+
+
+(((((((((((((((((((((((())))))))))))))))))))))))
+ 1RF5Zgf9P
+
+· #Launch the virtual machine on MobaXTerm
+
+· Bcdedit
+
+· Flag: 1RF5Zgf9P (will see in terminal)
 
 ######################################################### Windows_File_System_Basics_13 15 #########################################################
 
