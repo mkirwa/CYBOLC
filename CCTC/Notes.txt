@@ -2737,27 +2737,102 @@ lrwxrwxrwx 1 root root 13 Oct 13  2021 /etc/rc5.d/S03ssh -> ../init.d/ssh
 
 ANSW -> 2,3,4,5
 
-######################################################### Windows_File_System_Basics_13 15 #########################################################
+######################################################### Linux Boot Systemd 1 10 #########################################################
 
+Identify the file symbolically-linked to init on the SystemD init machine.
+
+Flag format: /absolute/path
+
+Reminder: Use your Terra machine for these SystemD challenges!
+
+********************************************************* SOLUTION ********************************************************
+
+cd /sbin/
+
+ls -lisa init
+
+/lib/systemd/systemd
+
+######################################################### Linux Boot Systemd 2 10 #########################################################
+
+What is the default target on the SystemD machine and where is it actually located?
+
+Flag format: name.target,/absolute/path
+
+NOTE: Use the SystemD Machine for this question.
+
+********************************************************* SOLUTION ********************************************************
+cd to the main folder -> cd /
+
+systemctl get-default #run this to find the default target -> graphical.target
+
+find ./ -name graphical.target # finds the absolute path for the target -> /lib/systemd/system/graphical.target
+
+
+######################################################### Linux Boot Systemd 3 10 #########################################################
+
+What unit does the graphical.target want to start, based solely on its configuration file?
+
+HINT: Targets deal with which init system? Which machine should you be looking for this flag, on?
+
+NOTE: Use the SystemD Machine for this question.
+
+********************************************************* SOLUTION ********************************************************
+
+
+
+######################################################### Linux Boot Systemd 4 10 #########################################################
+
+What dependency to graphical.target will stop it from executing if it fails to start, based solely on its static configuration file?
+
+NOTE: Use the SystemD Machine for this question.
 
 
 ********************************************************* SOLUTION ********************************************************
 
 
-######################################################### Windows_File_System_Basics_13 15 #########################################################
+######################################################### Linux Boot Systemd 5 10 #########################################################
 
+How many wants dependencies does SystemD actually recognize for the default.target
+
+HINT: Use the systemctl command with some arguments to make life easier.
+
+Flag format: #
+
+NOTE: Use the SystemD Machine for this question.
 
 
 ********************************************************* SOLUTION ********************************************************
 
 
-######################################################### Windows_File_System_Basics_13 15 #########################################################
+######################################################### Linux Boot Systemd 6 10 #########################################################
 
+What is the full path to the binary used for standard message logging?
 
+HINT: Standard message logging is standardized across UNIX systems.
+
+NOTE: As the challenge name suggests, use the SystemD machine for this question.
+
+Flag format: /absolute/path
 
 ********************************************************* SOLUTION ********************************************************
 
 
+######################################################### Linux Boot Grub 10 #########################################################
+
+Identify the Linux Kernel being loaded by the Grub, by examining its configuration.
+
+Enter the command used by the Grub, and the full path to the Kernel, as the flag.
+
+Flag Format: command,kernel location
+
+HINT:
+
+Click me for help understanding Grub commands
+
+Machine: Minas_Tirith
+
+********************************************************* SOLUTION ********************************************************
 
 
 
