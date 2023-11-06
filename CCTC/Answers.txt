@@ -16,3 +16,46 @@ check usbs in the registry =
 
 
 dir
+
+
+
+###########################################################################################################################################
+#########################################################                         #########################################################
+#########################################################    Linux Boot Process   #########################################################
+#########################################################                         #########################################################
+###########################################################################################################################################
+
+Windows
+AB 
+C 
+
+Linux
+sdX - standard drive
+vdX - virtual drive 
+
+Commands
+lsblk - list block devices 
+
+dd -> data duplicate alias data destroyer. Should take an input file 
+e.g dd if=/dev/vda of=MBRCopy bs=512 count=1
+
+take data from dev/vda and copy it..... copy the block size of 512 and do a count of 1. 
+You don't really need of=MBRCopy
+
+e.g modify the 3rd partition - refer to https://os.cybbh.io/public/os/latest/007_linux_boot_process/linboot_fg.html
+
+would be
+
+dd if=/dev/vda bs=1 count=16 skip=478 | md5sum
+
+essentially you're doing a count of 16, 3rd partition has 16 bytes and is located at 478. 
+
+When you get permission denied, do a sudo !! and rerun. 
+
+GPT (Guid Partition Tables) -> 
+
+ltrace -S cat cat /etc/passwd -> tracking system calls that happens
+
+ltrace -S lsmod -> task lists /n listing out all the modules 
+
+
