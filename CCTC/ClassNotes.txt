@@ -58,4 +58,6 @@ ltrace -S cat cat /etc/passwd -> tracking system calls that happens
 
 ltrace -S lsmod -> task lists /n listing out all the modules 
 
+sbin -> special binary 
 
+SysV -> specifics of SysV
