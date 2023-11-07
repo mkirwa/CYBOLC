@@ -1,0 +1,497 @@
+
+######################################################################################################################################################
+######################################################                                             ###################################################
+######################################################           09_windows_process_validity      ####################################################
+######################################################                                             ###################################################
+######################################################################################################################################################
+
+
+######################################################### Windows_File_System_Basics_13 15 #########################################################
+
+
+
+********************************************************* SOLUTION ********************************************************
+
+
+######################################################### Windows_File_System_Basics_13 15 #########################################################
+
+
+
+********************************************************* SOLUTION ********************************************************
+
+######################################################### Windows_File_System_Basics_13 15 #########################################################
+
+
+
+********************************************************* SOLUTION ********************************************************
+######################################################### Windows_File_System_Basics_13 15 #########################################################
+
+
+
+********************************************************* SOLUTION ********************************************************
+
+######################################################### Windows_File_System_Basics_13 15 #########################################################
+
+
+
+********************************************************* SOLUTION ********************************************************
+
+######################################################### Windows_File_System_Basics_13 15 #########################################################
+
+
+
+********************************************************* SOLUTION ********************************************************
+
+######################################################### Windows_File_System_Basics_13 15 #########################################################
+
+
+
+********************************************************* SOLUTION ********************************************************
+
+######################################################### Windows_File_System_Basics_13 15 #########################################################
+
+
+
+********************************************************* SOLUTION ********************************************************
+
+######################################################### Windows_File_System_Basics_13 15 #########################################################
+
+
+
+********************************************************* SOLUTION ********************************************************
+
+######################################################### Windows_File_System_Basics_13 15 #########################################################
+
+
+
+********************************************************* SOLUTION ********************************************************
+
+######################################################### Windows_File_System_Basics_13 15 #########################################################
+
+
+
+********************************************************* SOLUTION ********************************************************
+
+######################################################### Windows_File_System_Basics_13 15 #########################################################
+
+
+
+********************************************************* SOLUTION ********************************************************
+
+
+######################################################### Windows_Processes_Basics_3 5 #########################################################
+
+What Sysinternals tool shows malware persistence locations in tabs within its GUI?
+
+Research: https://learn.microsoft.com/en-us/sysinternals
+
+********************************************************* SOLUTION ********************************************************
+
+Autoruns
+
+######################################################### Windows_Processes_Basics_2 5 #########################################################
+
+What Sysinternals tool is used to investigate processes?
+
+********************************************************* SOLUTION ********************************************************
+
+Procexp
+
+######################################################### Windows_Processes_Basics_3 5 #########################################################
+
+What Sysinternals tool can be used to investigate network connection attempts?
+
+********************************************************* SOLUTION ********************************************************
+
+TCPView
+
+######################################################### Windows_Processes_Basics_4 5 #########################################################
+
+What Sysinternals tool can view permissions?
+
+********************************************************* SOLUTION ********************************************************
+
+AccessChk
+
+######################################################### Windows_Processes_Basics_5 5 #########################################################
+
+What Sysinternals tool allows us to view and modify handles?
+
+********************************************************* SOLUTION ********************************************************
+
+handle
+
+######################################################### Windows_Processes_Basics_6 5 #########################################################
+
+What is the default Windows user directory for files downloaded from the internet? The flag is the folder name only.
+
+********************************************************* SOLUTION ********************************************************
+
+Downloads
+
+######################################################### Windows_Processes_Basics_7 5 #########################################################
+
+What is the default Windows download directory that everyone has access to? The flag is the absolute path to the directory.
+
+********************************************************* SOLUTION ********************************************************
+
+C:\Users\Public\Downloads
+
+######################################################### Windows_Processes_Basics_8 5 #########################################################
+
+What Sysinternals tool shows service load order?
+
+********************************************************* SOLUTION ********************************************************
+
+LoadOrd
+
+######################################################### Windows_Processes_Basics_9 5 #########################################################
+
+What is the service name of Windows Defender Firewall?
+
+********************************************************* SOLUTION ********************************************************
+
+Mpssvc
+
+######################################################### Windows_Processes_Basics_10 5 #########################################################
+
+What SysInternals tool reports .dlls loaded into processes?
+
+********************************************************* SOLUTION ********************************************************
+
+ListDLLs
+
+######################################################### Windows_Hidden_Processes_1 10 #########################################################
+
+There is malware on the system that is named similarly to a legitimate Windows executable. There is a .dll in the folder that the malware runs from. The flag is the name of the .dll.
+
+Reminder: All challenges are done using Workstation1.
+
+********************************************************* SOLUTION ********************************************************
+
+go to command prompt and run these:
+net use z: /d
+xcopy /s z:\ c:\sysinternals\
+net use * http://live.sysinternals.com # Autoruns directory should now be available 
+
+got to the c directory and open autoruns 
+
+look for a suspicious exe and cd to the directory to find the .dll 
+
+In this case, TotallyLegit that resides in C:\Users\Public\Downloads\
+
+
+######################################################### Windows_Hidden_Processes_2 10 #########################################################
+
+You notice that there is an annoying pop up happening regularly. Investigate the process causing it. The flag is the name of the executable.
+
+********************************************************* SOLUTION ********************************************************
+
+Go to Autoruns and go to scheduled task........ McAfee Keep-alive looks suscpicious
+
+right click and do Jump to Entry 
+Select McAfee Keep Alive and select Actions....> Expand the pipe in the box to see the .exe file -> McAfeeFireTray.exe
+
+######################################################### Windows_Hidden_Processes_3 10 #########################################################
+
+Determine what is sending out a SYN_SENT message. The flag is the name of the executable.
+
+HINT: Use a Sysinternals tool.
+
+********************************************************* SOLUTION ********************************************************
+
+Open TCPView
+
+Get-NetTCPConnection -State SynSent #powershell
+
+Run TCP View
+
+Sort by name or state
+
+Find synsent -> answer is McAfeeFireTray.exe
+
+######################################################### Windows_Hidden_Processes_4 10 #########################################################
+
+Malware uses names of legit processes to obfuscate itself. Give the flag located in Kerberos’ registry subkey.
+
+HINT: Use Sysinternals tools.
+
+Machine: Workstation1 (RDP from Admin-Station)
+login: student
+password: password
+
+********************************************************* SOLUTION ********************************************************
+
+
+HINT: Use Sysinternals tools.
+
+Creds:
+
+Machine: Workstation1 (RDP from Admin-Station)
+
+login: student
+
+password: password
+
+- search for Kerberos in Autorun......... Right click and Jumpt to Entry------Click paramerts
+
+- flag: H4d3S
+
+OR
+
+Open autoruns (sysinternals)
+
+Search kerberos in search bar that says quick filter
+
+Right click on Kerberos -> Jump to entry -> run as admin -> yes (do again if nothing happens)
+
+Expand Kerberos folder on left-hand side -> click PARAMETERS
+
+Flag: H4d3S
+
+This is the path at the top: Computer\HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\Kerberos\Parameters
+
+
+
+######################################################### Windows_Hidden_Processes_5 10 #########################################################
+
+There is malware named TotallyLegit. Find its binary location and there will be a file in that directory. Read the file.
+
+HINT: Use Sysinternals tools.
+
+********************************************************* SOLUTION ********************************************************
+
+HINT: Use Sysinternals tools.
+
+- go to AutoRuns--- search for TotallyLegit
+
+- right click and Jump to Entry
+
+- this gives the path----- 
+cd to the path 
+type Hmmm.txt # read the contents of the file
+
+L3gitness 
+
+######################################################### Windows_Hidden_Processes_6 10 #########################################################
+
+Find the McAfeeFireTray.exe. There is a file in that directory. The flag is inside.
+
+HINT: Use Sysinternals tools.
+
+Machine: Workstation1 (RDP from Admin-Station)
+login: student
+password: password
+
+********************************************************* SOLUTION ********************************************************
+
+use the search bar in autoruns to find the exe -> McAfeeFireTray.exe
+
+then cd to the location SecureHealth (Not Verified) 	C:\Program Files\Windows Defender Advanced Threat Protection\McAfeeFireTray.exe	
+
+type It's_Here.txt
+
+
+- autorun search for the file----right click jump --- this gives file path
+
+- C:\Program Files\Windows Defender Advanced Threat Protection
+
+(Get-Acl "C:\Windows\System32\spoolsv.exe").Access | Where-Object { $_.IdentityReference -eq "NT SERVICE\TrustedInstaller" }
+
+Get-ChildItem -Path C:\ -Recurse -Filter spoolsv.exe -ErrorAction SilentlyContinue | Where-Object { !$_.PSIsContainer }
+
+######################################################### Win_Process_Situational_Awareness_1 10 #########################################################
+
+What are the permissions for NT SERVICE\TrustedInstaller on spoolsv.exe? Copy the permissions from your shell.
+
+HINT: Use Sysinternals tools.
+
+********************************************************* SOLUTION ********************************************************
+
+Get-ChildItem -Path C:\ -Recurse -Filter spoolsv.exe -ErrorAction SilentlyContinue | Where-Object { !$_.PSIsContainer } # Find where the file is
+
+
+icacls "C:\windows\System32\spoolsv.exe" #which shows (F) for Full Control, answer will be Read Write for full control 
+
+
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&& another way &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+
+Get-Process | ? { $.Path -like '*spoolsv.exe' } | % { $.Handle }
+
+Handle -> different everytime
+
+Get-ChildItem -Path C:\ -Include "spoolsv" -File -Recurse #search for name of file
+
+Directory: C:\Windows\System32\en-US
+
+Cd C:\Windows\System32\en-US
+
+(get-acl spoolsv.exe.mui).access | ft
+
+Read,write
+
+#OR
+
+C:\Users\student\desktop\accesschk.exe C:\Windows\System32\spoolsv.exe
+
+NT SERVICE\TrustedInstaller will show RW
+
+#OR
+
+Can also run:
+
+icacls "C:\windows\System32\spoolsv.exe" #which shows (F) for Full Control #https://www.varonis.com/blog/ntfs-permissions-vs-share Full Control = read, write and change, does not include execute
+
+
+######################################################### Win_Process_Situational_Awareness_2 10 #########################################################
+
+What is the PATH listed in the output when we find the handle for spoolsv.exe?
+
+HINT: Use Sysinternals tools and don't forget to run as Administrator...
+
+
+********************************************************* SOLUTION ********************************************************
+
+
+Open Process Explorer as administrator
+
+Find spool in the top left search bar # view -> show lower pane 
+
+C:\Windows\System32\en-US\spoolsv.exe.mui
+
+Go to options > lower Pane > DLL
+
+Under lowerpane find spoolsv.exe.mui
+
+Right click properties and see path
+
+C:\Windows\System32\en-US\spoolsv.exe.mui 
+
+######################################################### Windows_File_System_Basics_13 15 #########################################################
+
+
+
+
+######################################################### Windows_File_System_Basics_13 15 #########################################################
+
+
+
+********************************************************* SOLUTION ********************************************************
+
+
+
+######################################################### Windows_File_System_Basics_13 15 #########################################################
+
+
+
+********************************************************* SOLUTION ********************************************************
+
+
+
+######################################################### Windows_File_System_Basics_13 15 #########################################################
+
+
+
+********************************************************* SOLUTION ********************************************************
+
+
+######################################################### Windows_File_System_Basics_13 15 #########################################################
+
+
+
+********************************************************* SOLUTION ********************************************************
+
+
+
+
+######################################################### Windows_File_System_Basics_13 15 #########################################################
+
+
+
+********************************************************* SOLUTION ********************************************************
+
+
+
+
+######################################################### Windows_File_System_Basics_13 15 #########################################################
+
+
+
+######################################################################################################################################################
+######################################################                                             ###################################################
+######################################################                  10_windows_uac             ###################################################
+######################################################                                             ###################################################
+######################################################################################################################################################
+
+
+######################################################### Windows_File_System_Basics_13 15 #########################################################
+
+What Sysinternals tool will allow you to view a file's manifest?
+
+********************************************************* SOLUTION ********************************************************
+
+sigcheck
+
+######################################################### Windows_UAC_Basics_2 5 #########################################################
+
+What is the RequestedExecutionLevel for an application to run with the same permissions as the process that started it?
+
+********************************************************* SOLUTION ********************************************************
+
+asInvoker
+
+######################################################### Windows_UAC_Basics_3 5 #########################################################
+
+What RequestedExecutionLevel will prompt the user for Administrator credentials if they're not a member of the Administrator's group?
+
+********************************************************* SOLUTION ********************************************************
+
+
+
+######################################################### Windows_UAC_Basics_5 5 #########################################################
+
+What registry key holds UAC values?
+
+********************************************************* SOLUTION ********************************************************
+
+
+
+######################################################### Windows_UAC_Basics_4 10 #########################################################
+
+The flag is the RequestedExecutionLevel of the schtasks.exe file.
+
+********************************************************* SOLUTION ********************************************************
+
+
+
+######################################################### Windows_UAC_Basics_6 10 #########################################################
+
+
+Determine which UAC subkey property shows whether UAC is enabled or not. The flag is the data value in that property.
+
+Hint: Make sure you're on the file-server.
+
+********************************************************* SOLUTION ********************************************************
+
+
+######################################################### Windows_UAC_Basics_7 10 #########################################################
+
+Provide the name of the UAC [Registry subkey] property that determines what level UAC is set to for admin privileges (Example UAC levels: Default, Always, Notify).
+
+********************************************************* SOLUTION ********************************************************
+
+
+
+######################################################### Windows_UAC_Basics_8 10 #########################################################
+
+Query the registry subkey where UAC settings are stored, and provide the flag.
+
+********************************************************* SOLUTION ********************************************************
+
+
+
+
+
+
+
+
