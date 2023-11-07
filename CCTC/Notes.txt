@@ -1363,7 +1363,13 @@ Reminder: All challenges are done using the Terra box.
 
 ********************************************************* SOLUTION ********************************************************
 
+file Encrypted # find the type of the file
 
+unzip Encrypted # unecrypts the file 
+
+ls # check the 2 files that have been unencrypted one has a password and one is the encrypted file 
+
+openssl enc -d -aes-128-cbc -in cipher -out deciphered.txt
 
 ######################################################### Linux Basics LFS Hierarchy7 10 #########################################################
 
@@ -1383,27 +1389,9 @@ Read the file that contains the user database for the machine. Identify a strang
 
 ********************************************************* SOLUTION ********************************************************
 
+$ cat /etc/passwd | awk -F ':' '{print$5}' | grep -v 'nologin'
 
-
-((()))((((((((((()))))))))))
-go to home dir
-
-ls to see all the files
-
-to find the length of the file in home dir
-
-find /home -type f –exec wc –l {} \;
-
-here, it means in home dir find file type in exec mode and give word count length
-
-To sort them numerically, sort –n output
-
-or
-
-cat passwd | awk -F ':' '{print$5}'
-
-Traitor 
-
+Intel Pirate
 
 ######################################################### Linux Basics Users and Groups2 10 #########################################################
 
@@ -1549,29 +1537,14 @@ Hint: Not the hidden file...
 
 ********************************************************* SOLUTION ********************************************************
 
+# list all users in the groups 
+getent group chapter
+getent group lodge 
+# use ls -lh to see read and write permissions for the user that wasn't found in both chapter and lodge
 
-
-
-
-((((((((((((((((((((((((((((((((((((()))))))))))))))))))))))))))))))))))))
-To see the files in directory ls \(Directoryname)---
-
-To read the files with uses, group and access listed: ls -lh Bibliotheca/Bibliotheca_unus/
-
-Here, w is execute access so asnweis codex_Astartes
-
-cat group | grep "chapter”
-
-ls -R -la #long Version
-
-ls -R -la | tr ' ' '' |awk -F '' '{print$1$3$4$10}' |grep mephiston
-
-#Cleaned up notice user writes RW for mephiston and not group or other
-
-Codex_Astartes 
-######################################################### Linux Basics Permissions7 10 #########################################################
-
-Identify the file within /media/Bibliotheca where the owning group has more rights than the owning user.
+ls -lh /media/Bibliotheca/Bibliotheca_unus/
+ls -lh /media/Bibliotheca/Bibliotheca_duo/
+ls -lh /media/Bibliotheca/Bibliotheca_quattuor/
 
 ********************************************************* SOLUTION ********************************************************
 
