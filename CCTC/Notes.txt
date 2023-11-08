@@ -1363,7 +1363,6 @@ Reminder: All challenges are done using the Terra box.
 
 ********************************************************* SOLUTION ********************************************************
 
-<<<<<<< Updated upstream
 file Encrypted # find the type of the file
 
 unzip Encrypted # unecrypts the file 
@@ -1371,12 +1370,10 @@ unzip Encrypted # unecrypts the file
 ls # check the 2 files that have been unencrypted one has a password and one is the encrypted file 
 
 openssl enc -d -aes-128-cbc -in cipher -out deciphered.txt
-=======
 Performed on /home/garviel/Encrypted
 
 # check the type of file 
 file Encrypted 
->>>>>>> Stashed changes
 
 # unzip the encrypted file 
 unzip Encrypted 
