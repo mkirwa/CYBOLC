@@ -446,7 +446,7 @@ What RequestedExecutionLevel will prompt the user for Administrator credentials 
 
 ********************************************************* SOLUTION ********************************************************
 
-
+requireAdministrator
 
 ######################################################### Windows_UAC_Basics_5 5 #########################################################
 
@@ -454,7 +454,7 @@ What registry key holds UAC values?
 
 ********************************************************* SOLUTION ********************************************************
 
-
+HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System
 
 ######################################################### Windows_UAC_Basics_4 10 #########################################################
 
@@ -462,7 +462,13 @@ The flag is the RequestedExecutionLevel of the schtasks.exe file.
 
 ********************************************************* SOLUTION ********************************************************
 
+Get-ChildItem -Path C:\ -Recurse -Filter schtasks.exe -ErrorAction SilentlyContinue | Where-Object { !$_.PSIsContainer } # Find where the schtasks.exe is 
 
+net use * http://live.sysinternals.com
+
+z:
+
+./sigcheck -m C:\Windows\System32\schtasks.exe # Scroll down to see the description... the answer is asInvoker
 
 ######################################################### Windows_UAC_Basics_6 10 #########################################################
 
@@ -490,8 +496,64 @@ Query the registry subkey where UAC settings are stored, and provide the flag.
 
 
 
+######################################################################################################################################################
+######################################################                                             ###################################################
+######################################################            Windows UAC Basics 8             ###################################################
+######################################################                                             ###################################################
+######################################################################################################################################################
 
+######################################################### Windows_UAC_Basics_8 10 #########################################################
 
+What command-line (cmd) command will show service information?
 
+********************************************************* SOLUTION ********************************************************
 
+sc.exe
 
+######################################################### Windows_Services_Basics_2 5  #########################################################
+
+What command-line (cmd) command will show all services, running or not running?
+
+The flag is the full command, for all services.
+
+********************************************************* SOLUTION ********************************************************
+
+sc queryex type=service state=all
+
+######################################################### Windows_Services_Basics_3 5 #########################################################
+
+What PowerShell command will list all services?
+
+********************************************************* SOLUTION ********************************************************
+
+Get-service
+
+######################################################### Windows_Services_Basics_4 5 #########################################################
+
+What registry location holds all service data?
+
+********************************************************* SOLUTION ********************************************************
+
+HKLM\SYSTEM\CurrentControlSet\Services
+
+######################################################### Windows_Services_Basics_5 5 #########################################################
+
+What registry subkey holds a service's .dll location?
+
+The flag is the subkey name (full path not needed).
+
+********************************************************* SOLUTION ********************************************************
+
+HKLM\SYSTEM\CurrentControlSet\Services\<NAME>\Parameters
+
+######################################################### Windows_UAC_Basics_8 10 #########################################################
+
+Query the registry subkey where UAC settings are stored, and provide the flag.
+
+********************************************************* SOLUTION ********************************************************
+
+######################################################### Windows_UAC_Basics_8 10 #########################################################
+
+Query the registry subkey where UAC settings are stored, and provide the flag.
+
+********************************************************* SOLUTION ********************************************************
