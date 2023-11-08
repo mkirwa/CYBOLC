@@ -10,15 +10,13 @@ What is the process ID (PID) of the SysV Init daemon?
 
 *********************************************************     SOLUTION        **********************************************************
 
-######################################################### Linux Processes 1 5 #########################################################
+1 
 
-What is the process ID (PID) of the SysV Init daemon?
+https://uace.github.io/learning/init-vs-systemd-what-is-an-init-daemon
 
-*********************************************************     SOLUTION        **********************************************************
+######################################################### Linux Processes 2 10 #########################################################
 
-######################################################### Linux Processes 1 5 #########################################################
-
-What is the process ID (PID) of the SysV Init daemon?
+How many child processes did SysV Init daemon spawn?
 
 *********************************************************     SOLUTION        **********************************************************
 
@@ -28,71 +26,306 @@ What is the process ID (PID) of the SysV Init daemon?
 
 *********************************************************     SOLUTION        **********************************************************
 
-######################################################### Linux Processes 1 5 #########################################################
 
-What is the process ID (PID) of the SysV Init daemon?
+ps displays information about a selection of the active processes
 
-*********************************************************     SOLUTION        **********************************************************
+Here, we know init has a PID of 1. To see child processes of this main process use:
 
-######################################################### Linux Processes 1 5 #########################################################
+pgrep -P $(your_process1_pid)
 
-What is the process ID (PID) of the SysV Init daemon?
+To grab the length
 
-*********************************************************     SOLUTION        **********************************************************
+garviel@terra:~$ pgrep -P 1 | wc -l
 
-######################################################### Linux Processes 1 5 #########################################################
+ans -> 22
 
-What is the process ID (PID) of the SysV Init daemon?
+######################################################### Linux Processes 3 10 #########################################################
 
-*********************************************************     SOLUTION        **********************************************************
+Identify all of the arguments given to the ntpd daemon (service) using ps.
 
-######################################################### Linux Processes 1 5 #########################################################
-
-What is the process ID (PID) of the SysV Init daemon?
+Format: List all options with parameters (include numbers).
 
 *********************************************************     SOLUTION        **********************************************************
 
-######################################################### Linux Processes 1 5 #########################################################
+Here, Elf produce the most complete information for each process
 
-What is the process ID (PID) of the SysV Init daemon?
+Now using ps to grep the ntpd we ger following results:
 
-*********************************************************     SOLUTION        **********************************************************
+ps -elf | grep -I “ntpd”
 
-######################################################### Linux Processes 1 5 #########################################################
+-p /var/run/ntpd.pid -g -u 105:109
 
-What is the process ID (PID) of the SysV Init daemon?
+######################################################### Linux Processes 4 10 #########################################################
 
-*********************************************************     SOLUTION        **********************************************************
-
-######################################################### Linux Processes 1 5 #########################################################
-
-What is the process ID (PID) of the SysV Init daemon?
+What is the parent process to Bombadil’s Bash process? (name of the binary, not the absolute path)
 
 *********************************************************     SOLUTION        **********************************************************
 
-######################################################### Linux Processes 1 5 #########################################################
+- use command ps –efj to see all the running process
 
-What is the process ID (PID) of the SysV Init daemon?
+- to find the bash use: bombadil@minas-tirith:/$ ps -efj | grep "bash" ----- this will give us 3 results
 
-*********************************************************     SOLUTION        **********************************************************
+Now to get the parent pocess grep the PPID (PPID is parent process to PID), PPID is 3rd column
 
-######################################################### Linux Processes 1 5 #########################################################
+ps -efj | grep 6441
 
-What is the process ID (PID) of the SysV Init daemon?
+ps -efj | grep 6441
 
-*********************************************************     SOLUTION        **********************************************************
-
-######################################################### Linux Processes 1 5 #########################################################
-
-What is the process ID (PID) of the SysV Init daemon?
-
-*********************************************************     SOLUTION        **********************************************************
+#Note even if I grep 3006 it still gives the sshd as the parent process
 
 ######################################################### Linux Processes 1 5 #########################################################
 
-What is the process ID (PID) of the SysV Init daemon?
+Identify the file mapped to the fourth file descriptor (handle) of the cron process.
+
+HINT: There might be multiple cron processes, but only one with the answer.
+
+Flag format: /absolute/path
 
 *********************************************************     SOLUTION        **********************************************************
+
+sudo lsof -c cron # run these to list teh files mapped... look at the FD section which is the file descriptor 3u is the fourth file descriptor and the answer will be /run/crond.pid
+
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
+Lsof = list of open files command
+
+Sudo Lsof –c (your process name) # in this case cron to view the list of each file opened by a particular process ID
+
+Now, to read the files find a number starting with 0---- we count this with 1 so the 4th file is
+
+/run/crond.pid
+
+
+
+######################################################### Linux Processes 6 10 #########################################################
+
+Identify the permissions that cron has on the file identified in Processes 5.
+
+HINT: Read the man page for lsof to understand permissions.
+
+Flag format: If more than one, list the permissions comma separated, no spaces
+
+*********************************************************     SOLUTION        **********************************************************
+
+Sudo lsof –c “cron” # to View the files-----when we scroll down, we can see 5 for processes
+
+In file descriptor it has u, which stands for read and write permission
+
+# read,write
+
+######################################################### Linux Processes 7 10 #########################################################
+
+Identify the names of the orphan processes on the SysV system.
+
+NOTE: Remember, orphan processes spawn and die periodically. Try monitoring the processes list with top or htop to find them.
+
+Flag format: in alphabetical order with all non-alphabetic characters removed: Name,Name,Name,Name
+
+HINT: Only character names!
+
+*********************************************************     SOLUTION        **********************************************************
+
+htop #patiently wait for the appearing and disappearing look at the last column
+
+BruceWayne__
+11010 root       20   0  4028    68     0 S  0.0  0.0  0:00.00 ├─ Aragorn_____
+11009 root       20   0  4028    68     0 S  0.0  0.0  0:00.00 ├─ Eowyn_______
+11008 root       20   0  4028    68     0 S  0.0  0.0  0:00.00 ├─ Tolkien_____Main
+
+  PID USER      PRI  NI  VIRT   RES   SHR S CPU% MEM%   TIME+  Command
+11326 root       20   0  4028    72     0 S  0.0  0.0  0:00.00 ├─ BruceWayne__
+11325 root       20   0  4028    72     0 S  0.0  0.0  0:00.00 ├─ Aragorn_____
+11324 root       20   0  4028    72     0 S  0.0  0.0  0:00.00 ├─ Eowyn_______
+11323 root       20   0  4028    72     0 S  0.0  0.0  0:00.00 ├─ Tolkien_____Main
+
+Aragorn,BruceWayne,Eowyn,Tolkien
+
+Look at the last column it will pop up with orphan processess
+
+Aragorn,BruceWayne,Eowyn,Tolkien
+
+######################################################### Linux Processes 8 10 #########################################################
+
+Locate zombie processes on the SysV system.
+
+Identify the zombie processes' parent process.
+
+NOTE: Remember, zombie processes only live until the parent process kills and removes them from the system’s process table. Try monitoring the processes list with top or htop to find them.
+
+Flag format: /absolute/path
+
+*********************************************************     SOLUTION        **********************************************************
+
+run htop 
+
+look at column s for Z then pick the path.. 
+
+  PID USER      PRI  NI  VIRT   RES   SHR S CPU% MEM%   TIME+  Command
+ 4389 root       20   0 37984  4300  3824 S  0.0  0.2  0:00.00 ├─ /lib/systemd/systemd-logind
+ 1768 root       20   0  6300  1656  1544 S  0.0  0.1  0:00.00 ├─ /bin/netcat -lp 9999
+ 1767 root       20   0  4028  1004   932 S  0.0  0.0  0:00.42 ├─ /sauron
+12144 root       20   0  4028   648   588 S  0.0  0.0  0:00.00 │  └─ /bin/funk
+12148 root       20   0     0     0     0 Z  0.0  0.0  0:00.00 │     ├─ !!!!!!!!!
+12147 root       20   0     0     0     0 Z  0.0  0.0  0:00.00 │     ├─ ___James_
+12146 root       20   0     0     0     0 Z  0.0  0.0  0:00.00 │     ├─ ___Rick__
+12145 root       20   0     0     0     0 Z  0.0  0.0  0:00.00 │     └─ ____Im___
+
+/bin/funk
+
+######################################################### Linux Processes 9 10 #########################################################
+
+Locate the strange open port on the SysV system.
+
+Identify the command line executable and its arguments.
+
+Flag format: /executable/path -arguments
+
+*********************************************************     SOLUTION        **********************************************************
+
+sudo lsof -i -P -n | grep LISTEN #this shows the listening port 9999 seems suspicious
+
+Now reading all the processes and looking for 99999
+
+Ps –elf #to look for running process
+
+/bin/netcat -lp 9999
+
+######################################################### Linux Process Proc Dir 1 10 #########################################################
+
+
+Examine the process list to find the ssh process. Then, identify the symbolic link to the absolute path for its executable in the /proc directory.
+
+The flag is the absolute path to the symbolic link, and the file it is linked to.
+
+Flag format: /absolute/path,/absolute/path
+
+*********************************************************     SOLUTION        **********************************************************
+
+Ps –elf | grep ssh ##Look for ssh process using the command:
+
+/usr/sbin/sshd ##This gives us the first absolute path
+
+Now, to check for the second path using grep and following PID 16885 of bombadil@pts/0
+
+Sudo ls –l /proc/1688 #this gives us the exe
+
+exe -> /usr/sbin/sshd
+
+/usr/sbin/sshd, /proc/1688/exe 
+
+
+lrwxrwxrwx 1 root     root     0 Nov  8 18:52 exe -> /usr/sbin/sshd
+
+/proc/6441/exe,/usr/sbin/sshd
+
+######################################################### Linux Process Proc Dir 2 10 #########################################################
+
+Identify the file that contains udp connection information. Identify the process using port 123.
+
+For the flag, enter:
+
+Process name
+File descriptor number for the udp socket
+Its permissions as shown in lsof
+Flag format: name,#,permission
+
+*********************************************************     SOLUTION        **********************************************************
+
+sudo lsof -i:123 #return all services using port 123
+
+#The problem asks for a file that contains a UDP connection, so you must look for an IP address. Only one of these results has an IP address
+
+ntp,19,u
+
+
+######################################################### Linux Processes 10 15 #########################################################
+
+Locate the strange open port on the SysV system.
+
+Identify how the process persists between reboots.
+
+The flag is the absolute path for the file that contains the persistence mechanism, and the configuration option.
+
+HINT: Persistence is defined here
+
+Flag format: filepath,configuration_option
+
+*********************************************************     SOLUTION        **********************************************************
+
+htop #will show you that port 9999 is the strange open port, so netcat is the persistence mechanism
+
+cd /etc #to change the directory to etc and to search for netcat
+
+ls # see where 9999 is at 
+
+cat innitab # where 9999 is... look at the path 
+
+/etc/inittab,91:2345:respawn:/bin/netcat -lp 9999 # concatenate the path to get to innitab and 9999
+
+######################################################### Linux Process Proc Dir 3 15 #########################################################
+
+Identify one of the human-readable file handles by the other program that creates a zombie process.
+
+NOTE: Remember, zombie processes only live until the parent process kills them. Try monitoring the processes list with top or htop to find them.
+
+The flag is the text from one of the files it reads.
+
+*********************************************************     SOLUTION        **********************************************************
+
+14402 root       20   0  4028   628   564 S  0.0  0.0  0:00.00 │  └─ /usr/local/bin/thenine
+14403 root       20   0  4160    72     0 S  0.0  0.0  0:00.00 │     └─ ________Nazgul________
+14404 root       20   0     0     0     0 Z  0.0  0.0  0:00.00 │        └─ thenine
+
+sudo lsof -c thenine # lsof to see what thenine is
+
+cat /opt/mysoul # /opt/mysoul is the only unique one... cat so see what's inside
+
+######################################################### Linux Process Find Evil 1 15 #########################################################
+
+Scenario: The Villains group has been chanting offerings to their new leader at regular intervals over a TCP connection.
+
+Task: Identify their method of communication and how it is occurring. Locate the following artifacts: ** The chant/text used by each villain (include spaces) ** The new Lord receiving the offering ** The IP address and port that the offering is received over
+
+Flag format: chant text,new Lord,IP:port
+
+Machine: Minas_Tirith
+
+*********************************************************     SOLUTION        **********************************************************
+
+htop # run this 
+
+ 4389 root       20   0 37984  4300  3824 S  0.0  0.2  0:00.00 ├─ /lib/systemd/systemd-logind
+ 1768 root       20   0  6300  1656  1544 S  0.0  0.1  0:00.00 ├─ /bin/netcat -lp 9999
+ 1767 root       20   0  4028  1004   932 S  0.0  0.0  0:00.43 ├─ /sauron
+14914 root       20   0  4028   628   568 S  0.0  0.0  0:00.00 │  └─ /usr/local/bin/thenine
+14915 root       20   0  4160    68     0 S  0.0  0.0  0:00.00 │     └─ ________Nazgul________
+14916 root       20   0     0     0     0 Z  0.0  0.0  0:00.00 │        └─ thenine
+ 1766 root       20   0  4440   776   716 S  0.0  0.0  0:00.00 ├─ /sbin/getty 38400 tty6
+ 1765 root       20   0  4440   672   612 S  0.0  0.0  0:00.00 ├─ /sbin/getty 38400 tty5
+ 1764 root       20   0  4440   688   628 S  0.0  0.0  0:00.00 ├─ /sbin/getty 38400 tty4
+ 1763 root       20   0  4440   732   668 S  0.0  0.0  0:00.00 ├─ /sbin/getty 38400 tty3
+ 1762 root       20   0  4440   672   612 S  0.0  0.0  0:00.00 ├─ /sbin/getty 38400 tty2
+ 1761 root       20   0  4440   668   608 S  0.0  0.0  0:00.00 ├─ /sbin/getty 38400 tty1
+ 1708 root       20   0 63664  3872  3136 S  0.0  0.2  0:00.00 ├─ /usr/sbin/sshd
+ 6420 root       20   0 95216  6864  5904 S  0.0  0.3  0:00.02 │  └─ sshd: bombadil [priv]
+ 6441 bombadil   20   0 95216  3496  2536 S  0.0  0.2  0:00.70 │     └─ sshd: bombadil@pts/0
+ 6444 bombadil   20   0 12564  4900  3172 S  0.0  0.2  0:00.28 │        └─ -bash
+14907 bombadil   20   0 15020  3580  2676 R  0.0  0.2  0:00.18 │           └─ htop
+ 1467 messagebu  20   0 36680  3032  2624 S  0.0  0.1  0:00.00 ├─ /usr/bin/dbus-daemon --system
+ 1437 ntp        20   0 95796  3056  2568 S  0.0  0.1  0:12.13 ├─ /usr/sbin/ntpd -p /var/run/ntpd.pid -g -u 105:109
+ 1463 ntp        20   0 95796  3056  2568 S  0.0  0.1  0:00.00 │  └─ /usr/sbin/ntpd -p /var/run/ntpd.pid -g -u 105:109
+ 1406 root       20   0 35800   364     0 S  0.0  0.0  0:05.58 ├─ /usr/sbin/irqbalance --pid=/var/run/irqbalance.pid
+ 1329 root       20   0 21160  1876  1648 S  0.0  0.1  0:03.00 ├─ /usr/sbin/cron
+14923 root       20   0 48760  2764  2360 S  0.0  0.1  0:00.00 │  └─ /usr/sbin/CRON
+14942 witch_kin  20   0  4276   748   680 S  0.0  0.0  0:00.00 │     └─ /bin/sh -c /home/witch_king/camlindon > /dev/null 2
+14962 witch_kin  20   0 11128  2728  2536 S  0.0  0.1  0:00.00 │        └─ /bin/bash /home/witch_king/camlindon
+14976 witch_kin  20   0 11128  2524  2268 S  0.0  0.1  0:00.00 │           └─ /bin/bash /home/witch_king/camlindon
+15128 witch_kin  20   0  6300  1696  1584 S  0.0  0.1  0:00.00 │              └─ nc -lw10 127.0.0.1 -p 1234
+
+
+htop # monitor for Goblin_king
+
+Mausan ukoul for avhe mubullat goth,witch_king,127.0.0.1:1234
 
 ######################################################### Linux Processes 1 5 #########################################################
 
