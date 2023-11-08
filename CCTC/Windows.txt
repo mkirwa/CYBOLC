@@ -269,7 +269,7 @@ HINT: Use Sysinternals tools.
 
 - this gives the path----- 
 cd to the path 
-type Hmmm.txt # read the contents of the file
+type Hmmm.txt # read the contents of the file, same as cat 
 
 L3gitness 
 
@@ -367,53 +367,108 @@ Right click properties and see path
 
 C:\Windows\System32\en-US\spoolsv.exe.mui 
 
-######################################################### Windows_File_System_Basics_13 15 #########################################################
+######################################################### Win_Process_Situational_Awareness_3 10 #########################################################
 
 
 
+######################################################### Win_Process_Situational_Awareness_3 10 #########################################################
 
-######################################################### Windows_File_System_Basics_13 15 #########################################################
+In what Load Order Group is the Windows Firewall service?
+
+HINT: Use Sysinternals tools.
+
+********************************************************* SOLUTION ********************************************************
+
+net use * http://live.sysinternals.com
+find loadOrder system tool 
+look for the service name for windows firewall service on google, it should be MPSSVC. Now look at the group name
+Answer should be Network Provider
 
 
+######################################################### Win_Process_Situational_Awareness_4 10 #########################################################
+
+What is the first .dll associated with winlogon.exe? Provide the name of the .dll only, not the /absolute/path
+
+HINT: Use Sysinternals tools.
+
+********************************************************* SOLUTION ********************************************************
+
+open command prompt as administrator 
+
+cd to the mounted directory 
+
+listdlls -v winlogon.exe
+
+look at the first dlls which is ntdll
+
+######################################################### Win_Process_Situational_Awareness_5 10 #########################################################
+
+
+While examining the Windows Defender Firewall, what is the LogAllowedConnections setting set to, for the Public profile?
+
+********************************************************* SOLUTION ********************************************************
+
+Got to windows start button and type windows Defender Firewall -> Advanced Settings -> Windows Defender Firewall Properties -> Specify Logging -> Log dropped packets set to no and Log successful connections set to NO. 
+
+# tried this from powershell too->  Get-NetFirewallProfile 
+
+# tried this from powershell too->   Get-NetFirewallProfile -Profile Public
+
+######################################################### Windows_Hidden_Processes_7 10 #########################################################
+
+A nonstandard port has been opened by possible malware on the system. Identify the port.
+
+Machine: Workstation1 (RDP from Admin-Station)
+login: student
+password: password
+
+********************************************************* SOLUTION ********************************************************
+
+Standard are well known ports ---> ports between 0, 1023 or ports between 1024 to 49151
+
+
+#Open tcpview sysinternal
+
+#Notice that powershell.exe is listening on port 6666
+
+#Powershell would use TCP/5985 = HTTP or TCP/5986 = HTTPS, so you know this one could be malware
+
+6666
+
+######################################################### Windows_Hidden_Processes_8 10 #########################################################
+
+Determine what mechanism opened the port from hidden_processes_7. The flag is the name of the file.
+
+Hint: The file is not legit.
+
+Machine: Workstation1 (RDP from Admin-Station)
+login: student
+password: password
 
 ********************************************************* SOLUTION ********************************************************
 
 
 
+ Run Task Scheduler as administrator
+
+- On the right hand side “Display All Running Tasks”
+
+- Notice GoogleUpdater current action is to run powershell ????
+
+- Close and right click GoogleUpdater, Select properties
+
+- Double click the actions, notice under arguments “-noexit -windowstyle hidden -File C:\windows\system32\legit_script.ps1”
+
+legit_script.ps1
+
+
 ######################################################### Windows_File_System_Basics_13 15 #########################################################
 
-
+Identify the flag from the file in hidden_processes_8.
 
 ********************************************************* SOLUTION ********************************************************
 
-
-
-######################################################### Windows_File_System_Basics_13 15 #########################################################
-
-
-
-********************************************************* SOLUTION ********************************************************
-
-
-######################################################### Windows_File_System_Basics_13 15 #########################################################
-
-
-
-********************************************************* SOLUTION ********************************************************
-
-
-
-
-######################################################### Windows_File_System_Basics_13 15 #########################################################
-
-
-
-********************************************************* SOLUTION ********************************************************
-
-
-
-
-######################################################### Windows_File_System_Basics_13 15 #########################################################
+type legit_script.ps1 # see what the flag/comment is - > Th1s_1s_n0t_l3g1t
 
 
 
@@ -479,6 +534,23 @@ Hint: Make sure you're on the file-server.
 
 ********************************************************* SOLUTION ********************************************************
 
+Once on file server
+
+Powershell
+
+Get-ChildItem HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies
+
+Get the value for EnableLUA -> 9194
+
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
+Cd HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies
+
+ls -force
+
+SEE —-> EnableLUA : 4919
+
+EnableLUA – Shows if UAC is enable or not 
 
 ######################################################### Windows_UAC_Basics_7 10 #########################################################
 
@@ -487,6 +559,25 @@ Provide the name of the UAC [Registry subkey] property that determines what leve
 ********************************************************* SOLUTION ********************************************************
 
 
+- Once on file server
+
+Powershell
+
+Get-ChildItem HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies
+
+under system the answer should be ConsentPromptBehaviorAdmin
+
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
+1. Cd HKLM
+
+2. Cd SOFTWARE\Microsoft\Windows\CurrentVersion\Policies
+
+3. Ls -force ###to see the files/output
+
+4. SEE —->ConsentPromptBehaviorAdmin (answ)
+
+5 #this level of UAC is set to Default, Always, Notify
 
 ######################################################### Windows_UAC_Basics_8 10 #########################################################
 
@@ -495,6 +586,23 @@ Query the registry subkey where UAC settings are stored, and provide the flag.
 ********************************************************* SOLUTION ********************************************************
 
 
+
+Once on file server
+
+Powershell
+
+
+Get-ChildItem HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies
+
+under system the flag should be GoodJob
+
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
+Cd HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies
+
+- this is where UAC setting are stored
+
+ls -force 
 
 ######################################################################################################################################################
 ######################################################                                             ###################################################
@@ -546,14 +654,35 @@ The flag is the subkey name (full path not needed).
 
 HKLM\SYSTEM\CurrentControlSet\Services\<NAME>\Parameters
 
-######################################################### Windows_UAC_Basics_8 10 #########################################################
+######################################################### Windows_Services_Basics_6 10 #########################################################
 
-Query the registry subkey where UAC settings are stored, and provide the flag.
+Services have a name and display name, which could be different. What is the service name of the only Totally-Legit service?
+
+Reminder: All challenges are done using the file-server.
+
+********************************************************* SOLUTION ********************************************************
+
+ssh to the file-server
+
+Get-service “Totally-Legit”
+
+Name is Legit 
+
+######################################################### Windows_Services_Basics_7 10 #########################################################
+
+
+Figure out the SID of the only Totally-Legit service.
+
+Example: S-1-5-80-159957745-2084983471-2137709666-960844832-[1182961511]
+
+Submit only the [bracketed] portion of the SID.
+
+HINT: Run the command on the service name, not the display name.
 
 ********************************************************* SOLUTION ********************************************************
 
-######################################################### Windows_UAC_Basics_8 10 #########################################################
+sc.exe showsid “Legit” 
 
-Query the registry subkey where UAC settings are stored, and provide the flag.
+1182961511
 
-********************************************************* SOLUTION ********************************************************
+

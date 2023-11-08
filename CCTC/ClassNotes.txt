@@ -61,3 +61,61 @@ ltrace -S lsmod -> task lists /n listing out all the modules
 sbin -> special binary 
 
 SysV -> specifics of SysV
+
+ps --ppid 2 ->ppid (parent process id) ps -> (process status) get the process status, with the parent process id element 2! 
+
+
+
+To go to the top of the directory in linux do >>> cd / <<<
+To go to the top the home directory in linux do >>> cd ~ <<<
+ls -l >> long listing.. shows you the permission settings 
+
+################# GETTING HELP ######################
+man <command> 
+so >> ls man >> 
+ls --help -> gives you what the command is 
+>> man -k hash >> key word seaching.... 
+>> man man >> then type >> /ls >> ls represents what you are searching 
+whatis <command> 
+
+
+################# SEARCHING HELP ######################
+
+ps 
+    reporst a snapshot of the current process. Reports the bare minimum of what you need? 
+ps --help >> gives you a one liner 
+    . means it's a hidden file 
+
+ls -la >> reveals hidden files 
+
+ps -e >> shows running processes 
+ps -el >> gives long listing 
+ps -elf >>  tag formating -- gives all the information 
+
+id 
+
+grep -R 'network' /etc | grep -v denied
+
+
+awk -F ':''OFS="-"{print$1,$2,$3}'/etc/passwd
+
+
+
+awk -F ':' 'OFS="-"{print$1,$2,$3}' /etc/passwd
+
+This command uses awk to process the contents of the /etc/passwd file. Here's a breakdown of what it does:
+
+-F ':': This sets the field separator to a colon (:). This means awk will treat each colon-separated value in a line as a separate field. In the /etc/passwd file, lines are usually formatted as username:password:UID:GID:full_name:home_directory:shell.
+
+OFS="-": This sets the output field separator to a hyphen (-). This determines how awk will join fields together when it prints them out.
+
+{print $1,$2,$3}: This instructs awk to print the first, second, and third fields of each line (i.e., username, password, and UID).
+
+In summary, the command will read the /etc/passwd file and print the username, password, and UID for each line, separated by hyphens. For example, if a line in /etc/passwd reads:
+
+hardware abstraction layer - HALDLL
+
+bcdedit --> gives information about how the computer spins up.... 
+ntoskernel - windows version of kernel
+
+sc qdescription 
