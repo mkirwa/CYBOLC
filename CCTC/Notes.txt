@@ -1347,8 +1347,8 @@ The resulting hash is the flag.
 
 ********************************************************* SOLUTION ********************************************************
 
-man -k digest 
-???
+man -k digest # finds the keyword 
+echo -n "OneWayBestWay" | sha512sum
 
 ######################################################### Linux Basics 6 10 #########################################################
 
@@ -1363,6 +1363,7 @@ Reminder: All challenges are done using the Terra box.
 
 ********************************************************* SOLUTION ********************************************************
 
+<<<<<<< Updated upstream
 file Encrypted # find the type of the file
 
 unzip Encrypted # unecrypts the file 
@@ -1370,7 +1371,28 @@ unzip Encrypted # unecrypts the file
 ls # check the 2 files that have been unencrypted one has a password and one is the encrypted file 
 
 openssl enc -d -aes-128-cbc -in cipher -out deciphered.txt
+=======
+Performed on /home/garviel/Encrypted
 
+# check the type of file 
+file Encrypted 
+>>>>>>> Stashed changes
+
+# unzip the encrypted file 
+unzip Encrypted 
+
+# check the contents to find which is a password file and which has encrypted text 
+cat cipher # cipher text 
+cat symmetric # contains the password 
+
+#decrypt the file 
+openssl enc -d -aes256 -in cipher -out cipheroutput # Enter the password from symmetric
+
+openssl enc -d -aes-256-cbc -pbkdf2 -iter 10000 -in cipher -out cipheroutput1
+
+AES128Key
+
+(((((((((( ASK INSTRUCTOR ))))))))))
 ######################################################### Linux Basics LFS Hierarchy7 10 #########################################################
 
 Search the user home directories to find the file with the second-most lines in it. The flag is the number of lines in the file.
@@ -2266,7 +2288,7 @@ Research: https://learn.microsoft.com/en-us/windows-server/security/windows-auth
 
 ********************************************************* SOLUTION ********************************************************
 
-network logon
+local logon
 
 ######################################################### Primer_Boot_Process_23 1 #########################################################
 
