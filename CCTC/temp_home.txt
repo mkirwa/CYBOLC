@@ -344,7 +344,11 @@ NOTE: Use the SystemD Machine for this question.
 
 ********************************************************* SOLUTION ********************************************************
 
+systemctl list-dependencies default.target --> count only the parent .service ones.... 
+
 systemctl list-dependencies default.target --plain | grep '.wants' | wc -l
+
+systemctl show -p Wants graphical.target
 
 ((((((WHY DOESN'T THIS WORK???))))))
 
@@ -355,13 +359,16 @@ What is the full path to the binary used for standard message logging?
 HINT: Standard message logging is standardized across UNIX systems.
 
 NOTE: As the challenge name suggests, use the SystemD machine for this question.
-
+|||
 Flag format: /absolute/path
 
 ********************************************************* SOLUTION ********************************************************
 
+/usr/sbin/rsyslogd
 
 which systemd-journald
+
+lookup syslog and then go down that path.... focus on binary for syslog
 
 
 ######################################################### Linux Boot Grub 10 #########################################################
