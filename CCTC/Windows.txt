@@ -686,3 +686,354 @@ sc.exe showsid “Legit”
 1182961511
 
 
+######################################################################################################################################################
+######################################################                                             ###################################################
+######################################################                  10_windows_uac             ###################################################
+######################################################                                             ###################################################
+######################################################################################################################################################
+
+
+######################################################### Windows_Browser_Artifacts_1 5 #########################################################
+
+
+
+********************************************************* SOLUTION ********************************************************
+
+
+
+######################################################### Windows_File_System_Basics_13 15 #########################################################
+
+
+
+********************************************************* SOLUTION ********************************************************
+
+
+
+
+######################################################### Windows_File_System_Basics_13 15 #########################################################
+
+
+
+********************************************************* SOLUTION ********************************************************
+
+
+
+
+######################################################### Windows_File_System_Basics_13 15 #########################################################
+
+
+
+********************************************************* SOLUTION ********************************************************
+
+
+
+
+######################################################### Windows_File_System_Basics_13 15 #########################################################
+
+
+
+********************************************************* SOLUTION ********************************************************
+
+
+
+
+
+######################################################### Windows_File_System_Basics_13 15 #########################################################
+
+
+
+********************************************************* SOLUTION ********************************************************
+
+
+
+######################################################### Windows_File_System_Basics_13 15 #########################################################
+
+
+
+********************************************************* SOLUTION ********************************************************
+
+
+
+
+######################################################### Windows_File_System_Basics_13 15 #########################################################
+
+
+
+********************************************************* SOLUTION ********************************************************
+
+
+
+
+######################################################### Windows_Browser_Artifacts_1 5 #########################################################
+
+What Sysinternals tool will allow you to read the SQLite3 database containing the web history of chrome?
+
+********************************************************* SOLUTION ********************************************************
+
+Strings
+
+######################################################### Windows_Recent_Files_1 5 #########################################################
+
+What is the registry location of recent docs for the current user?
+
+********************************************************* SOLUTION ********************************************************
+
+HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\RecentDocs
+
+
+######################################################### Windows_Bam_1 5 #########################################################
+
+
+Challenge only allows ONE attempt
+
+BAM settings are stored in different registry locations based on the version of Windows 10. What version of Windows 10 is workstation2 running? The answer is the 4 digit Windows 10 release (version) number.
+
+********************************************************* SOLUTION ********************************************************
+
+Get-ComputerInfo | select WindowsProductName, WindowsVersion, OsHardwareAbstractionLayer
+
+1803 
+
+######################################################### Windows_Last_Access 5 #########################################################
+
+Figure out the last access time of the hosts file.
+
+Flag format: mm/dd/yyyy
+
+********************************************************* SOLUTION ********************************************************
+
+Get-Childitem "C:\users\$env:username\AppData\Roaming\Microsoft\Windows\PowerShell\PSReadline\ConsoleHost_history.txt" | select LastAccessTime
+
+
+######################################################### Windows_Prefetch_1 5 #########################################################
+
+What is the literal path of the prefetch directory?
+
+********************************************************* SOLUTION ********************************************************
+
+C:\Windows\Prefetch
+
+######################################################### Windows_Recycle_Bin_1 5 #########################################################
+
+In the Recycle Bin, there is a file that contains the actual contents of the recycled file. What are the first two characters of this filename?
+
+********************************************************* SOLUTION ********************************************************
+
+To see the content of the recycled folder
+
+PS C:\> Get-Childitem 'C:\$RECYCLE.BIN' -Recurse -Verbose -Force | select FullName
+
+Here, $R – gives the content of the deleted file
+
+$I – gives the location of the file
+
+Ans: $R 
+
+
+######################################################### Windows_Recycle_Bin_2 5 #########################################################
+
+In the Recycle Bin, there is a file that contains the original filename, path, file size, and when the file was deleted. What are the first two characters of this filename?
+
+********************************************************* SOLUTION ********************************************************
+
+ANS -> $I
+
+The Recycle Bin on Windows systems uses metadata files to store information about deleted items. When a file is deleted, Windows stores information about the file in a hidden system folder named $Recycle.Bin. Each deleted file or folder is represented by a pair of files in the Recycle Bin:
+
+    A metadata file that holds the original file name, original path, file size, and the date and time the file was deleted. This file has a name in the format $I<uniqueID>.
+        The actual file itself, renamed to a unique ID that corresponds with the metadata file, with a name in the format $R<uniqueID>.
+
+The $I files are INFO2 or $I###### files (where ###### is a placeholder for the unique ID) that contain the details you mentioned. Therefore, the first two characters of the filenames you're asking about are $I.
+
+Please note that this information is valid for Windows systems, and the actual file structure and naming conventions may vary between different versions of Windows. Additionally, this information is correct as of the last update I have until April 2023, and it's also important to be aware that accessing the $Recycle.Bin folder typically requires administrative privileges.
+
+    Navigate to the $Recycle.Bin folder at the root of each drive.
+    Open the $Recycle.Bin folder, which contains subfolders named after the SID (Security Identifier) of each user who has deleted files.
+    Inside these subfolders are the $I and $R files corresponding to each deleted item.
+
+To programmatically access these files and read their contents, you would generally use specialized software or write a script to parse the data. It's important to handle this information with care, as improper access or modification could potentially cause issues with the operating system.
+
+
+######################################################### Windows_UserAssist_1 5 #########################################################
+
+What are the first 8 characters of the Globally Unique Identifier (GUID) used to list applications found in the UserAssist registry key (Windows 7 and later)?
+
+********************************************************* SOLUTION ********************************************************
+
+https://os.cybbh.io/public/os/latest/011_windows_auditing_&_logging/artifacts_fg.html#_5_prefetch
+CEBFF5CD
+
+######################################################### Windows_UserAssist_2 5 #########################################################
+
+What cipher method are UserAssist files encoded in?
+
+********************************************************* SOLUTION ********************************************************
+
+They are located in HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\UserAssist\{GUID}\Count\ * they are encoded in ROT13
+https://os.cybbh.io/public/os/latest/011_windows_auditing_&_logging/artifacts_fg.html#_5_prefetch
+
+######################################################### Windows_Logs_1 5 #########################################################
+
+What main Windows log would show invalid login attempts?
+
+********************************************************* SOLUTION ********************************************************
+
+Security
+
+######################################################### Windows_Logs_2 5 #########################################################
+
+What main Windows log will show whether Windows updates were applied recently?
+
+********************************************************* SOLUTION ********************************************************
+
+System
+
+######################################################### Windows_Logs_3 5 #########################################################
+
+When reading logs, you may notice ... at the end of the line where the message is truncated. What format-table switch/argument will display the entire output?
+
+Flag format: -argument
+
+********************************************************* SOLUTION ********************************************************
+
+-wrap
+
+######################################################### Windows_Browser_Artifacts_2 10 #########################################################
+
+Find the questionable website that a user browsed to (using Chrome), that appears to be malicious. *Note: There are more than one users on the box.
+
+Machine: Workstation2 (ssh from Admin_Station)
+
+********************************************************* SOLUTION ********************************************************
+
+ Use this command to look for recent broweser hsitory and juts URL’s:
+
+$History| Select-String -Pattern "(https|http):\/\/[a-zA-Z_0-9]+\.\w+[\.]?\w+" -AllMatches|foreach {$_.Matches.Groups[0].Value}| ft Anw: https://www.exploitdb.com
+
+Or
+
+Get-Content 'C:\users\student\AppData\Local\Google\Chrome\User Data\Default\History' https://www.exploit-db.com/ 
+
+######################################################### Windows_Recent_Files_2 10 #########################################################
+
+There is a file that was recently opened that may contain PII.
+
+Get the flag from the contents of the file.
+
+Hint: We're not interested in numbers.
+
+********************************************************* SOLUTION ********************************************************
+
+ Get-Item 'Registry::\HKEY_USERS\*\Software\Microsoft\Windows\CurrentVersion\Explorer\RecentDocs\.*' 
+
+  Get-Item "REGISTRY::HKEY_USERS\*\Software\Microsoft\Windows\CurrentVersion\Explorer\RecentDocs\.txt" | select -Expand property | ForEach-Object {
+>>
+>> [System.Text.Encoding]::Default.GetString((Get-ItemProperty -Path "REGISTRY::HKEY_USERS\*\Software\Microsoft\Windows\CurrentVersion\Explorer\RecentDocs\.txt" -Name $_).$_)} # Get location for txt file 
+
+ANS --> Flag, Find A.
+
+
+((((((((((((((((((((((((((((((((((()))))))))))))))))))))))))))))))))))
+
+Get-Item 'Registry::\HKEY_USERS\*\Software\Microsoft\Windows\CurrentVersion\Explorer\RecentDocs\.*'
+
+We see the txt file was opened now to see where is the location of this file
+
+Get-Item "REGISTRY::HKEY_USERS\*\Software\Microsoft\Windows\CurrentVersion\Explorer\RecentDocs\.txt" | select -Expand property | ForEach-Object {
+
+[System.Text.Encoding]::Default.GetString((Get-ItemProperty -Path "REGISTRY::HKEY_USERS\*\Software\Microsoft\Windows\CurrentVersion\Explorer\RecentDocs\.txt" -Name $_).$_)}
+
+C:\Users\student\Documents\3-14-24.txt
+
+This gives us the location: Directory: C:\Users\student\Documents
+
+Now change directory and rread the .txt file: PS C:\Users\student\Documents> Get-Content "3-14-24.txt"
+
+Answ: Flag, Found A.
+
+OR
+
+Get-Item "REGISTRY::HKEY_USERS\\Software\Microsoft\Windows\CurrentVersion\Explorer\RecentDocs\.txt" | select -Expand property | ForEach-Object {[System.Text.Encoding]::Default.GetString((Get-ItemProperty -Path "REGISTRY::HKEY_USERS\\Software\Microsoft\Windows\CurrentVersion\Explorer\RecentDocs\.txt" -Name $).$)}
+
+#returns the path of the file you need
+
+cd C:\Users\student\Documents
+
+ls
+
+get-content 3-14-24.txt
+
+Flag: Flag, Found A.
+
+
+######################################################### Windows_File_System_Basics_13 15 #########################################################
+
+
+
+********************************************************* SOLUTION ********************************************************
+
+
+
+
+######################################################### Windows_File_System_Basics_13 15 #########################################################
+
+
+
+********************************************************* SOLUTION ********************************************************
+
+
+
+
+######################################################### Windows_File_System_Basics_13 15 #########################################################
+
+
+
+********************************************************* SOLUTION ********************************************************
+
+
+
+
+
+######################################################### Windows_File_System_Basics_13 15 #########################################################
+
+
+
+********************************************************* SOLUTION ********************************************************
+
+
+
+######################################################### Windows_File_System_Basics_13 15 #########################################################
+
+
+
+********************************************************* SOLUTION ********************************************************
+
+
+
+
+######################################################### Windows_File_System_Basics_13 15 #########################################################
+
+
+
+********************************************************* SOLUTION ********************************************************
+
+
+
+
+######################################################### Windows_File_System_Basics_13 15 #########################################################
+
+
+
+********************************************************* SOLUTION ********************************************************
+
+
+
+
+######################################################### Windows_File_System_Basics_13 15 #########################################################
+
+
+
+********************************************************* SOLUTION ********************************************************
+
+
+

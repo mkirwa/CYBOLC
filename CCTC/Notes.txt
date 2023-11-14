@@ -1916,12 +1916,41 @@ Hint: Compare the contents
 
 
 
+# Step 1: List executables in $PATH, excluding echo
+for dir in $(echo $PATH | tr ":" "\n"); do
+  for file in "$dir"/*; do
+    if [[ -x $file && ! -d $file && $(basename "$file") != "echo" ]]; then
+      echo $(basename "$file")
+    fi
+  done
+done > /tmp/path_binaries.txt
+
+# Step 2: List files in $HOME/paths
+ls $HOME/paths > /tmp/home_paths.txt
+
+# Step 3: Compare lists to find the matching file name
+grep -Fx -f /tmp/path_binaries.txt /tmp/home_paths.txt
+
+# If a matching file name is found, it will be output by grep.
+# Suppose the matching file name is "flagfile", you would then examine it:
+
+# Step 4: Examine the flag file
+cat "$HOME/paths/flagfile"
 
 
 
 
 
 ((((((((((((((((((((((((((((((((((((((((((((()))))))))))))))))))))))))))))))))))))))))))))
+
+Hint: The correct binary is not echo
+
+Binaries Path--- usr/bin and usr/sbin
+
+Here,
+
+Go to home/garviel and open the file 
+
 Here,
 
 Go to home/garviel and open the file
@@ -1940,89 +1969,38 @@ To see which one os on the output.txt file : cat output.txt | grep python
 
 - this gives the answer 
 
-######################################################### Windows_File_System_Basics_13 15 #########################################################
+######################################################### Linux Basics Regular Expressions5 15 #########################################################
 
+File: home/garviel/numbers
 
+Use regular expressions to find valid Locally Administered or Universally Administered Unicast MAC addresses.
 
-********************************************************* SOLUTION ********************************************************
+Give the count of Locally and Universally Administered MAC addresses as the answer.
 
-
-
-######################################################### Windows_File_System_Basics_13 15 #########################################################
-
-
+HINT: What characters specifically define a Locally or Universally Administered Unicast MAC Address?
 
 ********************************************************* SOLUTION ********************************************************
 
+grep -Eo '^([0-9A-Fa-f])([02468ACE])[:-]([0-9A-Fa-f]{2}[:-]){4}([0-9A-Fa-f]{2})$' numbers | wc -l ------> answer 178
 
 
-######################################################### Windows_File_System_Basics_13 15 #########################################################
+((((((((((((((((((((((((((((((((((((((((((((()))))))))))))))))))))))))))))))))))))))))))))
 
+awk -F '\x09' '{print$1","$2","$3","$4","$5","$6}' <connections>output.csv
 
+Here, read the connection file separated by \x09 and print all 6 line separated by comma and output to output.csv
 
-********************************************************* SOLUTION ********************************************************
+To get the md5sum md5su output.csv 
 
+######################################################### Linux Basics Bash Logic3 15 #########################################################
 
+FILE: /home/garviel/Inquisition_Targets
 
-######################################################### Windows_File_System_Basics_13 15 #########################################################
+Identify heresy by comparing the Inquisition_Targets file to members of the Guardsmen group.
 
+HINT: Reformat and clean up the data before it is compared. awk and sort are your best friends!
 
-
-********************************************************* SOLUTION ********************************************************
-
-
-
-######################################################### Windows_File_System_Basics_13 15 #########################################################
-
-
-
-********************************************************* SOLUTION ********************************************************
-
-
-
-######################################################### Windows_File_System_Basics_13 15 #########################################################
-
-
-
-********************************************************* SOLUTION ********************************************************
-
-
-
-######################################################### Windows_File_System_Basics_13 15 #########################################################
-
-
-
-********************************************************* SOLUTION ********************************************************
-
-
-
-######################################################### Windows_File_System_Basics_13 15 #########################################################
-
-
-
-********************************************************* SOLUTION ********************************************************
-
-
-
-######################################################### Windows_File_System_Basics_13 15 #########################################################
-
-
-
-********************************************************* SOLUTION ********************************************************
-
-
-
-######################################################### Windows_File_System_Basics_13 15 #########################################################
-
-
-
-********************************************************* SOLUTION ********************************************************
-
-
-
-######################################################### Windows_File_System_Basics_13 15 #########################################################
-
-
+The flag is the number of heretics on the system.
 
 ********************************************************* SOLUTION ********************************************************
 

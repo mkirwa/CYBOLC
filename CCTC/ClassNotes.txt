@@ -119,3 +119,12 @@ bcdedit --> gives information about how the computer spins up....
 ntoskernel - windows version of kernel
 
 sc qdescription 
+
+
+Get-LocalUser | select Name, SID 
+
+R is content I is path.... 
+
+
+
+Prefetch -> Wanted to add anything to this???
