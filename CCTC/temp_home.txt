@@ -250,6 +250,8 @@ The flag is the number of heretics on the system.
 # Extract Guardsmen Group Members:
 # First, extract the members of the Guardsmen group. This can typically be done by looking at the /etc/group file, but the exact method might depend on how your system manages user groups.
 
+### Answer should be 8 --> guesswork!!! 
+
 getent group guardsmen | awk -F':' '{print $4}' | tr ',' '\n' | sort > guardsmen_sorted.txt
 
 # Prepare Inquisition_Targets File:
@@ -453,8 +455,19 @@ ntoskrnl.exe
 
 ######################################################### Windows_Boot_Remediate_1 10 #########################################################
 
+The system is booting into safe mode. Identify the flag from the command-line output of the command used to diagnose boot issues.
+
+Follow these instructions to boot the virtual image -- Click Here ---> Windows Bootkit Instructions
 
 ********************************************************* SOLUTION ********************************************************
+
+1RF5Zgf9P
+
+· #Launch the virtual machine on MobaXTerm following instructions in windows bootkit instructions
+
+· Bcdedit
+
+· Flag: 1RF5Zgf9P (will see in terminal)
 
 
 
@@ -466,15 +479,17 @@ Follow these Windows Bootkit Instructions to boot the virtual image
 
 ********************************************************* SOLUTION ********************************************************
 
-$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+· bcdedit /deletevalue {current} safeboot
 
-1RF5Zgf9P
+· shutdown /r
 
-· #Launch the virtual machine on MobaXTerm
+· #once the virtual machine shuts down, it doesn’t usually reboot on it’s own - you will have to kill your connection and reboot it using ****qemu-system-x86_64 -m 2G Win_Bootkit.vdi
 
-· Bcdedit
+· #this will take you to your desktop, and the flag is the wallpaper
 
-· Flag: 1RF5Zgf9P (will see in terminal)
+· Flag: 76Drp6hB 
+
+
 
 ######################################################### Windows_Boot_Remediate_3 10 #########################################################
 
@@ -506,6 +521,7 @@ $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
 sc query state= inactive | find “DISPLAY_NAME”
 
+
 Flag: AlsKdJfhG
 
 ######################################################### Windows_Boot_Remediate_4 10 #########################################################
@@ -528,11 +544,12 @@ $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
 #You will find the System.Management.Automation.dll (ctrl + c to cut)
 
+Flag will be here: Flag: rfVBgtYHn
+
 #The correct path for this file is C:\Windows\Microsoft.NET\assembly\GAC_MSIL\System.Management.Automation\v4.0_3.0.0.0__31bf3856ad364e35
 
 #Paste into correct folder
 
-Flag: rfVBgtYHn
 
 ######################################################### Windows_Boot_Remediate_5 10 #########################################################
 
