@@ -581,3 +581,16 @@ $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
 Flag: 8B7da4v6Y
 
+
+
+######################################################### Windows_Boot_Remediate_2 10 #########################################################
+
+Enter the full path of the program that was run on this computer from an abnormal location.
+
+********************************************************* SOLUTION ********************************************************
+
+shutdown /r
+
+Get-Item HKLM:\SYSTEM\CurrentControlSet\Services\bam\UserSettings\*gar6
+
+C:\Windows\Temp\bad_intentions.exe

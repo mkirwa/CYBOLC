@@ -358,11 +358,52 @@ Machine: Terra
 
 *********************************************************     SOLUTION        **********************************************************
 
-######################################################### Linux Processes 1 5 #########################################################
+Answer -> netcat -lp 3389 < /tmp/NMAP_all_hosts.txt,whatischaos.timer
 
-What is the process ID (PID) of the SysV Init daemon?
+systemctl list-timers # See all the timers that are currently running. Systemd timers can also be used for scheduling tasks. See what tasks are scheduled
+# From running this, whatischaos.timer appears to fit the 15 minutes window and the 60-seconds interval 
+
+systemctl status whatischaos.timer # Let's check the location of whatischaos timer. It's located at /lib/systemd/system/whatischaos.timer
+
+cat /lib/systemd/system/whatischaos.timer # Lets find out what commands could be present in the whatischaos.timer file. ExecStart=. This line will specify the command that the timer is executing periodically.This file is missing ExecStart line. We therefore hunt for the service file 
+
+# The service file is located in the same location as the .timer file but ends with .service instead so, /lib/systemd/system/whatischaos.service
+
+cat /lib/systemd/system/whatischaos.service # This shows the contents of the .service file as below 
+
+[Unit]
+Description=Run a service
+
+[Service]
+Type=exec
+ExecStart=/bin/bash -c 'netcat -lp 3389 < /tmp/NMAP_all_hosts.txt'
+Restart=no
+RuntimeMaxSec=60s
+
+
+From this file, we can tell that the command would be /bin/bash -c 'netcat -lp 3389 < /tmp/NMAP_all_hosts.txt' therefore the answer will be 
+
+netcat -lp 3389 < /tmp/NMAP_all_hosts.txt,whatischaos.timer
+
+netcat -lp 3389 < /tmp/NMAP_all_hosts.txt -> command
+whatischaos.timer -> persistence
+
+
+######################################################### Linux Process Find Evil 4 15 #########################################################
+
+Scenario: The web server has been modified by an unknown hacktivist group. Users accessing the web server are reporting crashes and insane disk usage.
+
+Task: Identify the Cyber Attack Method used by the group, and the command running.
+
+Flag format: method,command
+
+Machine: Terra
+
+Try not to break your machine on this one...
 
 *********************************************************     SOLUTION        **********************************************************
+
+
 
 ######################################################### Linux Processes 1 5 #########################################################
 
