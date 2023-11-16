@@ -306,7 +306,114 @@ cat /lib/systemd/system/graphical.target
 # For example, if the file contains a line like Wants=display-manager.service, it means graphical.target wants to start display-manager.service.
 # Remember, this needs to be done on a machine with systemd, and you might need appropriate permissions to view these files.
 
-Answer ---> Wants=display-manager.service
+Answer ---> Wants=display-manager.grep -E '(addr|portid)' /home/garviel/output.xml | sed -n '/addr=/p' | sed 's/.*addr="\([^"]*\).*/\1/' | tr -d '\n' | md5sum
+
+
+grep -E '(addr|portid)' /home/garviel/output.xml | sed -n '/addr=/p' | sed 's/.*addr="\([^"]*\).*/\1/' | tr -d '\n' | md5sum
+
+grep -E 'addr=|state="filtered"' /home/garviel/output.xml | \
+awk '/addr=/ {ip=$0; next} /state="filtered"/ {print ip; ip=""}' | \
+sed -e 's/.*addr="\([^"]*\).*/\1/' | \
+tr -d '\n' | \
+md5sum
+
+grep -E 'addr=|state=' /home/garviel/output.xml | \
+grep -v 'state="closed"' | \
+awk '/addr=/ {ip=$0; next} /state=/ {print ip; ip=""}' | \
+sed -e 's/.*addr="\([^"]*\).*/\1/' | \
+tr -d '\n' | \
+md5sum
+
+
+
+
+
+awk '/<host>/ {rec=""; ip=""; f=0} /<host>/,/<\/host>/ {rec = rec $0 ORS} /<state state="open"/ {f=1} /<\/host>/ {if (f) print rec}' /home/garviel/output.xml | \
+grep -oP 'addr="\K[^"]*' | \
+tr -d '\n' | \
+md5sum
+
+
+
+awk '
+BEGIN { RS="</host>"; FS="\n"; OFS="" }
+/state="open"/ {
+  for (i=1; i<=NF; i++) {
+    if ($i ~ /<address addr=/) {
+      gsub(/.*addr="|".*/, "", $i);
+      printf $i
+    }
+  }
+}
+' /home/garviel/output.xml | md5sum
+service
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+grep -E '(addr|portid)' /home/garviel/output.xml | sed -n '/addr=/p' | sed 's/.*addr="\([^"]*\).*/\1/' | tr -d '\n' | md5sum
+
+
+grep -E '(addr|portid)' /home/garviel/output.xml | sed -n '/addr=/p' | sed 's/.*addr="\([^"]*\).*/\1/' | tr -d '\n' | md5sum
+
+grep -E 'addr=|state="filtered"' /home/garviel/output.xml | \
+awk '/addr=/ {ip=$0; next} /state="filtered"/ {print ip; ip=""}' | \
+sed -e 's/.*addr="\([^"]*\).*/\1/' | \
+tr -d '\n' | \
+md5sum
+
+grep -E 'addr=|state=' /home/garviel/output.xml | \
+grep -v 'state="closed"' | \
+awk '/addr=/ {ip=$0; next} /state=/ {print ip; ip=""}' | \
+sed -e 's/.*addr="\([^"]*\).*/\1/' | \
+tr -d '\n' | \
+md5sum
+
+
+
+
+
+awk '/<host>/ {rec=""; ip=""; f=0} /<host>/,/<\/host>/ {rec = rec $0 ORS} /<state state="open"/ {f=1} /<\/host>/ {if (f) print rec}' /home/garviel/output.xml | \
+grep -oP 'addr="\K[^"]*' | \
+tr -d '\n' | \
+md5sum
+
+
+
+awk '
+BEGIN { RS="</host>"; FS="\n"; OFS="" }
+/state="open"/ {
+  for (i=1; i<=NF; i++) {
+    if ($i ~ /<address addr=/) {
+      gsub(/.*addr="|".*/, "", $i);
+      printf $i
+    }
+  }
+}
+' /home/garviel/output.xml | md5sum
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ######################################################### Linux Boot Systemd 4 10 #########################################################
 

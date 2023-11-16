@@ -1650,9 +1650,17 @@ Resources https://os.cybbh.io/public/os/latest/014_windows_active_directory_enum
 
 ********************************************************* SOLUTION ********************************************************
 
+DS tools 
+
+######################################################### Windows_Active_Directory_Basics_1 5 #########################################################
+
 What is the domain portion of the following SID:
 
 S-1-5-21-1004336348-1177238915-682003330-1000
+
+********************************************************* SOLUTION ********************************************************
+
+21-1004336348-1177238915-682003330
 
 ######################################################### Windows_Active_Directory_Basics_1 5 #########################################################
 
@@ -1951,55 +1959,35 @@ HINT: Search the Active Directory record of the user identified in follow_inside
 
 To get more details on Tiffany:
 
-Get-ADUser -filter "name -like 'Tiffany*'"-Properties *
-
-To get more information containing wis on the word -> This is the other listed street address
-
-Get-ADUser -Filter "name -like '*wis*'"
-
-Damian.Lewis
-
-######################################################### Windows_AD_Follow_Insider_Trail_3 15 #########################################################
-
-Continue to follow the insider trail to find additional insider threats and their compromised mission.
-
+Get-ADUser -filter "name -like 'Tiffany*'"-Properties * (DS) Tools
 The flag is the full name of the insider threat identified.
 
 HINT: Search the Active Directory record for the user identified in follow_insider_trail_2.
 
 ********************************************************* SOLUTION ********************************************************
 
+Trying to get more information on Damian
 
+- Get-ADUser -filter "name -like '*Damian*'" -Properties *
 
-######################################################### Windows_File_System_Basics_13 15 #########################################################
+Here on the Info Section, we can see a note from Isiah. So, let find more information of Isiah
 
+P0P SECRET - Star Wars Rogue One, opening night tomorrow!  Get em before they sell out! -Isiah
 
+Get-ADUser -Filter "name -like '*Isiah*'"
 
-********************************************************* SOLUTION ********************************************************
+Isiah.Jesus
 
+######################################################### Windows_AD_Follow_Insider_Trail_4 15 #########################################################
 
+Continue to follow the insider trail to find additional insider threats and their compromised mission. This flag is a video link.
 
-######################################################### Windows_File_System_Basics_13 15 #########################################################
-
-
-
-********************************************************* SOLUTION ********************************************************
-
-
-
-######################################################### Windows_File_System_Basics_13 15 #########################################################
-
-
+Hint: Search the Active Directory record for the user identified in follow_insider_trail_3.
 
 ********************************************************* SOLUTION ********************************************************
 
 
-
-######################################################### Windows_File_System_Basics_13 15 #########################################################
-
-
-
-********************************************************* SOLUTION ********************************************************
+Get-ADUser -filter "name -like '*Isiah*'"-Properties *
 
 
 
@@ -2012,6 +2000,14 @@ HINT: Search the Active Directory record for the user identified in follow_insid
 
 
 
+
+
+
+
+Here, street address has some funky numbers: aHR0cHM6Ly93d3cueW91dHViZS5jb20vd2F0Y2g/dj1kUXc0dzlXZ1hjUQ== Converting this
+https://www.youtube.com/watch?v=dQw4w9WgXcQ
+
+is from base64 it will give us: 
 
 
 
