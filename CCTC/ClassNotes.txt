@@ -128,3 +128,7 @@ R is content I is path....
 
 
 Prefetch -> Wanted to add anything to this???
+
+
+
+Remember persistence mechanisms and how they pertain to both windows and linux... bashrc, would you be able to integrate that mechanism? 

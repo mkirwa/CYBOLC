@@ -1178,7 +1178,7 @@ Research: https://os.cybbh.io/public/os/latest/013_memory_analysis/primer.html#_
 
 ********************************************************* SOLUTION ********************************************************
 
-
+SID
 
 ######################################################### Primer_Security_7 1 #########################################################
 
@@ -1240,193 +1240,202 @@ Research: https://learn.microsoft.com/en-us/powershell/module/microsoft.powershe
 
 Get-Acl
 
-######################################################### Windows_File_System_Basics_13 15 #########################################################
+######################################################### Primer_Security_12 1 #########################################################
 
+What NET cmd.exe command can be used to enumerate the local Windows group accounts?
+
+Research: https://learn.microsoft.com/en-us/previous-versions/windows/it-pro/windows-server-2012-R2-and-2012/cc725622(v=ws.11)
+
+********************************************************* SOLUTION ********************************************************
+
+net localgroup
+
+######################################################### Primer_Security_13 1 #########################################################
+
+Read and answer
+
+https://ss64.com/nt/icacls.html
+
+What Windows cmd.exe command will display or modify Access Control Lists (ACLs) for files and folders and resolves various issues that occur when using the older CACLS & XCACLS.
+
+********************************************************* SOLUTION ********************************************************
+
+ICACLS
+
+######################################################### Primer_Security_14 1 #########################################################
+
+Read and answer:
+
+https://learn.microsoft.com/en-us/windows/win32/memory/data-execution-prevention
+
+What Windows security feature is a system-level memory protection feature that is built into the operating system starting with Windows XP and Windows Server 2003 and enables the system to mark one or more pages of memory as non-executable?
+
+********************************************************* SOLUTION ********************************************************
+
+DEP
+
+######################################################### Primer_Security_15 1 #########################################################
+
+What computer security technique is used in Windows to prevent exploitation of memory corruption vulnerabilities? This feature randomly arranges the address space positions of key data areas of a process, in order to prevent an attacker from reliably jumping to, a particular exploited function in memory.
+
+Research: https://www.mandiant.com/resources/blog/six-facts-about-address-space-layout-randomization-on-windows
+
+********************************************************* SOLUTION ********************************************************
+
+ASLR
+
+######################################################### Primer_Security_16 1 #########################################################
+
+What is a small kernel-mode library that can implement API hooking?
+
+Research: https://techcommunity.microsoft.com/t5/ask-the-performance-team/demystifying-shims-or-using-the-app-compat-toolkit-to-make-your/ba-p/374947
+
+********************************************************* SOLUTION ********************************************************
+
+Shim
+
+######################################################### Primer_Security_17 1 #########################################################
+
+Read and Answer the next 4 challenges regarding Windows security features introduced in Windows 10 Creator's Update (Windows 10, version 1703)
+
+https://learn.microsoft.com/en-us/windows/security/threat-protection/overview-of-threat-mitigations-in-windows-10
+
+Which security feature helps keep attackers from gaining access through Pass-the-Hash or Pass-the-Ticket attacks using virtualization-based security to isolate secrets, such as NTLM password hashes and Kerberos Ticket Granting Tickets?
+
+********************************************************* SOLUTION ********************************************************
+
+Credential Guard
+
+######################################################### Primer_Security_18 1 #########################################################
+
+Introduced in Windows 8 this is Microsoft Antivirus, anti-malware solution?
+Research: https://www.microsoft.com/en-us/windows/comprehensive-security
+
+********************************************************* SOLUTION ********************************************************
+
+Defender
+
+######################################################### Primer_Security_19 1 #########################################################
+
+What security technique helps prevent overwrites of the Structured Exception Handler?
+Research: https://support.microsoft.com/en-us/topic/how-to-enable-structured-exception-handling-overwrite-protection-sehop-in-windows-operating-systems-8d4595f7-827f-72ee-8c34-fa8e0fe7b915
+
+********************************************************* SOLUTION ********************************************************
+
+SEHOP
+
+######################################################### Primer_Security_20 1 #########################################################
+
+What security protection is built into Windows 10, as described in the "Memory reservations" item in Kernel pool protections? This includes protecting address space 0x00000000 (not listed in article).
+Hint: what is 0? Research: https://learn.microsoft.com/en-us/windows/win32/memory/reserving-and-committing-memory
+
+********************************************************* SOLUTION ********************************************************
+
+null page
+
+######################################################### Primer_Security_21 1 #########################################################
+
+Read and answer: https://learn.microsoft.com/en-us/windows/win32/wfp/windows-resource-protection-portal
+
+What Windows security feature prevents the replacement of essential system files, folders, and registry keys that are installed as part of the operating system? It became available starting with Windows Server 2008 and Windows Vista.
+
+********************************************************* SOLUTION ********************************************************
+
+Windows Resource Protection
+
+######################################################### Primer_Security_22 1 #########################################################
+
+Read and answer: https://support.microsoft.com/en-us/topic/use-the-system-file-checker-tool-to-repair-missing-or-corrupted-system-files-79aa86cb-ca52-166a-92a3-966e85d4094e
+
+What option should you use with the System File Checker cmd.exe tool sfc.exe to scan all protected system files, and replace corrupted files with a cached copy that is located in a compressed folder at %WinDir%\System32\dllcache ?
+
+********************************************************* SOLUTION ********************************************************
+
+/scannow
+
+######################################################### Primer_Security_23 1 #########################################################
+
+Where are copies of known-good critical system files located at %WinDir%___________ and used by the Windows Resource Protection feature?
+
+hint: complete the path
+
+Research: https://en.wikipedia.org/wiki/Windows_Resource_Protection https://learn.microsoft.com/en-us/windows-hardware/manufacture/desktop/clean-up-the-winsxs-folder?view=windows-11
+
+********************************************************* SOLUTION ********************************************************
+
+\WinSxS\Backup
+
+######################################################### Primer_Networking_7 1 #########################################################
+
+What CLI tool is often used to troubleshoot DNS issues but can also be used in reconnaissance?
+
+Research: https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/nslookup
+
+********************************************************* SOLUTION ********************************************************
+
+nslookup
+
+######################################################### Primer_Networking_8 1 #########################################################
+
+In Windows 10 what is the full path to the hosts file? Complete the path c:\Windows____________
+
+Research: https://www.tenable.com/plugins/nessus/23910
+
+********************************************************* SOLUTION ********************************************************
+
+System32\drivers\etc\hosts
+
+######################################################### Primer_Networking_9 1 #########################################################
+
+Fill in the missing component for the usual Host Name Resolution order:
+
+Client checks own host name
+Client searches local Hosts file
+______________________
+NetBIOS name resolution sequence is used as a backup
+Flag Format: Full name or acronym
+
+Research: https://learn.microsoft.com/en-us/windows/win32/dns/dns-overview https://support.microsoft.com/en-us/topic/microsoft-tcp-ip-host-name-resolution-order-dae00cc9-7e9c-c0cc-8360-477b99cb978a
 
 
 ********************************************************* SOLUTION ********************************************************
 
+Domain Name System (DNS) servers are queried.
 
+######################################################### Primer_Networking_10 1 #########################################################
 
-######################################################### Windows_File_System_Basics_13 15 #########################################################
+What cmd.exe tool will display NetBIOS transport statistics in Windows?
 
+Research: https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/nbtstat
+
+********************************************************* SOLUTION ********************************************************
+
+nbtstat
+
+######################################################### Primer_Surveys_1 1 #########################################################
+
+What team survey is focused on security and auditing?
+
+______ Team
+
+Research: https://www.coursera.org/articles/red-team-vs-blue-team
 
 
 ********************************************************* SOLUTION ********************************************************
 
+Red
 
+######################################################### Primer_Surveys_2 1 #########################################################
 
-######################################################### Windows_File_System_Basics_13 15 #########################################################
+What type of survey is focused on computer system settings, updates, configurations and installed software?
 
+________ Team
 
-
-********************************************************* SOLUTION ********************************************************
-
-
-
-
-######################################################### Windows_File_System_Basics_13 15 #########################################################
-
-
+Research: https://ine.com/blog/understanding-blue-team-roles
 
 ********************************************************* SOLUTION ********************************************************
 
-
-######################################################### Windows_Browser_Artifacts_1 5 #########################################################
-
-
-
-********************************************************* SOLUTION ********************************************************
-
-
-
-######################################################### Windows_File_System_Basics_13 15 #########################################################
-
-
-
-********************************************************* SOLUTION ********************************************************
-
-
-
-
-######################################################### Windows_File_System_Basics_13 15 #########################################################
-
-
-
-********************************************************* SOLUTION ********************************************************
-
-
-
-
-######################################################### Windows_File_System_Basics_13 15 #########################################################
-
-
-
-********************************************************* SOLUTION ********************************************************
-
-
-
-######################################################### Windows_File_System_Basics_13 15 #########################################################
-
-
-
-********************************************************* SOLUTION ********************************************************
-
-
-
-######################################################### Windows_File_System_Basics_13 15 #########################################################
-
-
-
-********************************************************* SOLUTION ********************************************************
-
-
-
-######################################################### Windows_File_System_Basics_13 15 #########################################################
-
-
-
-********************************************************* SOLUTION ********************************************************
-
-
-
-
-######################################################### Windows_File_System_Basics_13 15 #########################################################
-
-
-
-********************************************************* SOLUTION ********************************************************
-
-
-######################################################### Windows_Browser_Artifacts_1 5 #########################################################
-
-
-
-********************************************************* SOLUTION ********************************************************
-
-
-
-######################################################### Windows_File_System_Basics_13 15 #########################################################
-
-
-
-********************************************************* SOLUTION ********************************************************
-
-
-
-
-######################################################### Windows_File_System_Basics_13 15 #########################################################
-
-
-
-********************************************************* SOLUTION ********************************************************
-
-
-
-
-######################################################### Windows_File_System_Basics_13 15 #########################################################
-
-
-
-********************************************************* SOLUTION ********************************************************
-
-
-
-
-######################################################### Windows_File_System_Basics_13 15 #########################################################
-
-
-
-********************************************************* SOLUTION ********************************************************
-
-
-
-######################################################### Windows_File_System_Basics_13 15 #########################################################
-
-
-
-********************************************************* SOLUTION ********************************************************
-
-
-
-######################################################### Windows_File_System_Basics_13 15 #########################################################
-
-
-
-********************************************************* SOLUTION ********************************************************
-
-
-
-
-######################################################### Windows_File_System_Basics_13 15 #########################################################
-
-
-
-********************************************************* SOLUTION ********************************************************
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+Blue
 
 ######################################################### Windows_Memory_Analysis_Plugin_1 5 #########################################################
 
@@ -1548,3 +1557,469 @@ Flag format: ip:port
 .\volatility_2.6_win64_standalone.exe -f ".\0zapftis.vmem" --profile=WinXPSP2x86 connscan
 
 Ans ->  172.16.98.1:6666
+
+
+
+
+
+
+######################################################################################################################################################
+######################################################                                             ###################################################
+######################################################   16_windows_active_directory_enumeration   ###################################################
+######################################################                                             ###################################################
+######################################################################################################################################################
+
+
+######################################################### Primer_Active_Directory_1 1 #########################################################
+
+What is the database that is used to connect users with network resources?
+
+Resources https://os.cybbh.io/public/os/latest/014_windows_active_directory_enumeration/primer.html
+
+********************************************************* SOLUTION ********************************************************
+
+Active Directory
+
+######################################################### Primer_Active_Directory_2 1 #########################################################
+
+What are all things that are in active directory stored as?
+
+Resources https://os.cybbh.io/public/os/latest/014_windows_active_directory_enumeration/primer.html#_1_1_active_directory_structure
+
+********************************************************* SOLUTION ********************************************************
+
+objects
+
+######################################################### Primer_Active_Directory_3 1 #########################################################
+
+What is the Active Directory component which contains formal definitions of every object class that can be created in an Active Directory forest?
+
+Resources https://os.cybbh.io/public/os/latest/014_windows_active_directory_enumeration/primer.html#_3_domains
+
+********************************************************* SOLUTION ********************************************************
+
+Schema
+
+######################################################### Primer_Active_Directory_4 1 #########################################################
+
+What protocol is used when accessing and updating the Active Directory?
+
+Resources https://www.sciencedirect.com/topics/computer-science/directory-access-protocol
+
+********************************************************* SOLUTION ********************************************************
+
+LDAP
+
+######################################################### Primer_Active_Directory_5 1 #########################################################
+
+From an Offensive perspective, what type of account is usually the main target?
+
+Resources https://os.cybbh.io/public/os/latest/014_windows_active_directory_enumeration/primer.html#_7_administrator_best_practices
+
+********************************************************* SOLUTION ********************************************************
+
+Administrator
+
+######################################################### Primer_Active_Directory_6 1 #########################################################
+
+Task : If an account has been inactive for a substantial amount of time what should the adminstrators do to the account?
+
+Resources https://os.cybbh.io/public/os/latest/014_windows_active_directory_enumeration/primer.html#_11_impact_of_group_policy_settings
+
+
+********************************************************* SOLUTION ********************************************************
+
+Disable
+
+######################################################### Primer_Active_Directory_7 1 #########################################################
+
+What is the basic PowerShell cmdlet used to enumerate users?
+
+Resources https://os.cybbh.io/public/os/latest/014_windows_active_directory_enumeration/primer.html#_2_2_powershell
+
+
+********************************************************* SOLUTION ********************************************************
+
+Get-ADUser
+
+######################################################### Primer_Active_Directory_8 1 #########################################################
+
+What is the suite of tools used in CLI to enumerate users across the network?
+
+Resources https://os.cybbh.io/public/os/latest/014_windows_active_directory_enumeration/primer.html#_2_1_domain_service_ds_tools
+
+********************************************************* SOLUTION ********************************************************
+
+What is the domain portion of the following SID:
+
+S-1-5-21-1004336348-1177238915-682003330-1000
+
+######################################################### Windows_Active_Directory_Basics_1 5 #########################################################
+
+What PowerShell command will list domain groups?
+
+********************************************************* SOLUTION ********************************************************
+
+Get-ADGroup
+
+######################################################### Windows_Active_Directory_Basics_2 5 #########################################################
+
+What PowerShell command will list all users and their default properties?
+
+The flag is the full command with arguments.
+
+********************************************************* SOLUTION ********************************************************
+
+Get-ADUser -Filter *
+
+######################################################### Windows_Active_Directory_Basics_5 5 #########################################################
+
+What PowerShell command will allow you to search Active Directory accounts for expired accounts without having to create a filter?
+
+The flag is only the command, no arguments/switches.
+
+********************************************************* SOLUTION ********************************************************
+
+search-adaccount
+
+######################################################### Windows_AD_Search_Accounts 10 #########################################################
+
+Find the expired accounts that aren't disabled. List the last names in Alphabetical Order, separated with a comma, and no space between.
+
+Flag format: name,name
+
+Reminder: All challenges are done using the Domain-Controller
+
+********************************************************* SOLUTION ********************************************************
+
+search-adaccount -AccountExpired
+
+- krause,page 
+
+######################################################### Windows_AD_Search_Emails 10 #########################################################
+
+Find the unprofessional email addresses. List the email's domain.
+
+********************************************************* SOLUTION ********************************************************
+
+Get-ADUser -Filter * -Properties emailaddress |select emailaddress
+
+Get-ADUser -Filter * -Properties emailaddress | Where-Object { $_.emailaddress -notmatch '^[a-zA-Z]+\.[a-zA-Z]+\.mil@mail\.mil$' } | Select-Object emailaddress
+
+
+Lewis.Hansen.mil@mail.mil
+
+All the emails are mail.mil beside one which is ashleymadison.com ,just the email domain!
+
+CharlieB@ashleymadison.com
+Skyler01@ashleymadison.com
+
+######################################################### Windows_AD_Search_Files 10 #########################################################
+
+The flag is the unprofessionally-named file located somewhere on the Warrior Share.
+
+Connect to the Warrior Share:
+
+net use * "\\file-server\warrior share"
+
+********************************************************* SOLUTION ********************************************************
+
+ Connect to the Warrior Share: net use * "\\file-server\warrior share"
+
+- to change the path to different drive: Set-Location -Path Z:/
+
+- To get child items(folders/files) in current and all subdiretories of the Z drive
+
+Get-ChildItem -path 'Z:\' -Recurse –Force 
+
+Here, path ‘Z:\’ can be replaced with other drives or if we want to search for only pdf we can do ‘Z:\*.pdf’
+
+After looking through all directory we see a file called
+
+Lulz.pdf which seems unprofessional
+
+https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.management/get-childitem?view=powershell-7.2
+
+######################################################### Windows_AD_Search_Insider_2 10 #########################################################
+
+The flag is the name of the user who is requesting modified access rights.
+
+Connect to the Warrior Share:
+
+net use * "\\file-server\warrior share"
+
+Hint: Complete Windows_AD_Search_Insider_1 first.
+
+********************************************************* SOLUTION ********************************************************
+
+After connecting to the fileserver, we look through the directories, we know S6 handles all the access request so we go to brigade folder throught file path: \\file-server\warrior share\Brigade HQ\S-6 in file explored
+
+Open the 14287 file using file explorer -> enter \\file-server\warrior share\Brigade HQ\S-6 to the file path... 
+- We find pdf 14287.pdf, after opening this we see –K as the initial. Need to find the full name. To find full name we know tis email was regarding printer issues so lets see all the groups in this directory:
+
+- Get-ADGroup -Filter * #Lists all the groups
+
+- Get-ADgroupMember –Identity ‘Print Server Group’ -recursive #To see all the mmbers of this group
+
+- To get the names and phonenumbers:
+
+- Get-ADGroupMember -Identity 'Print Server Group' -recursive | select name, telephoneNumbers
+
+- We find only one name with the name that has K
+
+Karen,Nance
+
+######################################################### Windows_AD_Search_Insider_1 10 #########################################################
+
+The flag is the name of the file where someone is requesting modified access rights.
+
+Connect to the Warrior Share:
+
+net use * "\\file-server\warrior share"
+
+********************************************************* SOLUTION ********************************************************
+
+14287.pdf
+
+######################################################### Windows_AD_Search_Naming 10 #########################################################
+
+Find the accounts that contain unprofessional information in the description.
+
+List the last names in Alphabetical Order, separated by a comma, with no space.
+
+Flag format: name,name
+
+********************************************************* SOLUTION ********************************************************
+
+- To get the names of all the users along with description
+
+get-aduser -filter * -Properties Description | select name, description
+
+
+Alice.Brandywine    <=========|%%%%> Brigade S-6 Automations NCO <%%%%|=========>
+Krystal.Jimenez     <------<< Brigade S-1 ACTIONS NCOIC |_|> >>------>
+
+Brandywine,Jimenez
+
+######################################################### Windows_AD_Search_Passwords 10 #########################################################
+
+
+Find the following three accounts:
+
+two accounts with passwords that never expire
+one account that has its password stored using reversible encryption
+List the last names in Alphabetical Order, comma-separated, no spaces. Do not list built-in accounts.
+
+Flag format: name,name,name
+
+
+
+********************************************************* SOLUTION ********************************************************
+
+First look for the properties which you can use to filter through. The command to look for all the properties is:
+
+Get-ADUser -filter * -Properties *
+
+- After looking at all the properties we can see that properties we need is AllowReversiblePasswordEncryption and passwordneverexpires
+
+- Now using these properties to find the answer # Filter using these properties and asking to give values if this property is set to true,We know not to use the built-in account
+
+
+- Get-ADUser -filter 'passwordneverexpires -eq "true"'
+
+- Get-ADUser -filter 'AllowReversiblePasswordEncryption -eq "true"'
+
+Xavier.Ibarra -> passwordneverexpires
+Eddie.Sanchez -> passwordneverexpires
+
+Alice.Brandywine -> AllowReversiblePasswordEncryption
+
+Brandywine,Ibarra,Sanchez
+
+######################################################### Windows_AD_Search_PII 10 #########################################################
+
+The flag is the name of the file containing PII on the Warrior Share.
+
+Connect to the Warrior Share:
+
+net use * "\\file-server\warrior share"
+
+********************************************************* SOLUTION ********************************************************
+
+to view all the files in directories and sub-directories:
+
+Get-ChildItem -path 'Z:\' -Recurse –Force
+
+Going through the files we can see phone_matrix.xlsx 
+
+######################################################### Windows_Active_Directory_Basics_6 10 #########################################################
+
+Find the short name of the domain in which this server is a part of.
+
+********************************************************* SOLUTION ********************************************************
+
+To find the name of the domain:
+
+Get-WmiObject -Class win32_NTDomain
+
+Ans: ARMY 
+
+######################################################### Windows_Active_Directory_Basics_7 10 #########################################################
+
+
+What is the RID of the krbtgt account.
+
+Example: S-1-5-21-1004336348-1177238915-682003330-[501]
+
+
+********************************************************* SOLUTION ********************************************************
+
+Example: S-1-5-21-1004336348-1177238915-682003330-[501]
+
+To filter the name “krbtgt” use the command:
+
+get-aduser -filter 'Name -like "krbtgt"'
+
+answer: 502 
+
+######################################################### Windows_Active_Directory_Basics_3 10 #########################################################
+
+
+How many users are members of the Domain Admins group?
+
+HINT: No sub-groups.
+
+********************************************************* SOLUTION ********************************************************
+(Get-ADGroup "Domain Admins" -Properties *).Member.Count # There's a 1 level so subtract 1 you remain with 1. 
+
+Get-ADGroupMember -Identity "domain admins"
+
+asnw#1 
+
+######################################################### Windows_Active_Directory_Basics_4 10 #########################################################
+
+How many total users are members of the Domain Admins group?
+
+********************************************************* SOLUTION ********************************************************
+
+to get the number of people in Domain Admin group
+
+Get-ADGroupMember -Identity 'Domain Admins' -Recursive
+
+Now, to count
+
+(Get-ADGroupMember -Identity 'Domain Admins' -Recursive).count
+
+- 14 
+
+######################################################### Windows_AD_Follow_Insider_Trail_1 15 #########################################################
+
+
+Continue to follow the insider trail to find additional insider threats and their compromised mission.
+
+The flag is the full name of the next insider threat identified.
+
+HINT: Search the Active Directory record of the user identified in search_insider_2.
+
+********************************************************* SOLUTION ********************************************************
+
+Get-ADUser karen.nance -Properties *
+
+Here, we see street address looks weird:
+
+rkcrpg zl arkg pbzzhavpngvba ng 06:30 uef gbzbeebj zbeavat. Ybpngvba sbe qrgnvyf v aibyivat n uvtuyl pynffvsvrq bcrengvba hcybnqrq gb Gvssnal
+
+rkcrpg zl arkg pbzzhavpngvba ng 06:30 uef gbzbeebj zbeavat. Ybpngvba sbe qrgnvyf vaibyivat n uvtuyl pynffvsvrq bcrengvba hcybnqrq gb Gvssnal . .
+
+Now, using ROT13 to decipher we get message: expect my next communication at 06:30 hrs tomorrow morning. Location for details involving a highly classified operation uploaded to Tiffany
+
+Now, we know tiffany is another user. To get more details of Tiffany:
+
+Get-ADUser -filter "name -like 'Tiffany*'"
+
+Tiffany.Bellacino
+
+######################################################### Windows_AD_Follow_Insider_Trail_2 15 #########################################################
+
+Continue to follow the insider trail to find additional insider threats and their compromised mission.
+
+The flag is the username resulting from assembling clues within a user's records.
+
+HINT: Search the Active Directory record of the user identified in follow_insider_trail_1. Piece together clues to identify another insider threat.
+
+********************************************************* SOLUTION ********************************************************
+
+To get more details on Tiffany:
+
+Get-ADUser -filter "name -like 'Tiffany*'"-Properties *
+
+To get more information containing wis on the word -> This is the other listed street address
+
+Get-ADUser -Filter "name -like '*wis*'"
+
+Damian.Lewis
+
+######################################################### Windows_AD_Follow_Insider_Trail_3 15 #########################################################
+
+Continue to follow the insider trail to find additional insider threats and their compromised mission.
+
+The flag is the full name of the insider threat identified.
+
+HINT: Search the Active Directory record for the user identified in follow_insider_trail_2.
+
+********************************************************* SOLUTION ********************************************************
+
+
+
+######################################################### Windows_File_System_Basics_13 15 #########################################################
+
+
+
+********************************************************* SOLUTION ********************************************************
+
+
+
+######################################################### Windows_File_System_Basics_13 15 #########################################################
+
+
+
+********************************************************* SOLUTION ********************************************************
+
+
+
+######################################################### Windows_File_System_Basics_13 15 #########################################################
+
+
+
+********************************************************* SOLUTION ********************************************************
+
+
+
+######################################################### Windows_File_System_Basics_13 15 #########################################################
+
+
+
+********************************************************* SOLUTION ********************************************************
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -381,8 +381,13 @@ Command Injection or Unauthorized Command Execution: An attacker may have gained
 Malware or Rootkit: The unusual command might be a part of a malicious script or a rootkit running on the server.
 
 
-Command Injection, Malware or Rootkit # Method
+Command Injection, Malware or Rootkit # Method #DDOS
 /bin/bash -c /bin/apache3 -lp 443     # Command
+
+
+<<<Answer>>>
+DDOS # Method
+/bin/apache3 -lp 443 < /dev/urandom # command 
 
 ##########
 
@@ -462,7 +467,11 @@ Try not to break your machine on this one...
 
 *********************************************************     SOLUTION        **********************************************************
 
+find / -type f -size +100000 2>/dev/null
 
+ps aux
+
+root      1006  0.0  0.0  21776   588 ?        Ss   Nov06   0:00 /bin/bash -c /bin/apache3 -lp 443 
 
 ######################################################### Linux Processes 1 5 #########################################################
 
