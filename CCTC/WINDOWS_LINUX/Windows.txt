@@ -1,3 +1,15 @@
+######################################################### Primer_Boot_Process_9 1 #########################################################
+
+What is the name of the process that spawns SYSTEM?
+
+Research: https://en.wikipedia.org/wiki/Windows_NT_booting_process (Hint: What really is SYSTEM?)
+
+
+********************************************************* SOLUTION ********************************************************
+
+ntoskrnl.exe
+
+
 
 ######################################################################################################################################################
 ######################################################                                             ###################################################
@@ -471,6 +483,30 @@ Identify the flag from the file in hidden_processes_8.
 type legit_script.ps1 # see what the flag/comment is - > Th1s_1s_n0t_l3g1t
 
 
+######################################################### Windows_Logs_4 15 #########################################################
+
+How does a User-Mode Service request resources?
+
+Research:
+
+https://www.educative.io/answers/what-is-user-mode-vs-kernel-mode-in-an-operating-system
+
+********************************************************* SOLUTION ********************************************************
+
+system calls
+
+######################################################### Windows_Boot_Remediate_2 10 #########################################################
+
+Enter the full path of the program that was run on this computer from an abnormal location.
+
+********************************************************* SOLUTION ********************************************************
+
+shutdown /r
+
+Get-Item HKLM:\SYSTEM\CurrentControlSet\Services\bam\UserSettings\*gar6
+
+C:\Windows\Temp\bad_intentions.exe
+
 
 ######################################################################################################################################################
 ######################################################                                             ###################################################
@@ -688,9 +724,111 @@ sc.exe showsid “Legit”
 
 ######################################################################################################################################################
 ######################################################                                             ###################################################
-######################################################                  10_windows_uac             ###################################################
+######################################################        Windows Auditing and Logging         ###################################################
 ######################################################                                             ###################################################
 ######################################################################################################################################################
+
+
+######################################################### Primer_Auditing_1 1 #########################################################
+
+Logging, Auditing and Monitoring are often confused with each other but are distinctly different. Which term refers to real-time analysis and is often accomplished with a Security Event Information Management system (SIEM)?
+
+********************************************************* SOLUTION ********************************************************
+
+Monitoring
+
+######################################################### Primer_Auditing_2 1 #########################################################
+
+What term is most appropriate when referring to the process of reviewing log files or other records for specified period?
+
+********************************************************* SOLUTION ********************************************************
+
+Auditing
+
+######################################################### Primer_Auditing_3 1 #########################################################
+
+"Complete the following path to the Windows System Log which records system events e.g. startup and shutdown: %systemroot%\System32_______________
+
+********************************************************* SOLUTION ********************************************************
+
+%SystemRoot%\System32\Winevt\Logs\System.evtx
+
+
+######################################################### Primer_Auditing_4 1 #########################################################
+
+Which Windows log contains either success or failures and can be configured to record failed logon attempts?
+
+********************************************************* SOLUTION ********************************************************
+
+Security
+
+######################################################### Primer_Auditing_5 1 #########################################################
+
+"Which Windows account is the only account to have WRITE-APPEND access to Windows event logs?"
+
+Resource: https://os.cybbh.io/public/os/latest/011_windows_auditing_&_logging/primer.html#_7_describe_the_systems_audit_policy
+
+
+********************************************************* SOLUTION ********************************************************
+
+NT AUTHORITY\SYSTEM
+
+######################################################### Primer_Auditing_6 1 #########################################################
+
+What is parsed in an NTFS object's security descriptor, by the Security Reference Monitor (SRM), to determine if an audit entry will be created in the Windows Security Log?
+
+Research: https://learn.microsoft.com/en-us/windows/win32/secauthz/access-control-lists
+
+********************************************************* SOLUTION ********************************************************
+
+SACL --> Security Access Control List 
+
+######################################################### Primer_Auditing_7 1 #########################################################
+
+Which registry key holds the audit policy configuration? **Hint - Give full path
+
+********************************************************* SOLUTION ********************************************************
+
+HKLM\SECURITY\Policy\PolAdtEv
+
+######################################################### Primer_Auditing_8 1 #########################################################
+
+Which sysinternals tool is used to parse logs?
+
+********************************************************* SOLUTION ********************************************************
+
+PsLogList
+
+(((((((((((((((((((((((())))))))))))))))))))))))
+# Define the event ID for process creation
+$eventId = 4688
+
+# Define a list of normal locations (you may need to modify this list)
+$normalLocations = @("C:\Windows\", "C:\Program Files\", "C:\Program Files (x86)\")
+
+# Get the most recent 1000 events (you can adjust the number)
+$events = Get-WinEvent -FilterHashtable @{LogName='Security'; ID=$eventId} -MaxEvents 1000
+
+foreach ($event in $events) {
+    # Convert the event to XML to access all its properties easily
+    $eventXml = [xml]$event.ToXml()
+    $commandLine = $eventXml.Event.EventData.Data | Where-Object { $_.Name -eq "CommandLine" }.'#text'
+    $isNormalLocation = $false
+
+    # Check if the command line starts with a path in one of the normal locations
+    foreach ($location in $normalLocations) {
+        if ($commandLine -like "$location*") {
+            $isNormalLocation = $true
+            break
+        }
+    }
+
+    # Output the command line if it's not from a normal location
+    if (-not $isNormalLocation) {
+        Write-Output "Abnormal Execution: $commandLine"
+    }
+}
+
 
 
 ######################################################### Primer_Networking_1 1 #########################################################
@@ -971,6 +1109,101 @@ ls
 get-content 3-14-24.txt
 
 Flag: Flag, Found A.
+
+
+
+######################################################### Windows_Prefetch_2 10 #########################################################
+
+Enter the name of the questionable file in the prefetch folder.
+
+
+********************************************************* SOLUTION ********************************************************
+
+PS C:\> Get-Childitem -Path 'C:\Windows\Prefetch' -ErrorAction Continue
+
+BAD_INTENTIONS.EXE-8F2806FC.pf
+
+######################################################### Windows_Prefetch_3 10 #########################################################
+
+What is the creation time of the questionable file in the prefetch folder?
+
+Flag format: mm/dd/yyyy
+
+********************************************************* SOLUTION ********************************************************
+
+
+Look to the left of the file.... 
+
+2/23/2022  10:01 PM
+
+######################################################### Windows_Recycle_Bin_3 10 #########################################################
+
+Recover the flag from the Recycle Bin. Enter the name of the recycle bin file that contained the contents of the flag, and the contents of the deleted file.
+
+Flag format: filename,contents
+
+
+********************************************************* SOLUTION ********************************************************
+
+Get-Childitem 'C:\$RECYCLE.BIN' -Recurse -Verbose -Force | select FullName | format-table -wra
+
+Get-Content 'C:\$RECYCLE.BIN\S-1-5-21-2881336348-3190591231-4063445930-1003\$RZDAQ4U.txt'
+
+$RZDAQ4U.txt,DontTrashMeyo
+
+?????????????????????????????????????????????
+
+(Get-Childitem 'C:\$RECYCLE.BIN' -Recurse -Verbose -Force | select FullName | format-table -wrap).count -> Gives the total number of files available
+
+C:\$RECYCLE.BIN\S-1-5-21-2881336348-3190591231-4063445930-1003\$RZDAQ4U.txt
+
+C:\$RECYCLE.BIN\S-1-5-21-2881336348-3190591231-4063445930-1003\$RZVLP5M.txt
+
+Get-Content 'C:\$RECYCLE.BIN\S-1-5-21-2881336348-3190591231-4063445930-1003\$RZDAQ4U.txt'
+
+Get-ChildItem 'C:\$RECYCLE.BIN' -Recurse -Force -Filter '*.txt' | Select-Object FullName | Format-Table -Wrap -AutoSize # Filter files based on txt 
+
+
+######################################################### Windows_Jump_Lists 10 #########################################################
+
+Find the file in the jump list location that might allow privilege escalation.
+
+
+********************************************************* SOLUTION ********************************************************
+
+Get-Childitem -Recurse C:\Users\*\AppData\Roaming\Microsoft\Windows\Recent -ErrorAction Continue | select FullName, LastAccessTime 
+
+cd C:\Users\student\AppData\Roaming\Microsoft\Windows\Recent\AutomaticDestinations
+
+######################################################### Primer_Boot_Process_2 1 #########################################################
+
+cd C:\Users\student\AppData\Roaming\Microsoft\Windows\Recent\AutomaticDestinations
+
+ls -force
+
+Get-content .\5f7b5f1e01b81337.automaticDestinations-ms
+
+UIDPWD.txt
+
+((((((((((((((((()))))))))))))))))
+
+5f7b5f1e01b81337.automaticDestinations-ms
+5f7b5f1e01b83767.automaticDestinations-ms
+f01b4d95cf55d32a.automaticDestinations-ms
+
+
+Get-content 5f7b5f1e01b83767.automaticDestinations-ms
+
+######################################################### Windows_Logs_4 15 #########################################################
+
+Check event logs for a "flag" string.
+
+Machine: file-server
+
+********************************************************* SOLUTION ********************************************************
+
+Get-Eventlog -LogName System | ft -wrap | findstr /i "flag"
+
 
 
 ######################################################### Windows_File_System_Basics_13 15 #########################################################

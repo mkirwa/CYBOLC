@@ -1,3 +1,1097 @@
+#########################################################################################################################################
+#########################################################                       #########################################################
+#########################################################    04_Linux_Basics2   #########################################################
+#########################################################                       #########################################################
+#########################################################################################################################################
+
+######################################################### Linux Basics 1 5 #########################################################
+
+What command lists the contents of directories in Linux/Unix systems?
+
+********************************************************* SOLUTION ********************************************************
+
+ls
+
+######################################################### Linux Basics 2 5 #########################################################
+
+For the ls command, what arguments, or switch options, will allow you to print human-readable file sizes in a long-list format?
+
+The flag is entire command, including arguments
+
+********************************************************* SOLUTION ********************************************************
+
+ls –lh
+
+
+######################################################### Linux Basics 3 5 #########################################################
+
+What character will pipe the standard output from
+
+echo "I’m a plumber"
+
+to another command, as standard input?
+
+********************************************************* SOLUTION ********************************************************
+
+|
+
+######################################################### Linux Basics 4 5 #########################################################
+
+
+What argument/switch option, when used with man, will search the short descriptions and man-page-names for a keyword that you provide?
+
+The flag is the complete command, with argument/switch.
+
+********************************************************* SOLUTION ********************************************************
+
+man -k 
+
+######################################################### Linux Basics LFS Hierarchy 5 #########################################################
+
+What is the absolute path to the root directory?
+
+
+********************************************************* SOLUTION ********************************************************
+
+/
+
+######################################################### Linux Basics LFS Hierarchy2 5 #########################################################
+
+What is the absolute path to the default location for configuration files?
+
+********************************************************* SOLUTION ********************************************************
+
+/etc
+
+######################################################### Linux Basics LFS Hierarchy3 5 #########################################################
+
+What is the directory that contains executable programs (binaries) which are needed in single user mode, to bring the system up or to repair it?
+
+********************************************************* SOLUTION ********************************************************
+
+/bin
+
+######################################################### Linux Basics LFS Hierarchy4 5 #########################################################
+
+What is the absolute path to the directory which contains non-essential binaries that are accessible by standard users as well as root?
+
+********************************************************* SOLUTION ********************************************************
+
+/usr/bin
+
+######################################################### Linux Basics LFS Hierarchy5 5 #########################################################
+
+An absolute path to a directory which contains binaries only accessible by the root user, or users in the root group.
+
+********************************************************* SOLUTION ********************************************************
+
+/sbin
+
+######################################################### Linux Basics LFS Hierarchy6 5 #########################################################
+
+What is the absolute path for the binary cat man-page?
+
+Research: https://man7.org/linux/man-pages/man1/man.1.html
+
+********************************************************* SOLUTION ********************************************************
+
+whereis cat
+/usr/share/man/man1/cat.1.gz
+
+######################################################### Linux Basics 5 10 #########################################################
+
+Search the man pages for the keyword digest. Then, use one of the binaries listed to hash the string OneWayBestWay using the largest sha hash available.
+
+The resulting hash is the flag.
+
+********************************************************* SOLUTION ********************************************************
+
+man -k digest # finds the keyword 
+echo -n "OneWayBestWay" | sha512sum
+
+######################################################### Linux Basics 6 10 #########################################################
+
+Use File: /home/garviel/Encrypted
+
+This file contains encrypted contents. Identify its file type, then decode its contents.
+
+Hint: Use OpenSSL
+Research: https://www.openssl.org/docs/man1.1.1/man1/enc.html
+
+Reminder: All challenges are done using the Terra box.
+
+********************************************************* SOLUTION ********************************************************
+
+file Encrypted # find the type of the file
+
+unzip Encrypted # unecrypts the file 
+
+ls # check the 2 files that have been unencrypted one has a password and one is the encrypted file 
+
+openssl enc -d -aes-128-cbc -in cipher -out deciphered.txt
+Performed on /home/garviel/Encrypted
+
+# check the type of file 
+file Encrypted 
+
+# unzip the encrypted file 
+unzip Encrypted 
+
+# check the contents to find which is a password file and which has encrypted text 
+cat cipher # cipher text 
+cat symmetric # contains the password 
+
+#decrypt the file 
+openssl enc -d -aes256 -in cipher -out cipheroutput # Enter the password from symmetric
+
+openssl enc -d -aes-256-cbc -pbkdf2 -iter 10000 -in cipher -out cipheroutput1
+
+AES128Key
+
+(((((((((( ASK INSTRUCTOR ))))))))))
+######################################################### Linux Basics LFS Hierarchy7 10 #########################################################
+
+Search the user home directories to find the file with the second-most lines in it. The flag is the number of lines in the file.
+
+Hint: Exclude the VDI file!
+
+********************************************************* SOLUTION ********************************************************
+
+find ./ -type f | xargs wc -l
+
+20003
+
+######################################################### Linux Basics Users and Groups1 10 #########################################################
+
+Read the file that contains the user database for the machine. Identify a strange comment.
+
+********************************************************* SOLUTION ********************************************************
+
+$ cat /etc/passwd | awk -F ':' '{print$5}' | grep -v 'nologin'
+
+Intel Pirate
+
+######################################################### Linux Basics Users and Groups2 10 #########################################################
+
+Identify all members of the lodge group. List their names in alphabetical order with a comma in between each name.
+
+Flag Format: name,name,name
+
+********************************************************* SOLUTION ********************************************************
+
+groups # lists the groups available 
+
+getent group lodge | cut -d: -f4 | tr ',' '\n' | sort | paste -sd, -
+
+aximand,erebus,ezekyle,garviel,sejanus,tarik
+
+
+######################################################### Linux Basics Users and Groups3 10 #########################################################
+
+Find the user with a unique login shell.
+
+
+********************************************************* SOLUTION ********************************************************
+
+users can use either bash, sh, find one that is unique or not being used by everyone else. 
+
+
+cat passwd | awk -F ':' '{print$1$7}' # lists the passwords available 
+
+cat passwd | awk -F ":" '{print$1","$7}' | grep -wv "nologin" # filters all nologins to remain with just a small amount
+
+nobody # Answer
+
+
+######################################################### Windows_File_System_Basics_13 15 #########################################################
+
+Identify the algorithm, the amount of salted characters added, and the length of the hashed password in the file that stores passwords.
+
+Hint: Research 'padding'...
+
+Flag format: algorithm,#characters,#length
+
+********************************************************* SOLUTION ********************************************************
+
+
+
+
+
+Flag format: algorithm,#characters,#length
+
+- /etc/shadow contains hashed password
+
+cat shadow -> show hashed passwords
+
+Pick the top hashed password -> root:$6$fSuf.jyW$NNZZMQkjGuu0S/gs0iQw8PbmRStlbJiJVT0fQc9JJa5SJztXAC9ehC.ym30ynWdwwiv8o/UABUHJdG
+
+root:$6 (algorithm)  $fSuf.jyW(salt) $NNZZMQkjGuu0S/gs0iQw8PbmRStlbJiJVT0fQc9JJa5SJztXAC9ehC.ym30ynWdwwiv8o/UABUHJdG (number of characters and the password)
+
+$6 -> SHA512
+$fSuf.jyW -> 8
+$fSuf.jyW(salt) $NNZZMQkjGuu0S/gs0iQw8PbmRStlbJiJVT0fQc9JJa5SJztXAC9ehC.ym30ynWdwwiv8o/UABUHJdG (the count of this) -> 86
+
+SHA512,8,86
+
+######################################################### Linux Basics Permissions1 10 #########################################################
+
+Find the directory named Bibliotheca. Enter the absolute path to the directory.
+
+********************************************************* SOLUTION ********************************************************
+
+find / -type d -name "Bibliotheca" 2>/dev/null # Run a command to first find the directory
+
+find / -type d -name "Bibliotheca" # find the directory but outputs a bunch of nonsense
+
+/media/Bibliotheca # This is the absolute path to the directory 
+
+
+######################################################### Linux Basics Permissions2 10 #########################################################
+
+Identify the number of users with valid login shells, who can list the contents of the Bibliotheca directory.
+
+********************************************************* SOLUTION ********************************************************
+
+getfacl /media/Bibliotheca # Gives information on the directory. Tells you who and what group has access to that directory
+
+getent group chapter # Lists the users in the group chapter that have access to the directory. Count the number of users manually 
+
+Answ: 7
+
+######################################################### Linux Basics Permissions3 10 #########################################################
+
+The permissions that user sejanus has on /media/Bibliotheca, in octal format.
+
+Flag format: #
+
+HINT: Think about groups...
+
+
+********************************************************* SOLUTION ********************************************************
+
+if the read bit (r) is on the value is 4
+if the write bit(w) is on the value is 2
+if the execute bit (x) is on the value is 1
+
+drwxr-xr-x 6 mephiston chapter 12288 Feb 28  2022 Bibliotheca ---> directory Bibliotheca permissions
+The first 3 permissions belong to the owner, the next permissions belong to group members and the last 2 permissions belongs to anyone else 
+
+getent group chapter -> gives the users as garviel,tarik,aximand,ezekyle,sejanus,erebus,mephiston
+
+ls -l /media/Bibliotheca/ -> Gives the output below meaning that the owener of teh directory is mephiston. That makes sejanus just any other regular owner.  
+
+drwxr-xr-x 7 mephiston chapter 4096 Mar 22  2023 Bibliotheca_duo
+dr-xr-xr-x 2 mephiston chapter 4096 Mar 22  2023 Bibliotheca_quattuor
+dr-xr-xr-x 2 mephiston chapter 4096 Feb 28  2022 Bibliotheca_tribus
+dr-xr-xr-- 2 mephiston chapter 4096 Feb 28  2022 Bibliotheca_unus
+
+Being that the next 3 permissions belong to the group members, we have the last two r-x of the drwxr-x and adding those with their respective values we get 5
+
+ r(ead) has the value of 4
+
+- w(rite) has the value of 2
+
+- (e)x(ecute) has the value of 1
+
+- no permission has the value of 0
+
+So adding r+x = 5
+
+cd /media
+
+Ls -lisa #see permissions (rwxr-xr-x) rxr is user, r-x is group, r-x is other
+
+R-x is 5 in octal for the group Chapter
+
+Senjanus is in the group Chapter (5 is answer)
+
+######################################################### Linux Basics Permissions5 10 #########################################################
+
+Locate the file within /media/Bibliotheca that is modifiable by the only user that is part of the Chapter group, but not part of the Lodge group.
+
+Hint: Not the hidden file...
+
+
+
+********************************************************* SOLUTION ********************************************************
+
+# list all users in the groups 
+getent group chapter
+getent group lodge 
+# use ls -lh to see read and write permissions for the user that wasn't found in both chapter and lodge
+
+ls -lh /media/Bibliotheca/Bibliotheca_unus/
+ls -lh /media/Bibliotheca/Bibliotheca_duo/
+ls -lh /media/Bibliotheca/Bibliotheca_quattuor/
+
+********************************************************* SOLUTION ********************************************************
+
+
+
+
+To list the files ls –lh(file name with full path ) e.g ls –lh Bibliotheca/Bibliotheca_tribus/
+
+Codex_Hereticusls
+
+ls -R -la | tr ' ' '' |awk -F '' '{print$1$3$4$10}' #notice r for user but rw for group Codex_Imperium
+
+v r--rw-r-- **group has more permissions than owner
+
+######################################################### Linux Basics Permissions4 10 #########################################################
+
+The user tyborc is unable to access the directory:
+
+/media/Bibliotheca/Bibliotheca_unus
+
+Why? Identify the permission missing in standard verb form.
+
+
+********************************************************* SOLUTION ********************************************************
+
+
+
+
+Cd /media/Bibliotheca
+
+cat group | grep tyborc # member of guardmen group
+
+ls -R -la | grep unus #shows mephison and Chapter so tyborc would be other
+
+dr-xr-xr-- 2 mephiston chapter 4096 Feb 28 19:05 Bibliotheca_unus # other is r–
+
+execute
+
+
+Based on the output you provided earlier for the /media/Bibliotheca/Bibliotheca_unus directory:
+
+dr-xr-xr-- 2 mephiston chapter 4096 Feb 28  2022 Bibliotheca_unus
+
+Here's the breakdown of the permissions:
+
+The owner (mephiston) has read (r) and execute (x) permissions, which is represented as r-x.
+The group (chapter) has the same permissions as the owner, which is r-x.
+Others have only read (r) permission, which is represented as r--.
+If the user "tyborc" is neither the owner (mephiston) nor a member of the group (chapter), then "tyborc" falls under the "others" category.
+
+For directories, the execute (x) permission determines whether a user can access (cd into) the directory. In this case, "tyborc" (being in the "others" category) does not have the execute permission for the directory /media/Bibliotheca/Bibliotheca_unus.
+
+So, the permission missing for user "tyborc" in standard verb form is: execute.
+
+
+######################################################### Linux Basics Permissions6 10 #########################################################
+
+
+You only have a single submission attempt for this challenge.
+
+Locate the file in /media/Bibliotheca that Quixos has sole modification rights on.
+
+The flag is the absolute path for the file, include the file name.
+
+
+
+********************************************************* SOLUTION ********************************************************
+
+
+ls -R -la | grep quixos #in media bibliotheca
+
+RETURNS 4 RESULTS:
+
+rw------- 1 quixos quixos 3609 Feb 28 19:05 Codex_Hereticus
+
+--xr-xrwx 1 quixos quixos 3609 Feb 28 19:05 Codex_Hereticus
+
+r----xrwx 1 quixos quixos 3609 Feb 28 19:05 Codex_Hereticus
+
+r--r--r-- 1 quixos quixos 3609 Feb 28 19:05 Codex_Hereticus
+
+/media/Bibliotheca/Bibliotheca_unus/Codex_Hereticus
+
+BACK OUT TO /
+
+find -name 'Codex_Hereticus'
+
+RETURNS 4 PATHS
+
+./media/Bibliotheca/Bibliotheca_unus/Codex_Hereticus
+
+./media/Bibliotheca/Bibliotheca_duo/Codex_Hereticus
+
+./media/Bibliotheca/Bibliotheca_quattuor/Codex_Hereticus
+
+./media/Bibliotheca/Bibliotheca_tribus/Codex_Hereticus
+
+cd Bibliotheca_duo #DOUBLE CHECKING THIS IS THE CORRECT ONE
+
+ls -lisa |grep quixos
+
+258835 4 -rw------- 1 quixos quixos 3609 Feb 28 19:05 Codex_Hereticus 
+
+/media/Bibliotheca/Bibliotheca_duo/Codex_Hereticus
+
+######################################################### Linux Basics Permissions7 10 #########################################################
+
+Identify the file within /media/Bibliotheca where the owning group has more rights than the owning user.
+
+********************************************************* SOLUTION ********************************************************
+
+find /media/Bibliotheca -type f -exec bash -c '
+    for file; do
+        perms=$(stat -c "%A" "$file")
+        user_perms=${perms:1:3}
+        group_perms=${perms:4:3}
+
+        # Convert rwx permissions to binary form for comparison
+        convert_perms() {
+            echo "$1" | tr "rwx-" "1110"
+        }
+
+        user_perms_binary=$(convert_perms "$user_perms")
+        group_perms_binary=$(convert_perms "$group_perms")
+
+        if (( 2#$group_perms_binary > 2#$user_perms_binary )); then
+            echo "$file : User permissions - $user_perms, Group permissions - $group_perms"
+        fi
+    done
+' _ {} +
+
+
+Codex_Hereticus
+Codex_Imperium
+
+
+Codex_Hereticusls
+ls -R -la | tr ' ' '' |awk -F '' '{print$1$3$4$10}' #notice r for user but rw for group Codex_Imperium
+v r--rw-r-- **group has more permissions than owner
+
+
+######################################################### Linux Basics Permissions8 10 #########################################################
+
+Execute the file owned by the guardsmen group in /media/Bibliotheca, as the owning user.
+
+The flag is the code name provided after a successful access attempt.
+
+Hint: Remember your sudo options.
+
+
+********************************************************* SOLUTION ********************************************************
+
+sudo -l # To check what access you have as garviel...this provides information on what users can you run file as
+ls -lh /media/Bibliotheca/Bibliotheca_quattuor/  # Find the file owned by guardsmen. ls lsh all directories under Media/Bibliotheca..found the file as Tactica_Imperium..find the username which was gaunt 
+sudo –u gaunt(username) ./(filename)  # Run the file 
+sudo -u gaunt ./Tactica_Imperium  # Run the file 
+
+
+
+To check what access you have do sudo –l ----- this provides information on what users can you run file as
+
+Now find the file owned by guardsmen and go to that directory to execute the file:
+
+To run the file sudo –u gaunt(username) ./(filename) 
+
+NOPASSWD
+sudo -u gaunt ./Tactica_Imperium
+######################################################### Linux Basics Permissions9 10 #########################################################
+
+Read the concealed file within /media/Bibliotheca
+
+
+********************************************************* SOLUTION ********************************************************
+
+cd /media/Bibliotheca/Bibliotheca_duo/
+
+ls -Al
+
+cat .Secrets_of_the_Immaterium
+
+The body cannot live without the mind
+
+######################################################### Linux Basics Permissions10 10 #########################################################
+
+Find the warp and read its secrets for the flag.
+
+********************************************************* SOLUTION ********************************************************
+
+find -mindepth 1 -name '.*' -type f
+
+cd Bibliotheca_duo/.warp2/.warp5/warp5/.warp3/warp2/.secrets
+
+ls -Al
+
+cat .secrets
+
+I_love_l4mp
+
+
+######################################################### Linux Basics Regular Expressions1 10 #########################################################
+
+Using the commands ls and grep, identify the number of directories in /etc/ that end in .d
+
+********************************************************* SOLUTION ********************************************************
+
+ls -d /etc/*.d/ 2>/dev/null | grep -c '.d/$'
+
+######################################################### Linux Basics Regular Expressions2 10 #########################################################
+
+File: home/garviel/numbers
+
+Use regular expressions to match patterns similar to valid and invalid IP addresses.
+
+The answer is the count/number of lines that match in the file.
+
+********************************************************* SOLUTION ********************************************************
+
+grep -cE '\b[0-9]{1,3}(\.[0-9]{1,3}){3}\b' /home/garviel/numbers
+
+count -> 78
+
+######################################################### Linux Basics Regular Expressions3 10 #########################################################
+
+File: home/garviel/numbers
+
+Use regular expressions to match valid IP addresses. The flag is the number of addresses.
+
+HINT: What are the valid numerical values of each octet in an IP address?
+
+********************************************************* SOLUTION ********************************************************
+
+cat numbers | grep -E '\b((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(\.|$)){4}\b' | wc -l
+
+######################################################### Linux Basics Regular Expressions4 10 #########################################################
+
+File: home/garviel/numbers
+
+Use regular expressions to match patterns that look similar to a MAC Address. Flag is a count of the number of matches.
+
+HINT: This is a loose match! Some of these results won't be true MAC addresses.
+
+Flag format: ####
+
+
+********************************************************* SOLUTION ********************************************************
+
+- here to look for the MAC using the following expression:
+
+cat numbers | grep -E '^([0-9A-Za-z]{2}[:-]){5}([0-9A-Za-z]{2})$'
+
+Here, 0-9 A-Za-z == means look for all the alphabets including CAP’s and small and digits 0-9
+
+{2} = means do the same twice
+
+{5} = do it 5 times
+
+cat numbers | grep -E '^([0-9A-Za-z]{2}[:-]){5}([0-9A-Za-z]{2})$' | wc -l
+
+
+- 4877 
+######################################################### Linux Basics Reformat1 10 #########################################################
+
+File: home/garviel/numbers
+
+Use awk to print lines:
+
+>= 420 AND <=1337
+
+The flag is a SHA512 hash of the output.
+
+********************************************************* SOLUTION ********************************************************
+
+Awk = used for compiling and generating reports by processing files
+
+NR built in variable stands for number of records
+
+awk 'NR >= 420 && NR <= 1337' numbers | sha512sum
+
+b6553aa2eae0d5fbcd36bba6181c098d8eb52d300e70e1f05867db03c9048649ad128ffb11cb9726a0709d3b5f210507640d022940ed5392840413fe55116960
+
+
+
+37. Directory: home/garviel/Battlefield/
+
+The garviel user has a minefield map and controls to a Titan War Machine located in their home directory. Interpret the Titan Controls to navigate the minefield and annihilate the target.
+
+Enter the correct movement codes to make the Titan obliterate the target.
+
+
+######################################################### Linux Basics Reformat2 10 #########################################################
+
+File: home/garviel/connections
+
+Use awk to create a separate CSV (comma separated value) file that contains columns 1-6.
+
+The flag is an MD5 hash of the new file
+
+Hint: Look at #fields on line 6 in the file to understand column layout.
+
+Hint: This is a Zeek (formally known as Bro) connection log file in TSV format. Click This Link to learn about its formatting.
+
+Sample Output
+
+
+
+#separator \x09,,,,,
+#set_separator,,,,,,
+#empty_field,(empty),,,,
+#unset_field,-,,,,
+#path,conn,,,,
+#open,2021-03-09-14-26-54,,,,
+#fields,ts,uid,id.orig_h,id.orig_p,id.resp_h
+#types,time,string,addr,port,addr
+1615299704.748741,Cynd96jpqm760uz0k,192.168.242.216,60508,192.168.65.20,22
+1615299962.756967,CFWnz12Wd2cXj3iSIe,fe80::c95c:6e92:5618:9df7,546,ff02::1:2,547
+1615300118.087124,CuVCPTMljpoBDEuR1,192.168.65.10,62117,10.50.255.254,53
+--- Trimmed ---
+
+********************************************************* SOLUTION ********************************************************
+
+awk -F '\x09' '{print$1","$2","$3","$4","$5","$6}' <connections>outputkirwa.csv # Use awk to create a separate CSV (comma separated value) file that contains columns 1-6.
+
+md5sum outputkirwa.csv # Get the md5sum of the output 
+
+######################################################### Linux Basics Bash Logic1 10 #########################################################
+
+Directory: home/garviel/Battlefield/
+
+The garviel user has a minefield map and controls to a Titan War Machine located in their home directory. Interpret the Titan Controls to navigate the minefield and annihilate the target.
+
+Enter the correct movement codes to make the Titan obliterate the target.
+
+Format: XXX3X2X......
+
+
+********************************************************* SOLUTION ********************************************************
+
+AAAAA3AAA3AAAABAABAAAA
+
+######################################################### Linux Basics Bash Logic2 10 #########################################################
+
+
+The flag resides in $HOME/paths... you just need to determine which flag it is. The flag sits next to a string matching the name of a $PATH/binary on your system.
+
+Hint: The correct binary is not echo
+Hint: Compare the contents
+
+********************************************************* SOLUTION ********************************************************
+
+
+
+
+# Step 1: List executables in $PATH, excluding echo
+for dir in $(echo $PATH | tr ":" "\n"); do
+  for file in "$dir"/*; do
+    if [[ -x $file && ! -d $file && $(basename "$file") != "echo" ]]; then
+      echo $(basename "$file")
+    fi
+  done
+done > /tmp/path_binaries.txt
+
+# Step 2: List files in $HOME/paths
+ls $HOME/paths > /tmp/home_paths.txt
+
+# Step 3: Compare lists to find the matching file name
+grep -Fx -f /tmp/path_binaries.txt /tmp/home_paths.txt
+
+# If a matching file name is found, it will be output by grep.
+# Suppose the matching file name is "flagfile", you would then examine it:
+
+# Step 4: Examine the flag file
+cat "$HOME/paths/flagfile"
+
+
+
+
+
+((((((((((((((((((((((((((((((((((((((((((((()))))))))))))))))))))))))))))))))))))))))))))
+
+Hint: The correct binary is not echo
+
+Binaries Path--- usr/bin and usr/sbin
+
+Here,
+
+Go to home/garviel and open the file 
+
+Here,
+
+Go to home/garviel and open the file
+
+Go to usr binary in this case usr/bin ---- send the output of this file to:
+
+sudo ls > /home/garviel/output.txt
+
+Once both outputs are there compare the paths and output.txt file for a common string
+
+grep -Ff /home/garviel/output.txt paths
+
+Here, we are comparing output.txt with path. Once we get complete string there are 2 of them.. Python and viewless
+
+To see which one os on the output.txt file : cat output.txt | grep python
+
+- this gives the answer 
+
+######################################################### Linux Basics Regular Expressions5 15 #########################################################
+
+File: home/garviel/numbers
+
+Use regular expressions to find valid Locally Administered or Universally Administered Unicast MAC addresses.
+
+Give the count of Locally and Universally Administered MAC addresses as the answer.
+
+HINT: What characters specifically define a Locally or Universally Administered Unicast MAC Address?
+
+********************************************************* SOLUTION ********************************************************
+
+grep -Eo '^([0-9A-Fa-f])([02468ACE])[:-]([0-9A-Fa-f]{2}[:-]){4}([0-9A-Fa-f]{2})$' numbers | wc -l ------> answer 178
+
+
+((((((((((((((((((((((((((((((((((((((((((((()))))))))))))))))))))))))))))))))))))))))))))
+
+awk -F '\x09' '{print$1","$2","$3","$4","$5","$6}' <connections>output.csv
+
+Here, read the connection file separated by \x09 and print all 6 line separated by comma and output to output.csv
+
+To get the md5sum md5su output.csv 
+
+######################################################### Linux Basics Bash Logic2 10 #########################################################
+
+The flag resides in $HOME/paths... you just need to determine which flag it is. The flag sits next to a string matching the name of a $PATH/binary on your system.
+
+Hint: The correct binary is not echo
+Hint: Compare the contents
+
+********************************************************* SOLUTION ********************************************************
+
+((((((((((((((((((()))))))))))))))))))
+
+jsonpatch
+jsonpointer
+jsonschema
+
+
+Vrc0vw7ZUaLBpQp
+
+######################################################### Primer_Auditing_2 1 #########################################################
+
+What term is most appropriate when referring to the process of reviewing log files or other records for specified period?
+
+********************************************************* SOLUTION ********************************************************
+
+Auditing
+
+
+######################################################### Linux Basics Bash Logic3 15 #########################################################
+
+FILE: /home/garviel/Inquisition_Targets
+
+Identify heresy by comparing the Inquisition_Targets file to members of the Guardsmen group.
+
+HINT: Reformat and clean up the data before it is compared. awk and sort are your best friends!
+
+The flag is the number of heretics on the system.
+
+********************************************************* SOLUTION ********************************************************
+
+# Extract Guardsmen Group Members:
+# First, extract the members of the Guardsmen group. This can typically be done by looking at the /etc/group file, but the exact method might depend on how your system manages user groups.
+
+### Answer should be 8 --> guesswork!!! 
+
+getent group guardsmen | awk -F':' '{print $4}' | tr ',' '\n' | sort > guardsmen_sorted.txt
+
+# Prepare Inquisition_Targets File:
+# Format and sort the Inquisition_Targets file. The exact command depends on the format of this file. Assuming it's a list that needs to be sorted:
+
+sort /home/garviel/Inquisition_Targets > inquisition_sorted.txt
+
+# Compare the Files:
+# Compare the two files to find lines in Inquisition_Targets that are not in Guardsmen members.
+# The -23 option with comm suppresses lines unique to the second file (guardsmen) and lines common to both, effectively listing only the heretics.
+
+comm -23 inquisition_sorted.txt guardsmen_sorted.txt
+
+# Count the Number of Heretics:
+# To count the number of heretics:
+
+comm -23 inquisition_sorted.txt guardsmen_sorted.txt | wc -l
+
+
+### Not accepting 32 as the answer
+
+getent group guardsmen | cut -d: -f4 | tr ',' '\n' | sort | uniq > guardsmen_sorted_2.txt
+
+cat /home/garviel/Inquisition_Targets | sort | uniq > inquisition_sorted_2.txt
+
+comm -23 inquisition_sorted_2.txt guardsmen_sorted_2.txt > heretics_2.txt
+
+######################################################### Linux Boot Systemd 3 10 #########################################################
+
+What unit does the graphical.target want to start, based solely on its configuration file?
+
+HINT: Targets deal with which init system? Which machine should you be looking for this flag, on?
+
+NOTE: Use the SystemD Machine for this question.
+
+********************************************************* SOLUTION ********************************************************
+
+# To determine which unit graphical.target wants to start, based solely on its configuration file in a system using systemd (which is the init system in #question), you'll need to check the actual configuration file for graphical.target.
+
+# The graphical.target is typically found in /etc/systemd/system or /lib/systemd/system. You can view the contents of this file to understand what units it is # configured to start.
+
+# Here is the command you would run on the systemd machine:
+
+cat /etc/systemd/system/graphical.target
+
+or 
+
+cat /lib/systemd/system/graphical.target
+
+
+# In the graphical.target file, look for lines under [Unit] section starting with Wants= or Requires=. These lines will list the units that graphical.target is # configured to start.
+# For example, if the file contains a line like Wants=display-manager.service, it means graphical.target wants to start display-manager.service.
+# Remember, this needs to be done on a machine with systemd, and you might need appropriate permissions to view these files.
+
+Answer ---> Wants=display-manager.grep -E '(addr|portid)' /home/garviel/output.xml | sed -n '/addr=/p' | sed 's/.*addr="\([^"]*\).*/\1/' | tr -d '\n' | md5sum
+
+
+grep -E '(addr|portid)' /home/garviel/output.xml | sed -n '/addr=/p' | sed 's/.*addr="\([^"]*\).*/\1/' | tr -d '\n' | md5sum
+
+grep -E 'addr=|state="filtered"' /home/garviel/output.xml | \
+awk '/addr=/ {ip=$0; next} /state="filtered"/ {print ip; ip=""}' | \
+sed -e 's/.*addr="\([^"]*\).*/\1/' | \
+tr -d '\n' | \
+md5sum
+
+grep -E 'addr=|state=' /home/garviel/output.xml | \
+grep -v 'state="closed"' | \
+awk '/addr=/ {ip=$0; next} /state=/ {print ip; ip=""}' | \
+sed -e 's/.*addr="\([^"]*\).*/\1/' | \
+tr -d '\n' | \
+md5sum
+
+
+
+
+
+awk '/<host>/ {rec=""; ip=""; f=0} /<host>/,/<\/host>/ {rec = rec $0 ORS} /<state state="open"/ {f=1} /<\/host>/ {if (f) print rec}' /home/garviel/output.xml | \
+grep -oP 'addr="\K[^"]*' | \
+tr -d '\n' | \
+md5sum
+
+
+
+awk '
+BEGIN { RS="</host>"; FS="\n"; OFS="" }
+/state="open"/ {
+  for (i=1; i<=NF; i++) {
+    if ($i ~ /<address addr=/) {
+      gsub(/.*addr="|".*/, "", $i);
+      printf $i
+    }
+  }
+}
+' /home/garviel/output.xml | md5sum
+service
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+grep -E '(addr|portid)' /home/garviel/output.xml | sed -n '/addr=/p' | sed 's/.*addr="\([^"]*\).*/\1/' | tr -d '\n' | md5sum
+
+
+grep -E '(addr|portid)' /home/garviel/output.xml | sed -n '/addr=/p' | sed 's/.*addr="\([^"]*\).*/\1/' | tr -d '\n' | md5sum
+
+grep -E 'addr=|state="filtered"' /home/garviel/output.xml | \
+awk '/addr=/ {ip=$0; next} /state="filtered"/ {print ip; ip=""}' | \
+sed -e 's/.*addr="\([^"]*\).*/\1/' | \
+tr -d '\n' | \
+md5sum
+
+grep -E 'addr=|state=' /home/garviel/output.xml | \
+grep -v 'state="closed"' | \
+awk '/addr=/ {ip=$0; next} /state=/ {print ip; ip=""}' | \
+sed -e 's/.*addr="\([^"]*\).*/\1/' | \
+tr -d '\n' | \
+md5sum
+
+
+
+
+
+awk '/<host>/ {rec=""; ip=""; f=0} /<host>/,/<\/host>/ {rec = rec $0 ORS} /<state state="open"/ {f=1} /<\/host>/ {if (f) print rec}' /home/garviel/output.xml | \
+grep -oP 'addr="\K[^"]*' | \
+tr -d '\n' | \
+md5sum
+
+
+
+awk '
+BEGIN { RS="</host>"; FS="\n"; OFS="" }
+/state="open"/ {
+  for (i=1; i<=NF; i++) {
+    if ($i ~ /<address addr=/) {
+      gsub(/.*addr="|".*/, "", $i);
+      printf $i
+    }
+  }
+}
+' /home/garviel/output.xml | md5sum
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+######################################################### Linux Boot Systemd 4 10 #########################################################
+
+What dependency to graphical.target will stop it from executing if it fails to start, based solely on its static configuration file?
+
+NOTE: Use the SystemD Machine for this question.
+
+********************************************************* SOLUTION ********************************************************
+
+cat /etc/systemd/system/graphical.target
+
+or 
+
+cat /lib/systemd/system/graphical.target
+
+# In the file, look for lines under the [Unit] section that start with Requires=. The units listed there are essential for graphical.target to execute, and if # any of them fail, graphical.target will not proceed.
+# For example, if the file contains a line like Requires=multi-user.target, it means graphical.target requires multi-user.target to start successfully, and if # multi-user.target fails, graphical.target will not execute.
+# Remember, you need to perform this on a machine running systemd, and you might need appropriate permissions to view these files.
+
+Description=Graphical Interface
+Documentation=man:systemd.special(7)
+Requires=multi-user.target
+Wants=display-manager.service
+Conflicts=rescue.service rescue.target
+After=multi-user.target rescue.service rescue.target display-manager.service
+AllowIsolate=yes
+
+######################################################### Linux Boot Systemd 5 10 #########################################################
+
+How many wants dependencies does SystemD actually recognize for the default.target
+
+HINT: Use the systemctl command with some arguments to make life easier.
+
+Flag format: #
+
+NOTE: Use the SystemD Machine for this question.
+
+********************************************************* SOLUTION ********************************************************
+
+systemctl list-dependencies default.target --> count only the parent .service ones.... 
+
+systemctl list-dependencies default.target --plain | grep '.wants' | wc -l
+
+systemctl show -p Wants graphical.target
+
+((((((WHY DOESN'T THIS WORK???))))))
+
+######################################################### Linux Boot Systemd 6 10 #########################################################
+
+What is the full path to the binary used for standard message logging?
+
+HINT: Standard message logging is standardized across UNIX systems.
+
+NOTE: As the challenge name suggests, use the SystemD machine for this question.
+|||
+Flag format: /absolute/path
+
+********************************************************* SOLUTION ********************************************************
+
+/usr/sbin/rsyslogd
+
+which systemd-journald
+
+lookup syslog and then go down that path.... focus on binary for syslog
+
+
+######################################################### Linux Boot Grub 10 #########################################################
+
+Identify the Linux Kernel being loaded by the Grub, by examining its configuration.
+
+Enter the command used by the Grub, and the full path to the Kernel, as the flag.
+
+Flag Format: command,kernel location
+
+HINT:
+
+Click me for help understanding Grub commands
+
+Machine: Minas_Tirith
+
+********************************************************* SOLUTION ********************************************************
+
+
+To identify the Linux kernel being loaded by GRUB (the GRand Unified Bootloader), you need to examine the GRUB configuration file. The configuration file typically contains menu entries, each of which may specify a command to load a particular kernel.
+
+The most common location for the GRUB configuration file on modern Linux systems is /boot/grub/grub.cfg or /boot/grub2/grub.cfg. However, this file is often automatically generated by scripts (like update-grub on Debian-based systems), and it is recommended to not edit it directly.
+
+The specific command used by GRUB to load the Linux kernel is typically linux (followed by the path to the kernel) in the menu entry. Here's how you can find the command and kernel location:
+
+Open the terminal.
+
+Use a command like cat or less to view the contents of the GRUB configuration file. For example:
+
+bash
+Copy code
+cat /boot/grub/grub.cfg
+or
+
+bash
+Copy code
+less /boot/grub/grub.cfg
+Look for the menu entries in the file. Each entry starts with menuentry. Inside each menuentry, find the line starting with linux. This line will include the full path to the kernel.
+
+The command and kernel path will look something like this:
+
+bash
+Copy code
+linux /boot/vmlinuz-<version>-generic root=...
+The flag format you provided is command,kernel location. Based on the typical GRUB configuration, your flag might look like:
+
+javascript
+Copy code
+linux,/boot/vmlinuz-<version>-generic
+Replace <version> with the actual version number from the GRUB configuration file.
+
+Please replace the kernel version with the specific version you find in your GRUB configuration file.
+
+
+
+$$$$$$$$ 
+
+cat /boot/grub/grub.cfg
+
+
+linux,/boot/vmlinuz-4.9.0-16-amd64
+
+
+
+
+
+
+
+
+
+
 ######################################################################################################################################################
 ######################################################                                             ###################################################
 ######################################################          12_linux_process_validity          ###################################################
