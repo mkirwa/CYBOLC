@@ -1,0 +1,35 @@
+Weird number/Port
+111111
+123456
+
+22
+123
+
+Have net use at the top of the links.... 
+
+get-item 'REGISTRY::HKEY_USERS:\\.............'
+(get-content [file]).count
+
+netstat -ano # works on every machine 
+
+2> /dev/null # Get errors out..
+
+linux directories
+
+Registry -> someone would always place something here... 
+
+get used to systemctl #####
+
+Look at Linux Processes ALOT!!! WINDOWS Processes too!!!!! --> LINUX PROCESS VALIDITY!!!
+
+Focus on the functionality 
+
+cron-jobs!!!! look at this too... 
+
+auditing and logging is not going to be part of the exam.. 
+
+Windows..... you need to know how to Get-process and pipe!! 
+
+
+
+
