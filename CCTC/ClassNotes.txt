@@ -1,21 +1,195 @@
-Windows_PowerShell_Help1 5 - What is the basic cmdlet that displays help about Windows Powershell cmdlets and concepts? - Get-help
-
-Go from Get-Item then Get-ChildItem and Get-ItemProperty
-
- Get-ItemProperty HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Run
-
- net use * http://live.sysinternals.com
-    has to be run from the z, directory that is automatically set, directory. 
-    cd to the z directory   
-    .\autoruns.exe --> pops up the user friendly gui. Dispalys GUI tools
-
-Type *autoruns -accepteula*(accepteula exemps permission runs. Used when a command doesn't run)
-
-HIVEs perform similar to a drive. 
-check usbs in the registry = 
 
 
-dir
+
+
+
+######################################################################################################################################################
+#########################################################                                    #########################################################
+#########################################################            ROUGHT DRAFT            #########################################################
+#########################################################                                    #########################################################
+######################################################################################################################################################
+
+
+Get-Item Registry::HKEY_CURRENT_USER\SOFTWARE\MICROSOFT\WINDOWS\CURRENTVERSION\RUN
+
+
+
+$RegistryKey = $Registry.OpenSubKey('HKCU:HKEY_CURRENT_USER\SOFTWARE\MICROSOFT\WINDOWS\CURRENTVERSION\RUN', $true)
+
+
+path -> 'HKCU:HKEY_CURRENT_USER\SOFTWARE\MICROSOFT\WINDOWS\CURRE
+NTVERSION\RUN'
+
+path -> HKEY_CURRENT_USER\SOFTWARE\MICROSOFT\WINDOWS\CURRENTVERSION\RUN
+
+
+Get-item -Path 'HKCU:SOFTWARE\MICROSOFT\WINDOWS\CURRENTVERSION\RUN'
+
+Get-ItemProperty -Path 'HKCU:\SOFTWARE\MICROSOFT\WINDOWS\CURRENTVERSION\RUN'
+
+Get-ItemProperty -Path 'HKLM:\SOFTWARE\MICROSOFT\WINDOWS\CURRENTVERSION\RUN'
+
+Get-ItemProperty -Path 'HKLM:\HKEY_LOCAL_MACHINE\SOFTWARE\MICROSOFT\WINDOWS\CURRENTVERSION\RUN'
+
+Get-item -Path 'HKCU:HKEY_CURRENT_USER\SOFTWARE\MICROSOFT\WINDOWS\CURRENTVERSION\RUN'
+
+Get-ItemProperty -Path 'HKCU:\HKEY_CURRENT_USER\SOFTWARE\MICROSOFT\WINDOWS\CURRENTVERSION\RUN'
+
+
+
+Get-ChildItem -Path 'HKCU:\HKEY_CURRENT_USER\SOFTWARE\MICROSOFT\WINDOWS\CURRENTVERSION\RUN'
+
+reg query HKCU:HKEY_CURRENT_USER\SOFTWARE\MICROSOFT\WINDOWS\CURRENTVERSION\RUN
+
+
+# Backup the zip file
+Copy-Item -Path "C:\Users\CTF\Documents\Omega1000.zip" -Destination "C:\Users\CTF\Desktop\Omega1000.zip"
+
+# Initial directory to work in
+$workDirectory = "C:\Users\CTF\Documents"
+
+# Loop to unzip the file 1,000 times
+for ($i = 0; $i -lt 1000; $i++) {
+    # Get the path of the zip file in the current iteration
+    $currentZip = Get-ChildItem -Path $workDirectory -Filter "*.zip" | Select-Object -First 1 -ExpandProperty FullName
+    
+    # Unzip the file
+    Expand-Archive -Path $currentZip -DestinationPath $workDirectory
+
+    # Remove the original zip file of this iteration to avoid c$onfusion in the next iteration
+    Remove-Item -Path $currentZip
+}
+
+# At the end of the loop, assuming the final file is not a zip, read its contents
+$finalFile = Get-ChildItem -Path $workDirectory | Where-Object { $_.Extension -ne ".zip" } | Select-Object -First 1 -ExpandProperty FullName
+Get-Content -Path $finalFile
+
+
+
+
+$workDirectory = "C:\Users\CTF\Documents"
+
+for ($i = 0; $i -lt 1000; $i++) {
+    $currentZip = Get-ChildItem -Path $workDirectory -Filter "*.zip" | Select-Object -First 1 -ExpandProperty FullName
+    Expand-Archive -Path $currentZip -DestinationPath $workDirectory
+    Remove-Item -Path $currentZip
+}
+$finalFile = Get-ChildItem -Path $workDirectory | Where-Object { $_.Extension -ne ".zip" } | Select-Object -First 1 -ExpandProperty FullName
+Get-Content -Path $finalFile
+
+
+
+# Backup the zip file
+Copy-Item -Path "C:\Users\CTF\Documents\Omega1000.zip" -Destination "C:\Users\CTF\Desktop\Omega1000.zip"
+
+# Initial directory to work in
+$workDirectory = "C:\Users\CTF\Documents"
+
+# Loop to unzip the file 1,000 times
+for ($i = 0; $i -lt 1000; $i++) {
+    # Get the path of the zip file in the current iteration
+    $currentZip = Get-ChildItem -Path $workDirectory -Filter "*.zip" | Select-Object -First 1 -ExpandProperty FullName
+    
+    # If no zip file found, break out of the loop
+    if (-not $currentZip) {
+        Write-Host "No zip file found in iteration $i"
+        break
+    }
+
+    # Unzip the file
+    Expand-Archive -Path $currentZip -DestinationPath $workDirectory
+
+    # Remove the original zip file of this iteration to avoid confusion in the next iteration
+    Remove-Item -Path $currentZip
+}
+
+# At the end of the loop, assuming the final file is not a zip, read its contents
+$finalFile = Get-ChildItem -Path $workDirectory | Where-Object { $_.Extension -ne ".zip" } | Select-Object -First 1 -ExpandProperty FullName
+Get-Content -Path $finalFile
+
+
+Copy-Item -Path "C:\Users\CTF\Desktop\Omega1000.zip" -Destination "C:\Users\CTF\Documents\Omega1000.zip"
+
+
+
+
+
+Copy-Item -Path "C:\Users\CTF\Documents\Omega1000.zip" -Destination "C:\Users\CTF\Desktop\Omega1000.zip"
+$workDirectory = "C:\Users\CTF\Documents"
+for ($i = 0; $i -lt 1000; $i++) {
+    $currentZip = Get-ChildItem -Path $workDirectory -Filter "*.zip" | Select-Object -First 1 -ExpandProperty FullName
+    if (-not $currentZip) {
+        Write-Host "No zip file found in iteration $i"
+        break
+    }
+    Expand-Archive -Path $currentZip -DestinationPath $workDirectory
+
+    Remove-Item -Path $currentZip
+}
+$finalFile = Get-ChildItem -Path $workDirectory | Where-Object { $_.Extension -ne ".zip" } | Select-Object -First 1 -ExpandProperty FullName
+Get-Content -Path $finalFile
+
+
+
+
+# Backup the zip file
+Copy-Item -Path "C:\Users\CTF\Documents\Omega1000.zip" -Destination "C:\Users\CTF\Desktop\Omega1000.zip"
+
+# Initial directory to work in
+$workDirectory = "C:\Users\CTF\Documents"
+
+# Loop to unzip the file 1,000 times
+for ($i = 0; $i -lt 1000; $i++) {
+    # Get the path of the zip file in the current iteration
+    $currentZip = Get-ChildItem -Path $workDirectory -Filter "*.zip" | Select-Object -First 1 -ExpandProperty FullName
+    
+    # If no zip file found, break out of the loop
+    if (-not $currentZip) {
+        Write-Host "No zip file found in iteration $i"
+        break
+    }
+
+    # Create a unique temporary directory for the extraction
+    $tempDirectory = Join-Path $workDirectory ("tempUnzip" + $i)
+    New-Item -Path $tempDirectory -ItemType Directory -Force
+
+    # Unzip the file to the temporary directory
+    Expand-Archive -Path $currentZip -DestinationPath $tempDirectory -Force
+
+    # Move the contents from the temporary directory back to the working directory
+    Move-Item -Path "$tempDirectory\*" -Destination $workDirectory -Force
+
+    # Remove the original zip file of this iteration and the temporary directory
+    Remove-Item -Path $currentZip -Force
+    Remove-Item -Path $tempDirectory -Force
+}
+
+# At the end of the loop, assuming the final file is not a zip, read its contents
+$finalFile = Get-ChildItem -Path $workDirectory | Where-Object { $_.Extension -ne ".zip" } | Select-Object -First 1 -ExpandProperty FullName
+Get-Content -Path $finalFile
+
+
+
+Copy-Item -Path "C:\Users\CTF\Documents\Omega1000.zip" -Destination "C:\Users\CTF\Desktop\Omega1000.zip"
+
+$workDirectory = "C:\Users\CTF\Documents"
+
+for ($i = 0; $i -lt 1000; $i++) {
+    $currentZip = Get-ChildItem -Path $workDirectory -Filter "*.zip" | Select-Object -First 1 -ExpandProperty FullName
+    if (-not $currentZip) {
+        Write-Host "No zip file found in iteration $i"
+        break
+    }
+    $tempDirectory = Join-Path $workDirectory ("tempUnzip" + $i)
+    New-Item -Path $tempDirectory -ItemType Directory -Force
+    Expand-Archive -Path $currentZip -DestinationPath $tempDirectory -Force
+    Move-Item -Path "$tempDirectory\*" -Destination $workDirectory -Force
+    Remove-Item -Path $currentZip -Force
+    Remove-Item -Path $tempDirectory -Force
+}
+
+$finalFile = Get-ChildItem -Path $workDirectory | Where-Object { $_.Extension -ne ".zip" } | Select-Object -First 1 -ExpandProperty FullName
+Get-Content -Path $finalFile
 
 
 
@@ -132,3 +306,63 @@ Prefetch -> Wanted to add anything to this???
 
 
 Remember persistence mechanisms and how they pertain to both windows and linux... bashrc, would you be able to integrate that mechanism? 
+
+
+
+///////////////////////////////// USING THE PIPE ////////////////////////////////
+
+The | symbol, often referred to as a "pipe," is used in PowerShell (and other shell environments) to pass the output of one command as input to another command. This allows for the chaining of commands, where the result of one command can be processed or transformed by subsequent commands.
+
+The concept of piping is fundamental to shell scripting and command-line usage, enabling the composition of complex operations from simpler ones without the need to create intermediate files or variables.
+
+Here's a basic example to illustrate the concept:
+
+Get-Process | Where-Object { $_.CPU -gt 10 } | Sort-Object CPU -Descending
+
+In this example:
+
+Get-Process retrieves a list of all running processes.
+The output of Get-Process (which is a list of processes) is passed to Where-Object via the pipe (|). Where-Object filters this list to only include processes where the CPU usage is greater than 10.
+The filtered list of processes is then passed to Sort-Object (again via a pipe), which sorts the processes based on CPU usage in descending order.
+The entire command thus retrieves a sorted list of processes with a CPU usage greater than 10, all achieved through a combination of three simpler commands connected by pipes.
+
+///////////////////////////////// USING THE PIPE END ////////////////////////////////
+
+cd C:\Users\CTF\Desktop\CTF
+Get-Content -Path .\words.txt | Where-Object { $_ -match "aa[a-g]" } | Measure-Object | ForEach-Object { $_.Count }
+
+What PowerShell command searches for text patterns in a string? - Select-String
+
+
+What help switch will show you the "help files" on Microsoft's website, in your default browser? -online
+What PowerShell command (without using a method) will stop the Chrome process? - Stop-Process -name chrome 
+
+
+What PowerShell command will allow for counting lines in a file, averaging numbers, and summing numbers? - Measure-Object
+
+PowerShell "help files" don't show the entire help file with a basic command. What switch option shows the entire help file? -full
+
+What command will start the Chrome browser on your machine? - Start-Process chrome
+
+
+PowerShell doesn't have a native cmdlet that will give you processor information (such as get-processor or get-cpu). Knowing this information might be necessary. What command would give you information about the system's processor? Flag is the full command - 
+
+What PS command will list all PowerShell cmdlets? - Get-Command
+
+All PowerShell objects are comprised of what two things? Flag format: things,things - methods, properties
+
+What PowerShell command lists all of the contents of a directory? - Get-ChildItem
+
+What PowerShell command will update the PowerShell "help files" to the latest version? - Update-Help
+
+What command using a PS Method will stop chrome? Flag is the full command. - (Get-Process -Name chrome).Kill()
+
+What PowerShell command will read a text file? - Get-Content
+
+Users' files are stored in their corresponding home directory. What is the literal path to all home directories on a Windows 10 system? - C:\Users\
+
+How many properties are available for the get-process cmdlet? Note: Property values only - (Get-Process | Get-Member -MemberType 'Property').count
+
+
+
+
