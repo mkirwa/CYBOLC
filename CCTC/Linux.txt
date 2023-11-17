@@ -1124,6 +1124,7 @@ Round minutes up to the closest number divisible by 10.
 
 *********************************************************     SOLUTION        **********************************************************
 
+cat log.txt | grep "exec"
 
 Look for binary /bin/sh 
 
