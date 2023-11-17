@@ -30,6 +30,13 @@ auditing and logging is not going to be part of the exam..
 
 Windows..... you need to know how to Get-process and pipe!! 
 
+CIM classes.... look at this too.... have the section saved....
+
+Registry, how to save location for registries... save this notes... 
+
+powershell... always do GEtItem, GetItem-child then getitem property! 
+
+Don't mount a PS drive, use net-use... think about points of persistence! 
 
 
 
