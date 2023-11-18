@@ -10,6 +10,30 @@ Research: https://en.wikipedia.org/wiki/Windows_NT_booting_process (Hint: What r
 ntoskrnl.exe
 
 
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^/////////////////  POWERSHELL NOTES   /////////////////^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+PowerShell-Link Notes -> https://os.cybbh.io/public/os/latest/002_powershell/pwsh_fg.html
+
+PS C:\> get-host | select-object Version # Gets the version of powershell in use
+
+PS C:\> pwsh # Changes version 
+
+PS C:\> exit # Switch back to previous version
+
+Get-Content -Path "C:\Test Files\content.txt"                                         # Displays the contents of the file
+Get-Variable                                                                          # Displays current Variables
+Get-Verb                                                                              # List the PowerShell verbs
+Get-Command                                                                           # List the PowerShell cmdlets
+Get-Command -Type Cmdlet | Sort-Object -Property Noun | Format-Table -GroupBy Noun    # Get cmdlets and display them in order
+Get-Command -Module Microsoft.PowerShell.Security, Microsoft.PowerShell.Utility       # Get commands in a module
+Get-Location <similar to PWD on Linux, gl is the alias.>          # Displays present working directory
+
+Get-Process | Get-Member                       # Gives the methods and properties of the object/cmdlet
+(cmdlet).property                              # Command Structure
+(Get-Process).Name                             # Returns the single property of 'name' of every process
+Get-Process | Select-Object Name, ID, path     # Displays the Get-Process Properties of 'Name, ID, Path' for every process
+
+
 
 ######################################################################################################################################################
 ######################################################                                             ###################################################
