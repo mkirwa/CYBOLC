@@ -437,26 +437,6 @@ Note: File Location - C:\Users\CTF\Desktop\CTF
 Where-Object { $_ -match 'az' }: Filters the lines based on the presence of the substring "az".
 
 
-######################################################### Windows_PowerShell_CimClasses2 10 #########################################################
-
-To complete this challenge, find the description of the Lego Land service.
-
-Reminder: All challenges are done using the file-server.
-
-********************************************************* SOLUTION *********************************************************
-
-Get-WmiObject win32_service | ?{$_.Name -like 'LegoLand'} | select Description
-
-
-######################################################### Windows_PowerShell_Help4 10 #########################################################
-
-When requesting the help file for the get-process cmdlet, what full command is the 9th example given?
-
-********************************************************* SOLUTION *********************************************************
-
-Get-Process pwsh
-
-
 ######################################################### Primer_CLI_1 1 #########################################################
 
 Which program starts with every CMD and PowerShell instance in Windows 7 and later?
@@ -492,42 +472,6 @@ check usbs in the registry =
 
 dir
 
-######################################################### Windows_PowerShell_Regex_3 10 #########################################################
-
-Count the number of words, case-insensitive, with either a or z in a word, in the words.txt file
-Note: File Location - C:\Users\CTF\Desktop\CTF
-
-********************************************************* SOLUTION *********************************************************
-
-cd C:\Users\CTF\Desktop\CTF
-(Get-Content -Path .\words.txt | Where-Object { $_ -imatch 'a' -or $_ -imatch 'z' }).Count
-
-######################################################### Windows_PowerShell_CimClasses2 10 #########################################################
-
-To complete this challenge, find the description of the Lego Land service.
-
-Reminder: All challenges are done using the file-server.
-
-********************************************************* SOLUTION *********************************************************
-
-$serviceName = Get-Service | Where-Object { $_.DisplayName -like "*Lego Land*" }
-$LegoLandDescription = Get-Service | Where-Object {$_.DisplayName -like "*Lego Land*" }
-
-Get-CimInstance -ClassName Win32_Service -Filter "Name='$($serviceName.Name)'" | Select-Object Description
-Get-CimInstance -ClassName Win32_Service -Filter "Name='$($LegoLandDescription.Name)'" | Select-Object Description
-
-
-######################################################### Windows_PowerShell_Logic5 10 #########################################################
-
-Find the only line that makes the two files in the CTF user's Downloads folder different.
-
-Hint The flag is the string (not line number).
-
-********************************************************* SOLUTION *********************************************************
-
-cd C:\Users\CTF\Downloads
-$comparisons = Compare-Object $(Get-Content new.txt) $(Get-Content old.txt)
-$comparisons | Where-Object { $_.SideIndicator -eq '<=' -or $_.SideIndicator -eq '=>' } | ForEach-Object { $_.InputObject }
 
 ######################################################### Windows_PowerShell_Basics8 #########################################################
 
@@ -538,22 +482,8 @@ Machine: Admin_Station
 
 ********************************************************* SOLUTION *********************************************************
 
-(Get-Process | Get-Member -MemberType Methods).Count
+(Get-Process | Get-Member -MemberType Methods).Count # How to get the number of methods in a CIM 
 
-######################################################### Windows_PowerShell_Regex_5 15 #########################################################
-
-Count the number of words in words.txt that meet the following criteria:
-
-a appears at least twice consecutively
-and is followed immediately by any of the letters a through g
-Note: File Location - C:\Users\CTF\Desktop\CTF
-Example: aac...aaa...
-
-********************************************************* SOLUTION *********************************************************
-
-cd C:\Users\CTF\Desktop\CTF
-
-(Get-Content -Path .\words.txt | Where-Object { $_ -match "aa[a-g]" }).Count
 
 
 ######################################################### Windows_PowerShell_Alias3 10 #########################################################
@@ -574,32 +504,10 @@ In the CTF folder on the CTF User's Desktop, count the number of words in words2
 (Get-Content -Path .\words2.txt | ForEach-Object { $_ -split '\s+' } | Measure-Object).Count
 
 
-######################################################### Windows_PowerShell_Alias3 10 #########################################################
 
 
-The password is the 21st line from the top, in ASCII alphabetically-sorted, descending order of the words.txt file.
+######################################################### XXXXXXXXXXXXXXXXXXXXXXXXXX #########################################################
 
-**Note: File Location - C:\Users\CTF\Desktop\CTF
-
-********************************************************* SOLUTION *********************************************************
-
-cd C:\Users\CTF\Desktop\CTF
-(Get-Content -Path .\words.txt | Sort-Object {$_} -Descending)[20]
-
-
-######################################################### Windows_Powershell_Logic9 10 #########################################################
-
-Count the number of folders in the Music folder in the CTF user’s profile.
-
-********************************************************* SOLUTION *********************************************************
-
-(Get-ChildItem -Path C:\Users\CTF\Music -Directory).Count
-
-######################################################### Windows_PowerShell_Help4 10 #########################################################
-
-When requesting the help file for the get-process cmdlet, what full command is the 9th example given?
-
-********************************************************* SOLUTION *********************************************************
 
 (Get-Help Get-Process -Examples).examples.example | Select-Object -Index 8 | ForEach-Object { $_.code.cdata }
 
@@ -607,60 +515,6 @@ Get-Help Get-Process -Examples - Retrieves the examples section of the help file
 .examples.example - Accesses the individual examples.
 Select-Object -Index 8 - Retrieves the 9th example (since indexing starts from 0).
 ForEach-Object { $_.code.cdata } - Extracts the code of the selected example.
-
-######################################################### Windows_PowerShell_Logic4 10 #########################################################
-
-Count the number of files in the Videos folder in the CTF user's home directory.
-
-********************************************************* SOLUTION *********************************************************
-
-(Get-ChildItem -Path C:\Users\CTF\Videos -File).Count
-
-Get-ChildItem is a core cmdlet in PowerShell for item listing and retrieval from a variety of data sources and is fundamental to many scripting and automation tasks. It is a versatile cmdlet in PowerShell used primarily to retrieve a list of items from a provider's location, such as from a file system (like directories and files) or the registry.
-
-Get-ChildItem C:\Users\CTF\Documents --> List Files and Directories: At its most basic level, when used against the file system, Get-ChildItem behaves similarly to the dir command in CMD or the ls command in Unix-based systems. It lists files and directories in the current or specified directory.
-
-Get-ChildItem C:\Users\CTF\Documents -Recurse --> Recursive Listings: With the -Recurse parameter, it can retrieve items from a location and its sublocations (similar to ls -R).
-
-Get-ChildItem C:\Users\CTF\Documents -Filter *.txt --> Filtering: You can use the -Filter parameter to retrieve only specific items based on a wildcard pattern.
-
-Get-ChildItem C:\ -Force --> Hidden and System Items: By default, Get-ChildItem won't show hidden or system files. You can make them visible using the -Force parameter.
-
-Get-ChildItem C:\Users\CTF\Documents -File --> Item Types: Using parameters like -File or -Directory, you can choose to list only files or only directories.
-
-Get-ChildItem HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall --> Other Providers: Apart from the file system, Get-ChildItem can also list items from other providers, such as the registry, certificates, environment variables, etc. For example, to list items from the registry:
-
-Get-ChildItem C:\Users\CTF\Documents | Select-Object Name, Length, CreationTime --> Listing Properties: It can also be used in conjunction with Select-Object to list specific properties of items.
-
-######################################################### Windows_PowerShell_Logic7 10 #########################################################
-
-Count the number of unique words in words.txt
-
-**Note: File Location - C:\Users\CTF\Desktop\CTF
-
-********************************************************* SOLUTION *********************************************************
-
-$uniqueWordsCount = (Get-Content -Path C:\Users\CTF\Desktop\CTF\words.txt | ForEach-Object { $_ -split '\s+' } | Sort-Object -Unique).Count
-$uniqueWordsCount
-
-ForEach-Object { $_ -split '\s+'} -->  Splits each line into individual words using whitespace as a delimiter.
-
-Sort-Object -Unique --> Sorts the words and filters out duplicates.
-
-.Count --> Counts the number of unique words.
-
-######################################################### Windows_PowerShell_Regex_2 10 #########################################################
-
-Count the number of times, case-insensitive, gaab is listed in words.txt **Note: File Location - C:\Users\CTF\Desktop\CTF
-
-********************************************************* SOLUTION *********************************************************
-
-(Get-Content -Path C:\Users\CTF\Desktop\CTF\words.txt | Select-String -Pattern "gaab" -CaseSensitive:$false -AllMatches).Matches.Count
-
-Select-String -Pattern "gaab": Searches for the pattern "gaab".
--CaseSensitive:$false: Makes the search case-insensitive.
--AllMatches: Captures all matches in the file.
-.Matches.Count: Counts the number of matching instances.
 
 
 ######################################################### Windows_PowerShell_Logic8 15 #########################################################
@@ -699,8 +553,22 @@ $directoryPath = "C:\Users\CTF\Documents\temporary_folder\"
 # Get all .zip files in the directory
 $zipFiles = Get-ChildItem -Path $directoryPath -Filter "*.zip"
 
+##
+In summary, the script unzips each file in the $zipFiles collection into its own folder within the specified $directoryPath.
+Each extracted folder is named after the original zip file (minus the .zip extension).
+##
+
 # Loop through each zip file and unzip it
 foreach ($zip in $zipFiles) {
+
+    ##
+    # Join-Path is a PowerShell cmdlet used to combine a path and a child path into a single, properly formatted path.
+    # It takes two main arguments:
+    # -Path: Specifies the parent path.   
+    # -ChildPath: Specifies the child path to be combined with the parent path.
+    ##
+    # For example, Join-Path -Path "C:\Users" -ChildPath "User1" would produce C:\Users\User1. 
+    # This avoids common errors that can occur when manually concatenating paths, such as missing or double directory separators.
     # Define the destination folder for extraction (same name as the zip file but without the .zip extension)
     $destinationFolder = Join-Path -Path $directoryPath -ChildPath ($zip.BaseName)
     
@@ -721,51 +589,6 @@ foreach ($zip in $zipFiles) {
     Expand-Archive -Path $zip.FullName -DestinationPath $destinationFolder
 }
 
-
-
-
-######################################################### Windows_PowerShell_Regex_5 15 #########################################################
-
-Count the number of words in words.txt that meet the following criteria:
-
-    a appears at least twice consecutively
-    and is followed immediately by any of the letters a through g
-    Note: File Location - C:\Users\CTF\Desktop\CTF
-    Example: aac...aaa...
-
-********************************************************* SOLUTION *********************************************************
-
-(Get-Content -Path 'C:\Users\CTF\Desktop\CTF\words.txt' | 
-    ForEach-Object { $_ -split '\s+' } | 
-    Where-Object { $_ -match 'aa[a-g]' }).Count
-
-ForEach-Object { $_ -split '\s+' }: Splits the content into individual words based on whitespace.
-Where-Object { $_ -match 'aa[a-g]' }: Filters the words based on the regex pattern. This pattern matches words where a appears consecutively at least twice and is followed immediately by any letter from a to g.
-
-######################################################### Windows_PowerShell_Regex_4 10 #########################################################
-
-Count the number of lines that az appears in the words.txt file
-
-Note: File Location - C:\Users\CTF\Desktop\CTF
-
-********************************************************* SOLUTION *********************************************************
-
-(Get-Content -Path 'C:\Users\CTF\Desktop\CTF\words.txt' | Where-Object { $_ -match 'az' }).Count
-
-Where-Object { $_ -match 'az' }: Filters the lines based on the presence of the substring "az".
-
-
-######################################################### Windows_PowerShell_CimClasses2 10 #########################################################
-
-To complete this challenge, find the description of the Lego Land service.
-
-Reminder: All challenges are done using the file-server.
-
-********************************************************* SOLUTION *********************************************************
-
-Get-WmiObject win32_service | ?{$_.Name -like 'LegoLand'} | select Description
-
-
 ######################################################### Windows_PowerShell_Help4 10 #########################################################
 
 When requesting the help file for the get-process cmdlet, what full command is the 9th example given?
@@ -774,16 +597,6 @@ When requesting the help file for the get-process cmdlet, what full command is t
 
 Get-Process pwsh
 
-
-######################################################### Primer_CLI_1 1 #########################################################
-
-Which program starts with every CMD and PowerShell instance in Windows 7 and later?
-
-Research: https://devblogs.microsoft.com/commandline/windows-command-line-inside-the-windows-console/
-
-********************************************************* SOLUTION *********************************************************
-
-conhost.exe
 
 
 ######################################################### Primer_CLI_2 1 #########################################################
@@ -975,6 +788,17 @@ Get-Content $profile.AllUsersAllHosts
 
 
 I am certainly not the malware
+
+##
+# $profile.AllUsersAllHosts represents the PowerShell profile that applies to all users and all hosts on the system.
+# In PowerShell, there are different profile files that can be configured to run scripts automatically 
+# whenever a PowerShell session starts, and these profiles have a specific order of precedence.
+
+# The AllUsersAllHosts profile is significant because it is one of the first profiles that PowerShell reads and applies when starting.
+# If malware is running in a PowerShell profile on a file server, checking the AllUsersAllHosts profile is a logical step, as this profile would affect every user and every session on that server. 
+# The command Get-Content $profile.AllUsersAllHosts is used to view the contents of this profile file, 
+# which can help in identifying any malicious scripts or commands that are being executed.
+##
 
 #########################################################################################################################################
 #########################################################                       #########################################################
