@@ -150,6 +150,28 @@ Get-Service | where Status -eq "Stopped"                        # Same as above
 Get-Process | Where-Object -Property Handles -GE -Value 1000    # Lists Processes that have Greater Than 1000 Handles
 Get-Process | where Handles -GE 1000                            # Same as above
 
+# Check profiles -> https://os.cybbh.io/public/os/latest/002_powershell/pwsh_fg.html
+
+$profile | Get-Member -Type NoteProperty                        # Displays the profile values of Names, MemberType, and Paths.
+$Profile | get-member -type noteproperty | ft -wrap             # Displays the same results but completed in case it was cut off '...'
+$PROFILE | Get-Member -MemberType noteproperty | select name    # Narrowed results to display only Names
+
+# To determines whether individual profiles have been created on the local computer:
+Test-Path -Path $profile.currentUsercurrentHost
+Test-Path -Path $profile.currentUserAllHosts
+Test-Path -Path $profile.AllUsersAllHosts
+Test-Path -Path $profile.AllUserscurrentHost
+
+New-Item -ItemType File -Path $profile -Force                 # Creates a $Profile for the CurrentUser. Force is used to ignore any errors.
+ISE $profile                                                  # Opens your newly created $Profile, which is empty
+
+Get-ChildItem 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\NetworkList\Profiles'   # Queries current network profiles.
+
+HKLM (HKEY_LOCAL_MACHINE): This hive contains settings that are specific to the local computer. 
+It includes system-wide configurations and is used to store information about the system's hardware and software. The settings in HKLM apply to all users on the machine.
+
+HKCU (HKEY_CURRENT_USER): This hive contains configuration information for the user profile of the user currently logged on.
+The settings in HKCU are specific to the current user and include user preferences and environment settings.
 
 ######################################################################################################################################################
 ######################################################                                             ###################################################
@@ -157,118 +179,6 @@ Get-Process | where Handles -GE 1000                            # Same as above
 ######################################################                                             ###################################################
 ######################################################################################################################################################
 
-
-######################################################### Primer_CLI_2 1 #########################################################
-
-What Windows 10 feature supports installing Linux subsystem?
-
-Research: https://learn.microsoft.com/en-us/windows/wsl/about
-
-********************************************************* SOLUTION *********************************************************
-
-WSL 
-
-######################################################### Primer_CLI_3 1 #########################################################
-
-Which Windows feature can be used to interact with any CLI on the Windows system concurrently using multiple tabs?
-
-Research: https://learn.microsoft.com/en-us/windows/terminal/
-
-
-********************************************************* SOLUTION *********************************************************
-
-Windows Terminal 
-
-
-######################################################### Primer_CLI_4 1 #########################################################
-
-What was the default shell (command line) of Windows versions Windows 2000 through Windows 8.1?
-
-Research: https://learn.microsoft.com/en-us/windows-hardware/customize/enterprise/shell-launcher
-
-
-********************************************************* SOLUTION *********************************************************
-
-Command Prompt
-
-
-######################################################### Primer_CLI_4 1 #########################################################
-
-What was the default shell (command line) of Windows versions Windows 2000 through Windows 8.1?
-
-Research: https://learn.microsoft.com/en-us/windows-hardware/customize/enterprise/shell-launcher
-
-
-********************************************************* SOLUTION *********************************************************
-
-Command Prompt
-
-
-######################################################### Primer_CLI_5 1 #########################################################
-
-What data type do all cmd.exe commands return?
-
-Research: https://en.wikipedia.org/wiki/Comparison_of_command_shells (Hint: What data type is "text"?)
-
-
-********************************************************* SOLUTION *********************************************************
-
-String 
-
-
-######################################################### Primer_CLI_6 1 #########################################################
-
-What framework is PowerShell built on?
-
-Research: https://en.wikipedia.org/wiki/.NET
-
-********************************************************* SOLUTION *********************************************************
-
-.NET
-
-######################################################### Primer_CLI_7 1 #########################################################
-
-"What will all of the below give you?
-
-(get-host).version
-
-$host.version
-
-$psversiontable.psversion"
-
-Research: https://devblogs.microsoft.com/scripting/powertip-check-version-of-powershell/
-
-
-
-********************************************************* SOLUTION *********************************************************
-
-
-PowerShell Version
-
-
-######################################################### Primer_CLI_8 1 #########################################################
-
-After PowerShell Core is installed what CLI command launches it?
-
-Research: https://learn.microsoft.com/en-us/powershell/scripting/install/installing-powershell-on-windows?view=powershell-7.2
-
-
-
-********************************************************* SOLUTION *********************************************************
-
-pwsh 
-
-######################################################### Primer_CLI_9 1 #########################################################
-
-"After PowerShell Core is installed you can still run the built in version of PowerShell side-by-side. What CLI command will launch the built in version?"
-
-Research: Primer_CLI_9 https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/powershell
-
-********************************************************* SOLUTION *********************************************************
-
-
-powershell
- 
 
 ######################################################### Windows_PowerShell_Regex_3 10 #########################################################
 
@@ -288,7 +198,7 @@ Reminder: All challenges are done using the file-server.
 
 ********************************************************* SOLUTION *********************************************************
 
-$serviceName = Get-Service | Where-Object { $_.DisplayName -like "*Lego Land*" }
+$serviceName = Get-Service | Where-Object {$_.DisplayName -like "*Lego Land*" }
 $LegoLandDescription = Get-Service | Where-Object {$_.DisplayName -like "*Lego Land*" }
 
 Get-CimInstance -ClassName Win32_Service -Filter "Name='$($serviceName.Name)'" | Select-Object Description
@@ -683,13 +593,6 @@ Count the number of folders in the Music folder in the CTF user’s profile.
 
 (Get-ChildItem -Path C:\Users\CTF\Music -Directory).Count
 
-######################################################### Windows_Powershell_Logic9 10 #########################################################
-
-
-
-
-???????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????????
-
 ######################################################### Windows_PowerShell_Help4 10 #########################################################
 
 When requesting the help file for the get-process cmdlet, what full command is the 9th example given?
@@ -881,7 +784,117 @@ Research: https://devblogs.microsoft.com/commandline/windows-command-line-inside
 conhost.exe
 
 
+######################################################### Primer_CLI_2 1 #########################################################
 
+What Windows 10 feature supports installing Linux subsystem?
+
+Research: https://learn.microsoft.com/en-us/windows/wsl/about
+
+********************************************************* SOLUTION *********************************************************
+
+WSL 
+
+######################################################### Primer_CLI_3 1 #########################################################
+
+Which Windows feature can be used to interact with any CLI on the Windows system concurrently using multiple tabs?
+
+Research: https://learn.microsoft.com/en-us/windows/terminal/
+
+
+********************************************************* SOLUTION *********************************************************
+
+Windows Terminal 
+
+
+######################################################### Primer_CLI_4 1 #########################################################
+
+What was the default shell (command line) of Windows versions Windows 2000 through Windows 8.1?
+
+Research: https://learn.microsoft.com/en-us/windows-hardware/customize/enterprise/shell-launcher
+
+
+********************************************************* SOLUTION *********************************************************
+
+Command Prompt
+
+
+######################################################### Primer_CLI_4 1 #########################################################
+
+What was the default shell (command line) of Windows versions Windows 2000 through Windows 8.1?
+
+Research: https://learn.microsoft.com/en-us/windows-hardware/customize/enterprise/shell-launcher
+
+
+********************************************************* SOLUTION *********************************************************
+
+Command Prompt
+
+
+######################################################### Primer_CLI_5 1 #########################################################
+
+What data type do all cmd.exe commands return?
+
+Research: https://en.wikipedia.org/wiki/Comparison_of_command_shells (Hint: What data type is "text"?)
+
+
+********************************************************* SOLUTION *********************************************************
+
+String 
+
+
+######################################################### Primer_CLI_6 1 #########################################################
+
+What framework is PowerShell built on?
+
+Research: https://en.wikipedia.org/wiki/.NET
+
+********************************************************* SOLUTION *********************************************************
+
+.NET
+
+######################################################### Primer_CLI_7 1 #########################################################
+
+"What will all of the below give you?
+
+(get-host).version
+
+$host.version
+
+$psversiontable.psversion"
+
+Research: https://devblogs.microsoft.com/scripting/powertip-check-version-of-powershell/
+
+
+
+********************************************************* SOLUTION *********************************************************
+
+
+PowerShell Version
+
+
+######################################################### Primer_CLI_8 1 #########################################################
+
+After PowerShell Core is installed what CLI command launches it?
+
+Research: https://learn.microsoft.com/en-us/powershell/scripting/install/installing-powershell-on-windows?view=powershell-7.2
+
+
+
+********************************************************* SOLUTION *********************************************************
+
+pwsh 
+
+######################################################### Primer_CLI_9 1 #########################################################
+
+"After PowerShell Core is installed you can still run the built in version of PowerShell side-by-side. What CLI command will launch the built in version?"
+
+Research: Primer_CLI_9 https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/powershell
+
+********************************************************* SOLUTION *********************************************************
+
+
+powershell
+ 
 
 
 ######################################################################################################################################################
