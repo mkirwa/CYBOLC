@@ -33,6 +33,16 @@ Get-Process | Get-Member                       # Gives the methods and propertie
 (Get-Process).Name                             # Returns the single property of 'name' of every process
 Get-Process | Select-Object Name, ID, path     # Displays the Get-Process Properties of 'Name, ID, Path' for every process
 
+##
+Get-Process retrieves a list of all processes currently running on the system.
+Select-Object Name, ID, Path filters the output to show only the process name, its ID, and the file path of the executable that started the process.
+The output will be a table listing these properties for each process. If the process was started by the system and doesn't have an executable path, the 'Path' field for that process will be empty.
+##
+
+Get-Process | Select-Object Name, CPU, StartTime # For example, if you want to display the process name, CPU usage, and start time, your command would be:
+
+
+
 
 
 ######################################################################################################################################################
