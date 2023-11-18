@@ -40,9 +40,115 @@ The output will be a table listing these properties for each process. If the pro
 ##
 
 Get-Process | Select-Object Name, CPU, StartTime # For example, if you want to display the process name, CPU usage, and start time, your command would be:
+Get-Process | Get-Member | Where-Object {$_.Membertype -match "Method"}       # Displays all objects with Method in their name from the results from Get-Member of the Get-Process cmdlet
+Get-LocalUser | Get-Member      # Displays Properties and Methods of Get-LocalUser cmdlet
+
+Get-Cimclass *                                                                  # Lists all CIM Classes
+Get-CimInstance –Namespace root\securitycenter2 –ClassName antispywareproduct   # Lists the antispywareproduct class from the root/security instance
+Get-CimInstance -ClassName Win32_LogicalDisk -Filter “DriveType=3” | gm         # Shows properties and methods for this Instance
+Get-WmiObject -Class Win32_LogicalDisk -Filter “DriveType=3”                    # Using the Windows Management Instrumentation method
+
+Get-CimInstance -class Win32_BIOS                      # Queries Win32_Bios
+Get-WmiObject -Class Win32_BIOS                        # same output but deprecated command
+
+##
+Get-CimInstance -ClassName Win32_LogicalDisk -Filter “DriveType=3”: This part of the command retrieves instances of the Win32_LogicalDisk class (representing the logical disks on the computer) filtered where the DriveType equals 3.
+In this context, DriveType=3 refers to local hard disk drives.
+| gm (which is shorthand for | Get-Member): This pipes the output of the first command into Get-Member, which displays the properties and methods of the objects returned by the Get-CimInstance cmdlet.
+##
+
+## Powershell example do while loop ## 
 
 
+C:\PS> $x = 1,2,78,0                        # Initializes an array $x with the elements 1, 2, 78, 0.
+C:\PS> $count = 0                           # Sets two variables, $count and $a, to 0.
+C:\PS> $a = 0                               # Sets two variables, $count and $a, to 0.
+C:\PS> do { Write-Host "----------";        # Enters a do-while loop. In each iteration, it:   # Prints a separator line ("----------")
+Write-Host "Count = $count";                # Prints the current value of $count.
+Write-Host "a = $a";                        # Prints the current value of $a.
+Write-Host "x =",$x[$a];                    # Prints the current element of the $x array indexed by $a.
+$count++; $a++; } until ($x[$a] -eq 0)      # Increments $count and $a by 1. The loop continues as long as the element of $x at the current index $a is not equal to 0.
+----------
+Count = 0
+a = 0
+x = 1
+----------
+Count = 1
+a = 1
+x = 2
+----------
+Count = 2
+a = 2
+x = 78
 
+## Powershell example for loop ## 
+for (<Init>; <Condition>; <Repeat>)
+{
+    <Statement list>
+}
+
+$array = ("item1", "item2", "item3")
+for($i = 0; $i -lt $array.length; $i++){ $array[$i] }
+item1
+item2
+item3
+
+$letterArray = "a","b","c","d"
+foreach ($letter in $letterArray)
+{
+  Write-Host $letter
+}
+
+# Iterates through the list of items that is returned by the Get-ChildItem cmdlet
+
+foreach ($file in Get-ChildItem)
+{
+  Write-Host $file
+}
+
+foreach ($i in Get-Alias) { Write-Host $i.name }
+
+Remove-Item does_not_exist.txt -ErrorAction SilentlyContinue           # Hides any errors
+
+$Processes = Get-Process          # Creates a Variable with the results of Get-Process
+$Today = (Get-Date).DateTime      # Creates a combined Date/Time variable from the results of Get-Date
+
+$a = 0..9
+$i=0
+while($i -lt 4) {
+  $a[$i];
+  $i++
+}
+#output
+0
+1
+2
+3
+
+Get-Help about_Functions                                      # Displays the help about Functions
+Get-Help about_Functions_Advanced                             # Displays some more in-depth help about Functions
+Function Do-Stuff { Get-Date; Get-Process; Get-Service }      # Creates a Function with 'Get-Date, Get-Process, Get-Service' inside of it
+Do-Stuff                                                      # Runs the Function
+
+Get-ExecutionPolicy -list                                             # Lists all of the Scopes and ExecutionPolicies on the system
+Get-ExecutionPolicy                                                   # Gets the current user's ExecutionPolicy
+Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope CurrentUser  # Sets the ExecutionPolicy for the CurrentUser to Unrestricted
+
+Operator	Description
+-lt         less than
+-le         Less than or equal to
+-gt         Greater than
+-ge         Greater than or equal to
+-eq         Equal to
+-ne         Not equal to
+-like       Like (uses wildcard for pattern matching)
+-match      A match using Regular Expressions
+
+get-help about_comparison_operators
+Get-Service | Where-Object {$_.Status -eq "Stopped"}            # Takes the output from Get-Service and looks for Status property of Stopped and list those Services
+Get-Service | where Status -eq "Stopped"                        # Same as above
+Get-Process | Where-Object -Property Handles -GE -Value 1000    # Lists Processes that have Greater Than 1000 Handles
+Get-Process | where Handles -GE 1000                            # Same as above
 
 
 ######################################################################################################################################################
