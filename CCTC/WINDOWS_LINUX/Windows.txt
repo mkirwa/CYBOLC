@@ -201,9 +201,8 @@ Reminder: All challenges are done using the file-server.
 $serviceName = Get-Service | Where-Object {$_.DisplayName -like "*Lego Land*" }
 $LegoLandDescription = Get-Service | Where-Object {$_.DisplayName -like "*Lego Land*" }
 
-Get-CimInstance -ClassName Win32_Service -Filter "Name='$($serviceName.Name)'" | Select-Object Description
+Get-CimInstance -ClassName Win32_Service -Filter "Name='$($serviceName.Name)'" | Select-Object Description  # Queries Win32_Service for a service name with a description that mateches LegoLand
 Get-CimInstance -ClassName Win32_Service -Filter "Name='$($LegoLandDescription.Name)'" | Select-Object Description
-
 
 ######################################################### Windows_PowerShell_Logic5 10 #########################################################
 
