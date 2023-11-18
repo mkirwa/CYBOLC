@@ -319,15 +319,10 @@ Count the number of files in the Videos folder in the CTF user's home directory.
 Get-ChildItem is a core cmdlet in PowerShell for item listing and retrieval from a variety of data sources and is fundamental to many scripting and automation tasks. It is a versatile cmdlet in PowerShell used primarily to retrieve a list of items from a provider's location, such as from a file system (like directories and files) or the registry.
 
 Get-ChildItem C:\Users\CTF\Documents --> List Files and Directories: At its most basic level, when used against the file system, Get-ChildItem behaves similarly to the dir command in CMD or the ls command in Unix-based systems. It lists files and directories in the current or specified directory.
-
 Get-ChildItem C:\Users\CTF\Documents -Recurse --> Recursive Listings: With the -Recurse parameter, it can retrieve items from a location and its sublocations (similar to ls -R).
-
 Get-ChildItem C:\Users\CTF\Documents -Filter *.txt --> Filtering: You can use the -Filter parameter to retrieve only specific items based on a wildcard pattern.
-
 Get-ChildItem C:\ -Force --> Hidden and System Items: By default, Get-ChildItem won't show hidden or system files. You can make them visible using the -Force parameter.
-
 Get-ChildItem C:\Users\CTF\Documents -File --> Item Types: Using parameters like -File or -Directory, you can choose to list only files or only directories.
-
 Get-ChildItem HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall --> Other Providers: Apart from the file system, Get-ChildItem can also list items from other providers, such as the registry, certificates, environment variables, etc. For example, to list items from the registry:
 
 Get-ChildItem C:\Users\CTF\Documents | Select-Object Name, Length, CreationTime --> Listing Properties: It can also be used in conjunction with Select-Object to list specific properties of items.
@@ -378,18 +373,20 @@ Zip file is located at C:\Users\CTF\Documents and is called Omega1000.zip copy t
 
 Compress-Archive -LiteralPath 'C:\Users\CTF\Documents\Omega1000.zip' -DestinationPath 'C:\Users\CTF\Desktop\Omega.zip' #COPY OMEGA ZIP TO A NEW LOCATION
 
-Expand-Archive -LiteralPath 'C:\Users\CTF\Desktop\Omega1000.zip' -DestinationPath 'C:\Users\CTF\Desktop\UnzippedToFolder'
+Expand-Archive -LiteralPath 'C:\Users\CTF\Desktop\Omega1000.zip' -DestinationPath 'C:\Users\CTF\Desktop\UnzippedToFolder' # Extract contents of the zip archive and copy it to the unzippedtofolder
 
 #UNZIP THE FIRST ITERATION - you now have a zipped folder (Omega999.zip) inside of an unzipped folder
 
-· for($i = 0; $i -lt 1001; $i++){@(Get-ChildItem 'C:\Users\CTF\Desktop\UnzippedToFolder'| Sort-Object {$_.length})[0]| Expand-Archive -DestinationPath 'C:\Users\CTF\Desktop\UnzippedToFolder' -Force}
+for($i = 0; $i -lt 1001; $i++){
+    
+    @(Get-ChildItem 'C:\Users\CTF\Desktop\UnzippedToFolder'| # In each iteration, it gets the list of items in the 'C:\Users\CTF\Desktop\UnzippedToFolder' directory.
+     Sort-Object {$_.length})[0]| #  sorts these items by their length (size) in ascending order. The smallest item ([0], the first item in the sorted list) is selected.
+      Expand-Archive -DestinationPath 'C:\Users\CTF\Desktop\UnzippedToFolder' -Force # If this smallest item is a zip archive, it gets expanded (unzipped) into the same directory 'C:\Users\CTF\Desktop\UnzippedToFolder'.
+    # The -Force parameter overwrites files in the destination if they already exist.
+}
 
 #UNZIP THE FILE 1000 TIMES
-
-Expand-Archive -LiteralPath ‘C:\Users\CTF\Desktop\UnzippedToFolder\Omega1.zip’ -DestinationPath ‘‘C:\Users\CTF\Desktop\UnzippedToFolder
-
-#UNZIP THE FINAL FILE (Omega1.zip)
-
+Expand-Archive -LiteralPath ‘C:\Users\CTF\Desktop\UnzippedToFolder\Omega1.zip’ -DestinationPath ‘‘C:\Users\CTF\Desktop\UnzippedToFolder # #UNZIP THE FINAL FILE (Omega1.zip)
 Get-Content C:\Users\CTF\Desktop\UnzippedToFolder\Omega.txt
 
 #READ THE LAST UNZIPPED FILE
@@ -399,7 +396,7 @@ kung-fu
 
 >>>>>>>>>>>>>>>>>>> If you need to search for the omega file >>>>>>>>>>>>>
 
-Get-ChildItem -Path "StartingDirectory" -Recurse -File | Where-Object { $_.Name -eq "FileName.ext" }
+Get-ChildItem -Path "StartingDirectory" -Recurse -File | Where-Object { $_.Name -eq "FileName.ext" } # How to search for a file in powershell
 
 StartingDirectory: Replace this with the directory where you want to start your search. For example, C:\ to start from the root of the C drive.
 FileName.ext: Replace this with the name of the file you're searching for, including its extension.
