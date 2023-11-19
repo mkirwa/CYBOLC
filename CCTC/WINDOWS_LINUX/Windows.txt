@@ -930,17 +930,6 @@ Flag format: FULL\PATH\ALL\CAPS
 HKEY_LOCAL_MACHINE\SOFTWARE\MICROSOFT\WINDOWS\CURRENTVERSION\RUNONCE
 
 
-#########################################################  Windows_Registry_Basics_9 10 #########################################################
-
-What registry subkey runs a single time, then deletes its value once the machine reboots? The flag is the full path, using PowerShell.
-
-Flag format: FULL\PATH\ALL\CAPS
-
-********************************************************* SOLUTION *********************************************************
-
-HKEY_CURRENT_USER\SOFTWARE\MICROSOFT\WINDOWS\CURRENTVERSION\RUNONCE
-
-
 ######################################################### Windows_Registry_Basics_10 10 #########################################################
 
 What registry subkey runs a single time, then deletes its value when a user logs on? The flag is the full path, using PowerShell.
@@ -987,6 +976,15 @@ Get-LocalUser | select Name, SID #See all the SIDs and find the one for student
 get-Item -path Registry::HKEY_USERS\S-1-5-21-2881336348-3190591231-4063445930-1003\Software\Microsoft\Windows\CurrentVersion\Run
 C:\botnet.exe 
 
+#########################################################  Windows_Registry_Basics_9 10 #########################################################
+
+What registry subkey runs a single time, then deletes its value once the machine reboots? The flag is the full path, using PowerShell.
+
+Flag format: FULL\PATH\ALL\CAPS
+
+********************************************************* SOLUTION *********************************************************
+
+HKEY_CURRENT_USER\SOFTWARE\MICROSOFT\WINDOWS\CURRENTVERSION\RUNONCE
 
 ######################################################### Windows_Registry_Basics_13 15 #########################################################
 
@@ -1004,6 +1002,7 @@ Get-Item Registry::HKEY_LOCAL_MACHINE\SOFTWARE\MICROSOFT\WINDOWS\CURRENTVERSION\
 What is the value inside of the registry subkey that loads a single time when the "student" user logs on?
 
 ********************************************************* SOLUTION *********************************************************
+
 Get-Item -Path Registry::HKEY_USERS\S-1-5-21-2881336348-3190591231-4063445930-1003\SOFTWARE\Microsoft\Windows\CurrentVersion\RUNONCE
 
 
@@ -1026,7 +1025,7 @@ What suspicious user profile, found in the registry, has connected to this machi
 
 Get-ChildItem 'HKLM:\Software\Microsoft\Windows NT\CurrentVersion\ProfileList'
 
-· Hacker_McHackerson
+Hacker_McHackerson
 
 ######################################################### Windows_Registry_Basics_17 15 #########################################################
 
@@ -1078,8 +1077,6 @@ Research: https://learn.microsoft.com/en-us/windows-hardware/drivers/install/spe
 ********************************************************* SOLUTION *********************************************************
 
 0x0
-
-
 
 #########################################################  Primer_Registry_5 1 #########################################################
 
@@ -1159,8 +1156,8 @@ What is the native Windows GUI tool for managing the registry?
 Research: https://support.microsoft.com/en-us/windows/how-to-open-registry-editor-in-windows-10-deab38e6-91d6-e0aa-4b7c-8878d9e07b11
 
 ********************************************************* SOLUTION *********************************************************
-Registry Editor
 
+Registry Editor
 
 
 ######################################################### Windows_Registry_Basics_1 5 #########################################################
@@ -1171,16 +1168,13 @@ What registry hive contains all machine settings?
 
 HKEY_LOCAL_MACHINE (often abbreviated as HKLM)
 
-
-
 ######################################################### Windows_Registry_Basics_2 5 #########################################################
 
 What registry hive contains all user settings?
 
 ********************************************************* SOLUTION *********************************************************
+
 HKEY_USERS
-
-
 
 
 ######################################################### Windows_Registry_Basics_3 5 #########################################################
@@ -1188,9 +1182,8 @@ HKEY_USERS
 What registry hive contains only the currently logged-in user's settings?
 
 ********************************************************* SOLUTION *********************************************************
+
 HKEY_CURRENT_USER (often abbreviated as HKCU)
-
-
 
 ######################################################### Windows_Registry_Basics_4 5 #########################################################
 
