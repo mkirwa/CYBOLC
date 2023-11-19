@@ -1590,6 +1590,19 @@ Research: https://learn.microsoft.com/en-us/windows-server/administration/window
 fsutil fsinfo drives
 
 
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^/////////////////  WINDOWS PROCESS VALIDITY NOTES   /////////////////^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+PS C:\Users\student> Get-Process | Sort -Property Id | more # View all Processes, sort them by PID.
+PS C:\Users\student> Get-Process | Select Name, Id, Description | Sort -Property Id | more # View all processes, but sort by PID and only show the properties I define.
+PS C:\Users\student> Get-Process SMSS,CSRSS,LSASS | Sort -Property Id # View only the processes I define and sort by PID
+
+
+
+
+
+
+
+
 ######################################################################################################################################################
 ######################################################                                             ###################################################
 ######################################################           09_windows_process_validity      ####################################################
@@ -2227,6 +2240,47 @@ HINT: Run the command on the service name, not the display name.
 sc.exe showsid “Legit” 
 
 1182961511
+
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^/////////////////  WINDOWS Boot Process NOTES   /////////////////^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Boot Process Link - https://os.cybbh.io/public/os/latest/006_windows_boot_process/winboot_fg.html
+
+findstr /C:"Detected boot environment" "C:\Windows\Panther\Setupact.log" # How to tell if your machine is running a BIOS or UEFI
+Get-Content C:\Windows\Panther\Setupact.log | Select-String "Detected boot environment" # How to tell if your machine is running a BIOS or UEFI
+bcdedit | findstr /i winload # How to find the path for winload.exe or winload.efi
+Msinfo32.exe # Check the GUI
+
+reg query HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services | findstr Spooler # How to show where the spooler is located 2. Showing the Service Control Manager registry key
+reg query HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\Spooler # 3. Showing the contents of the Spooler Service Registry Key
+C:\Windows> tasklist /svc # How to show services 
+
+c:\demo>bcdedit /export C:\Lion_BCD # How to backup BCD settings 
+c:\demo>bcdedit /import C:\Lion_BCD # How to restore BCD settings
+c:\demo>bcdedit /set {<identifier>} description "Windows 7 - Lion Den" (1) # How to modify description of current boot loader
+c:\demo>bcdedit /create {ntldr} /d "Windows XP Pro SP2 - Tiger Paw"  # Create New partition
+c:\demo>bcdedit /set {ntldr} device partition=C: # -Specify the Partition
+c:\demo>bcdedit /set {ntldr} path \ntldr # speicfy the path to ntldr
+c:\demo>bcdedit /displayorder {ntldr} /addfirst # -Specify the Display Order
+c:\demo>bcdedit # show partitions 
+
+bcdedit /deletevalue {current} safeboot # delete the safeboot value
+bcdedit /set {bootmgr} timeout 29 (2) # Change timeout value
+
+
+##
+bcdedit: The command-line tool used for managing BCD settings.
+/set {<identifier>}: This part of the command specifies which BCD entry to modify. The <identifier> should be replaced with the actual identifier of the boot entry you want to change.
+description "Windows 7 - Lion Den": Sets the description of the specified boot entry to "Windows 7 - Lion Den".
+##
+bcdedit: This is the command-line tool used for managing BCD settings.
+/create {ntldr}: Creates a new boot loader entry for an older version of Windows (in this case, indicated by {ntldr}, which is typically associated with Windows XP and earlier versions).
+/d "Windows XP Pro SP2 - Tiger Paw": Sets the description of the new boot loader entry to "Windows XP Pro SP2 - Tiger Paw".
+
+"NTLDR" stands for "NT Loader," which is the boot loader for all releases of Microsoft's Windows NT operating system up to and including Windows XP and Windows Server 2003.
+NTLDR is responsible for loading the operating system and is typically invoked by the computer's BIOS. It presents users with a boot menu and manages the process of loading Windows from the boot drive into memory.
+Starting with Windows Vista, NTLDR was replaced by the Windows Boot Manager (BOOTMGR).
+##
+
 
 ######################################################################################################################################################
 ######################################################                                             ###################################################
