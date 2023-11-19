@@ -2228,6 +2228,176 @@ sc.exe showsid “Legit”
 
 1182961511
 
+######################################################################################################################################################
+######################################################                                             ###################################################
+######################################################           Windows Boots Process             ###################################################
+######################################################                                             ###################################################
+######################################################################################################################################################
+
+##################################################################################################################################################
+
+What is the first process to spawn on Windows systems after the kernel loads?
+
+********************************************************* SOLUTION ********************************************************
+
+SYSTEM
+
+##################################################################################################################################################
+
+What is the Process ID (PID) of the first Windows process?
+
+********************************************************* SOLUTION ********************************************************
+
+4
+
+##################################################################################################################################################
+
+What is the second boot process to spawn, that then spawns csrss in both user space and kernel space?
+
+********************************************************* SOLUTION ********************************************************
+
+smss
+
+##################################################################################################################################################
+
+What session ID do kernel space processes operate in?
+
+********************************************************* SOLUTION ********************************************************
+
+0
+
+##################################################################################################################################################
+
+What process creates access tokens?
+
+********************************************************* SOLUTION ********************************************************
+
+lsass.exe
+
+##################################################################################################################################################
+
+What is the parent process to all svchosts?
+
+********************************************************* SOLUTION ********************************************************
+
+services.exe
+
+##################################################################################################################################################
+
+What process is waiting with high priority for the Secure Attention Sequence (SAS)?
+
+********************************************************* SOLUTION ********************************************************
+
+winlogon.exe
+
+##################################################################################################################################################
+
+What user space process spawns explorer, then dies?
+
+********************************************************* SOLUTION ********************************************************
+
+userinit.exe
+
+##################################################################################################################################################
+
+What is the name of the bootloader we are using on all of the Windows machines in this environment?
+
+********************************************************* SOLUTION ********************************************************
+
+powershell use bcedit command
+in path .exe is the name of bootloader
+
+##################################################################################################################################################
+
+Based on the boot loader from Init_9, which firmware are we using (BIOS or UEFI) in our environment?
+
+********************************************************* SOLUTION ********************************************************
+
+System Info
+look for BIOS Version/Date
+BIOS
+OR
+bcdedit | findstr /i winload # displays: \windows\system32\winload.exe (winload.exe means BIOS, winload.efi means UEFI)
+
+##################################################################################################################################################
+
+What file saves the memory state to the hard drive when going into hibernation?
+
+********************************************************* SOLUTION ********************************************************
+
+hiberfi.sys
+
+##################################################################################################################################################
+
+What bootloader is responsible for restoring the system to its original state after hibernation?
+
+********************************************************* SOLUTION ********************************************************
+
+winresume.exe
+
+##################################################################################################################################################
+
+The system is booting into safe mode. Identify the flag from the command-line output.
+Follow these instructions to boot the virtual image -- Click Here ---> Windows Bootkit Instructions
+- after rebooting---- cmd ---bcdedit-----in description (flag is there)
+
+********************************************************* SOLUTION ********************************************************
+
+1RF5Zgf9P
+#Launch the virtual machine on MobaXTerm
+Bcdedit
+Flag: 1RF5Zgf9P (will see in terminal)
+
+##################################################################################################################################################
+
+The system is booting into safe mode. Correct that, and reboot into the desktop. The flag is on the desktop.
+Follow these Windows Bootkit Instructions to boot the virtual image
+
+********************************************************* SOLUTION ********************************************************
+
+bcdedit /deletevalue {current} safeboot
+shutdown /r
+#once the virtual machine shuts down, it doesn’t usually reboot on it’s own - you will have to kill your connection and reboot it using ****qemu-system-x86_64 -m 2G Win_Bootkit.vdi
+#this will take you to your desktop, and the flag is the wallpaper
+Flag: 76Drp6hB
+
+##################################################################################################################################################
+
+Prevent the system restart using the command line, and then identify persistence mechanisms that are reverting the OS and boot loader configurations. The flag is in the same folder as the persistence mechanism. HINT: Copy the error message in its entirety to figure out what is happening to the system. WARNING: You have 30 seconds to comply.
+#You must ensure you stop playin when it comes to this problem - you only have 30 seconds
+
+********************************************************* SOLUTION ********************************************************
+
+#Virtual machine will restart after last flag because of timeout, IF YOU WERE PLAYIN enter qemu-system-x86_64 -m 2G Win_Bootkit.vdi again
+#Immediately open terminal and type “shutdown /a”
+#This makes it so the terminal will not time out
+#In terminal
+sc query state= inactive | find “DISPLAY_NAME”
+Flag: AlsKdJfhG
+
+##################################################################################################################################################
+
+Run PowerShell... if you can. Resolve PowerShell dependencies. HINT: Search the entire file system for the PowerShell .dll and copy it back to where it needs to go. It is hidden in China. The flag is a file in the directory with the .dll
+
+********************************************************* SOLUTION ********************************************************
+
+#Open File Explorer…
+#Computer → Local Disk → Windows → System32 → cn-CN
+#You will find the System.Management.Automation.dll (ctrl + c to cut)
+#The correct path for this file is C:\Windows\Microsoft.NET\assembly\GAC_MSIL\System.Management.Automation\v4.0_3.0.0.0__31bf3856ad364e35
+#Paste into correct folder
+Flag: rfVBgtYHn
+Once you fix and launch PowerShell, the console is changed to a custom layout. Figure out what file is causing this, read the file, and inspect the file that it is referencing.
+#launch powershell as administrator - it will look weird because it is formatted differently
+#Test-Path $profile.AllUsersAllHosts #returns True
+#$cd C:\Windows\System32\WindowsPowershell\v1.0 #this takes you to all users, all hosts PSHOME file
+#get-content profile.psi
+#copy C:\Users\Yin\AppData\Local\Temp\7f7cfb189b822c87a02778a033f4275a.pdf
+#paste into file explorer search bar
+#PDF will open
+#Scroll down to page 2
+Flag: 8B7da4v6Y
+
 
 ######################################################################################################################################################
 ######################################################                                             ###################################################
