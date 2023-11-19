@@ -1592,13 +1592,23 @@ fsutil fsinfo drives
 
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^/////////////////  WINDOWS PROCESS VALIDITY NOTES   /////////////////^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-PS C:\Users\student> Get-Process | Sort -Property Id | more # View all Processes, sort them by PID.
-PS C:\Users\student> Get-Process | Select Name, Id, Description | Sort -Property Id | more # View all processes, but sort by PID and only show the properties I define.
-PS C:\Users\student> Get-Process SMSS,CSRSS,LSASS | Sort -Property Id # View only the processes I define and sort by PID
+Windows process validity -> https://os.cybbh.io/public/os/latest/008_windows_process_validity/winproc_fg.html
 
-
-
-
+PS C:\Users\student> Get-Process | Sort -Property Id | more                                                                 # View all Processes, sort them by PID.
+PS C:\Users\student> Get-Process | Select Name, Id, Description | Sort -Property Id | more                                  # View all processes, but sort by PID and only show the properties I define.
+PS C:\Users\student> Get-Process SMSS,CSRSS,LSASS | Sort -Property Id                                                       # View only the processes I define and sort by PID
+PS C:\Users\student> Get-Process chrome | foreach {$a} {$_.modules} | more                                                  # View modules/DLLs used by defined process and their file locations.
+PS C:\Users\student> Get-Process chrome | foreach {$a} {$_.modules} | Where-Object ModuleName -like '\*chrome*' | more      # View only modules/DLLs used by Chrome with "chrome" in the name and their file locations.
+PS C:\WINDOWS\system32>  Get-CimInstance Win32_Process                                                                      # View processes with PPID  # View process instances with win32 process
+PS C:\WINDOWS\system32>  Get-CimInstance Win32_Process | Get-Member                                                         # View the additional Properties with Get-Member
+PS C:\WINDOWS\system32>  Get-CimInstance Win32_Process | select name,ProcessId,ParentProcessId | sort processid             # View the processes with PID and PPID sorted by PID
+Get-Ciminstance Win32_service | Select Name, Processid, Pathname | ft -wrap | more                                          # View an instance of all Win32 (system) services. with full file path 
+C:\Users\student> tasklist | more                                                                                           # 2.2.2 View Processes in Command Prompt
+C:\Users\student> tasklist /v | more                                                                                        # Display verbose task information in the output. When a process, script, or command is run in verbose mode, it generates additional information about what it's doing, 
+C:\Users\student> tasklist /svc                                                                                             # Display service information for each process without truncation
+C:\Users\student> tasklist /m | more                                                                                        # Display modules/dlls associated to all processes.
+C:\Users\student> tasklist /m /fi "IMAGENAME eq chrome.exe" | more                                                          # Display modules/dlls associated to a specific process.
+C:\Users\student> tasklist /fo:table | more                                                                                 # Formating options
 
 
 
