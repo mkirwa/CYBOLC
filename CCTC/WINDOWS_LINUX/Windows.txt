@@ -800,6 +800,87 @@ I am certainly not the malware
 # which can help in identifying any malicious scripts or commands that are being executed.
 ##
 
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^/////////////////  WINDOWS REGISTRY NOTES   /////////////////^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Review Registry structure here - https://os.cybbh.io/public/os/latest/004_windows_registry/reg_fg.html 
+
+Driver information is kept in the registry in Windows, but in /dev in Linux.
+System configurations in Windows are in HKEY_LOCAL_MACHINE, but in /etc (and a few other directories) in Linux
+
+HKEY_Local_Machine (HIVE)
+              ├──SOFTWARE (Key)
+              ├──BCD00000 (Key)
+              ├──HARDWARE (Key)
+              └──SYSTEM   (Key)
+                      └──RegisteredApplications (Subkey)
+                                        ├── File Explorer : Data (value)
+                                        ├── Paint : Data (value)
+                                        └──Wordpad : Data (value)
+HKEY_LOCAL_MACHINE (HKLM) -> Contains configuration information for the entire computer. Its values are read every time the machine is started regardless of the user who logs in
+    Subkeys are:
+        HARDWARE - contains a database of installed devices along with their drivers
+        SAM - Security Account Manager stores user and group accounts along with NTLM hashes of passwords
+        Security - Local Security policy accessed by lsass.exe used to determine rights and permissions for users on the machine
+        System - Contains keys pertaining to system startup such as programs started on boot or driver load order.
+
+HKEY_USERS (HKU) -> Contains all all user profiles on the system. Contains one key per user on the system. Each key is named after the SID(Security Identifier) of the user.
+    SID = S-1-5-21-2948704478-3101701159-1111693228-1002
+        A domain identifier 21-2948704478-3101701159-1111693228
+        -1002 = RID A variable number of subauthority or relative identifier (RID) values that uniquely identify the trustee relative to the authority that issued the SID
+    
+    Stores settings for each user profile on the computer. Each user has a subkey under HKU, with their settings and preferences.
+
+    HKEY_USERS (HIVE)
+              └──SID (S-1-5-21-3939661428-3032410992-3449649886-XXXX) (Key) 
+    HKEY_USERS\S-1-5-21-3939661428-3032410992-3449649886-XXXX
+
+HKEY_CURRENT_USER (HKCU) ->  HKEY_CURRENT_USER is the copy of the logged in user’s registry key based on thier SID from HKEY_USERS.
+     A shortcut to the subkey in HKEY_USERS that corresponds to the user currently logged on. It stores the configuration settings for the desktop environment and application settings for the current user.
+
+
+
+HKEY_CURRENT_CONFIG (HKCC) -> Contains information about the hardware profile used by the local computer at system startup. It is linked to data stored in the "System" and "Software" keys in HKLM.
+    HKEY_CURRENT_CONFIG is a symbolic link (pointer or shortcut or alias) to the following registry key:
+    HKEY_Local_Machine (HIVE)
+              └──SYSTEM (Key)
+                      └──CurrentControlSet (Subkey)
+                                    └── Hardware Profiles (Subkey)
+                                                └── Current (Subkey)
+    HKEY_LOCAL_MACHINE\System\CurrentControlSet\Hardware Profiles\Current
+
+HKEY_CLASSES_ROOT (HKCR) -> A compilation of information from HKLM and HKCU, HKCR stores configuration data related to file types and Object Linking and Embedding (OLE) information. 
+    It is primarily used for file association and COM object registration.
+
+    HKEY_CURRENT_CONFIG is a symbolic link (pointer or shortcut or alias) to the following registry key:
+
+    HKEY_Local_Machine (HIVE)
+              └──Software (Key)
+                      └──Classes (Subkey)
+
+    Contains file name extension associations and COM class registration information such as ProgIDs, CLSIDs, and IIDs.
+
+Table 1. Registry Path Hive and Supporting Files
+HKLM\SAM            SAM, SAM.LOG
+HKLM\SECURITY       SECURITY, SECURITY.LOG
+HKLM\SOFTWARE       software, software.LOG, software.sav
+HKLM\SYSTEM         system, system.LOG, system.sav
+HKLM\HARDWARE       (Dynamic/Volatile Hive)
+HKU\.DEFAULT        default, default.LOG, default.sav
+HKU\SID             NTUSER.DAT
+HKU\SID_CLASSE      UsrClass.dat, UsrClass.dat.LOG
+
+reg query HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Run  # Reg query - Reads keys from specific registry locations
+
+# Reg add - Adds keys to specific registry locations
+reg add HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Run /v testme /t REG_SZ /d C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe
+
+# The /v stands for Value; In this case the name of this Key Value.
+# The /t stands for Type; Types can be any of the Data Types that we went over earlier.
+# The /d stands for Data; Is what is the actual Data or in this case a command to open a file every time the system is ran.
+
+reg delete HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Run /v testme # Delete registry key
+
+
+
 #########################################################################################################################################
 #########################################################                       #########################################################
 #########################################################  05_WINDOWS_REGISTRY  #########################################################

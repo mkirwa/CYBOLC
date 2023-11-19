@@ -12,6 +12,12 @@ get-item 'REGISTRY::HKEY_USERS:\\.............'
 
 netstat -ano # works on every machine 
 
+netstat: Short for network statistics, this command displays various network-related information, such as active connections and routing tables.
+-a: Shows all active TCP and UDP connections and the TCP and UDP ports on which the computer is listening.
+-n: Displays addresses and port numbers in numerical form.
+-o: Displays the process ID (PID) associated with each connection, which is useful for identifying which processes are using which ports and connections.
+Overall, this command is commonly used for network troubleshooting and monitoring purposes.
+
 2> /dev/null # Get errors out..
 
 linux directories
