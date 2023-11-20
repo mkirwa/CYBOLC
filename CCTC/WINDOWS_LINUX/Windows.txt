@@ -1645,13 +1645,19 @@ Reminder: All challenges are done using Workstation1.
 
 go to command prompt and run these:
 net use z: /d
-xcopy /s z:\ c:\sysinternals\
+
+##
+z:: Specifies the drive letter (in this case, Z) of the network drive to be disconnected.
+/d: Stands for delete. It's the command option to disconnect the network drive.
+After running this command, the network drive previously mapped to Z: will no longer be accessible from that drive letter.
+##
+
+xcopy /s z:\ c:\sysinternals\ # The command copies all files and directories (except empty ones) from the Z: drive to the c:\sysinternals\ directory on the C: drive.
+
 net use * http://live.sysinternals.com # Autoruns directory should now be available 
 
 got to the c directory and open autoruns 
-
 look for a suspicious exe and cd to the directory to find the .dll 
-
 In this case, TotallyLegit that resides in C:\Users\Public\Downloads\
 
 
@@ -1760,18 +1766,13 @@ password: password
 ********************************************************* SOLUTION ********************************************************
 
 use the search bar in autoruns to find the exe -> McAfeeFireTray.exe
-
 then cd to the location SecureHealth (Not Verified) 	C:\Program Files\Windows Defender Advanced Threat Protection\McAfeeFireTray.exe	
-
 type It's_Here.txt
 
-
 - autorun search for the file----right click jump --- this gives file path
-
 - C:\Program Files\Windows Defender Advanced Threat Protection
 
 (Get-Acl "C:\Windows\System32\spoolsv.exe").Access | Where-Object { $_.IdentityReference -eq "NT SERVICE\TrustedInstaller" }
-
 Get-ChildItem -Path C:\ -Recurse -Filter spoolsv.exe -ErrorAction SilentlyContinue | Where-Object { !$_.PSIsContainer }
 
 ######################################################### Win_Process_Situational_Awareness_1 10 #########################################################
@@ -1783,8 +1784,6 @@ HINT: Use Sysinternals tools.
 ********************************************************* SOLUTION ********************************************************
 
 Get-ChildItem -Path C:\ -Recurse -Filter spoolsv.exe -ErrorAction SilentlyContinue | Where-Object { !$_.PSIsContainer } # Find where the file is
-
-
 icacls "C:\windows\System32\spoolsv.exe" #which shows (F) for Full Control, answer will be Read Write for full control 
 
 
@@ -1828,22 +1827,12 @@ HINT: Use Sysinternals tools and don't forget to run as Administrator...
 
 
 Open Process Explorer as administrator
-
 Find spool in the top left search bar # view -> show lower pane 
-
 C:\Windows\System32\en-US\spoolsv.exe.mui
-
 Go to options > lower Pane > DLL
-
 Under lowerpane find spoolsv.exe.mui
-
 Right click properties and see path
-
 C:\Windows\System32\en-US\spoolsv.exe.mui 
-
-######################################################### Win_Process_Situational_Awareness_3 10 #########################################################
-
-
 
 ######################################################### Win_Process_Situational_Awareness_3 10 #########################################################
 
@@ -1868,11 +1857,8 @@ HINT: Use Sysinternals tools.
 ********************************************************* SOLUTION ********************************************************
 
 open command prompt as administrator 
-
 cd to the mounted directory 
-
 listdlls -v winlogon.exe
-
 look at the first dlls which is ntdll
 
 ######################################################### Win_Process_Situational_Awareness_5 10 #########################################################
@@ -1883,9 +1869,7 @@ While examining the Windows Defender Firewall, what is the LogAllowedConnections
 ********************************************************* SOLUTION ********************************************************
 
 Got to windows start button and type windows Defender Firewall -> Advanced Settings -> Windows Defender Firewall Properties -> Specify Logging -> Log dropped packets set to no and Log successful connections set to NO. 
-
 # tried this from powershell too->  Get-NetFirewallProfile 
-
 # tried this from powershell too->   Get-NetFirewallProfile -Profile Public
 
 ######################################################### Windows_Hidden_Processes_7 10 #########################################################
@@ -1902,9 +1886,7 @@ Standard are well known ports ---> ports between 0, 1023 or ports between 1024 t
 
 
 #Open tcpview sysinternal
-
 #Notice that powershell.exe is listening on port 6666
-
 #Powershell would use TCP/5985 = HTTP or TCP/5986 = HTTPS, so you know this one could be malware
 
 6666
@@ -1921,16 +1903,11 @@ password: password
 
 ********************************************************* SOLUTION ********************************************************
 
-
-
- Run Task Scheduler as administrator
+Run Task Scheduler as administrator
 
 - On the right hand side “Display All Running Tasks”
-
 - Notice GoogleUpdater current action is to run powershell ????
-
 - Close and right click GoogleUpdater, Select properties
-
 - Double click the actions, notice under arguments “-noexit -windowstyle hidden -File C:\windows\system32\legit_script.ps1”
 
 legit_script.ps1
@@ -2052,6 +2029,17 @@ What SysInternals tool reports .dlls loaded into processes?
 ********************************************************* SOLUTION ********************************************************
 
 ListDLLs
+
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^/////////////////  WINDOWS PROCESS VALIDITY NOTES   /////////////////^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+UAC link -> https://os.cybbh.io/public/os/latest/009_windows_uac/uac_fg.html
+
+#### How to View file manifest settings ####
+PS C:\Users\student> net use * http://live.sysinternals.com                                                     # Map the Sysinternals Command in Powershell
+PS C:\Users\student> z:
+PS Z:\> ./sigcheck -m C:\Windows\System32\slui.exe                                                              # View the autoelevate setting of slui
+PS Z:\> ./sigcheck -m C:\windows\regedit.exe                                                                    # View the highest available setting of regedit
+PS Z:\> ./strings –s c:\windows\system32\*.exe | findstr /i autoelevate                                         # How to locate Windows executables that have autoelevate in the manifest
 
 
 ######################################################################################################################################################
