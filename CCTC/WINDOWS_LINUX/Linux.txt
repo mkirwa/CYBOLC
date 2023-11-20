@@ -1372,6 +1372,139 @@ fi
 
 Documentation -> https://os.cybbh.io/public/os/latest/010_linux_process_validity/linproc_fg.html
 
+student@linux-opstation-grkv:~$ ps                                                                   # ps (report a snapshot of the current processes) command
+  PID TTY          TIME CMD
+ 7198 pts/1    00:00:00 bash                                                                         # the output provides information about the currently running processes, including their process identification numbers (PID).
+
+student@linux-opstation-grkv:~$ top                                                                  # top command provides a dynamic real-time view of a running system
+
+top - 15:30:43 up 2 days, 13:04,  3 users,  load average: 0.00, 0.00, 0.00
+Tasks: 205 total,   1 running, 167 sleeping,   0 stopped,   0 zombie
+%Cpu(s):  0.3 us,  0.7 sy,  0.0 ni, 99.0 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+KiB Mem :  4039312 total,  2133660 free,  1070632 used,   835020 buff/cache
+KiB Swap:        0 total,        0 free,        0 used.  2642820 avail Mem
+
+  PID USER      PR  NI    VIRT    RES    SHR S %CPU %MEM     TIME+ COMMAND                          # the output displays the summary information for the system and a dynamic list of processes currently managed by the Linux kernel
+ 1572 gdm       20   0  802524  50388  37608 S  0.3  1.2   0:53.50 gsd-color
+
+
+student@linux-opstation-grkv:~$ ps -elf | head                                                      # ps -elf command will do a full format listing of all processes. Snapshot above shows the two primary processes after startup
+F S UID        PID  PPID  C PRI  NI ADDR SZ WCHAN  STIME TTY          TIME CMD                      
+4 S root         1     0  0  80   0 - 39982 -      Feb25 ?        00:00:08 /sbin/init               # init (/sbin/init) has a process ID of 1; and its parent, the Kernel has a PID of 0. The kernel starts /sbin/init which is the parent/grandparent of all user mode processes.   
+1 S root         2     0  0  80   0 -     0 -      Feb25 ?        00:00:00 [kthreadd]               # Modern Linux kernels/distros also have [kthreadd] which is a kernel thread daemon which is second after init so it will have a PID of 2 and will also have no parent.
+
+
+# for what PID, C, PRI, NI, ADRR, SZ, WCHAN stands for refer to the documentation. 
+
+
+# Show range of User IDs for system and human users
+student@linux-opstation-grkv:~$ grep UID /etc/login.defs                                            # grep for UID from the shadow password suite configuration file login.defs                
+
+	UID_MIN:                1000                                                                      # minimum userid assigned to a regular user  
+	UID_MAX:                60000                                                                     # maximum userid assigned to a regular user
+	#SYS_UID_MIN:           100                                                                       # minimum userid assigned to a system user    
+	#SYS_UID_MAX:           999                                                                       # maximum userid assigned to a system user
+
+
+student@linux-opstation-grkv:~$ ls -l /usr/bin/passwd                                               # command list permissions of the passwd executables
+-rwsr-xr-x 1 root root 59640 Mar 22  2019 /usr/bin/passwd
+   ^          ^
+  (2)         (3)
+
+  2 -> depicts that the SUID bit is set on the executable
+  3 -> shows that the SUID bit is set by the user root
+
+student@linux-opstation-grkv:~$ systemctl list-units                                                # List all unit files that systemd has listed as active
+student@linux-opstation-grkv:~$ systemctl list-units --all                                          # List all units that systemd has loaded or attempted to load into memory, including those that are not currently active, add the --all switch:
+student@linux-opstation-grkv:~$ systemctl status <servicename.service>                              # Check status of a service
+student@linux-opstation-grkv:~$ systemctl start/stop/restart <servicename.service>                  # Start/stop/restart a service
+
+
+student@linux-opstation-grkv:~$ ping 8.8.8.8 &                                                      # the command is executed as a background process indicated by & at the end
+[1] 14130                                                                                           # value in [] denotes job id and 14130 denotes PID     
+student@linux-opstation-grkv:~$ PING 8.8.8.8 (8.8.8.8) 56(84) bytes of data.
+64 bytes from 8.8.8.8: icmp_seq=1 ttl=112 time=8.51 ms
+64 bytes from 8.8.8.8: icmp_seq=2 ttl=112 time=8.40 ms
+64 bytes from 8.8.8.8: icmp_seq=3 ttl=112 time=8.31 ms
+fg                                                                                                  # fg command is entered on the keyboard to bring job to the foreground
+ping 8.8.8.8
+64 bytes from 8.8.8.8: icmp_seq=4 ttl=112 time=8.72 ms
+^Z                                                                                                  # ctrl+z is used to stop the job
+[1]+  Stopped                 ping 8.8.8.8
+
+student@linux-opstation-grkv:~$ jobs                                                                # jobs command will list all jobs and their status         
+[1]+  Stopped                 ping 8.8.8.8                                                          # list that job id 1 is stopped
+
+student@linux-opstation-grkv:~$ kill -9 %1                                                          # job id 1 is abruptly terminated with the kill -9 command. Use the % when terminating jobs by their respective ids
+
+[1]+  Stopped                 ping 8.8.8.8
+
+
+crontab -u [user] file                                                                              # This command will load the crontab data from the specified file
+crontab -l -u [user]                                                                                # This command will display/list user’s crontab contents
+crontab -r -u [user]                                                                                # This Command will remove user’s crontab contents
+crontab -e -u [user]                                                                                # This command will edit user’s crontab contents
+
+┌───────────── minute (0 - 59)
+  │ ┌───────────── hour (0 - 23)
+  │ │ ┌───────────── day of the month (1 - 31)
+  │ │ │ ┌───────────── month (1 - 12)
+  │ │ │ │ ┌───────────── day of the week (0 - 6) (Sunday to Saturday;
+  │ │ │ │ │                           7 is also Sunday on some systems)
+  │ │ │ │ │
+  │ │ │ │ │
+  * * * * * <Time/Day to execute    "Command to Execute"
+
+(Mnemonic: Minnie Has Daily Money Worries)
+* The syntax of each line expects a cron expression made of five fields, followed
+by a shell command to execute.
+
+
+Cron Examples
+* Run backup everyday at 0412
+** `12 4 * * *`    /usr/bin/backup
+
+* Send a message to all logged in users, 0000 hours on 1 Jan
+** `0 0 1 1 *`     wall "Happy New Year"
+
+Other advanced usage....
+
+* Send a message at minute 15 of each hour to logged in users on Sunday
+** `15 * * * 0`    wall "Shouldn't you be in church?"
+
+* Run backup on Wed, and Sat at 0515
+** `15 5 * * 3,6`   /usr/bin/backup
+
+* Save open tcp port listing hourly from 9PM to 5AM every day
+** `0 0-5,21-23 * * *`    echo $(ss -nltp) >> /home/andy.dwyer/tcplist.context
+
+sudo lsof | tail -30                                                                            # List all open files being used by every process.
+sudo lsof -c sshd                                                                               # List all open files for a specific process.
+
+## File descriptors from lsof ## see documentation. 
+This information and more available in the lsof man page. 
+# - The number in front of flag(s) is the file descriptor number used by the process associated with the file
+u - File open with Read and Write permission
+r - File open with Read permission
+w - File open with Write permission
+W - File open with Write permission and with Write Lock on entire file
+mem - Memory mapped file, usually for share library
+
+ls -l /proc/                                                                                     # List all process directories
+ps -elf | grep sshd                                                                              # Grab the PID of a process.
+sudo ls -l /proc/14139                                                                           # List contents for that PID directory.
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -1397,13 +1530,6 @@ https://uace.github.io/learning/init-vs-systemd-what-is-an-init-daemon
 How many child processes did SysV Init daemon spawn?
 
 *********************************************************     SOLUTION        **********************************************************
-
-######################################################### Linux Processes 1 5 #########################################################
-
-What is the process ID (PID) of the SysV Init daemon?
-
-*********************************************************     SOLUTION        **********************************************************
-
 
 ps displays information about a selection of the active processes
 
