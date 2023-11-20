@@ -2456,193 +2456,78 @@ Once you fix and launch PowerShell, the console is changed to a custom layout. F
 #Scroll down to page 2
 Flag: 8B7da4v6Y
 
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^/////////////////  WINDOWS AUDITING AND LOGGING   /////////////////^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Windows auditing and logging page -> https://os.cybbh.io/public/os/latest/011_windows_auditing_&_logging/artifacts_fg.html
+
+PS C:\> Get-LocalUser | select Name,SID                                                         # Get SIDS being used. Get-LocalUser will show local Users and SID on a system
+PS C:\> Get-WmiObject win32_useraccount | select name,sid                                       # Another way to Get SIDs. Get-WmiObject will show local and domain Users and SID
+C:\windows\system32>wmic UserAccount get name,sid                                               # wmic useraccount get name,sid will show local Users and SID
+
+The UserAssist registry key tracks the GUI-based programs that were ran by a particular user.
+2.1 Location
+They are located in HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\UserAssist\{GUID}\Count\ * they are encoded in ROT13
+The GUID represents a particular file extension.
+CEBFF5CD-ACE2-4F4F-9178-9926F41749EA A list of applications, files, links, and other objects that have been accessed
+F4E57C4B-2036-45F0-A9AB-443BCFE33D9F Lists the Shortcut Links used to start programs
+
+PS C:\> Get-ItemProperty "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\UserAssist\{CEBFF5CD-ACE2-4F4F-9178-9926F41749EA}\Count" # Output shows the Executable files encoded with ROT13. Copy/ Paste the output into a decdoer site like Rot13 or CyberChef
+
+Q: Where can you look to pull all users that have logged on to the computer and have ran executables?
+Q: How can we change our command to look at all users Userassist artifacts?
+A: From
+PS C:\> Get-ItemProperty "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\UserAssist\{CEBFF5CD-ACE2-4F4F-9178-9926F41749EA}\Count"
+To
+PS C:\> Get-ItemProperty "Registry::Hkey_Users\*\Software\Microsoft\Windows\CurrentVersion\Explorer\UserAssist\{CEBFF5CD-ACE2-4F4F-9178-9926F41749EA}\Count"
+
+3. Windows Background Activity Moderator (BAM) Location
+Show in Reg Edit:
+HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\bam\State\UserSettings #On 1809 and Newer
+HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\bam\UserSettings #On 1803 and below
+
+C:\WINDOWS\system32>systeminfo                                                                  # command to get Windows OS Version - Ran in Admin-Station
+Get-ComputerInfo | select osname,osversion,OsHardwareAbstractionLayer                           # Powershell cmdlet to get Windows OS Version - Ran in Admin-Station
+PS C:\> Get-Item HKLM:\SYSTEM\CurrentControlSet\Services\bam\state\UserSettings\*               # BAM entries for every user on the system
+
+How to show users BAM artifacts for a particular user
+PS C:\> wmic useraccount  get caption,sid | more                                                                                                # Get the SID for the users first. Get the SID of every local user on the machine 
+PS C:\> Get-Itemproperty 'HKLM:\SYSTEM\CurrentControlSet\Services\bam\State\UserSettings\S-1-5-21-1584283910-3275287195-1754958050-1005'        # Use the SID to get for a specific user. Insert the SID of andy.dwyer from above. Output shows the BAM artifact from andy.dwyer
+
+PS C:\> Get-Childitem 'C:\$RECYCLE.BIN' -Recurse -Verbose -Force | select FullName                                                              # Find the Contents of the Recycle Bin
+PS C:\> wmic useraccount where 'sid="S-1-5-21-1584283910-3275287195-1754958050-1005"' get name                                                  # find the specific user this information belogs to? Match SID to USER:
+PS C:\> Get-Content 'C:\$Recycle.Bin\S-1-5-21-1584283910-3275287195-1754958050-1005\$R8QZ1U8.txt'                                               # To find Recycle Bin artifacts for a specific user, match the SID, then append it to the previous command:
+
+# Prefetch
+Prefetch files are created by the windows operating system when an application is run from a specific location for the first time.
+PS C:\> Get-Childitem -Path 'C:\Windows\Prefetch' -ErrorAction Continue | select -First 8                                                       # show the programs that were run and when they were executed that are stored in the Prefetch location.
+PS C:\> Get-Childitem -Recurse C:\Users\*\AppData\Roaming\Microsoft\Windows\Recent -ErrorAction Continue | select FullName, LastAccessTime      # Programs/Items that were recently used. shows all users Jump Lists artifacts
+Get-Childitem -Recurse $env:USERPROFILE\AppData\Roaming\Microsoft\Windows\Recent -ErrorAction SilentlyContinue | select FullName,LastAccessTime # show the Jump Lists Artifacts for the currently logged user
+C:\users\student\AppData\Roaming\Microsoft\Windows\Recent\AutomaticDestinations | % {z:\strings.exe -accepteula $_} >> c:\recentdocs.txt        # Output redirected through strings.exe and into a file provides more readable output.
+PS C:\> Get-Item 'Registry::\HKEY_USERS\*\Software\Microsoft\Windows\CurrentVersion\Explorer\RecentDocs\.*'                                     # Query the Hex Value Stored in the Key. With the * we can see the types of files/ information that was recently viewed.
+
+PS C:\> Get-Item 'Registry::\HKEY_USERS\*\Software\Microsoft\Windows\CurrentVersion\Explorer\RecentDocs\.txt'                                   # With .txt we can see the text files/ information that was recently viewed. Queries the Hex Value Stored in the Key
+[System.Text.Encoding]::Unicode.GetString((gp "REGISTRY::HKEY_USERS\*\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\RecentDocs\.txt")."0") # Converting a Single Value from Hex to Unicode. Shows the text file represented by 0, you can change number to veiw the rest of the files
+
+PS C:\> Get-EventLog -LogName System -Newest 10                                                                                                 # View Event Logs in Powershell. Shows the newest/last 10 entries in the system log. Point out what the three dots (…​) mean and how to print the rest of the entry. (ex. | format-table -wrap)
+
+PS C:\> Get-EventLog -LogName System -Newest 3 | Format-Table -Wrap                                                                             # Add the format-table -wrap option to print the truncated part of the entry.
+PS C:\> Get-Eventlog -LogName Security | ft -wrap                                                                                               # Search the Security Event Log and show the entire message. This is all of the information currently in the Security log. Point out the abundance of information that would need to be parsed through.
+PS C:\> Get-Eventlog -LogName Security | ft -wrap | findstr /i StR1nG                                                                           # Search through the entire Security log for a specific string
+PS C:\> Get-WinEvent -Listlog *                                                                                                                 # Finding Log Type to Query. Lists all of the logs available to Winevent
+PS C:\> (Get-WinEvent -Listlog *).count                                                                                                         # Shows the number of logs, point out the volume of possible information
+PS C:\> Get-WinEvent -Listlog * | findstr /i "Security"                                                                                         # Search through the list of logs to find logs that pertain to Security
+PS C:\> Get-Winevent -FilterHashtable @{logname='Security';id='4624'} | ft -Wrap                                                                # Checking If a User Logged on. Using Get-WinEvent with -FilterHashtable allows you to filter for more than one criteria. In this instance filter for the Security log and the id of 4624
+PS C:\> Get-Winevent -FilterHashtable @{logname='Security';id='4624'} | ft -Wrap | findstr /i "generated"                                       # Same command as above with a specific string search using findstr /i.
+PS C:\> Get-WinEvent Microsoft-Windows-PowerShell/Operational | Where-Object {$_.Message -ilike "*RunspacePool*"} | Format-List                 # Checking Powershell Operational Logs # Output shows searching through PowerShell Operational logs for a specific string.
+Get-WinEvent Microsoft-Windows-PowerShell/Operational | Where-Object {$_.Message -ilike "*Pipeline ID = ##"} | Format-List                      # Command used to search through PowerShell Operational logs for a specific Pipeline ID.
+
+
 
 ######################################################################################################################################################
 ######################################################                                             ###################################################
 ######################################################        Windows Auditing and Logging         ###################################################
 ######################################################                                             ###################################################
 ######################################################################################################################################################
-
-
-######################################################### Primer_Auditing_1 1 #########################################################
-
-Logging, Auditing and Monitoring are often confused with each other but are distinctly different. Which term refers to real-time analysis and is often accomplished with a Security Event Information Management system (SIEM)?
-
-********************************************************* SOLUTION ********************************************************
-
-Monitoring
-
-######################################################### Primer_Auditing_2 1 #########################################################
-
-What term is most appropriate when referring to the process of reviewing log files or other records for specified period?
-
-********************************************************* SOLUTION ********************************************************
-
-Auditing
-
-######################################################### Primer_Auditing_3 1 #########################################################
-
-"Complete the following path to the Windows System Log which records system events e.g. startup and shutdown: %systemroot%\System32_______________
-
-********************************************************* SOLUTION ********************************************************
-
-%SystemRoot%\System32\Winevt\Logs\System.evtx
-
-
-######################################################### Primer_Auditing_4 1 #########################################################
-
-Which Windows log contains either success or failures and can be configured to record failed logon attempts?
-
-********************************************************* SOLUTION ********************************************************
-
-Security
-
-######################################################### Primer_Auditing_5 1 #########################################################
-
-"Which Windows account is the only account to have WRITE-APPEND access to Windows event logs?"
-
-Resource: https://os.cybbh.io/public/os/latest/011_windows_auditing_&_logging/primer.html#_7_describe_the_systems_audit_policy
-
-
-********************************************************* SOLUTION ********************************************************
-
-NT AUTHORITY\SYSTEM
-
-######################################################### Primer_Auditing_6 1 #########################################################
-
-What is parsed in an NTFS object's security descriptor, by the Security Reference Monitor (SRM), to determine if an audit entry will be created in the Windows Security Log?
-
-Research: https://learn.microsoft.com/en-us/windows/win32/secauthz/access-control-lists
-
-********************************************************* SOLUTION ********************************************************
-
-SACL --> Security Access Control List 
-
-######################################################### Primer_Auditing_7 1 #########################################################
-
-Which registry key holds the audit policy configuration? **Hint - Give full path
-
-********************************************************* SOLUTION ********************************************************
-
-HKLM\SECURITY\Policy\PolAdtEv
-
-######################################################### Primer_Auditing_8 1 #########################################################
-
-Which sysinternals tool is used to parse logs?
-
-********************************************************* SOLUTION ********************************************************
-
-PsLogList
-
-(((((((((((((((((((((((())))))))))))))))))))))))
-# Define the event ID for process creation
-$eventId = 4688
-
-# Define a list of normal locations (you may need to modify this list)
-$normalLocations = @("C:\Windows\", "C:\Program Files\", "C:\Program Files (x86)\")
-
-# Get the most recent 1000 events (you can adjust the number)
-$events = Get-WinEvent -FilterHashtable @{LogName='Security'; ID=$eventId} -MaxEvents 1000
-
-foreach ($event in $events) {
-    # Convert the event to XML to access all its properties easily
-    $eventXml = [xml]$event.ToXml()
-    $commandLine = $eventXml.Event.EventData.Data | Where-Object { $_.Name -eq "CommandLine" }.'#text'
-    $isNormalLocation = $false
-
-    # Check if the command line starts with a path in one of the normal locations
-    foreach ($location in $normalLocations) {
-        if ($commandLine -like "$location*") {
-            $isNormalLocation = $true
-            break
-        }
-    }
-
-    # Output the command line if it's not from a normal location
-    if (-not $isNormalLocation) {
-        Write-Output "Abnormal Execution: $commandLine"
-    }
-}
-
-
-
-######################################################### Primer_Networking_1 1 #########################################################
-
-What is used in Windows to implement the networking stack to enable communication with the four lowest OSI layers?
-
-Research: https://learn.microsoft.com/en-us/previous-versions/windows/it-pro/windows-2000-server/cc958797(v=technet.10)?redirectedfrom=MSDN
-
-********************************************************* SOLUTION ********************************************************
-
-NDIS
-
-######################################################### Primer_Networking_2 1 #########################################################
-
-What Windows cmd.exe command will display the local computer's routing table?
-
-Research: https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/netstat
-
-
-********************************************************* SOLUTION ********************************************************
-
-route print
-
-######################################################### Primer_Networking_3 1 #########################################################
-
-IANA assigned TCP/UDP ports in the range of 0-1023 that are usually associated with server-side services are known as?
-
-Research: https://networkencyclopedia.com/well-known-port-numbers/
-
-********************************************************* SOLUTION ********************************************************
-
-well-known ports
-
-######################################################### Primer_Networking_4 1 #########################################################
-
-What term describes randomly assigned TCP/UDP ports above 1023 and are used for a short period of time (for the duration of a communication session}?
-
-Research: https://en.wikipedia.org/wiki/Ephemeral_port
-
-********************************************************* SOLUTION ********************************************************
-
-ephemeral ports
-
-######################################################### Primer_Networking_5 1 #########################################################
-
-The two words that decribe translating Host names to IP addresses or NetBIOS names to IP addresses is_____?
-
-Research: https://learn.microsoft.com/en-us/windows/win32/dns/name-resolution
-
-********************************************************* SOLUTION ********************************************************
-
-Name Resolution
-
-######################################################### Windows_File_System_Basics_13 15 #########################################################
-
-
-
-********************************************************* SOLUTION ********************************************************
-
-
-
-######################################################### Windows_File_System_Basics_13 15 #########################################################
-
-
-
-********************************************************* SOLUTION ********************************************************
-
-
-
-
-######################################################### Primer_Surveys_3 1 #########################################################
-
-What type of survey is focused on malware detection, artifact detection and investigating processes?
-
-Research: https://learn.microsoft.com/en-us/security/compass/incident-response-overview
-
-********************************************************* SOLUTION ********************************************************
-
-Incident Response
 
 ######################################################### Windows_Browser_Artifacts_1 5 #########################################################
 
@@ -2845,7 +2730,7 @@ get-content 3-14-24.txt
 
 Flag: Flag, Found A.
 
-
+[System.Text.Encoding]::Default.GetString(...): This converts the binary data retrieved from the registry into a string using the default encoding. Registry data for items like recent documents can be stored in a binary format, so this conversion is necessary to represent it as readable text.
 
 ######################################################### Windows_Prefetch_2 10 #########################################################
 
@@ -2940,6 +2825,166 @@ Machine: file-server
 Get-Eventlog -LogName System | ft -wrap | findstr /i "flag"
 
 
+######################################################### Primer_Auditing_1 1 #########################################################
+
+Logging, Auditing and Monitoring are often confused with each other but are distinctly different. Which term refers to real-time analysis and is often accomplished with a Security Event Information Management system (SIEM)?
+
+********************************************************* SOLUTION ********************************************************
+
+Monitoring
+
+######################################################### Primer_Auditing_2 1 #########################################################
+
+What term is most appropriate when referring to the process of reviewing log files or other records for specified period?
+
+********************************************************* SOLUTION ********************************************************
+
+Auditing
+
+######################################################### Primer_Auditing_3 1 #########################################################
+
+"Complete the following path to the Windows System Log which records system events e.g. startup and shutdown: %systemroot%\System32_______________
+
+********************************************************* SOLUTION ********************************************************
+
+%SystemRoot%\System32\Winevt\Logs\System.evtx
+
+
+######################################################### Primer_Auditing_4 1 #########################################################
+
+Which Windows log contains either success or failures and can be configured to record failed logon attempts?
+
+********************************************************* SOLUTION ********************************************************
+
+Security
+
+######################################################### Primer_Auditing_5 1 #########################################################
+
+"Which Windows account is the only account to have WRITE-APPEND access to Windows event logs?"
+
+Resource: https://os.cybbh.io/public/os/latest/011_windows_auditing_&_logging/primer.html#_7_describe_the_systems_audit_policy
+
+
+********************************************************* SOLUTION ********************************************************
+
+NT AUTHORITY\SYSTEM
+
+######################################################### Primer_Auditing_6 1 #########################################################
+
+What is parsed in an NTFS object's security descriptor, by the Security Reference Monitor (SRM), to determine if an audit entry will be created in the Windows Security Log?
+
+Research: https://learn.microsoft.com/en-us/windows/win32/secauthz/access-control-lists
+
+********************************************************* SOLUTION ********************************************************
+
+SACL --> Security Access Control List 
+
+######################################################### Primer_Auditing_7 1 #########################################################
+
+Which registry key holds the audit policy configuration? **Hint - Give full path
+
+********************************************************* SOLUTION ********************************************************
+
+HKLM\SECURITY\Policy\PolAdtEv
+
+######################################################### Primer_Auditing_8 1 #########################################################
+
+Which sysinternals tool is used to parse logs?
+
+********************************************************* SOLUTION ********************************************************
+
+PsLogList
+
+(((((((((((((((((((((((())))))))))))))))))))))))
+# Define the event ID for process creation
+$eventId = 4688
+
+# Define a list of normal locations (you may need to modify this list)
+$normalLocations = @("C:\Windows\", "C:\Program Files\", "C:\Program Files (x86)\")
+
+# Get the most recent 1000 events (you can adjust the number)
+$events = Get-WinEvent -FilterHashtable @{LogName='Security'; ID=$eventId} -MaxEvents 1000
+
+foreach ($event in $events) {
+    # Convert the event to XML to access all its properties easily
+    $eventXml = [xml]$event.ToXml()
+    $commandLine = $eventXml.Event.EventData.Data | Where-Object { $_.Name -eq "CommandLine" }.'#text'
+    $isNormalLocation = $false
+
+    # Check if the command line starts with a path in one of the normal locations
+    foreach ($location in $normalLocations) {
+        if ($commandLine -like "$location*") {
+            $isNormalLocation = $true
+            break
+        }
+    }
+
+    # Output the command line if it's not from a normal location
+    if (-not $isNormalLocation) {
+        Write-Output "Abnormal Execution: $commandLine"
+    }
+}
+
+
+
+######################################################### Primer_Networking_1 1 #########################################################
+
+What is used in Windows to implement the networking stack to enable communication with the four lowest OSI layers?
+
+Research: https://learn.microsoft.com/en-us/previous-versions/windows/it-pro/windows-2000-server/cc958797(v=technet.10)?redirectedfrom=MSDN
+
+********************************************************* SOLUTION ********************************************************
+
+NDIS
+
+######################################################### Primer_Networking_2 1 #########################################################
+
+What Windows cmd.exe command will display the local computer's routing table?
+
+Research: https://learn.microsoft.com/en-us/windows-server/administration/windows-commands/netstat
+
+
+********************************************************* SOLUTION ********************************************************
+
+route print
+
+######################################################### Primer_Networking_3 1 #########################################################
+
+IANA assigned TCP/UDP ports in the range of 0-1023 that are usually associated with server-side services are known as?
+
+Research: https://networkencyclopedia.com/well-known-port-numbers/
+
+********************************************************* SOLUTION ********************************************************
+
+well-known ports
+
+######################################################### Primer_Networking_4 1 #########################################################
+
+What term describes randomly assigned TCP/UDP ports above 1023 and are used for a short period of time (for the duration of a communication session}?
+
+Research: https://en.wikipedia.org/wiki/Ephemeral_port
+
+********************************************************* SOLUTION ********************************************************
+
+ephemeral ports
+
+######################################################### Primer_Networking_5 1 #########################################################
+
+The two words that decribe translating Host names to IP addresses or NetBIOS names to IP addresses is_____?
+
+Research: https://learn.microsoft.com/en-us/windows/win32/dns/name-resolution
+
+********************************************************* SOLUTION ********************************************************
+
+Name Resolution
+
+######################################################### Windows_File_System_Basics_13 15 #########################################################
+
+
+
+********************************************************* SOLUTION ********************************************************
+
+
 
 ######################################################### Windows_File_System_Basics_13 15 #########################################################
 
@@ -2950,65 +2995,15 @@ Get-Eventlog -LogName System | ft -wrap | findstr /i "flag"
 
 
 
-######################################################### Windows_File_System_Basics_13 15 #########################################################
+######################################################### Primer_Surveys_3 1 #########################################################
 
+What type of survey is focused on malware detection, artifact detection and investigating processes?
 
-
-********************************************************* SOLUTION ********************************************************
-
-
-
-
-######################################################### Windows_File_System_Basics_13 15 #########################################################
-
-
+Research: https://learn.microsoft.com/en-us/security/compass/incident-response-overview
 
 ********************************************************* SOLUTION ********************************************************
 
-
-
-
-
-######################################################### Windows_File_System_Basics_13 15 #########################################################
-
-
-
-********************************************************* SOLUTION ********************************************************
-
-
-
-######################################################### Windows_File_System_Basics_13 15 #########################################################
-
-
-
-********************************************************* SOLUTION ********************************************************
-
-
-
-
-######################################################### Windows_File_System_Basics_13 15 #########################################################
-
-
-
-********************************************************* SOLUTION ********************************************************
-
-
-
-
-######################################################### Windows_File_System_Basics_13 15 #########################################################
-
-
-
-********************************************************* SOLUTION ********************************************************
-
-
-
-
-######################################################### Windows_File_System_Basics_13 15 #########################################################
-
-
-
-********************************************************* SOLUTION ********************************************************
+Incident Response
 
 
 ######################################################################################################################################################
