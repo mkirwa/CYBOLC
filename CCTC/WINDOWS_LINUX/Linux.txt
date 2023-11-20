@@ -2,6 +2,7 @@
 
 
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^/////////////////  LINUX BASICS   /////////////////^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
 Link -> https://os.cybbh.io/public/os/latest/003_linux_essentials/bash_fg.html
 
 student:~$ ls -l                                                                          # ls -l changes the output to long list format.
@@ -1168,7 +1169,208 @@ whereis cat
 /usr/share/man/man1/cat.1.gz
 
 
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^/////////////////  LINUX BOOT PROCESS   /////////////////^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Linux Boot Process -> https://os.cybbh.io/public/os/latest/007_linux_boot_process/linboot_fg.html
+
+student@linux-opstation-kspt:~$ lsblk                                                               # Locate the hard drive and partition in Linux
+
+NAME   MAJ:MIN RM  SIZE RO TYPE MOUNTPOINT
+loop0    7:0    0 31.1M  1 loop /snap/snapd/10707
+loop1    7:1    0 55.4M  1 loop /snap/core18/1944
+loop2    7:2    0 44.7M  1 loop /snap/openstackclients/38
+loop3    7:3    0 55.5M  1 loop /snap/core18/1988
+loop4    7:4    0 31.1M  1 loop /snap/snapd/11036
+sr0     11:0    1  514K  0 rom  /media/student/config-2
+vda    252:0    0  128G  0 disk                                                                     # Shows disk vda virtual disk A
+└─vda1 252:1    0  128G  0 part /                                                                   # Shows virtual disk A partition 1 is mounted as the / or root drive in Linux
+
+
+Examining the contents of the MBR with xxd
+
+student@linux-opstation-kspt:~$ sudo xxd -l 512 -g 1 /dev/vda                                       # Execute xxd to hexdump 512 bytes in separated by 1 byte from /dev/vda to the screen
+
+00000000: eb 63 90 00 00 00 00 00 00 00 00 00 00 00 00 00  .c..............                         # The start of the hard drive shown by the code eb 63. File signature for an MBR.
+00000010: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+_truncated_
+000001b0: cd 10 ac 3c 00 75 f4 c3 fa b7 12 e6 00 00 80 00  ...<.u..........                         # The first partition of the hard drive in 0x01be shown as 80
+000001c0: 21 02 83 0f 2e 40 00 08 00 00 df f7 ff 0f 00 00  !....@..........                         # The second partition entry is blank!
+000001d0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+000001e0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+000001f0: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 55 aa  ..............U.
+
+student@linux-opstation-kspt:/$ ltrace -S cat /etc/passwd                                           # Execute ltrace to track the systemcalls occurring when running cat /etc/passwd.
+_truncated_
+open("/etc/passwd", 0, 037777402000 <unfinished ...>                                                # open systemcall on /etc/passwd returns a file descriptor of 3.
+SYS_openat(0xffffff9c, 0x7ffcbb66d68c, 0, 0)       = 3                                              # read systemcall on file descriptor of 3 returns the amount of bytes in the file.
+<... open resumed> )                               = 3                                              # read systemcall on file descriptor of 3 returns the amount of bytes in the file.
+__fxstat(1, 3, 0x7ffcbb66be40 <unfinished ...>
+SYS_fstat(3, 0x7ffcbb66be40)                       = 0
+<... __fxstat resumed> )                           = 0
+posix_fadvise(3, 0, 0, 2 <unfinished ...>
+SYS_fadvise64(3, 0, 0, 2)                          = 0
+<... posix_fadvise resumed> )                      = 0
+malloc(135167 <unfinished ...>
+SYS_mmap(0, 0x22000, 3, 34)                        = 0x7f0b09df0000
+<... malloc resumed> )                             = 0x7f0b09df0010
+read(3 <unfinished ...>
+SYS_read(3, "root:x:0:0:root:/root:/bin/bash\n"..., 131072) = 1875
+<... read resumed> , "root:x:0:0:root:/root:/bin/bash\n"..., 131072) = 1875 
+write(1, "root:x:0:0:root:/root:/bin/bash\n"..., 1875 <unfinished ...>                              # write systemcall to write all the 1875 bytes from /etc/passwd to stdout.
+
+
+student@linux-opstation-kspt:/$ ltrace -S lsmod                                                     # Execute lsmod to list modules in Linux 
+
+Module                  Size  Used by
+aesni_intel           188416  0
+aes_x86_64             20480  1 aesni_intel                                                         # Module required to use AES Encryption
+crypto_simd            16384  1 aesni_intel
+glue_helper            16384  1 aesni_intel
+cryptd                 24576  3 crypto_simd,ghash_clmulni_intel,aesni_intel
+psmouse               151552  0
+ip_tables              28672  0
+virtio_blk             20480  2                                                                     # Modules for Virtual Input / Output Devices used in Openstack instances.
+
+virtio_net             49152  0
+virtio_rng             16384  0
+virtio_gpu             53248  3
+
+
+Sample Hex Dump
+00000000: cd 10 ac 3c 00 75 f4 c3 fa b7 12 e6 00 00 80 00                                           # 16 Bytes from hex address 0x00 - 0x0F (Decimal 0 - 15)
+00000010: 21 02 83 0f 2e 40 00 08 00 00 df f7 ff 0f 00 00                                           # 16 Bytes from hex address 0x10 - 0x1F (Decimal 16 - 31)
+
+
+student@linux-opstation-kspt:/$ cat /boot/grub/grub.cfg                                             # Concatenate the contents of /boot/grub/grub.cfg to the screen.
+
+        linux   /boot/vmlinuz-4.15.0-76-generic root=LABEL=cloudimg-rootfs ro  console=tty1 console=ttyS0   # The kernel is loaded with the command linux. The file /boot/vmlinuz-4.15.0-76-generic contains the Linux Kernel.
+
+
+
+cat /etc/inittab                                                                                     # Sample of /etc/initab on a SysV machine
+
+is:5:initdefault:                                                                                    # The run level 5 is the default run level in /etc/inittab
+
+
+l0:0:wait:/etc/rc0.d
+l1:1:wait:/etc/rc1.d
+l2:2:wait:/etc/rc2.d
+l3:3:wait:/etc/rc3.d
+l4:4:wait:/etc/rc4.d                                                                                  # Another non-default run level is in /etc/rc4.d
+l5:5:wait:/etc/rc5.d
+l6:6:wait:/etc/rc6.d
+
+
+
+student@linux-opstation-kspt:/$ ls -lisa /lib/systemd/system/default.target                           # Show the default target unit 
+lrwxrwxrwx 1 root root 16 May  3 11:30 default.target -> graphical.target                             # The system will, by default, try to run the system to the specifics set by graphical.target.
+            
+# Examining contents of a graphical target 
+
+cat /lib/systemd/system/default.target | tail -n 8
+
+Description=Graphical Interface
+Documentation=man:systemd.special(7)
+Requires=multi-user.target
+Wants=display-manager.service                                                                         # wants=display-manager.service attempts to start other units. If they fail to start, the calling target unit will still execute.
+Conflicts=rescue.service rescue.target
+After=multi-user.target rescue.service rescue.target display-manager.service                          # requires=multi-server.target attempts to start other units. If they fail to start, the calling target unit will fail to execute.
+AllowIsolate=yes
+
+
+student@linux-opstation-kspt:/$ ls -l /etc/systemd/system/ | grep graphical
+drwxr-xr-x 2 root root 4096 Feb  4  2020 graphical.target.wants                                       # A graphical.target wants directory in /etc/systemd/system/
+
+student@linux-opstation-kspt:/$ ls -l /etc/systemd/system/graphical.target.wants/
+total 0
+lrwxrwxrwx 1 root root 43 Jan 31  2020 accounts-daemon.service -> /lib/systemd/system/accounts-daemon.service           # graphical.target also target wants udisks2.service and accounts-daemon.service
+lrwxrwxrwx 1 root root 35 Feb  4  2020 udisks2.service -> /lib/systemd/system/udisks2.service 
+
+student@linux-opstation-kspt:/$ ls -l /lib/systemd/system | grep graphical
+lrwxrwxrwx 1 root root   16 Nov 15  2019 default.target -> graphical.target
+-rw-r--r-- 1 root root  598 Jan 28  2018 graphical.target
+drwxr-xr-x 2 root root 4096 Jan 31  2020 graphical.target.wants 
+lrwxrwxrwx 1 root root   16 Nov 15  2019 runlevel5.target -> graphical.target
+
+student@linux-opstation-kspt:/$ ls -l /lib/systemd/systemgraphical.target.wants/                      # Yet another graphical.target wants directory in /lib/systemd/system/
+total 0
+lrwxrwxrwx 1 root root 39 Nov 15  2019 systemd-update-utmp-runlevel.service -> ../systemd-update-utmp-runlevel.service    # graphical.target also wants systemd-update-utmp-runlevel.service
+
+
+cat /etc/systemd/system/display-manager.service | tail -n 13
+
+[Service]
+ExecStartPre=/usr/share/gdm/generate-config                                                           # ExecStart=/usr/sbin/gdm3 causes the systemd process to execute the command specified along with any arguments.
+ExecStart=/usr/sbin/gdm3 
+KillMode=mixed
+Restart=always                                                                                        # Restart=always tells systemd to attempt to restart the command in ExecStart.
+RestartSec=1s
+IgnoreSIGPIPE=no
+
+# How to list unit dependencies in a tree form 
+
+systemctl list-dependencies graphical.target
+
+graphical.target
+● ├─accounts-daemon.service
+● ├─apport.service
+● ├─gdm.service                                                                                       # Wants statements to graphical.target
+Wants statements to graphical.target
+● ├─grub-common.service
+● ├─qemu-guest-agent.service
+● ├─systemd-update-utmp-runlevel.service
+● ├─udisks2.service                                                                                   # Wants statements to graphical.target
+● ├─ureadahead.service
+● └─multi-user.target                                                                                 # Requires statements to graphical.target
+●   ├─anacron.service
+
+systemctl show -p Wants graphical.target                                                              # show wants to individual units
+
+systemctl list-unit-files                                                                             # list every individual unit file 
+
+systemctl cat graphical.target                                                                        # concatenate the contents of a unit file ot the screen 
+
+cat /etc/environment
+
+PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games"       # The path variable contains all default locations to executables in Linux delimited by :.
+
+
+# etc profile 
+student@linux-opstation-kspt:~$ cat /etc/profile
+
+# /etc/profile: system-wide .profile file for the Bourne shell (sh(1))
+# and Bourne compatible shells (bash(1), ksh(1), ash(1), ...).
+
+if [ "${PS1-}" ]; then
+  if [ "${BASH-}" ] && [ "$BASH" != "/bin/sh" ]; then                                                 # If the variable $BASH is set and does not equal /bin/sh then execute
+    # The file bash.bashrc already sets the default PS1.
+    # PS1='\h:\w\$ '
+    if [ -f /etc/bash.bashrc ]; then                                                                  # if the /etc/bash.bashrc exists, execute it.
+      . /etc/bash.bashrc                                                                              # /etc/bash.bashrc creates the bash prompt student@linux-opstation-kspt:~$
+    fi
+_truncated_
+if [ -d /etc/profile.d ]; then
+  for i in /etc/profile.d/*.sh; do
+    if [ -r $i ]; then
+      . $i                                                                                            # If the directory /etc/profile.d exists, execute any script named *.sh in that directory.
+    fi
+  done
+  unset i
+fi
+
+
+##### FOR THE QUESTIONS AND ANSWERS refer to the pdf document. 
+
+######################################################################################################################################################
+######################################################################################################################################################
+######################################################################################################################################################
+
+
+
+
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^/////////////////  LINUX PROCESS VALIDITY   /////////////////^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Documentation -> https://os.cybbh.io/public/os/latest/010_linux_process_validity/linproc_fg.html
 
 
 
