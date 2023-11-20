@@ -126,100 +126,6 @@ student@linux-opstation-kspt:~$ grep -P '\(\d{3}\)\d{3}-\d{4}\b' results.txt    
 #########################################################                       #########################################################
 #########################################################################################################################################
 
-######################################################### Linux Basics 1 5 #########################################################
-
-What command lists the contents of directories in Linux/Unix systems?
-
-********************************************************* SOLUTION ********************************************************
-
-ls
-
-######################################################### Linux Basics 2 5 #########################################################
-
-For the ls command, what arguments, or switch options, will allow you to print human-readable file sizes in a long-list format?
-
-The flag is entire command, including arguments
-
-********************************************************* SOLUTION ********************************************************
-
-ls –lh
-
-
-######################################################### Linux Basics 3 5 #########################################################
-
-What character will pipe the standard output from
-
-echo "I’m a plumber"
-
-to another command, as standard input?
-
-********************************************************* SOLUTION ********************************************************
-
-|
-
-######################################################### Linux Basics 4 5 #########################################################
-
-
-What argument/switch option, when used with man, will search the short descriptions and man-page-names for a keyword that you provide?
-
-The flag is the complete command, with argument/switch.
-
-********************************************************* SOLUTION ********************************************************
-
-man -k 
-
-######################################################### Linux Basics LFS Hierarchy 5 #########################################################
-
-What is the absolute path to the root directory?
-
-
-********************************************************* SOLUTION ********************************************************
-
-/
-
-######################################################### Linux Basics LFS Hierarchy2 5 #########################################################
-
-What is the absolute path to the default location for configuration files?
-
-********************************************************* SOLUTION ********************************************************
-
-/etc
-
-######################################################### Linux Basics LFS Hierarchy3 5 #########################################################
-
-What is the directory that contains executable programs (binaries) which are needed in single user mode, to bring the system up or to repair it?
-
-********************************************************* SOLUTION ********************************************************
-
-/bin
-
-######################################################### Linux Basics LFS Hierarchy4 5 #########################################################
-
-What is the absolute path to the directory which contains non-essential binaries that are accessible by standard users as well as root?
-
-********************************************************* SOLUTION ********************************************************
-
-/usr/bin
-
-######################################################### Linux Basics LFS Hierarchy5 5 #########################################################
-
-An absolute path to a directory which contains binaries only accessible by the root user, or users in the root group.
-
-********************************************************* SOLUTION ********************************************************
-
-/sbin
-
-######################################################### Linux Basics LFS Hierarchy6 5 #########################################################
-
-What is the absolute path for the binary cat man-page?
-
-Research: https://man7.org/linux/man-pages/man1/man.1.html
-
-********************************************************* SOLUTION ********************************************************
-
-whereis cat
-/usr/share/man/man1/cat.1.gz
-
 ######################################################### Linux Basics 5 10 #########################################################
 
 Search the man pages for the keyword digest. Then, use one of the binaries listed to hash the string OneWayBestWay using the largest sha hash available.
@@ -334,9 +240,6 @@ Hint: Research 'padding'...
 Flag format: algorithm,#characters,#length
 
 ********************************************************* SOLUTION ********************************************************
-
-
-
 
 
 Flag format: algorithm,#characters,#length
@@ -749,7 +652,6 @@ Hint: This is a Zeek (formally known as Bro) connection log file in TSV format. 
 Sample Output
 
 
-
 #separator \x09,,,,,
 #set_separator,,,,,,
 #empty_field,(empty),,,,
@@ -793,8 +695,6 @@ Hint: The correct binary is not echo
 Hint: Compare the contents
 
 ********************************************************* SOLUTION ********************************************************
-
-
 
 
 # Step 1: List executables in $PATH, excluding echo
@@ -989,16 +889,10 @@ sed -e 's/.*addr="\([^"]*\).*/\1/' | \
 tr -d '\n' | \
 md5sum
 
-
-
-
-
 awk '/<host>/ {rec=""; ip=""; f=0} /<host>/,/<\/host>/ {rec = rec $0 ORS} /<state state="open"/ {f=1} /<\/host>/ {if (f) print rec}' /home/garviel/output.xml | \
 grep -oP 'addr="\K[^"]*' | \
 tr -d '\n' | \
 md5sum
-
-
 
 awk '
 BEGIN { RS="</host>"; FS="\n"; OFS="" }
@@ -1012,19 +906,6 @@ BEGIN { RS="</host>"; FS="\n"; OFS="" }
 }
 ' /home/garviel/output.xml | md5sum
 service
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 grep -E '(addr|portid)' /home/garviel/output.xml | sed -n '/addr=/p' | sed 's/.*addr="\([^"]*\).*/\1/' | tr -d '\n' | md5sum
 
@@ -1066,18 +947,6 @@ BEGIN { RS="</host>"; FS="\n"; OFS="" }
   }
 }
 ' /home/garviel/output.xml | md5sum
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 ######################################################### Linux Boot Systemd 4 10 #########################################################
@@ -1196,8 +1065,6 @@ Replace <version> with the actual version number from the GRUB configuration fil
 
 Please replace the kernel version with the specific version you find in your GRUB configuration file.
 
-
-
 $$$$$$$$ 
 
 cat /boot/grub/grub.cfg
@@ -1206,6 +1073,99 @@ cat /boot/grub/grub.cfg
 linux,/boot/vmlinuz-4.9.0-16-amd64
 
 
+######################################################### Linux Basics 1 5 #########################################################
+
+What command lists the contents of directories in Linux/Unix systems?
+
+********************************************************* SOLUTION ********************************************************
+
+ls
+
+######################################################### Linux Basics 2 5 #########################################################
+
+For the ls command, what arguments, or switch options, will allow you to print human-readable file sizes in a long-list format?
+
+The flag is entire command, including arguments
+
+********************************************************* SOLUTION ********************************************************
+
+ls –lh
+
+
+######################################################### Linux Basics 3 5 #########################################################
+
+What character will pipe the standard output from
+
+echo "I’m a plumber"
+
+to another command, as standard input?
+
+********************************************************* SOLUTION ********************************************************
+
+|
+
+######################################################### Linux Basics 4 5 #########################################################
+
+
+What argument/switch option, when used with man, will search the short descriptions and man-page-names for a keyword that you provide?
+
+The flag is the complete command, with argument/switch.
+
+********************************************************* SOLUTION ********************************************************
+
+man -k 
+
+######################################################### Linux Basics LFS Hierarchy 5 #########################################################
+
+What is the absolute path to the root directory?
+
+
+********************************************************* SOLUTION ********************************************************
+
+/
+
+######################################################### Linux Basics LFS Hierarchy2 5 #########################################################
+
+What is the absolute path to the default location for configuration files?
+
+********************************************************* SOLUTION ********************************************************
+
+/etc
+
+######################################################### Linux Basics LFS Hierarchy3 5 #########################################################
+
+What is the directory that contains executable programs (binaries) which are needed in single user mode, to bring the system up or to repair it?
+
+********************************************************* SOLUTION ********************************************************
+
+/bin
+
+######################################################### Linux Basics LFS Hierarchy4 5 #########################################################
+
+What is the absolute path to the directory which contains non-essential binaries that are accessible by standard users as well as root?
+
+********************************************************* SOLUTION ********************************************************
+
+/usr/bin
+
+######################################################### Linux Basics LFS Hierarchy5 5 #########################################################
+
+An absolute path to a directory which contains binaries only accessible by the root user, or users in the root group.
+
+********************************************************* SOLUTION ********************************************************
+
+/sbin
+
+######################################################### Linux Basics LFS Hierarchy6 5 #########################################################
+
+What is the absolute path for the binary cat man-page?
+
+Research: https://man7.org/linux/man-pages/man1/man.1.html
+
+********************************************************* SOLUTION ********************************************************
+
+whereis cat
+/usr/share/man/man1/cat.1.gz
 
 
 
