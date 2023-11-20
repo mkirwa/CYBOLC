@@ -1,3 +1,6 @@
+What to look for in process lists -> https://os.cybbh.io/public/os/latest/008_windows_process_validity/winproc_fg.html#_5_identifying_abnormalitiessuspicious_activity
+
+
 Weird number/Port
 111111
 123456

@@ -63,6 +63,20 @@ student@linux-opstation-kspt:/bin$ 130341 76 -rwx r-x r-x 1 root root 76000 Jan 
 (5) The file’s Owner.
 (6) The files' Group.
 
+student@linux-opstation-kspt:~$ ls -l /bin/ping 
+-rwsr-xr-x 1 root root 64424 Jun 28  2019 /bin/ping 
+
+## 
+-: Indicates this is a file and not a directory.
+rws: Read, write, and setuid permissions for the owner (root). The 's' indicates setuid is set, 
+meaning when this program is run, it runs with the permissions of the file's owner, which in this case is the root user.
+r-x: Read and execute permissions for the group.
+r-x: Read and execute permissions for others.
+
+##
+
+student@linux-opstation-kspt:~$ ls -Rlisa /etc | grep password                           # Execute ls -Rlisa then send its standard out to grep to filter for the string password.
+
 
 
 #########################################################################################################################################
