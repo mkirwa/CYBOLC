@@ -2048,39 +2048,6 @@ PS Z:\> ./strings –s c:\windows\system32\*.exe | findstr /i autoelevate       
 ######################################################                                             ###################################################
 ######################################################################################################################################################
 
-
-######################################################### Windows_File_System_Basics_13 15 #########################################################
-
-What Sysinternals tool will allow you to view a file's manifest?
-
-********************************************************* SOLUTION ********************************************************
-
-sigcheck
-
-######################################################### Windows_UAC_Basics_2 5 #########################################################
-
-What is the RequestedExecutionLevel for an application to run with the same permissions as the process that started it?
-
-********************************************************* SOLUTION ********************************************************
-
-asInvoker
-
-######################################################### Windows_UAC_Basics_3 5 #########################################################
-
-What RequestedExecutionLevel will prompt the user for Administrator credentials if they're not a member of the Administrator's group?
-
-********************************************************* SOLUTION ********************************************************
-
-requireAdministrator
-
-######################################################### Windows_UAC_Basics_5 5 #########################################################
-
-What registry key holds UAC values?
-
-********************************************************* SOLUTION ********************************************************
-
-HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System
-
 ######################################################### Windows_UAC_Basics_4 10 #########################################################
 
 The flag is the RequestedExecutionLevel of the schtasks.exe file.
@@ -2155,28 +2122,53 @@ Query the registry subkey where UAC settings are stored, and provide the flag.
 
 ********************************************************* SOLUTION ********************************************************
 
-
-
 Once on file server
-
 Powershell
-
-
 Get-ChildItem HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies
-
 under system the flag should be GoodJob
 
 $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
 Cd HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies
-
 - this is where UAC setting are stored
-
 ls -force 
+
+######################################################### Windows_File_System_Basics_13 15 #########################################################
+
+What Sysinternals tool will allow you to view a file's manifest?
+
+********************************************************* SOLUTION ********************************************************
+
+sigcheck
+
+######################################################### Windows_UAC_Basics_2 5 #########################################################
+
+What is the RequestedExecutionLevel for an application to run with the same permissions as the process that started it?
+
+********************************************************* SOLUTION ********************************************************
+
+asInvoker
+
+######################################################### Windows_UAC_Basics_3 5 #########################################################
+
+What RequestedExecutionLevel will prompt the user for Administrator credentials if they're not a member of the Administrator's group?
+
+********************************************************* SOLUTION ********************************************************
+
+requireAdministrator
+
+######################################################### Windows_UAC_Basics_5 5 #########################################################
+
+What registry key holds UAC values?
+
+********************************************************* SOLUTION ********************************************************
+
+HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System
+
 
 ######################################################################################################################################################
 ######################################################                                             ###################################################
-######################################################            Windows UAC Basics 8             ###################################################
+######################################################              Windows_Services               ###################################################
 ######################################################                                             ###################################################
 ######################################################################################################################################################
 
@@ -2233,9 +2225,7 @@ Reminder: All challenges are done using the file-server.
 ********************************************************* SOLUTION ********************************************************
 
 ssh to the file-server
-
 Get-service “Totally-Legit”
-
 Name is Legit 
 
 ######################################################### Windows_Services_Basics_7 10 #########################################################
