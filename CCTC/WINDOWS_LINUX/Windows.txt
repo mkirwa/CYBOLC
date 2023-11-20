@@ -3533,95 +3533,47 @@ Research: https://ine.com/blog/understanding-blue-team-roles
 
 Blue
 
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^/////////////////  WINDOWS ACTIVE DIRECTORY ENUMERATION   /////////////////^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Active directory link -> https://os.cybbh.io/public/os/latest/014_windows_active_directory_enumeration/active_fg.html
+
+PS> Get-Command -Module activedirectory                                                                                         # How to get a list of AD Commands Available
+PS> Get-ADDefaultDomainPasswordPolicy                                                                                           # Get the Default Domain Password Policy
+PS> Get-ADFineGrainedPasswordPolicy -Filter {name -like "*"}                                                                    # Check for any Fine-Grained Password Policies
+PS> Get-ADForest                                                                                                                # Get Forest Details 
+PS> Get-ADDomain                                                                                                                # Get Domain details:
+Get-ADGroup -Filter *                                                                                                           # Get AD Groups
+PS> Get-ADGroup -Identity 'IA Analysts Team'                                                                                    # Get a groups details
+PS> Get-ADGroupMember -Identity 'IA Analysts Team' -Recursive                                                                   # Get a list of a groups members
+PS> Get-ADUser -Filter 'Name -like "*"'                                                                                         # Get AD users
+PS> Get-ADUser -Identity 'Nina.Webster' -Properties Description                                                                 # To see additional properties, not just the default set
+PS> get-aduser -filter {Enabled -eq "FALSE"} -properties name, enabled                                                          # Find Disabled users
+PS> Enable-ADAccount -Identity guest                                                                                            # Enable that user
+PS> Set-AdAccountPassword -Identity guest -NewPassword (ConvertTo-SecureString -AsPlaintext -String "PassWord12345!!" -Force)   # Change the password
+Add-ADGroupMember -Identity "Domain Admins" -Members guest                                                                      # Add the user to an Admin Group
+PS> Get-ADuser -filter * | select distinguishedname, name                                                                       # Get Distinguished Name to match AD format
+
+PS> Get-AdGroupMember -identity "Domain Admins" -Recursive | %{Get-ADUser -identity $_.DistinguishedName}                       # Get All Domain Admin Accounts
+PS> Get-AdGroupMember -identity "Domain Admins" -Recursive | %{Get-ADUser -identity $_.DistinguishedName} | select name, Enabled
+Get-AdGroupMember -identity "Enterprise Admins" -Recursive | %{Get-ADUser -identity $_.DistinguishedName} | select name, Enabled        # Get ALL Enterprise Admin accounts
+
+C:> gpresult /user Webster /v                                                                                                   # Output the computer and user node settings of a user
+C:> gpresult /user Administrator /v
+
+C:> gpresult /r                                                                                                                 # Displays data about the machine and logged on user
+C:> gpupdate /force                                                                                                             # Force any group policy setting to take affect immediately versus rebooting the computer
+PS> (Get-AdGroupMember -Identity 'domain admins').Name                                                                          # Get Name Property from the Active Directory Group named "Domain Admins"
+PS> (Get-AdGroupMember -Identity "System Admins LV1").Name                                                                      # Get Active Directory Group 'System' Admin Names 'LvL 1'
+PS> (Get-AdGroupMember -Identity "System Admins").Name                                                                          # Get Active Directory Group 'System Admin' Names
+PS> (Get-AdGroupMember -Identity "System Admins LV2").Name                                                                      # Get Active Directory Group 'System' Admin Names 'LVL 2'
+
+
 
 ######################################################################################################################################################
 ######################################################                                             ###################################################
 ######################################################   16_windows_active_directory_enumeration   ###################################################
 ######################################################                                             ###################################################
 ######################################################################################################################################################
-
-
-######################################################### Primer_Active_Directory_1 1 #########################################################
-
-What is the database that is used to connect users with network resources?
-
-Resources https://os.cybbh.io/public/os/latest/014_windows_active_directory_enumeration/primer.html
-
-********************************************************* SOLUTION ********************************************************
-
-Active Directory
-
-######################################################### Primer_Active_Directory_2 1 #########################################################
-
-What are all things that are in active directory stored as?
-
-Resources https://os.cybbh.io/public/os/latest/014_windows_active_directory_enumeration/primer.html#_1_1_active_directory_structure
-
-********************************************************* SOLUTION ********************************************************
-
-objects
-
-######################################################### Primer_Active_Directory_3 1 #########################################################
-
-What is the Active Directory component which contains formal definitions of every object class that can be created in an Active Directory forest?
-
-Resources https://os.cybbh.io/public/os/latest/014_windows_active_directory_enumeration/primer.html#_3_domains
-
-********************************************************* SOLUTION ********************************************************
-
-Schema
-
-######################################################### Primer_Active_Directory_4 1 #########################################################
-
-What protocol is used when accessing and updating the Active Directory?
-
-Resources https://www.sciencedirect.com/topics/computer-science/directory-access-protocol
-
-********************************************************* SOLUTION ********************************************************
-
-LDAP
-
-######################################################### Primer_Active_Directory_5 1 #########################################################
-
-From an Offensive perspective, what type of account is usually the main target?
-
-Resources https://os.cybbh.io/public/os/latest/014_windows_active_directory_enumeration/primer.html#_7_administrator_best_practices
-
-********************************************************* SOLUTION ********************************************************
-
-Administrator
-
-######################################################### Primer_Active_Directory_6 1 #########################################################
-
-Task : If an account has been inactive for a substantial amount of time what should the adminstrators do to the account?
-
-Resources https://os.cybbh.io/public/os/latest/014_windows_active_directory_enumeration/primer.html#_11_impact_of_group_policy_settings
-
-
-********************************************************* SOLUTION ********************************************************
-
-Disable
-
-######################################################### Primer_Active_Directory_7 1 #########################################################
-
-What is the basic PowerShell cmdlet used to enumerate users?
-
-Resources https://os.cybbh.io/public/os/latest/014_windows_active_directory_enumeration/primer.html#_2_2_powershell
-
-
-********************************************************* SOLUTION ********************************************************
-
-Get-ADUser
-
-######################################################### Primer_Active_Directory_8 1 #########################################################
-
-What is the suite of tools used in CLI to enumerate users across the network?
-
-Resources https://os.cybbh.io/public/os/latest/014_windows_active_directory_enumeration/primer.html#_2_1_domain_service_ds_tools
-
-********************************************************* SOLUTION ********************************************************
-
-DS tools 
 
 ######################################################### Windows_Active_Directory_Basics_1 5 #########################################################
 
@@ -3960,33 +3912,92 @@ Hint: Search the Active Directory record for the user identified in follow_insid
 
 Get-ADUser -filter "name -like '*Isiah*'"-Properties *
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 Here, street address has some funky numbers: aHR0cHM6Ly93d3cueW91dHViZS5jb20vd2F0Y2g/dj1kUXc0dzlXZ1hjUQ== Converting this
 https://www.youtube.com/watch?v=dQw4w9WgXcQ
 
 is from base64 it will give us: 
 
 
+######################################################### Primer_Active_Directory_1 1 #########################################################
+
+What is the database that is used to connect users with network resources?
+
+Resources https://os.cybbh.io/public/os/latest/014_windows_active_directory_enumeration/primer.html
+
+********************************************************* SOLUTION ********************************************************
+
+Active Directory
+
+######################################################### Primer_Active_Directory_2 1 #########################################################
+
+What are all things that are in active directory stored as?
+
+Resources https://os.cybbh.io/public/os/latest/014_windows_active_directory_enumeration/primer.html#_1_1_active_directory_structure
+
+********************************************************* SOLUTION ********************************************************
+
+objects
+
+######################################################### Primer_Active_Directory_3 1 #########################################################
+
+What is the Active Directory component which contains formal definitions of every object class that can be created in an Active Directory forest?
+
+Resources https://os.cybbh.io/public/os/latest/014_windows_active_directory_enumeration/primer.html#_3_domains
+
+********************************************************* SOLUTION ********************************************************
+
+Schema
+
+######################################################### Primer_Active_Directory_4 1 #########################################################
+
+What protocol is used when accessing and updating the Active Directory?
+
+Resources https://www.sciencedirect.com/topics/computer-science/directory-access-protocol
+
+********************************************************* SOLUTION ********************************************************
+
+LDAP
+
+######################################################### Primer_Active_Directory_5 1 #########################################################
+
+From an Offensive perspective, what type of account is usually the main target?
+
+Resources https://os.cybbh.io/public/os/latest/014_windows_active_directory_enumeration/primer.html#_7_administrator_best_practices
+
+********************************************************* SOLUTION ********************************************************
+
+Administrator
+
+######################################################### Primer_Active_Directory_6 1 #########################################################
+
+Task : If an account has been inactive for a substantial amount of time what should the adminstrators do to the account?
+
+Resources https://os.cybbh.io/public/os/latest/014_windows_active_directory_enumeration/primer.html#_11_impact_of_group_policy_settings
 
 
+********************************************************* SOLUTION ********************************************************
+
+Disable
+
+######################################################### Primer_Active_Directory_7 1 #########################################################
+
+What is the basic PowerShell cmdlet used to enumerate users?
+
+Resources https://os.cybbh.io/public/os/latest/014_windows_active_directory_enumeration/primer.html#_2_2_powershell
 
 
+********************************************************* SOLUTION ********************************************************
 
+Get-ADUser
 
+######################################################### Primer_Active_Directory_8 1 #########################################################
 
+What is the suite of tools used in CLI to enumerate users across the network?
+
+Resources https://os.cybbh.io/public/os/latest/014_windows_active_directory_enumeration/primer.html#_2_1_domain_service_ds_tools
+
+********************************************************* SOLUTION ********************************************************
+
+DS tools 
 
 
