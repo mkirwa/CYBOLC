@@ -1608,9 +1608,25 @@ C:\Users\student> tasklist /v | more                                            
 C:\Users\student> tasklist /svc                                                                                             # Display service information for each process without truncation
 C:\Users\student> tasklist /m | more                                                                                        # Display modules/dlls associated to all processes.
 C:\Users\student> tasklist /m /fi "IMAGENAME eq chrome.exe" | more                                                          # Display modules/dlls associated to a specific process.
-C:\Users\student> tasklist /fo:table | more                                                                                 # Formating options
+C:\Users\student> tasklist /fo:table | more                                                                                 # Formating options -> table
+C:\Users\student> tasklist /fo:list | more                                                                                  # Formating options -> list
+C:\Users\student> tasklist /fo:csv | more                                                                                   # Formating options -> csv                                                                                     
+C:\Users\student>tasklist /fi "IMAGENAME eq lsass.exe                                                                       # Filtering out specific string/processes
+PS C:\Users\student> Get-Ciminstance Win32_service | Select Name, Processid, Pathname | more                                # View only system services and display Name, PID, and the path they are initiated from.
+PS C:\Users\student> get-service | more                                                                                     # View all services.
+PS C:\Users\student> get-service ALG | format-list *                                                                        # View a defined service, showing all properties in list format.
+PS C:\Users\student> Get-Service | Where-Object {$_.Status -eq "Running"} | more                                            # View only currently running services.
+C:\Users\student>sc query | more                                                                                            # View Services
+C:\Users\student>sc queryex type=service | more                                                                             # View extended information for all services.
+C:\Users\student>sc queryex type=service state=inactive | more                                                              # View extended information for all inactive services.
+C:\Users\student>net start | more                                                                                           # View all currently running services.
+PS C:\Users\student> Get-ScheduledTask | Select * | select -First 1                                                         # View all properties of the first scheduled task.
+schtasks /query /tn "IchBinBosh" /v /fo list                                                                                # 3.2.2 View Scheduled Tasks In Command Prompt
 
+Q: What are some Registry keys that can be used for autoruns? -> See validity link
 
+PS C:\Users\andy.dwyer> Get-NetTCPConnection -State Established                                                             # Show all Connections in the "Established" state.
+andy.dwyer@ADMIN-STATION C:\Users\andy.dwyer>netstat -anob | more                                                           # Displays all TCP/UDP connections with ports in numerical form with PID and executable associated to the connections
 
 
 ######################################################################################################################################################
@@ -1618,90 +1634,6 @@ C:\Users\student> tasklist /fo:table | more                                     
 ######################################################           09_windows_process_validity      ####################################################
 ######################################################                                             ###################################################
 ######################################################################################################################################################
-
-
-
-######################################################### Windows_Processes_Basics_3 5 #########################################################
-
-What Sysinternals tool shows malware persistence locations in tabs within its GUI?
-
-Research: https://learn.microsoft.com/en-us/sysinternals
-
-********************************************************* SOLUTION ********************************************************
-
-Autoruns
-
-######################################################### Windows_Processes_Basics_2 5 #########################################################
-
-What Sysinternals tool is used to investigate processes?
-
-********************************************************* SOLUTION ********************************************************
-
-Procexp
-
-######################################################### Windows_Processes_Basics_3 5 #########################################################
-
-What Sysinternals tool can be used to investigate network connection attempts?
-
-********************************************************* SOLUTION ********************************************************
-
-TCPView
-
-######################################################### Windows_Processes_Basics_4 5 #########################################################
-
-What Sysinternals tool can view permissions?
-
-********************************************************* SOLUTION ********************************************************
-
-AccessChk
-
-######################################################### Windows_Processes_Basics_5 5 #########################################################
-
-What Sysinternals tool allows us to view and modify handles?
-
-********************************************************* SOLUTION ********************************************************
-
-handle
-
-######################################################### Windows_Processes_Basics_6 5 #########################################################
-
-What is the default Windows user directory for files downloaded from the internet? The flag is the folder name only.
-
-********************************************************* SOLUTION ********************************************************
-
-Downloads
-
-######################################################### Windows_Processes_Basics_7 5 #########################################################
-
-What is the default Windows download directory that everyone has access to? The flag is the absolute path to the directory.
-
-********************************************************* SOLUTION ********************************************************
-
-C:\Users\Public\Downloads
-
-######################################################### Windows_Processes_Basics_8 5 #########################################################
-
-What Sysinternals tool shows service load order?
-
-********************************************************* SOLUTION ********************************************************
-
-LoadOrd
-
-######################################################### Windows_Processes_Basics_9 5 #########################################################
-
-What is the service name of Windows Defender Firewall?
-
-********************************************************* SOLUTION ********************************************************
-
-Mpssvc
-
-######################################################### Windows_Processes_Basics_10 5 #########################################################
-
-What SysInternals tool reports .dlls loaded into processes?
-
-********************************************************* SOLUTION ********************************************************
-
-ListDLLs
 
 ######################################################### Windows_Hidden_Processes_1 10 #########################################################
 
@@ -2036,6 +1968,90 @@ shutdown /r
 Get-Item HKLM:\SYSTEM\CurrentControlSet\Services\bam\UserSettings\*gar6
 
 C:\Windows\Temp\bad_intentions.exe
+
+
+
+######################################################### Windows_Processes_Basics_3 5 #########################################################
+
+What Sysinternals tool shows malware persistence locations in tabs within its GUI?
+
+Research: https://learn.microsoft.com/en-us/sysinternals
+
+********************************************************* SOLUTION ********************************************************
+
+Autoruns
+
+######################################################### Windows_Processes_Basics_2 5 #########################################################
+
+What Sysinternals tool is used to investigate processes?
+
+********************************************************* SOLUTION ********************************************************
+
+Procexp
+
+######################################################### Windows_Processes_Basics_3 5 #########################################################
+
+What Sysinternals tool can be used to investigate network connection attempts?
+
+********************************************************* SOLUTION ********************************************************
+
+TCPView
+
+######################################################### Windows_Processes_Basics_4 5 #########################################################
+
+What Sysinternals tool can view permissions?
+
+********************************************************* SOLUTION ********************************************************
+
+AccessChk
+
+######################################################### Windows_Processes_Basics_5 5 #########################################################
+
+What Sysinternals tool allows us to view and modify handles?
+
+********************************************************* SOLUTION ********************************************************
+
+handle
+
+######################################################### Windows_Processes_Basics_6 5 #########################################################
+
+What is the default Windows user directory for files downloaded from the internet? The flag is the folder name only.
+
+********************************************************* SOLUTION ********************************************************
+
+Downloads
+
+######################################################### Windows_Processes_Basics_7 5 #########################################################
+
+What is the default Windows download directory that everyone has access to? The flag is the absolute path to the directory.
+
+********************************************************* SOLUTION ********************************************************
+
+C:\Users\Public\Downloads
+
+######################################################### Windows_Processes_Basics_8 5 #########################################################
+
+What Sysinternals tool shows service load order?
+
+********************************************************* SOLUTION ********************************************************
+
+LoadOrd
+
+######################################################### Windows_Processes_Basics_9 5 #########################################################
+
+What is the service name of Windows Defender Firewall?
+
+********************************************************* SOLUTION ********************************************************
+
+Mpssvc
+
+######################################################### Windows_Processes_Basics_10 5 #########################################################
+
+What SysInternals tool reports .dlls loaded into processes?
+
+********************************************************* SOLUTION ********************************************************
+
+ListDLLs
 
 
 ######################################################################################################################################################
