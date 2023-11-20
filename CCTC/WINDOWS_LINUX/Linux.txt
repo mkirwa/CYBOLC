@@ -1,3 +1,70 @@
+
+
+
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^/////////////////  LINUX BASICS   /////////////////^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Link -> https://os.cybbh.io/public/os/latest/003_linux_essentials/bash_fg.html
+
+student:~$ ls -l                                                                          # ls -l changes the output to long list format.
+student:~$ ls --help                                                                      # Running a command with an argument to get help
+student:~$ directories=$(ls /)                                                            # Assign the variable directories to the output of the ls / command. Note the $().
+student:~$ echo $directories                                                              # Execute the echo command the contents of the variable directories.
+workstation21:$ echo $directories 1> thisisanewfile                                       # Send the standard output from the $directories variable into a file named thisisanewfile.
+workstation21:$ ls bacon 2> errorfile                                                     # Send the standard error from the command to errorfile.
+student:~$ ls -Rlisa /etc | grep syslog                                                   # Execute ls with arguments, then send the output to grep command using a pipe | to filter for the string syslog.
+student:~$ ls -Rlisa /etc 2> /dev/null | grep syslog                                      # To remove all errors from your output, consider utilizing standard error redirection. 
+
+student:~$ objects=$(ls -d /etc/*)
+student:~$ for item in $objects; do echo $item; done                                      # Making a For Loop to iterate on Objects in the collection of Objects
+                                   
+
+student:~$ for object in $objects; do if [ -d $object ]; then echo "$object is a directory"; else echo "$object is a file" ; fi ; done              # One liner version of the if statement.
+
+student:~$ for object in $objects; \                                                      # 1 The beginning of the for loop like in section 2.1.
+do if [ -d $object ]; then echo "$object is a directory"; \                               # 2 if $object is a directory AND it exists, then run echo "$object is a directory".
+else echo "$object is file" ; \                                                           # 3 else echo "$object is a file".
+fi ; \                                                                                    # 4 ends the if statements.
+done                                                                                      # 5 ends the for loop started in 1.
+
+while [ 1 -eq 1 ]; do echo "To Infinity and Beyond!"; done                                # Making a basic while loop. Runs forever. While 1 equals 1, run the command echo ""To Infinity and Beyond!".
+
+student@linux-opstation-kspt:/$ls -l $PWD/*                                               # Execute ls in long list format with absolute path.
+student@linux-opstation-kspt:/bin$ ls -l                                                  # Execute ls in long list format with relative paths.
+
+student@linux-opstation-kspt:/bin$ cat ls | head -n 1                                     # Execute cat on ls, then send its standard output to the head command and trim output to display a single row.
+student@linux-opstation-kspt:/bin$ xxd ls | head -n 2                                     # Execute xxd on ls, then send its standard output to the head command and trim output to display to the first two rows.
+                                                                                          # Look at that file signature! This file signature of 7f45 4c46 stands for Linux Executable Linked file format unique to Linux.
+                                                                                          # Aside from the first few characters, that isn’t readable.
+
+student@linux-opstation-kspt:/bin$ id                                                     # Execute the id command. Displays all of my associated ids
+
+student@linux-opstation-kspt:/bin$ cat /etc/passwd | grep student (1)
+student:x:1001:1001::/home/student:/bin/bash (2)
+ (3)      (4) (5)         (6)       (7)
+(1) Execute cat /etc/passwd and pipe it to grep to filter on student.
+(2) My entry in the /etc/passwd file.
+(3) My username.
+(4) my uid value.
+(5) my primary gid value.
+(6) my home directory.
+(7) my login shell /bin/bash.
+
+student@linux-opstation-kspt:/bin$ cat /etc/group | grep student                          # Execute cat /etc/group and pipe it to grep to filter on student.
+                                                                                          # Shows the sudo group, its gid value, its two members student and ubuntu.
+                                                                                          # Shows the student group, its gid value, and no additional members.
+
+
+student@linux-opstation-kspt:/bin$ ls -lisa /bin/dd (1)
+student@linux-opstation-kspt:/bin$ 130341 76 -rwx r-x r-x 1 root root 76000 Jan 18  2018 /bin/dd
+                                             (2)  (3) (4)   (5)   (6)
+(1) Showing permissions.
+(2) The Owner has Read, Write, and Execute permissions.
+(3) The Group has Read and Execute permissions.
+(4) Anyone who is not the User/Owner or belonging to the Group has Read and Execute permissions.
+(5) The file’s Owner.
+(6) The files' Group.
+
+
+
 #########################################################################################################################################
 #########################################################                       #########################################################
 #########################################################    04_Linux_Basics2   #########################################################
