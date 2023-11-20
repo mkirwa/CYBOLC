@@ -75,8 +75,49 @@ r-x: Read and execute permissions for others.
 
 ##
 
-student@linux-opstation-kspt:~$ ls -Rlisa /etc | grep password                           # Execute ls -Rlisa then send its standard out to grep to filter for the string password.
+student@linux-opstation-kspt:~$ ls -Rlisa /etc | grep password                                            # Execute ls -Rlisa then send its standard out to grep to filter for the string password.
+student@linux-opstation-kspt:~$ grep -R 'network' /etc/                                                   # Execute grep -R 'network' /etc/ then send it’s standard out to grep to filter for the string network.
+student@linux-opstation-kspt:~$ ls -l /etc | awk -F " " '{print$3","$4","$9}' > files.csv                 # The output from ls -l is verbose, maybe all of that information isn’t needed?
+                                                                                                          # Lets send the output from ls -l into awk, then set the delimiter to blank space, 
+                                                                                                            then tell it to print fields $3,$4,$9, finally send them to a csv file.
 
+student@linux-opstation-kspt:~$ articles=$(curl -L https://www.dailymail.co.uk/ushome/index.html --output - | grep itemprop | grep href | awk -F "\"" '{print$4}'|  awk -F "/" '{print$4}')
+student@linux-opstation-kspt:~$ for article in $articles; do echo $article; done
+
+##
+Perform a http GET request and filter all the HTML to get to the specific articles by grepping on itemprop, then grep on href, 
+next use awk to cut output into fields separated by \ characters and select column 4, finally cut output into fields separated by / characters and select column 4.
+Read the variable articles with a for loop.
+##
+
+student@linux-opstation-kspt:~$ cat /etc/passwd | grep root                                                # Execute cat on /etc/passwd then filter the output with grep to filter for root.
+student@linux-opstation-kspt:~$ cat /etc/passwd | grep root | sed s/root/bacon/g                           # Using sed to change standard any standard input that matches root to bacon, then send the modified output to the screen.
+
+
+
+student@linux-opstation-kspt:~$ echo -e "Handel\nHändel\nHaendel" > regexfile                              # Create a file with 3 similar names in it and save it as regexfile in the current directory.
+student@linux-opstation-kspt:~$ grep -P "H(ä|ae?)ndel" regexfile >                                         # Use grep with -P to specify Perl regular expressions and look for :
+Handel                                                                                                     # H,ä or a, e is optional, ndel.
+Händel
+Haendel
+
+
+student@linux-opstation-kspt:~$ cat results.txt 
+111-715-255643
+(9279815)92-3599127
+466-33836614-273
+_truncated_
+
+student@linux-opstation-kspt:~$ grep -P '\b\d{3}-\d{2}-\d{4}\b' results.txt                               # Execute grep to search for the following pattern : nnn-nn-nnnn.                        
+629-75-1985
+386-67-7872
+478-71-4964
+
+student@linux-opstation-kspt:~$ grep -P '\(\d{3}\)\d{3}-\d{4}\b' results.txt                              # Execute grep to search for the following pattern : (nnn)nnn-nnnn.
+(267)874-4532
+(446)146-8923
+(548)985-5415
+(199)363-3617
 
 
 #########################################################################################################################################
