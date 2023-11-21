@@ -1585,6 +1585,10 @@ HINT: There might be multiple cron processes, but only one with the answer.
 
 Flag format: /absolute/path
 
+/usr/sbin/cron
+
+ C:\users\student\Downloads\McAfee.exe
+
 *********************************************************     SOLUTION        **********************************************************
 
 sudo lsof -c cron # run these to list teh files mapped... look at the FD section which is the file descriptor 3u is the fourth file descriptor and the answer will be /run/crond.pid
@@ -1694,8 +1698,11 @@ Ps –elf #to look for running process
 
 /bin/netcat -lp 9999
 
+netstat -anpe | grep "22222"
+/bin/sh -lp 22222
 ######################################################### Linux Process Proc Dir 1 10 #########################################################
 
+tcp        0      0 0.0.0.0:22222           0.0.0.0:*               LISTEN      off (0.00/0/0)
 
 Examine the process list to find the ssh process. Then, identify the symbolic link to the absolute path for its executable in the /proc directory.
 
@@ -2635,3 +2642,6 @@ Look for binary /bin/sh
 Apr 6 13:37:31 linux-opstation-7qhp sudo: Saruman : TTY=pts/0 ; PWD=/home/Saruman ; USER=root ; COMMAND=find /etc/passwd -exec /bin/sh {} ;
 
 2h,30m,find /etc/passwd -exec /bin/sh \;,2
+
+
+PS C:\> Get-content 'C:\Windows\System32\WindowsPowerShell\v1.0\profile.ps1'

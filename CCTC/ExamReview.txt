@@ -8,6 +8,11 @@ Weird number/Port
 22
 123
 
+12999
+26646
+
+24234
+
 Have net use at the top of the links.... 
 
 get-item 'REGISTRY::HKEY_USERS:\\.............'

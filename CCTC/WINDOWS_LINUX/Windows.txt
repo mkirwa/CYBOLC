@@ -1,6 +1,19 @@
 
+ net use * http://live.sysinternals.com
+
+ 13 -> stack
+ 10.50.50.60 -> Windows Host
+ 10.50.36.43 -> Linux Host 
+
+ Proto  Local Address          Foreign Address        State           PID
+ TCP    0.0.0.0:23456          0.0.0.0:0              LISTENING       6968
+
+winlogon
+
+
 SYS Internal tools -> https://os.cybbh.io/public/os/latest/015_windows_sysinternals/sysint_fg.html
 
+GoogleUpdateTaskMachineUC .... think about users and think about profilesclear
 
 ######################################################### Primer_Boot_Process_9 1 #########################################################
 
@@ -13,7 +26,7 @@ Research: https://en.wikipedia.org/wiki/Windows_NT_booting_process (Hint: What r
 
 ntoskrnl.exe
 
-
+Get-Process | Sort -Property Id |more
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^/////////////////  POWERSHELL NOTES   /////////////////^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 PowerShell-Link Notes -> https://os.cybbh.io/public/os/latest/002_powershell/pwsh_fg.html
@@ -1473,7 +1486,7 @@ $LOGGED_UTILITY_STREAM
 
 
 ######################################################### Primer_NTFS_7 1 #########################################################
-
+ C:\Users\student> Get-Process | Sort -Property Id | more  
 Which NTFS attribute that is composed of the file security and access control properties?
 
 Research: https://learn.microsoft.com/en-us/openspecs/windows_protocols/ms-fscc/a82e9105-2405-4e37-b2c3-28c773902d85
