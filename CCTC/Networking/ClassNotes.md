@@ -100,3 +100,56 @@ Look at he slides for the format.
 Look at the 8 bit to identify if a MAC address is a unicast or a multi-cast. 
 It's easy nowadays to spoof a mac address because they're no longer burned in and can be changed by coding it with software. 
 
+VLAN TYPES 
+- default vlan 
+- data vlan 
+- voice - VOIP 
+- Management - Switch and router management
+- Native - Untagged traffic
+
+What addresses change during data transfer? Is it source addresses or destination addresses... 
+
+VLAN hopping -> What is this? 
+
+RARP request and wait for an RARP reply? 
+GRATUITOUS ARP ????
+
+BPDUs and STP 
+
+### Layer 2 ###
+Practice of "borrowing" host bits and used them as subnet bits. 
+How fragmentations can be used to perform attacks!!!
+IPV4 Auto configuration vulnerability 
+- Rogue DHCP 
+- Evil Twin
+- DHCP Starvation 
+
+Traceroute port using udp is port 53 and using tcp is 80?
+
+sudo tcpdump host 8.8.8.8 -n
+sudo traceroute 8.8.8.8 -T 
+
+ICMPV4 Attacks
+ICMP
+SMURF attack
+ICMP Covert Channels
+Oversized ICMP messages
+Firewalking (traceroute)
+
+IPV6 packets will always be 40 bytes long. 
+
+Summary addresses... the addresses that are advertised. 
+
+P@cket_C@rv1ng
+
+N3tw0rkFund3m3nt@ls
+
+
+Task 1: Frame and Packet Headers
+START FLAG: P@cket_C@rv1ng
+
+
+Utilize the /home/activity_resources/pcaps/packet-headers.pcapng for this activity.
+
+CISCO switches - CDP 
+Router Information - RIP
