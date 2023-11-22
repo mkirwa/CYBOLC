@@ -166,3 +166,6 @@ ICMP port unreachable if there's no firewall and the connection is lost.
 
 sshd - refers to ssh daemon. Your processes.... like what port you're listening to? 
 x11forwarding -> don't have to allow it... turn it off if you don't want people to export graphics...allows graphics to come back. 
+
+Where is DNS located... understand this... review TCP handshake and understand the fundamentals.... 
+ACK number, SYNC number, MSS, packet size and MTU (maximum transmission unit)
