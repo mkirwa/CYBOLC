@@ -15,6 +15,12 @@ ssh -X student@10.50.47.43
 
 Advantages of Assymetric 
 
+http://networking-ctfd-2.server.vta:8000/challenges
+
+https://net.cybbh.io/public/networking/latest/index.html
+
+https://miro.com/app/board/o9J_klSqCSY=/ -> diagram
+
 ssh keys are located in .ssh server... the (.) means it's a hidden folder 
 netstat is being deprecated and being replaced by ss. ifconfig is also being depracated and being replaced by ip. 
 ifconfig might require root access. 
@@ -145,7 +151,7 @@ P@cket_C@rv1ng
 N3tw0rkFund3m3nt@ls
 
 
-Task 1: Frame and Packet Headers
+Task 1: Frame and Packet H0eaders
 START FLAG: P@cket_C@rv1ng
 
 
@@ -153,3 +159,10 @@ Utilize the /home/activity_resources/pcaps/packet-headers.pcapng for this activi
 
 CISCO switches - CDP 
 Router Information - RIP
+
+### Application Layer ###
+
+ICMP port unreachable if there's no firewall and the connection is lost. 
+
+sshd - refers to ssh daemon. Your processes.... like what port you're listening to? 
+x11forwarding -> don't have to allow it... turn it off if you don't want people to export graphics...allows graphics to come back. 
