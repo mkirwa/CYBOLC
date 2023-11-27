@@ -169,3 +169,9 @@ x11forwarding -> don't have to allow it... turn it off if you don't want people 
 
 Where is DNS located... understand this... review TCP handshake and understand the fundamentals.... 
 ACK number, SYNC number, MSS, packet size and MTU (maximum transmission unit)
+
+
+
+Task 2: Packet Payloads
+START FLAG: Wh@t_P@load?
+
