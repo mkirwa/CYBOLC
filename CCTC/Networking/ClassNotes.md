@@ -1,5 +1,7 @@
 # Day 1 FUNDAMENTALS #
 
+Alt F -> gets rid of unclass banner. 
+
 BBB Link
 We will use this link to share our screen: https://bbb.cybbh.space/b/net-nfp-jln-zok
 
@@ -9,7 +11,11 @@ Hostname: BLUE-INTERNET_HOST-student_11 IP: 10.50.39.135 Username: student Passw
 
 2023-11-20T11:51:01Z
 
-ssh -X student@10.50.47.43
+YOUR MACHINE KIRWA -> ssh -X student@10.50.39.135
+
+Hostname: BLUE-INTERNET_HOST-student_11 IP: 10.50.39.135 Username: student Password: password
+
+Convert ip address to hex -> https://www.browserling.com/tools/ip-to-hex
 
 -X enables use of graphics can open things like wireshack. 
 
@@ -174,4 +180,103 @@ ACK number, SYNC number, MSS, packet size and MTU (maximum transmission unit)
 
 Task 2: Packet Payloads
 START FLAG: Wh@t_P@load?
+
+# TRAFFIC CAPTURE #
+
+Libpcap - library pcap -> tcpdump.org
+WinPcap - windows pcap -> winpcap.org
+NPcap - nmap pcap -> nmap.org/npcap.
+
+This flag will be released by Mission Command.
+
+Flag Formats for all Basic Analysis Challenges
+
+tcpdump flags:
+
+COMMAND: tcpdump filter syntax
+FLAG: filter syntax
+
+BPFCheck.pcap can be found on your INTERNET_HOST in /home/activity_resources/pcaps
+
+To find the packet count, you can append | wc -l after your command. For example tcpdump -n "yourfilter" -r BPFCheck.pcap | wc -l
+
+
+BPFCheck.pcap Download Link
+
+### TCP Dump primitivies ###
+
+- user friendly expressions
+    - src or dst 
+    - host or net -> Host cares about that device and net any othe device. 
+    - tcp or udp -> Looking for internet traffic.
+
+sudo tcpdump -i eth0 -> Captures everything... Capture packets network packts on the eth0 neteork interface. -i specifies the network interface in this case eth0 and not eth1 or wlan0 or wlan1. 
+
+type -> host, net, port or port-range
+dir -> src or dest
+proto -> particular protocols either ether, arp, ip, ip6, icmp, tcp or udp
+
+-A -> print payload and ASCI -> sudo tcpdump -i eth0 -A
+-D -> list interfaces -> sudo tcpdump -D
+-i -> specifiy capture interface -> sudo tcpdump -i eth0
+-e -> print data-link  headers -> sudo tcpdump -i eth0 -e
+sudo tcpdump -i eth0 -n -> list ip and port 
+-X or XX -> print payload in HEX and ASCII -> sudo tcpdump -i eth0 
+-w -> write to pcap 
+-r -> read from pcap
+-v, vv, or vvv -> verbosity -> sudo tcpdump -i eth0 -v -> Determines how much detail should be output in the view below.
+-n -> no inverse lookups 
+
+### Logical Operators ###
+- Primitives may be combined using:
+    - Concatenation: 'and' (&&) ->  sudo tcpdump -i eth0 -e tcp port
+    - Alteration: 'or' (||)
+    - Negation: 'not' (!) -> sudo tcpdump -i eth0 -e tcp port not 22 ->  sudo tcpdump -i eth0 -e tcp port ! 22
+    -  sudo tcpdump -i eth0 -e host not 192.168.242.193
+
+- < or <= 
+- > or >=
+- = or != 
+
+Hostname: BLUE-INTERNET_HOST-student_11 IP: 10.50.39.135 Username: student Password: password
+
+sudo tcpdump -i eth0 port ! 22 -d -> -d lists the steps....
+
+TODO??? Revisit packet content and see how they're structured!!! 
+
+
+sudo tcpdump -i eth0 'tcp[0:2]=22 || tcp[2:2]=22' -> Capture ssh traffic coming from the source -
+
+### BITWISE MASKING ###
+
+ALOT TO BE STUDIED?????TODO---REVIEW CLASS NOTES AND UNDERSTAND THAT VERY WELL
+
+
+### BITWISE MASKING ###
+
+Menu -> Statistics -> protocol hierachy # shows what how many ipv4 or ipv6 you have 
+
+Analyze -> Expert information # general information on packets, what got dropped, what needs to be retransmitted e.t.c. 
+
+Menu -> Tools -> Firewall ACL Rules 
+
+Menu -> Edit -> Preference -> Protocols -> SSL # decrypts traffic
+
+Menu -> Statistics -> Conversations # shows the devices communicating
+
+p0f -i eth0 # running pof on the interface 
+
+tcpdump -v ip and 'ip[8]<64' || 'ip6[7]<64'
+
+tcpdump -v ip and 'ip[8]<2'
+
+tcpdump -n "ip[8]<64' || 'ip6[7]<64" -r /home/activity_resources/pcaps/BPFCheck.pcap | wc -l
+
+sudo tcpdump -n "ip[8]<=64||ip6[7]<=64" -r /home/activity_resources/pcaps/BPFCheck.pcap | wc -l # 
+
+sudo tcpdump -r /home/activity_resources/pcaps/BPFCheck.pcap 'ip[8]' | wc -l
+
+
+udo tcpdump -r BPFCheck.pcap 'ip[6] & 0x40 !=0' | wc –
+
 
