@@ -266,17 +266,153 @@ Menu -> Statistics -> Conversations # shows the devices communicating
 
 p0f -i eth0 # running pof on the interface 
 
-tcpdump -v ip and 'ip[8]<64' || 'ip6[7]<64'
+### SOCKET CREATION  ###
+setting up a listener 
 
-tcpdump -v ip and 'ip[8]<2'
+Ask Brett about ranking up... 
 
-tcpdump -n "ip[8]<64' || 'ip6[7]<64" -r /home/activity_resources/pcaps/BPFCheck.pcap | wc -l
-
-sudo tcpdump -n "ip[8]<=64||ip6[7]<=64" -r /home/activity_resources/pcaps/BPFCheck.pcap | wc -l # 
-
-sudo tcpdump -r /home/activity_resources/pcaps/BPFCheck.pcap 'ip[8]' | wc -l
-
-
-udo tcpdump -r BPFCheck.pcap 'ip[6] & 0x40 !=0' | wc –
+IPPROTO -> Proto stands for protocol 
+Datagrams = UDP 
+Family -> AF_INET, AF_INET6, AF_UNIX
+Type -> SOCK_STREAM (default - tcp), SOCK_DGRAM (UDP), SOCK_RAW (What does raw do)
+Protocol -> should be 0, default, IPPROTO_RAW
 
 
+data, conn = snrecvfrom(1024) -> conn prints to the console, data stores whatever is received as data
+
+control shift c and control shift v -> copy and paste.....
+
+setup a listening port --- nc nlvp 
+
+The command nc -knlvp is a combination of options used with the nc (netcat) command in Unix-like systems. Let's break down what each option signifies:
+
+nc: This is the netcat command, a versatile networking tool used for reading from and writing to network connections using TCP or UDP protocols.
+
+-k: This option tells netcat to keep listening for another connection after its current connection is completed. It's often used in server mode to allow multiple sequential connections to the server.
+
+-n: This option instructs netcat not to resolve hostnames (i.e., not to use DNS for names of hosts in addresses).
+
+-l: This is used to specify that netcat should listen for an incoming connection rather than initiate a connection to a remote host.
+
+-v: This enables verbose mode, which provides additional details about the connection and data transfer.
+
+-p: This is followed by a specific port number. It specifies the source port netcat should use, which is relevant when netcat functions in client mode. However, in listening mode (-l), this option specifies the port on which to listen.
+
+So, when you run nc -knlvp [port], you are starting netcat in a mode where it listens on a specified port ([port]), does not resolve hostnames, stays open for multiple connections (one after the other), and provides verbose output about its operations. This is typically used to create a simple server that can accept connections on the specified port.
+
+### UDP SOCKET CREATION  ###
+
+STREAM SOCKET SENDER DEMO
+#!/usr/bin/python3
+import socket
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM, 0)
+ip_addr = '127.0.0.1'
+port = 1111
+s.connect((ip_addr, port))
+message = b"Message"
+s.send(message)
+data, conn = s.recvfrom(1024)
+print(data.decode('utf-8'))
+s.close()
+
+STREAM SOCKET RECEIVER DEMO
+#!/usr/bin/python3
+import socket
+import os
+port = 1111
+message = b"Connected to TCP Server on port %i\n" % port
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM, 0)
+s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+s.bind(('', port))
+s.listen(1)
+os.system("clear")
+print ("Waiting for TCP connections\n")
+while 1:
+    conn, addr = s.accept()
+    connect = conn.recv(1024)
+    address, port = addr
+    print ("Message Received - '%s'" % connect.decode())
+    print ("Sent by -", address, "port -", port, "\n")
+    conn.sendall(message)
+    conn.close()
+
+DATAGRAM SOCKET SENDER DEMO
+#!/usr/bin/python3
+import socket
+s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM, 0)
+ip_addr = '127.0.0.1'
+port = 2222
+message = b"Message"
+s.sendto(message, (ip_addr, port))
+data, addr = s.recvfrom(1024)
+print(data.decode())
+RAW IPV4 SOCKETS
+Raw Socket scripts must include the IP header and the next headers.
+Requires guidance from the "Request for Comments" (RFC) to follow header structure properly.
+RFCs contain technical and organizational documents about the Internet, including specifications and policy documents.
+See RFC 791, Section 3 - Specification for details on how to construct an IPv4 header.
+RAW SOCKET USE CASE
+Testing specific defense mechanisms - such as triggering and IDS for an effect, or filtering
+Avoiding defense mechanisms
+Obfuscating data during transfer
+Manually crafting a packet with the chosen data in header fields
+
+PYTHON BASE64 ENCODING
+import base64
+message = b'Message'
+hidden_msg = base64.b64encode(message)
+
+
+this is connectiononelss 
+To listen -> nc -nlvup 2222 # listening on port 2222
+Run the python script to establish the connection
+
+To check active posts listening->  ss -nltup 
+
+
+echo "message" | xxd -> Encoding a text 
+xxd file.txt file-encoded.txt -> Encode file to hex
+xxd -r file-encoded.txt file-decoded.txt -> decode file from hex
+
+PYTHON BASE64 ENCODING
+import base64
+message = b'Message'
+hidden_msg = base64.b64encode(message)
+
+##################
+##Build Packet Header##
+##################
+# Lets add the IPv4 header information
+# This is normally 0x45 or 69 for Version and Internet Header Length
+ip_ver_ihl = 0x45
+# This combines the DSCP and ECN feilds.  Type of service/QoS
+ip_tos = 96 # What is the tos, this is the quality of service work.. DSCP, for 97 it would be
+# The kernel will fill in the actually length of the packet
+ip_len = 0 # given
+# This sets the IP Identification for the packet. 1-65535
+ip_id = 3465
+# This sets the RES/DF/MF flags and fragmentation offset
+ip_frag = 0x8000
+# This determines the TTL of the packet when leaving the machine. 1-255
+ip_ttl = 255
+# This sets the IP protocol to 16 (CHAOS) (reference IANA) Any other protocol it will expect additional headers to be created.
+ip_proto = 16 # putting an ip packet and a payload with known hex header. ip is a carrier for a protocol. Always carries something. 16 we are not carrying other protocol? What value would be if we were carrying protocol? If we are carrying chaos we put the value 6. What else can we carry other than chaos? 
+# The kernel will fill in the checksum for the packet
+ip_check = 0
+# inet_aton(string) will convert an IP address to a 32 bit binary number
+ip_srcadd = socket.inet_aton(src_ip)
+ip_dstadd = socket.inet_aton(dst_ip)
+
+
+##########
+##Message##
+##########
+# Your custom protocol fields or data. We are going to just insert data here. Add your message where the "?" is. Ensure you obfuscate it though...don't want any clear text messages being spotted! You can encode with various data encodings. Base64, binascii
+message = b'last_name'                  #This should be the student's last name per the prompt.. will be encoded as a hex. Why are we encoding it? Encoding is done ot obfuscate the payload...
+hidden_msg = binascii.hexlify(message)  #Students can choose which encodeing they want to use.
+# final packet creation
+packet = ip_header + hidden_msg
+# Send the packet. Sendto is used when we do not already have a socket connection. Sendall or send if we do.
+s.sendto(packet, (dst_ip, 0))
+# socket.send is a low-level method and basically just the C/syscall method send(3) / send(2). It can send less bytes than you requested, but returns the number of bytes sent.
+# socket.sendall is a high-level Python-only method that sends the entire buffer you pass or throws an exception. It does that by calling socket.send until everything has been sent or an error occurs.
