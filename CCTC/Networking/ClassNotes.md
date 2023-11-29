@@ -416,3 +416,237 @@ packet = ip_header + hidden_msg
 s.sendto(packet, (dst_ip, 0))
 # socket.send is a low-level method and basically just the C/syscall method send(3) / send(2). It can send less bytes than you requested, but returns the number of bytes sent.
 # socket.sendall is a high-level Python-only method that sends the entire buffer you pass or throws an exception. It does that by calling socket.send until everything has been sent or an error occurs.
+
+
+# Networking - 3 - Network Reconnaissance #
+
+
+Dig -> (Domain Information Groper) -> Queries the Domain Name System servers. Provides detailed information about various DNS records like A, MX, NS e.t.c Troubleshoots DNS problems and obtains specific DNS information 
+    Dig - queries DNS server over UDP port 53
+        Name to IP records
+    
+    dig zonetransfer.me A
+    dig zonetransfer.me AAAA
+    dig zonetransfer.me MX
+    dig zonetransfer.me TXT
+    dig zonetransfer.me NS
+    dig zonetransfer.me SOA
+
+Whois -> used to query databases that store the registered users or assignees of internet resources, such as domain name, an ip address block or an autonomous system 
+    Whois can provide information such as 
+        - Domain registrant 
+        - Registeration dates
+        - Expiration dates
+        - Hosting company 
+    Whois - queries DNS registrar over TCP port 43
+    Information about the owner who registered the domain
+
+    whois zonetransfer.me
+
+Netcraft -> Used for antiphishing services, cybercrime disruption and web application security testing. Analyzes the security and reliability of websites and hosting providers as well as gathering data on internet infrastructure adn web technologies
+
+Shodan -> Search engine designed to find devices connected to the internet. Scans devices like webcams, routers, servers IoT devices and collects information on them such as banners, open ports, and types of services running. 
+
+Passive OS Fingerprinting (pOf) -> Used to determine the operating system of a remote host (computer or device) without actively interacting with the host. Accesses traffic passively observed. 
+    Include details such as packet headers, TCP/IP stack behavior, specific network protocols used
+    Less likely to be detected. Doesn't generate additional network traffic. 
+    Used in network monotoring, security analysis and IDS 
+
+Banner Grabbing -> Used to gather information about a computer system and services running on its open ports. Captures banner or header information that services ssend when establishing connection. Banners contains details like the type and version of software running e.g. web server, FTP server. 
+
+Ping: A basic network tool used to test the reachability of a host on an IP network. It measures the round-trip time for messages sent from the originating host to a destination computer.
+
+Nmap: A network scanning tool used to discover hosts and services on a computer network, thus creating a "map" of the network. Nmap can be used to discover devices running on a network and identify open ports and services.
+
+Netcat (nc): A versatile networking utility for reading from and writing to network connections using TCP or UDP. It's often dubbed the Swiss army knife of networking and can be used for a variety of tasks like port scanning, transferring files, and port listening.
+
+Curl: A tool to transfer data from or to a server using various protocols, including HTTP, HTTPS, FTP, and more. It's commonly used for downloading files or web pages from the command line.
+
+Wget: A command-line utility for downloading files from the web. It supports HTTP, HTTPS, and FTP protocols, and can recursively download files from websites.
+
+/dev/tcp: A pseudo-device file on Unix-like systems used to interface with TCP sockets in shell scripts. It allows for simple TCP operations from the command line or in a script.
+
+## RECONNAISSANCE STEPS ##
+
+Network Footprinting: This is the initial phase in information gathering, where an attacker or security professional gathers as much information as possible about a target network. It involves identifying the domain names, network blocks, IP addresses of systems, and accessible networks. Footprinting can be passive (gathering information without directly interacting with the target) or active (directly engaging with the target system).
+
+Scanning: This step involves using technical tools to identify open ports, live systems, and various services running on the network. Scanning helps to map out the network structure and understand the services and systems available.
+
+Enumeration: This is a more in-depth collection of data about a target network. It involves extracting user names, machine names, network resources, and other services from a system. Enumeration can reveal significant details about the inner workings of the network and its hosts. Simple Network Management Protocol (SNMP), an internet standard protocol for collecting and organizing information about managed devices on ip networks and for modifying that information and Domain Name System details 
+
+Vulnerability Assessment: In this phase, the information gathered from the above steps is used to identify vulnerabilities or weaknesses in the network. Vulnerability assessments often involve automated scanning tools to detect known vulnerabilities, such as outdated software versions, misconfigurations, and security flaws that could be exploited
+
+## IDENTIFYING AREAS OF INTERESTS ##
+
+/etc/passwd: This file in Unix-like operating systems contains user account information. It traditionally includes fields like the username, password (often represented as an 'x' indicating the password is stored in /etc/shadow), user ID (UID), group ID (GID), user's full name or description (GECOS field), home directory, and shell.
+
+/etc/shadow: This file stores secure user account information including encrypted passwords and related data, such as password expiration details. It is accessible only to privileged users.
+
+SAM Database: In Windows systems, the Security Accounts Manager (SAM) database stores user credentials, typically in an encrypted format. The SAM is part of the Windows registry and contains user names and password hashes, playing a crucial role in Windows authentication mechanisms.
+
+## ZONE TRANSFERS ##
+
+A zone transfer in the context of DNS (Domain Name System) is a process where the complete copy of all the DNS records for a domain (zone) is transferred from a primary DNS server (master) to a secondary DNS server (slave). This is used to synchronize data between DNS servers and ensure consistency in resolving domain names across different locations. Zone transfers occur over TCP port 53 and should be restricted and securely configured to prevent unauthorized access, as they can expose detailed information about the network structure and internal naming conventions of the domain.
+
+dir axfr {@soa.server} {target-site}
+dig axfr @nsztm1.digi.ninja zonetransfer.me
+
+The command dig axfr @nsztm1.digi.ninja zonetransfer.me is used to perform a DNS zone transfer. Here's what it does:
+
+dig: A command-line tool for querying DNS name servers.
+axfr: Stands for "Asynchronous Transfer Full Range." This option is used to request a full zone transfer.
+@nsztm1.digi.ninja: Specifies the name server to query, in this case, nsztm1.digi.ninja.
+zonetransfer.me: This is the target domain for which the zone transfer is being requested.
+
+This command attempts to get all the DNS records for the domain zonetransfer.me
+
+## PASSIVE OF FINGERPRINTER (POF) ##
+
+p0f: Passive scanning of network traffic and packet captures.
+
+more /etc/p0f/p0f.fp
+
+sudo p0f -i eth0
+
+sudo p0f -r test.pcap
+
+Examine packets sent to/from target
+Can guess Operating Systems and version
+Can guess client/server application and version
+
+## NETWORK SERVICE DISCOVERY ##
+
+1. Broadcast Ping/Ping sweep (-sP, -PE)
+2. SYN scan (-sS)
+3. Full connect scan (-sT)
+4. Null scan (-sN)
+5. FIN scan (-sF)
+6. XMAS tree scan (-sX)
+7. UDP scan (-sU)
+8. Idle scan (-sI)
+9. ACK/Window scan (-sA)
+10. RPC scan (-sR)
+11. FTP scan (-b)
+12. Decoy scan (-D)
+13. OS fingerprinting scan (-O)
+14. Version scan (-sV)
+15. Protocol ping (-PO)
+16. Discovery probes (-PE, -PP, -PM)
+
+### NMAP - OTHER OPTIONS ###
+
+-PE - ICMP Ping
+-Pn - No Ping
+
+### NMAP - TIME-OUT ###
+
+-T0 - Paranoid - 300 Sec
+-T1 - Sneaky - 15 Sec
+-T2 - Polite - 1 Sec
+-T3 - Normal - 1 Sec
+-T4 - Aggresive - 500 ms
+-T5 - Insane - 250 ms
+
+
+### TRACEROUTE - FIREWALKING ###
+
+
+Traceroute firewalking is a network reconnaissance technique that combines traceroute and firewall rule mapping to discover the network topology and firewall rule sets. In this technique, specially crafted packets with varying TTL (Time To Live) values are sent to pass through a network until they are stopped by a firewall. By observing where packets are dropped and analyzing the responses from intermediate routers, it's possible to infer the presence and configuration of firewalls. This method can be used to map out networks and identify rules in firewall configurations without directly probing the firewall itself.
+
+traceroute 172.16.82.106                    # This standard traceroute command traces the route packets take to the specified IP address using UDP packets.
+traceroute 172.16.82.106 -p 123             # Traces the route using UDP packets targeted at port 123.
+sudo traceroute 172.16.82.106 -I            # Uses ICMP Echo Request packets instead of UDP. This requires superuser privileges (hence sudo).
+sudo traceroute 172.16.82.106 -T            # Uses TCP SYN packets for tracing. This is useful for tracing through networks that block ICMP and UDP.
+sudo traceroute 172.16.82.106 -T -p 443     # Similar to the previous, but specifically targets port 443 (commonly used for HTTPS) with TCP SYN packets. This can be useful for testing paths on networks where port 443 is likely to be open.
+
+### NETCAT - SCANNING ###
+
+nc [Options] [Target IP] [Target Port(s)]
+-z : Port scanning mode i.e. zero I/O mode
+-v : Be verbose [use twice -vv to be more verbose]
+-n : do not resolve ip addresses
+-w1 : Set time out value to 1
+-u : To switch to UDP
+
+
+### NETCAT - HORIZONTAL SCANNING ###
+
+Range of IPs for specific ports
+
+TCP
+for i in {1..254}; do nc -nvzw1 172.16.82.$i 20-23 80 2>&1 & done | grep -E 'succ|open'
+
+This script loops through IP addresses from 172.16.82.1 to 172.16.82.254.
+It uses nc (Netcat) with -nvzw1 flags to attempt TCP connections to ports 20, 21, 22, 23, and 80 on each IP.
+The command checks for successful connections or open ports and outputs those results.
+2>&1 & redirects stderr to stdout and runs the scan in the background for each IP.
+
+UDP
+for i in {1..254}; do nc -nuvzw1 172.16.82.$i 1000-2000 2>&1 & done | grep -E 'succ|open'
+
+This script loops through IP addresses from 172.16.82.1 to 172.16.82.254.
+It uses nc (Netcat) with -nvzw1 flags to attempt TCP connections to ports 20, 21, 22, 23, and 80 on each IP.
+The command checks for successful connections or open ports and outputs those results.
+2>&1 & redirects stderr to stdout and runs the scan in the background for each IP.
+
+### NETCAT - VERTICAL SCANNING ###
+Range of ports on specific IP
+
+TCP
+nc -nzvw1 172.16.82.106 21-23 80 2>&1 | grep -E 'succ|open'
+
+UDP
+nc -nuzvw1 172.16.82.106 1000-2000 2>&1 | grep -E 'succ|open'
+
+### NETCAT - TCP SCAN SCRIPT ###
+
+#!/bin/bash
+echo "Enter network address (e.g. 192.168.0): "
+read net
+echo "Enter starting host range (e.g. 1): "
+read start
+echo "Enter ending host range (e.g. 254): "
+read end
+echo "Enter ports space-delimited (e.g. 21-23 80): "
+read ports
+for ((i=$start; $i<=$end; i++))
+do
+    nc -nvzw1 $net.$i $ports 2>&1 | grep -E 'succ|open'
+done
+
+### NETCAT - UDP SCAN SCRIPT ###
+
+#!/bin/bash
+echo "Enter network address (e.g. 192.168.0): "
+read net
+echo "Enter starting host range (e.g. 1): "
+read start
+echo "Enter ending host range (e.g. 254): "
+read end
+echo "Enter ports space-delimited (e.g. 21-23 80): "
+read ports
+for ((i=$start; $i<=$end; i++))
+do
+    nc -nuvzw1 $net.$i $ports 2>&1 | grep -E 'succ|open'
+done
+
+### NETCAT - BANNER GRABBING ###
+Find what is running on a particular port
+
+nc [Target IP] [Target Port]
+nc 172.16.82.106 22
+nc -u 172.16.82.106 53
+-u : To switch to UDP
+
+### CURL AND WGET ###
+
+Both can be used to interact with the HTTP, HTTPS and FTP protocols.
+Curl - Displays ASCII
+curl http://172.16.82.106
+curl ftp://172.16.82.106
+
+Wget - Downloads (-r recursive)
+wget -r http://172.16.82.106
+wget -r ftp://172.16.82.106
+
+## DESCRIBE METHODS USED FOR PASSIVE INTERNAL NETWORK RECONNAISSANCE ##
