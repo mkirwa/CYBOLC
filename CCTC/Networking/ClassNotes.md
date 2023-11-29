@@ -727,7 +727,36 @@ uname -a # gives all the information
 cat /etc/*rel* -> gives os name and version 
 
 ### File search ###
-find / -name hint* 2> /dev/null
-find / -iname flag* 2> /dev/null
+find / -name hint* 2> /dev/null # name being the name of the file 
+find / -iname flag* 2> /dev/null # 
 
+
+## DESCRIBE METHODS USED FOR ACTIVE INTERNAL NETWORK RECONNAISSANCE ##
+
+### ARP SCANNING ###
+arp-scan --interface=eth0 --localnet
+nmap -sP -PR 172.16.82.96/27
+
+### PING SCANNING ###
+ping -c 1 172.16.82.106
+for i in {1..254}; do (ping -c 1 172.16.82.$i | grep "bytes from" &) ; done
+sudo nmap -sP 172.16.82.96/27
+
+### DEV TCP SCANNING ###
+for p in {1..1023}; do(echo >/dev/tcp/172.16.82.106/$p) >/dev/null 2>&1 && echo "$p open"; done
+
+for p in {1..1023}; do: This line starts a loop that iterates over the numbers from 1 to 1023, one at a time. The variable p is used to represent the current port number being tested.
+(echo >/dev/tcp/172.16.82.106/$p) >/dev/null 2>&1: This is the core of the code, and it's used to check if a TCP connection can be established to the remote host on a specific port. Here's how it works:
+
+echo >/dev/tcp/172.16.82.106/$p: This part of the code creates a special file descriptor that allows you to write to a TCP connection. It effectively tries to establish a TCP connection to the IP address 172.16.82.106 on the port specified by the variable p.
+
+>/dev/null: This part redirects the standard output (stdout) of the echo command to /dev/null, which essentially discards any output.
+
+2>&1: This part redirects the standard error (stderr) of the echo command to the same location as stdout. In this case, it's also redirected to /dev/null.
+
+So, if a connection can be established successfully, nothing is printed to the console (stdout and stderr are redirected to /dev/null), but if the connection fails, any error messages are also suppressed.
+
+&& echo "$p open": This part of the code is executed if the previous command ((echo >/dev/tcp/172.16.82.106/$p)) is successful, which means a connection was established. It then prints the port number followed by "open" to the console.
+
+The result of running this script is that it iterates through ports 1 to 1023, attempts to establish a TCP connection to the remote host (172.16.82.106) on each port, and if successful, it prints the port number followed by "open" to the console. This way, you can determine which ports are open and accepting connections on the remote host.
 
