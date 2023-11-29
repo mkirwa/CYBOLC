@@ -577,6 +577,8 @@ nc [Options] [Target IP] [Target Port(s)]
 
 ### NETCAT - HORIZONTAL SCANNING ###
 
+1 host but multiple ports
+
 Range of IPs for specific ports
 
 TCP
@@ -598,6 +600,9 @@ The command checks for successful connections or open ports and outputs those re
 2>&1 & redirects stderr to stdout and runs the scan in the background for each IP.
 
 ### NETCAT - VERTICAL SCANNING ###
+
+multiple hosts 
+
 Range of ports on specific IP
 
 TCP
