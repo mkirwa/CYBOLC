@@ -663,3 +663,71 @@ wget -r http://172.16.82.106
 wget -r ftp://172.16.82.106
 
 ## DESCRIBE METHODS USED FOR PASSIVE INTERNAL NETWORK RECONNAISSANCE ##
+
+## PACKET SNIFFERS ##
+Wireshark
+Tcpdump
+p0f
+
+Limited to traffic in same local area of the network
+
+## NATIVE HOST TOOLS ## 
+### Show TCP/IP network configuration ###
+Windows: ipconfig /all
+Linux: ip address (ifconfig depreciated)
+VyOS: show interface
+
+### Show DNS configuration ####
+Windows: ipconfig /displaydns
+Linux: cat /etc/resolv.conf # Shows the name server specification 
+
+What do you care about DNS server, gives possible sub-domains. 
+
+### Show ARP Cache -> ARP cache poisoning. ###
+Windows: arp -a
+Linux: ip neighbor (arp -a depreciated)
+
+### Show network connections ###
+Windows: netstat # you need to sudo 
+Linux: ss (netstat depreciated) # you need to sudo
+
+Example options useful for both netstat and ss: -antp
+a = Displays all active connections and ports.
+n = No determination of protocol names. Shows 22 not SSH.
+t = Display only TCP connections.
+u = Display only UDP connections.
+p = Shows which processes are using which sockets.
+
+### OS Location ###
+Windows: %SystemRoot%\system32\drivers\etc\services
+Linux: /etc/services -> cat /etc/services
+
+### Show Running Processes ###
+Windows: tasklist
+Linux: ps or top
+
+Example options useful for ps: -elf
+e = Show all running processes
+l = Show long format view
+f = Show full format listing
+
+### Command path ###
+which
+whereis
+
+### Routing Table ###
+Windows: route print
+Linux: ip route (netstat -r deprecated)
+VyOS: show ip route
+
+uname # gives the name of the os 
+
+uname -a # gives all the information 
+
+cat /etc/*rel* -> gives os name and version 
+
+### File search ###
+find / -name hint* 2> /dev/null
+find / -iname flag* 2> /dev/null
+
+
