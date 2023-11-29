@@ -1,6 +1,6 @@
 # Day 1 FUNDAMENTALS #
 
-Alt F -> gets rid of unclass banner. 
+Alt F4 -> gets rid of unclass banner. 
 
 BBB Link
 We will use this link to share our screen: https://bbb.cybbh.space/b/net-nfp-jln-zok
