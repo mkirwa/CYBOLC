@@ -4,6 +4,8 @@ Binary to hex conversion - https://www.rapidtables.com/convert/number/binary-to-
 
 convert encoded message ->  https://gchq.github.io/CyberChef/
 
+Evernote -> https://evernote.com/legal/open-source
+
 Alt F4 -> gets rid of unclass banner. 
 
 BBB Link
@@ -27,7 +29,7 @@ Advantages of Assymetric
 
 http://networking-ctfd-2.server.vta:8000/challenges
 
-https://net.cybbh.io/public/networking/latest/index.html
+https://net.cybbh.io/public/networking/latest/index.html -> Notes and all 
 
 https://miro.com/app/board/o9J_klSqCSY=/ -> diagram
 
@@ -492,7 +494,7 @@ SAM Database: In Windows systems, the Security Accounts Manager (SAM) database s
 
 A zone transfer in the context of DNS (Domain Name System) is a process where the complete copy of all the DNS records for a domain (zone) is transferred from a primary DNS server (master) to a secondary DNS server (slave). This is used to synchronize data between DNS servers and ensure consistency in resolving domain names across different locations. Zone transfers occur over TCP port 53 and should be restricted and securely configured to prevent unauthorized access, as they can expose detailed information about the network structure and internal naming conventions of the domain.
 
-dir axfr {@soa.server} {target-site}
+dir axfr {@soa.server} {target-site} # server of authority 
 dig axfr @nsztm1.digi.ninja zonetransfer.me
 
 The command dig axfr @nsztm1.digi.ninja zonetransfer.me is used to perform a DNS zone transfer. Here's what it does:
@@ -509,9 +511,7 @@ This command attempts to get all the DNS records for the domain zonetransfer.me
 p0f: Passive scanning of network traffic and packet captures.
 
 more /etc/p0f/p0f.fp
-
-sudo p0f -i eth0
-
+sudo p0f -i eth0            # Using sudo as we are accessing the operating system. 
 sudo p0f -r test.pcap
 
 Examine packets sent to/from target
@@ -520,27 +520,29 @@ Can guess client/server application and version
 
 ## NETWORK SERVICE DISCOVERY ##
 
-1. Broadcast Ping/Ping sweep (-sP, -PE)
-2. SYN scan (-sS)
-3. Full connect scan (-sT)
-4. Null scan (-sN)
-5. FIN scan (-sF)
-6. XMAS tree scan (-sX)
-7. UDP scan (-sU)
-8. Idle scan (-sI)
-9. ACK/Window scan (-sA)
-10. RPC scan (-sR)
-11. FTP scan (-b)
-12. Decoy scan (-D)
-13. OS fingerprinting scan (-O)
-14. Version scan (-sV)
-15. Protocol ping (-PO)
-16. Discovery probes (-PE, -PP, -PM)
+NMAP options. 
+
+1. Broadcast Ping/Ping sweep (-sP, -PE)      # Ping everything user nmap options.. # Tells us what some of the replies are
+2. SYN scan (-sS)                            # SyN packet. Once it receives a syn ack from the server it shuts down. Less likely to log, dosn't establish a full scan 
+3. Full connect scan (-sT)                   # SYN, Receives packet and shuts down..
+4. Null scan (-sN)                           # No flags. Send no flags are sent at all, see what the responses are.
+5. FIN scan (-sF)                            # Sends the FIN flag
+6. XMAS tree scan (-sX)                      # FIN, PSH, and URG flags
+7. UDP scan (-sU)                            # checks for UDP ports on a target system... sends udp 
+8. Idle scan (-sI)                           # TCP port scan method for determining what services are open on a target computer without leaving traces pointing back at oneself.
+9. ACK/Window scan (-sA)                     # Send a scan to try and create a specific window size
+10. RPC scan (-sR)                           # Allows diff services to talk to each other
+11. FTP scan (-b)                            # FTP server
+12. Decoy scan (-D)                         
+13. OS fingerprinting scan (-O)              # 
+14. Version scan (-sV)                       # Determine what service...
+15. Protocol ping (-PO)                      # Goes through a series of protocols to discover an active host. Cirlces through various ones to find one that is active
+16. Discovery probes (-PE, -PP, -PM)         # -PP -> Ping echo request.
 
 ### NMAP - OTHER OPTIONS ###
 
 -PE - ICMP Ping
--Pn - No Ping
+-Pn - No Ping                                # boost discovery, send a ping to every device out there and some pings are dropped die to firewall..Important when you get to tunneling for those that want to use NMAP 
 
 ### NMAP - TIME-OUT ###
 
@@ -584,6 +586,8 @@ This script loops through IP addresses from 172.16.82.1 to 172.16.82.254.
 It uses nc (Netcat) with -nvzw1 flags to attempt TCP connections to ports 20, 21, 22, 23, and 80 on each IP.
 The command checks for successful connections or open ports and outputs those results.
 2>&1 & redirects stderr to stdout and runs the scan in the background for each IP.
+
+succ -> succeed. Certain version responds with succeeded or open when they're open. 
 
 UDP
 for i in {1..254}; do nc -nuvzw1 172.16.82.$i 1000-2000 2>&1 & done | grep -E 'succ|open'
