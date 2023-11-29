@@ -228,65 +228,95 @@ sudo tcpdump -n "ether[12:4]&0xffff0fff=0x81000001 && ether[16:4]&0xffff0fff=0x8
 
 # Networking - 2 - Socket Creation and Packet Manipulation # 
 
-## Networking - 2 - VLAN HOPPING 15 ##
+## AddressFamilies 5 ##
 
-1.What are the 3 Address Families associated with the python3 socket module?
+What are the 3 Address Families associated with the python3 socket module?
+
+example:
+
+socket.ADDFAM, socket.ADDFAM, socket.ADDFAM
 
 ### Answer ###
 socket.AF_Unix, socket.AF_INET, socket.AF_INET6
 
-## Networking - 2 - VLAN HOPPING 15 ##
+## Connections 5 ##
 
-2. What are the two socket functions called to open a connection and to disconnect from that
-connection?
+What are the two socket functions called to open a connection and to disconnect from that connection?
+
+example:
+
+socket.fun(), socket.func()
 
 ### Answer ###
 socket.connect(), socket.close()
 
-## Networking - 2 - VLAN HOPPING 15 ##
+## Header Preparation 5 ##
 
-3. What python3 library function is utilized to combine the various pieces of your raw socket packet into
-network order?
 
-### Answer ###
--struct.pack
+What python3 library function is utilized to combine the various pieces of your raw socket packet into network order?
 
-## Networking - 2 - VLAN HOPPING 15 ##
+example:
 
-4. What must be manually created with raw sockets that stream and datagram sockets creates for you?
+module.function
+
 
 ### Answer ###
--headers
+struct.pack
 
-## Networking - 2 - VLAN HOPPING 15 ##
+## Missing Data 5 ##
 
-5. What function within the socket module allows you to Send data to a socket, while not already being
-connected to a remote socket?
+What must be manually created with raw sockets that stream and datagram sockets creates for you?
+
+### Answer ###
+headers
+
+## Sending UDP 5 ##
+
+What function within the socket module allows you to Send data to a socket, while not already being connected to a remote socket?
+
+example:
+
+socket.func()
 
 ### Answer ###
 Socket.sendto() specifies that the system is to send the data into the socket (addr) and that it is not
 currently connected.
 
-## Networking - 2 - VLAN HOPPING 15 ##
+## Transport Layer Sockets 5 ##
 
-6. Provide an example of the two required items needed to be set in order to send a Datagram or Stream
+Provide an example of the two required items needed to be set in order to send a Datagram or Stream socket? (excluding any of the socket.socket functions)
+
+example:
+
+item1 item2
+
+These are the 2 parts to a socket
+
 socket? (excluding any of the socket.socket functions)
 
 ### Answer ###
 Ipaddr port
 
-## Networking - 2 - VLAN HOPPING 15 ##
+## Objects ##
 
-7. When sending data across a connection, what must a string be converted to before being sent due to
-encoding?
+When sending data across a connection, what must a string be converted to before being sent due to encoding?
 
 ### Answer ###
 Bytes
 
-## Networking - 2 - VLAN HOPPING 15 ##
+## Stream Socket Message Sender 10 ##
 
-8. Gorgan Forces have requested you get a message to one of their remote teams that are utilizing the
-BLUE_DMZ_HOST -1. Utilizing the criteria they provided, generate a stream socket with python3:
+Gorgan Forces have requested you get a message to one of their remote teams that are utilizing the BLUE_DMZ_HOST-1. Utilizing the criteria they provided, generate a stream socket with python3:
+
+Coded information was placed into the video below. Look at the note the woman passes to the man.
+
+https://youtu.be/6WTdTwcmxyo?t=35
+
+From your INTERNET-HOST to the BLUE_DMZ_HOST-1
+Port number = #Last four digits on the note
+
+Message = #Name on the note (First letter capitalized)
+
 
 ### Answer ###
 sudo nano STREAM.py # to open the file
@@ -297,15 +327,45 @@ Ctrl+O == save
 Exit a
 Open python3 STREAM.py — flag is there
 
-## Networking - 2 - VLAN HOPPING 15 ##
+## Datagram Socket Message Sender 10 ##
 
-9. Data Gram
+Gorgan Forces have requested you get a message to one of their remote teams that are utilizing the INTERNET_HOST. Utilizing the criteria they provided, generate a datagram socket with python3:
+
+Coded information was placed into the video below. Listen to the words in the video.
+
+https://youtu.be/OuK4OcMUGcg?t=67
+
+Send to your INTERNET-HOST localhost.
+
+Port number = #The number of fists
+
+Message = #The name of the band (First letter capitalized)
+
 
 ### Answer ###
 Open DGRAM.py
 And complete the similar process
 
-## Networking - 2 - VLAN HOPPING 15 ##
+## Raw IPv4 Socket 10 ##
+Gorgan forces, tool development cell have provided RAWSOCK.py for your teams use, it defines the basic structure of the desired result.
+
+Create a raw socket and code your message into the socket
+Send your last name as the data.
+The sent data is required to be encoded, with a final result of the data being in hex. You can use the python module of your choice; a good module to start with is binascii.
+When viewing in Wireshark, the packet should not be malformed
+
+Target IP: 172.16.1.15
+
+TOS: 96
+
+IP ID: 1984
+
+Protocol: CHAOS
+
+The flag will be provided by the Mission Command once you complete the activity.
+
+Provide the Wireshark Packet Capture.
+Provide proof of the decoded message.
 
 10. RAWSOCK.py for your teams use, it defines the basic structure of the desired result.
 ● Create a raw socket and code your message into the socket

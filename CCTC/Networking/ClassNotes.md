@@ -1,5 +1,9 @@
 # Day 1 FUNDAMENTALS #
 
+Binary to hex conversion - https://www.rapidtables.com/convert/number/binary-to-decimal.html
+
+convert encoded message ->  https://gchq.github.io/CyberChef/
+
 Alt F4 -> gets rid of unclass banner. 
 
 BBB Link
