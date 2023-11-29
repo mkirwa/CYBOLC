@@ -1,3 +1,21 @@
+Network Reconnaisance 
+
+Student number -> 25, 
+
+N will be 4 student is 25
+
+Red Network Recon
+Entry Float IP: 10.50.24.163
+
+Your Network Number is N (Given by Instructor)
+
+Credentials: net{N}_studentX:passwordX
+
+X is your student number
+
+
+
+
 #!/usr/bin/python3
 # For building the socket
 import socket
