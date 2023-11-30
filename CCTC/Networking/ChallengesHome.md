@@ -38,11 +38,27 @@ On answer section there is a file: cmVhZHlfc2V0X3NjYW4=
 
 Decode rhis: from base64 to UTF-8
 
-2. To get the hostname Ssh vyos@172.16.120.1
+2. To get the hostname 
+
+ssh net{N}_studentX@provided_ip_address # provided in the notification i.e. ssh net4_student25@10.50.24.163 then enter the password25
+
+after that, 
+
+Ssh vyos@172.16.120.1 # Enter the provided password
 
 3. How many host(s) did you discover on the DMZ Net? (excluding the router)
 
 Nmap –sn 172.16.101.30/27 --- gives how many hosts are up
+
+
+results: 
+
+Starting Nmap 7.70 ( https://nmap.org ) at 2023-11-30 02:07 UTC
+Nmap scan report for 172.16.101.2
+Host is up (0.0042s latency).
+Nmap scan report for 172.16.101.30
+Host is up (0.0047s latency).
+Nmap done: 32 IP addresses (2 hosts up) scanned in 1.98 seconds
 
 4.How many well-known open TCP ports did you discover on the device(s)?
 
