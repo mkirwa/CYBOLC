@@ -760,3 +760,10 @@ So, if a connection can be established successfully, nothing is printed to the c
 
 The result of running this script is that it iterates through ports 1 to 1023, attempts to establish a TCP connection to the remote host (172.16.82.106) on each port, and if successful, it prints the port number followed by "open" to the console. This way, you can determine which ports are open and accepting connections on the remote host.
 
+
+
+### CLASS EXERCISES ###
+ssh student@10.50.47.43 ls -l /home/student/joke
+ssh student@10.50.47.43 cat /home/student/joke
+touch kirwa.txt
+scp kirwa.txt student@10.50.47.43:/home/student/joke

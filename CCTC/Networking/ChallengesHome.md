@@ -48,7 +48,7 @@ Ssh vyos@172.16.120.1 # Enter the provided password
 
 3. How many host(s) did you discover on the DMZ Net? (excluding the router)
 
-Nmap –sn 172.16.101.30/27 --- gives how many hosts are up
+nmap –sn 172.16.101.30/27 --- gives how many hosts are up
 
 
 results: 
@@ -72,7 +72,39 @@ There is tcp port 22 open
 
 Port 22
 
+
+7. Donovian Man in the Middle 5
+    Level I Challenge
+
+What is it’s hostname of the device directly connected to the Donovian boundary on eth1?
+
+example:
+student@HOSTNAME-student-1-7cgpe
+
+Copy only the name where HOSTNAME is at
+
+
+show configuration commands
+
+
+
 7. Hostname Ssh@172.16.101.2 --- red-dmz-host-1
+
+
+
+vyos@172:~$ show configuration commands
+set interfaces ethernet eth0 address '172.16.120.1/30'
+set interfaces ethernet eth0 description 'INTERNET'
+set interfaces ethernet eth1 address '172.16.120.6/30'
+set interfaces ethernet eth1 description 'REDNET'
+set interfaces ethernet eth1 ip ospf authentication md5 key-id 120 md5-key 'red'
+set interfaces ethernet eth2 address '172.16.101.30/27'
+set interfaces ethernet eth2 description 'DMZ'
+
+nmap –sn 172.16.120.6/30
+
+for i in {1..254}; do nc -nvzw1  172.16.120.$i 20-23 80 2>&1 & done | grep -E 'succ|open'
+
 
 8. Donovian Inner Boundary: What is the hostname of the device directly connected to teh system discovered in Donovian Man in the Middle, on eth1?
 
