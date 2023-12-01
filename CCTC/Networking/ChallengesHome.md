@@ -393,7 +393,35 @@ A. nothing. Incorrect syntax
 B. alternate ssh port on 10.50.1.150
 C. local listening port on OPS
 D. port mapped to localhost on 10.50.1.150
-- C
+- B
+
+
+2. Tunnel Prep – Alternate port 1
+5
+Using the following syntax:
+
+OPS$ ssh cctc@10.50.1.150 -p 1111
+
+What is 1111? (Max 2 Attempts)
+
+A. nothing. Incorrect syntax
+B. alternate ssh port on 10.50.1.150 (Answ)
+C. local listening port on OPS
+D. port mapped to localhost on 10.50.1.150
+
+3. Tunnel Prep – Alternate port 2
+5
+Using the following syntax:
+
+OPS$ ssh cctc@localhost -p 1111
+
+What is 1111? (Max 2 Attempts)
+
+A. nothing. Incorrect syntax
+B. alternate ssh port on 10.50.1.150 
+C. local listening port on OPS (Ans)
+D. port mapped to localhost on 10.50.1.150
+
 4. Using the Tunnels Prep Diagram provided in the start to this task, please fill in the blanks to complete
 the following ssh command.
 Which IP would we use to SSH to PC1 from OPS?
@@ -414,7 +442,8 @@ A. ssh -L 1111:localhost:22 cctc@10.50.1.150 -NT
 B. ssh cctc@10.50.1.150 -L 1111:10.50.1.150:22 -NT
 C. ssh cctc@100.1.1.1 -L 1111:localhost:22 -NT
 D. ssh -R 1111:localhost:22 cctc@10.50.1.150 -NT
--C
+-A
+
 7. Using the Tunnels Prep Diagram provided in the start to this task, please fill in the blanks to
 complete the following ssh command. Which ssh syntax would properly setup a Local tunnel to PC1
 HTTP port? (Max 2 Attempts)
@@ -423,17 +452,28 @@ B. ssh cctc@10.50.1.150 -L 1111:localhost:80-NT
 C. ssh cctc@100.1.1.1 -L 1111:localhost:80-NT
 D. ssh -L 1111:100.1.1.1:80 cctc@localhost-NT
 -B
-8. d
-9.Using the Tunnels Prep Diagram provided in the start to this task, please fill in the blanks to complete
+
+8. Tunnel Prep – Dynamic thru 1st Local
+5
+Using the Tunnels Prep Diagram provided in the start to this task, please fill in the blanks to complete the following ssh command.
+
+Which ssh syntax would allow us to establish a Dynamic tunnel using the Local tunnel created in Question 6? (Max 2 Attempts)
+
+A. ssh -D 9050 cctc@localhost -NT
+B. ssh cctc@100.1.1.1 -p 1111 -D 9050 -NT
+C. ssh -p 1111 cctc@10.50.1.150 -D 9050 -NT
+D. ssh -D 9050 cctc@localhost -p 1111 -NT (Answ)
+
+
+9. Using the Tunnels Prep Diagram provided in the start to this task, please fill in the blanks to complete
 the following ssh command.
 Which syntax would allow us to download the webpage of PC1 using the Local tunnel created in
 Question 7? (Max 2 Attempts)
 A. wget -r http://100.1.1.1:1111
 B. wget -r http://100.1.1.1
-C. wget -r http://localhost:1111
+C. wget -r http://localhost:1111 (C)
 D. wget -r http://localhost -p 1111
 -A (we are telling the to listen on port 111)
-
 
 10. Using the Tunnels Prep Diagram provided in the start to this task, please fill in the blanks to
 complete the following ssh command.
@@ -444,6 +484,7 @@ B. proxychains wget -r http://100.1.1.2
 C. proxychains curl http://100.1.1.2
 D. wget -r http://localhost:1111
 B (here we know http is running on 80)
+
 
 11. Using the Tunnels Prep Diagram provided in the start to this task, please fill in the blanks to
 complete the following ssh command.
@@ -456,24 +497,145 @@ C. ssh -L 1111:100.1.1.2:22 cctc@10.50.1.150 -p 1111 -NT
 D. ssh cctc@10.50.1.150 -L 1111:100.1.1.2:22 -NT
 -D
 
-12. A
 
-13. A
+# For a Dynamic tunnel:
 
-14. A
+ssh -D [local_port] [user]@[host]
 
-15. C
+# Local Forwarding
+ssh -L [local_port]:[destination_host]:[destination_port] [user]@[SSH_server]
 
-16. A
+# Remote Forwarding
+ssh -R [remote_port]:[destination_host]:[destination_port] [user]@[SSH_server]
 
-17. D
 
-18. B 
+# For a Dynamic tunnel to A:
+ssh -D 9050 student_A@10.50.30.99 # -> This should be killed scan
+proxychains ./scan.sh
 
-19. C
+# For a Local tunnel to A to tgt B:
+ssh student_A@10.50.30.99 -L 1234:192.168.1.39:22
 
-20. A 
+# For a Dynamic tunnel to B:
+ssh student_B@127.0.0.1 -p 1234 -D 9050
+proxychains ./scan.sh
 
+
+12. Tunnel Prep – 2nd Local thru 1st Local SSH 5
+Using the Tunnels Prep Diagram provided in the start to this task, please fill in the blanks to complete the following ssh command.
+
+Which ssh syntax would properly setup a 2nd Local tunnel to PC2 SSH port using the tunnel made in Question 6 as your first tunnel? (Max 2 Attempts)
+
+A. ssh -L 2222:100.1.1.2:22 cctc@localhost -p 1111 -NT (Ans)
+B. ssh -L 2222:100.1.1.2:22 cctc@10.50.1.150 -p 1111 -NT
+C. ssh cctc@100.1.1.1 -p 1111 -L 2222:100.1.1.2:22 -NT
+D. ssh cctc@localhost -p 1111 -L 2222:192.168.2.1:22 -NT
+
+
+13. Tunnel Prep – 2nd Local thru 1st Local HTTP
+5
+Using the Tunnels Prep Diagram provided in the start to this task, please fill in the blanks to complete the following ssh command.
+
+Which ssh syntax would properly setup a 2nd Local tunnel to PC2 HTTP port using the tunnel made in Question 6 as your first tunnel? (Max 2 Attempts)
+
+A. ssh -L 2222:192.168.2.1:80 cctc@localhost -p 1111 -NT (Ans)
+B. ssh cctc@localhost -p 1111 -L 2222:100.1.1.2:80 -NT
+C. ssh cctc@10.50.1.150 -p 1111 -L 2222:100.1.1.2:80 -NT
+D. ssh -L 2222:100.1.1.2:80 cctc@100.1.1.1 -p 1111 -NT
+
+ssh -L 2222:100.1.1.2:22 cctc@localhost -p 1111 -NT (Ans)
+
+ssh -L 1111:localhost:22 cctc@10.50.1.150 -NT
+
+pc_2 -> 192.168.2.1
+
+
+14. Tunnel Prep – Dynamic thru 2nd Local 5
+
+Using the Tunnels Prep Diagram provided in the start to this task, please fill in the blanks to complete the following ssh command.
+
+Which ssh syntax would allow us to establish a Dynamic tunnel using the Local tunnel created in Question 12? (Max 2 Attempts)
+
+A. ssh -D 9050 cctc@localhost -p 2222 -NT (A)
+B. ssh cctc@100.1.1.1 -p 2222 -D 9050 -NT
+C. ssh -p 2222 cctc@10.50.1.150 -D 9050 -NT
+D. ssh -D 9050 cctc@localhost -p 1111 -NT
+
+15. Tunnel Prep – What’s Wrong 1
+5
+Using the Tunnels Prep Diagram provided in the start to this task, please fill in the blanks to complete the following ssh command.
+
+An Admin created the following tunnels but found that the Dynamic tunnel would not connect. Where did the Admin make the error? (Max 2 Attempts)
+
+1.ssh cctc@10.50.1.150 -L 1234:100.1.1.2:22 -NT
+2.ssh -D 9050 cctc@100.1.1.2 -p 1234 -NT
+
+A. targeted wrong IP in line 1
+B. authenticated to wrong IP in line 1
+C. authenticated to wrong IP in line 2 (C)
+D. called wrong port in line 2
+
+
+16. Tunnel Prep – What’s Wrong 2
+5
+Using the Tunnels Prep Diagram provided in the start to this task, please fill in the blanks to complete the following ssh command.
+
+An Admin created the following tunnels but found that the Dynamic tunnel would not connect. Where did the Admin make the error? (Max 2 Attempts)
+
+1.ssh cctc@10.50.1.150 -L 1234:192.168.2.1:22 -NT
+2.ssh -L 4321:192.168.2.2:22 cctc@localhost -p 1234 -NT
+3.ssh cctc@localhost -p 4321 -D 9050 -NT
+
+A. targeted wrong IP in line 1 (A)
+B. targeted wrong IP in line 2
+C. called wrong port in line 2
+D. called wrong port in line 3
+
+
+17. Tunnel Prep – Local to 3rd Pivot TELNET
+5
+Using the Tunnels Prep Diagram provided in the start to this task, please fill in the blanks to complete the following ssh command.
+
+Which ssh syntax would properly setup a 3rd Local tunnel to PC3 TELNET port using the tunnels made in Question 6 and Question 12? (Max 2 Attempts)
+
+A. ssh -L 3333:192.168.2.2:23 -p 2222 cctc@100.1.1.1 -NT
+B. ssh -p 2222 cctc@localhost -L 3333:192.168.2.1:23 -NT
+C. ssh -L 3333:192.168.2.2:23 cctc@localhost -NT
+D. ssh -p 2222 cctc@localhost -L 3333:192.168.2.2:23 -NT (Ans)
+
+18. Tunnel Prep – Telnet to 3rd Pivot
+5
+Using the Tunnels Prep Diagram provided in the start to this task, please fill in the blanks to complete the following ssh command.
+
+Which syntax would allow us to telnet to PC3 using the tunnel make in Question 17? (Max 2 Attempts)
+
+A. telnet localhost:3333
+B. telnet localhost 3333 (B)
+C. telnet 192.168.2.2 3333
+D. telnet localhost -p 3333
+
+19. Tunnel Prep – Remote
+5
+Using the Tunnels Prep Diagram provided in the start to this task, please fill in the blanks to complete the following ssh command.
+
+Which syntax would properly setup a Remote tunnel from PC3 back to PC2 using PC3 SSH port as the target? (Max 2 Attempts)
+
+A. ssh cctc@localhost -p 3333 -R 4444:localhost:22 -NT
+B. ssh cctc@192.168.2.1 -R 4444:localhost:23 -NT
+C. ssh -R 4444:localhost:22 cctc@192.168.2.1 -NT (C)
+D. ssh -R 4444:192.168.2.2:22 cctc@localhost -NT
+
+
+20. Tunnel Prep – Local to Remote
+5
+Using the Tunnels Prep Diagram provided in the start to this task, please fill in the blanks to complete the following ssh command.
+
+Which syntax would properly setup a Local tunnel to map to the tunnel made in Question 19 using the tunnel made in Question 6 and Question 12? (Max 2 Attempts)
+
+A. ssh cctc@localhost -p 2222 -L 5555:localhost:4444 -NT (Ans)
+B. ssh cctc@localhost -p 2222 -L 5555:100.1.1.1:4444 -NT
+C. ssh -L 5555:localhost:4444 -p 2222 cctc@100.1.1.1 -NT
+D. ssh -L 5555:192.168.2.2:22 -p 4444 cctc@100.1.1.1 -NT
 
 Task 3 
 

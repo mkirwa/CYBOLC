@@ -1053,3 +1053,6 @@ ssh -L 1234:10.50.30.99:22 student@10.50.30.99
 # Remote Forwarding
 ssh -R [remote_port]:[destination_host]:[destination_port] [user]@[SSH_server]
 
+Entry Float IP: 10.50.44.68
+
+./
