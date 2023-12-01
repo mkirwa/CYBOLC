@@ -379,3 +379,101 @@ Answ - >
 nc -lvp 3333 > 4steg.jpg
 nc 172.16.82.115 9876 < mypipe | nc 10.10.0.40 3333 > mypipe
 
+
+What is the word "localhost" associated with? (Max 2 Attempts)
+A. Loopback address
+B. 127.0.0.1
+C. Both A and B.
+D. None of the above.
+Both A & B
+2. Using the following syntax:
+OPS$ ssh cctc@10.50.1.150 -p 1111
+What is 1111? (Max 2 Attempts)
+A. nothing. Incorrect syntax
+B. alternate ssh port on 10.50.1.150
+C. local listening port on OPS
+D. port mapped to localhost on 10.50.1.150
+- C
+4. Using the Tunnels Prep Diagram provided in the start to this task, please fill in the blanks to complete
+the following ssh command.
+Which IP would we use to SSH to PC1 from OPS?
+ssh cctc@__________
+10.50.1.150
+5. Using the Tunnels Prep Diagram provided in the start to this task, please fill in the blanks to
+complete the following ssh command.
+Which ssh syntax would properly setup a Dynamic tunnel to PC1? (Max 2 Attempts)
+A. ssh -D 9050 cctc@localhost -NT
+B. ssh cctc@100.1.1.1 -D 9050 -NT
+C. ssh cctc@10.50.1.150 -D 9050 -NT
+D. ssh -L 9050cctc@10.50.1.150 -NT
+-C
+6. Using the Tunnels Prep Diagram provided in the start to this task, please fill in the blanks to
+complete the following ssh command.
+Which ssh syntax would properly setup a Local tunnel to PC1 SSH port? (Max 2 Attempts)
+A. ssh -L 1111:localhost:22 cctc@10.50.1.150 -NT
+B. ssh cctc@10.50.1.150 -L 1111:10.50.1.150:22 -NT
+C. ssh cctc@100.1.1.1 -L 1111:localhost:22 -NT
+D. ssh -R 1111:localhost:22 cctc@10.50.1.150 -NT
+-C
+7. Using the Tunnels Prep Diagram provided in the start to this task, please fill in the blanks to
+complete the following ssh command. Which ssh syntax would properly setup a Local tunnel to PC1
+HTTP port? (Max 2 Attempts)
+A. ssh cctc@100.1.1.1 -L 1111:10.50.1.150:80-NT
+B. ssh cctc@10.50.1.150 -L 1111:localhost:80-NT
+C. ssh cctc@100.1.1.1 -L 1111:localhost:80-NT
+D. ssh -L 1111:100.1.1.1:80 cctc@localhost-NT
+-B
+8. d
+9.Using the Tunnels Prep Diagram provided in the start to this task, please fill in the blanks to complete
+the following ssh command.
+Which syntax would allow us to download the webpage of PC1 using the Local tunnel created in
+Question 7? (Max 2 Attempts)
+A. wget -r http://100.1.1.1:1111
+B. wget -r http://100.1.1.1
+C. wget -r http://localhost:1111
+D. wget -r http://localhost -p 1111
+-A (we are telling the to listen on port 111)
+
+
+10. Using the Tunnels Prep Diagram provided in the start to this task, please fill in the blanks to
+complete the following ssh command.
+Which syntax would allow us to download the webpage of PC2 using the Dynamic tunnel created in
+Question 8? (Max 2 Attempts)
+A. proxychains wget -r http://100.1.1.2:1111
+B. proxychains wget -r http://100.1.1.2
+C. proxychains curl http://100.1.1.2
+D. wget -r http://localhost:1111
+B (here we know http is running on 80)
+
+11. Using the Tunnels Prep Diagram provided in the start to this task, please fill in the blanks to
+complete the following ssh command.
+Which ssh syntax would properly setup a Local tunnel to PC2 SSH port using PC1 as your pivot?
+(Max 2 Attempts)
+
+A. ssh cctc@10.50.1.150 -L 1111:192.168.2.1:22 -NT
+B. ssh -L 1111:100.1.1.2:22 cctc@100.1.1.1 -NT
+C. ssh -L 1111:100.1.1.2:22 cctc@10.50.1.150 -p 1111 -NT
+D. ssh cctc@10.50.1.150 -L 1111:100.1.1.2:22 -NT
+-D
+
+12. A
+
+13. A
+
+14. A
+
+15. C
+
+16. A
+
+17. D
+
+18. B 
+
+19. C
+
+20. A 
+
+
+Task 3 
+
