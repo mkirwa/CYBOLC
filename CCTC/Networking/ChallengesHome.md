@@ -103,7 +103,16 @@ set interfaces ethernet eth2 description 'DMZ'
 
 nmap –sn 172.16.120.6/30
 
-for i in {1..254}; do nc -nvzw1  172.16.120.$i 20-23 80 2>&1 & done | grep -E 'succ|open'
+
+net4_student25@red-internet-host:~$ for i in {1..29}; do nc -nvzw1  172.16.120.$i 20-23 80 2>&1 & done | grep -E 'succ|open'
+(UNKNOWN) [172.16.120.2] 22 (ssh) open
+(UNKNOWN) [172.16.120.1] 22 (ssh) open
+(UNKNOWN) [172.16.120.6] 22 (ssh) open
+(UNKNOWN) [172.16.120.5] 22 (ssh) open
+(UNKNOWN) [172.16.120.9] 22 (ssh) open
+(UNKNOWN) [172.16.120.10] 22 (ssh) open
+
+
 
 
 8. Donovian Inner Boundary: What is the hostname of the device directly connected to teh system discovered in Donovian Man in the Middle, on eth1?
@@ -130,9 +139,24 @@ run ./scan.sh and enter: -172.16.182, 97,125, 21-23 80 (remember to use subnet c
 
 -> image avail 
 
+
+
+net4_student25@red-internet-host:~$ for i in {97..127}; do nc -nvzw1  172.16.182.$i 20-23 80 2>&1 & done | grep -E 'succ|open'
+
+172.16.182.126/27  
+
+
+RUN THIS ---
+for i in {97..127}; do nc -nvzw1  172.16.182.$i 20-23 80 2>&1 & done | grep -E 'succ|open'
+
+
+
+
 10. What well-known port(s) are open on the system? (Separate ports with a comma and no space)
 
 netstat -antp 
+
+22,80
 
 -> image avail 
 
@@ -244,7 +268,15 @@ red-pop2
 
 -> image avail 
 
+
+for i in {1..5}; do nc -nvzw1  172.16.140.$i 20-23 80 2>&1 & done | grep -E 'succ|open'
+
+
 27. Well known ports on T3
+
+for i in {65...95}; do nc -nvzw1  172.16.140.$i 20-23 80 2>&1 & done | grep -E 'succ|open'
+
+172.16.140.62/27
 
 28. 22,80
 
@@ -305,4 +337,45 @@ nc -u 172.16.140.33 2200 # Enter this command
 nc -u 172.16.140.33 2250 # Enter this command
 
 -> image avail 
+
+
+
+
+
+Relay 3
+10
+Utilize the targets T2 and RELAY to develop the following netcat relays for use by Gorgan Cyber Forces. The use of names pipes should be utilized on RELAY:
+
+Syntax for steghide tool:
+steghide extract -sf [image name]
+Passphrase: password
+
+The Donovian Insider provided a image called 3steg.jpg on T2 listening for a connection from RELAY on TCP port 6789. Establish a Netcat relay on RELAY to make this connection and forward to T1. Once the images are downloaded you will use a command-line tool called steghide to extract the message. Perform an MD5SUM on this message to create flag3.
+
+File should be 177444 bytes in size.
+
+
+
+
+
+
+Ans -> 
+nc -lvp 3333 > 3steg.jpg
+nc 172.16.82.115 6789 < mypipe | nc 10.10.0.40 3333 > mypipe
+
+Relay 4
+10
+Utilize the targets T2 and RELAY to develop the following netcat relays for use by Gorgan Cyber Forces. The use of names pipes should be utilized on RELAY:
+
+Syntax for steghide tool:
+steghide extract -sf [image name]
+Passphrase: password
+
+The Donovian Insider provided a image called 4steg.jpg on T2 listening for a connection from RELAY on TCP port 9876. Establish a Netcat relay on RELAY to make this connection and forward to T1. Once the images are downloaded you will use a command-line tool called steghide to extract the message. Perform an MD5SUM on this message to create flag4.
+
+File should be 204283 bytes in size.
+
+Answ - > 
+nc -lvp 3333 > 4steg.jpg
+nc 172.16.82.115 9876 < mypipe | nc 10.10.0.40 3333 > mypipe
 

