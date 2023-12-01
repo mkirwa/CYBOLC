@@ -920,7 +920,7 @@ ssh -p <optional alt port> <user>@<pivot ip> -L <local bind port>:<tgt ip>:<tgt 
 or
 ssh -L <local bind port>:<tgt ip>:<tgt port> -p <alt port> <user>@<pivot ip> -NT
 
-ssh vyos@172.16.20.1 -L 127.0.0.1:2223:172.16.1.15:22
+ssh vyos@172.16.20.1 -L 127.0.0.1:2223:172.16.1.15:22:172.16.20.21:22
 
 Connected to 20.1 but not touched .15.22 yet..this happens when 
 
@@ -985,4 +985,71 @@ proxychains nmap -Pn -sT 172.16.1.30/27 -p 21-23 80 # proxychain command that al
 
 
 ssh vyos@172.16 #Tunnel through a tunnel 
+
+Tunneling Practice 1
+×
+Tunnels Practice 1
+
+Using Best Tunneling practices:
+
+Build a Dynamic (-D) Tunnel to each system so that you can run your tools using proxychains to enumerate and interact with internal services.
+Use Local (-L) and Remote (-R) tunnels where appropriate to delve deeper into the network.
+Write out your commands on a piece of paper or a text editor and be ready to go over this as a class.
+
+### EXERCISES ###
+
+Build a Dynamic (-D) Tunnel to each system so that you can run your tools using proxychains to enumerate and interact with internal services.
+Use Local (-L) and Remote (-R) tunnels where appropriate to delve deeper into the networK
+
+ssh student@10.50.30.99 -L 127.0.0.1:2222:10.50.21.41:22
+
+ssh student@192.168.1.39 -L 127.0.0.1:2222:10.50.21.99:22
+
+
+
+ssh student@192.168.1.39 -L 50511:10.3.8.27:80 -NT 
+
+# For a Dynamic tunnel:
+
+ssh -D [local_port] [user]@[host]
+
+# Local Forwarding
+ssh -L [local_port]:[destination_host]:[destination_port] [user]@[SSH_server]
+
+# Remote Forwarding
+ssh -R [remote_port]:[destination_host]:[destination_port] [user]@[SSH_server]
+
+
+# For a Dynamic tunnel to A:
+ssh -D 9050 student_A@10.50.30.99 # -> This should be killed scan
+proxychains ./scan.sh
+
+# For a Local tunnel to A to tgt B:
+ssh student_A@10.50.30.99 -L 1234:192.168.1.39:22
+
+# For a Dynamic tunnel to B:
+ssh student_B@127.0.0.1 -p 1234 -D 9050
+proxychains ./scan.sh
+
+# For a local channel From B to C 
+ssh student_B@127.0.0.1 -p 1234 -L 5678:10.0.0.50:22
+
+# For a Dynamic tunnel to C:
+ssh student_C@127.0.0.1 -p 5678 -D 9050
+proxychains ./scan.sh #close -D after 
+
+
+# For a local channel From C to D
+ssh student_C@127.0.0.1 -p 5678 -L 9090:172.16.1.8:22
+
+# For a Dynamic tunnel to D:
+ssh student_D@127.0.0.1 -p 9090 -D 9050 # -D is optional at this state
+
+# Local Forwarding
+ssh -L [local_port]:[destination_host]:[destination_port] [user]@[SSH_server]
+ssh -L 1234:10.50.30.99:22 student@10.50.30.99
+
+
+# Remote Forwarding
+ssh -R [remote_port]:[destination_host]:[destination_port] [user]@[SSH_server]
 

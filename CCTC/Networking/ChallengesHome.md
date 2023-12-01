@@ -477,3 +477,43 @@ D. ssh cctc@10.50.1.150 -L 1111:100.1.1.2:22 -NT
 
 Task 3 
 
+T3 is the authorized initial pivot
+Conduct passive recon on the Target T3, it appears to have access to the 10.3.0.0/24 subnet.
+Create a Local Port Forward from your Internet_Host to T3 targeting:
+ip: 10.3.0.27
+port: `HTTP``
+Initial ssh request was denied
+To create a tunnel, need to use the float IP as ssh to T3 is denied so,
+Ssh
+Need to create a local port to T3
+
+ssh net25_student25@10.50.33.143 -L 50511:10.3.8.27:80 -N
+
+After tunneling we can do the banner grab or listen to the port we created
+
+nc localhost 50511
+
+here we are using netcat to listen to the port and GET to grab the http
+
+Flag: We are not interested int he possibilities of defeat 
+
+T3 is the authorized initial pivot
+Conduct passive recon on the Target T3, it appears to have access to the 10.3.0.0/24
+subnet.
+Create a Dynamic Port Forward from Internet_Host to T3 then use proxychains to pull the
+flag.
+Target ip: 10.3.0.1
+Identify the flag on Cortina's FTP Server
+- **** when creating a port if you get error stating port already created delete the port using the command
+below
+Kill –9 pid
+
+ss -antlp
+
+-> img
+
+step 1 -> Create dynamic tunneling using t3 float ip 
+
+ssh net25_student25@10.50.33.143 -D 9050 -NT
+
+
