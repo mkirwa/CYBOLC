@@ -48,7 +48,7 @@ Ssh vyos@172.16.120.1 # Enter the provided password
 
 3. How many host(s) did you discover on the DMZ Net? (excluding the router)
 
-Nmap –sn 172.16.101.30/27 --- gives how many hosts are up
+nmap –sn 172.16.101.30/27 --- gives how many hosts are up
 
 
 results: 
@@ -72,7 +72,48 @@ There is tcp port 22 open
 
 Port 22
 
+
+7. Donovian Man in the Middle 5
+    Level I Challenge
+
+What is it’s hostname of the device directly connected to the Donovian boundary on eth1?
+
+example:
+student@HOSTNAME-student-1-7cgpe
+
+Copy only the name where HOSTNAME is at
+
+
+show configuration commands
+
+
+
 7. Hostname Ssh@172.16.101.2 --- red-dmz-host-1
+
+
+
+vyos@172:~$ show configuration commands
+set interfaces ethernet eth0 address '172.16.120.1/30'
+set interfaces ethernet eth0 description 'INTERNET'
+set interfaces ethernet eth1 address '172.16.120.6/30'
+set interfaces ethernet eth1 description 'REDNET'
+set interfaces ethernet eth1 ip ospf authentication md5 key-id 120 md5-key 'red'
+set interfaces ethernet eth2 address '172.16.101.30/27'
+set interfaces ethernet eth2 description 'DMZ'
+
+nmap –sn 172.16.120.6/30
+
+
+net4_student25@red-internet-host:~$ for i in {1..29}; do nc -nvzw1  172.16.120.$i 20-23 80 2>&1 & done | grep -E 'succ|open'
+(UNKNOWN) [172.16.120.2] 22 (ssh) open
+(UNKNOWN) [172.16.120.1] 22 (ssh) open
+(UNKNOWN) [172.16.120.6] 22 (ssh) open
+(UNKNOWN) [172.16.120.5] 22 (ssh) open
+(UNKNOWN) [172.16.120.9] 22 (ssh) open
+(UNKNOWN) [172.16.120.10] 22 (ssh) open
+
+
+
 
 8. Donovian Inner Boundary: What is the hostname of the device directly connected to teh system discovered in Donovian Man in the Middle, on eth1?
 
@@ -98,9 +139,24 @@ run ./scan.sh and enter: -172.16.182, 97,125, 21-23 80 (remember to use subnet c
 
 -> image avail 
 
+
+
+net4_student25@red-internet-host:~$ for i in {97..127}; do nc -nvzw1  172.16.182.$i 20-23 80 2>&1 & done | grep -E 'succ|open'
+
+172.16.182.126/27  
+
+
+RUN THIS ---
+for i in {97..127}; do nc -nvzw1  172.16.182.$i 20-23 80 2>&1 & done | grep -E 'succ|open'
+
+
+
+
 10. What well-known port(s) are open on the system? (Separate ports with a comma and no space)
 
 netstat -antp 
+
+22,80
 
 -> image avail 
 
@@ -212,7 +268,15 @@ red-pop2
 
 -> image avail 
 
+
+for i in {1..5}; do nc -nvzw1  172.16.140.$i 20-23 80 2>&1 & done | grep -E 'succ|open'
+
+
 27. Well known ports on T3
+
+for i in {65...95}; do nc -nvzw1  172.16.140.$i 20-23 80 2>&1 & done | grep -E 'succ|open'
+
+172.16.140.62/27
 
 28. 22,80
 
@@ -273,4 +337,345 @@ nc -u 172.16.140.33 2200 # Enter this command
 nc -u 172.16.140.33 2250 # Enter this command
 
 -> image avail 
+
+
+
+
+
+Relay 3
+10
+Utilize the targets T2 and RELAY to develop the following netcat relays for use by Gorgan Cyber Forces. The use of names pipes should be utilized on RELAY:
+
+Syntax for steghide tool:
+steghide extract -sf [image name]
+Passphrase: password
+
+The Donovian Insider provided a image called 3steg.jpg on T2 listening for a connection from RELAY on TCP port 6789. Establish a Netcat relay on RELAY to make this connection and forward to T1. Once the images are downloaded you will use a command-line tool called steghide to extract the message. Perform an MD5SUM on this message to create flag3.
+
+File should be 177444 bytes in size.
+
+
+
+
+
+
+Ans -> 
+nc -lvp 3333 > 3steg.jpg
+nc 172.16.82.115 6789 < mypipe | nc 10.10.0.40 3333 > mypipe
+
+Relay 4
+10
+Utilize the targets T2 and RELAY to develop the following netcat relays for use by Gorgan Cyber Forces. The use of names pipes should be utilized on RELAY:
+
+Syntax for steghide tool:
+steghide extract -sf [image name]
+Passphrase: password
+
+The Donovian Insider provided a image called 4steg.jpg on T2 listening for a connection from RELAY on TCP port 9876. Establish a Netcat relay on RELAY to make this connection and forward to T1. Once the images are downloaded you will use a command-line tool called steghide to extract the message. Perform an MD5SUM on this message to create flag4.
+
+File should be 204283 bytes in size.
+
+Answ - > 
+nc -lvp 3333 > 4steg.jpg
+nc 172.16.82.115 9876 < mypipe | nc 10.10.0.40 3333 > mypipe
+
+
+What is the word "localhost" associated with? (Max 2 Attempts)
+A. Loopback address
+B. 127.0.0.1
+C. Both A and B.
+D. None of the above.
+Both A & B
+2. Using the following syntax:
+OPS$ ssh cctc@10.50.1.150 -p 1111
+What is 1111? (Max 2 Attempts)
+A. nothing. Incorrect syntax
+B. alternate ssh port on 10.50.1.150
+C. local listening port on OPS
+D. port mapped to localhost on 10.50.1.150
+- B
+
+
+2. Tunnel Prep – Alternate port 1
+5
+Using the following syntax:
+
+OPS$ ssh cctc@10.50.1.150 -p 1111
+
+What is 1111? (Max 2 Attempts)
+
+A. nothing. Incorrect syntax
+B. alternate ssh port on 10.50.1.150 (Answ)
+C. local listening port on OPS
+D. port mapped to localhost on 10.50.1.150
+
+3. Tunnel Prep – Alternate port 2
+5
+Using the following syntax:
+
+OPS$ ssh cctc@localhost -p 1111
+
+What is 1111? (Max 2 Attempts)
+
+A. nothing. Incorrect syntax
+B. alternate ssh port on 10.50.1.150 
+C. local listening port on OPS (Ans)
+D. port mapped to localhost on 10.50.1.150
+
+4. Using the Tunnels Prep Diagram provided in the start to this task, please fill in the blanks to complete
+the following ssh command.
+Which IP would we use to SSH to PC1 from OPS?
+ssh cctc@__________
+10.50.1.150
+5. Using the Tunnels Prep Diagram provided in the start to this task, please fill in the blanks to
+complete the following ssh command.
+Which ssh syntax would properly setup a Dynamic tunnel to PC1? (Max 2 Attempts)
+A. ssh -D 9050 cctc@localhost -NT
+B. ssh cctc@100.1.1.1 -D 9050 -NT
+C. ssh cctc@10.50.1.150 -D 9050 -NT
+D. ssh -L 9050cctc@10.50.1.150 -NT
+-C
+6. Using the Tunnels Prep Diagram provided in the start to this task, please fill in the blanks to
+complete the following ssh command.
+Which ssh syntax would properly setup a Local tunnel to PC1 SSH port? (Max 2 Attempts)
+A. ssh -L 1111:localhost:22 cctc@10.50.1.150 -NT
+B. ssh cctc@10.50.1.150 -L 1111:10.50.1.150:22 -NT
+C. ssh cctc@100.1.1.1 -L 1111:localhost:22 -NT
+D. ssh -R 1111:localhost:22 cctc@10.50.1.150 -NT
+-A
+
+7. Using the Tunnels Prep Diagram provided in the start to this task, please fill in the blanks to
+complete the following ssh command. Which ssh syntax would properly setup a Local tunnel to PC1
+HTTP port? (Max 2 Attempts)
+A. ssh cctc@100.1.1.1 -L 1111:10.50.1.150:80-NT
+B. ssh cctc@10.50.1.150 -L 1111:localhost:80-NT
+C. ssh cctc@100.1.1.1 -L 1111:localhost:80-NT
+D. ssh -L 1111:100.1.1.1:80 cctc@localhost-NT
+-B
+
+8. Tunnel Prep – Dynamic thru 1st Local
+5
+Using the Tunnels Prep Diagram provided in the start to this task, please fill in the blanks to complete the following ssh command.
+
+Which ssh syntax would allow us to establish a Dynamic tunnel using the Local tunnel created in Question 6? (Max 2 Attempts)
+
+A. ssh -D 9050 cctc@localhost -NT
+B. ssh cctc@100.1.1.1 -p 1111 -D 9050 -NT
+C. ssh -p 1111 cctc@10.50.1.150 -D 9050 -NT
+D. ssh -D 9050 cctc@localhost -p 1111 -NT (Answ)
+
+
+9. Using the Tunnels Prep Diagram provided in the start to this task, please fill in the blanks to complete
+the following ssh command.
+Which syntax would allow us to download the webpage of PC1 using the Local tunnel created in
+Question 7? (Max 2 Attempts)
+A. wget -r http://100.1.1.1:1111
+B. wget -r http://100.1.1.1
+C. wget -r http://localhost:1111 (C)
+D. wget -r http://localhost -p 1111
+-A (we are telling the to listen on port 111)
+
+10. Using the Tunnels Prep Diagram provided in the start to this task, please fill in the blanks to
+complete the following ssh command.
+Which syntax would allow us to download the webpage of PC2 using the Dynamic tunnel created in
+Question 8? (Max 2 Attempts)
+A. proxychains wget -r http://100.1.1.2:1111
+B. proxychains wget -r http://100.1.1.2
+C. proxychains curl http://100.1.1.2
+D. wget -r http://localhost:1111
+B (here we know http is running on 80)
+
+
+11. Using the Tunnels Prep Diagram provided in the start to this task, please fill in the blanks to
+complete the following ssh command.
+Which ssh syntax would properly setup a Local tunnel to PC2 SSH port using PC1 as your pivot?
+(Max 2 Attempts)
+
+A. ssh cctc@10.50.1.150 -L 1111:192.168.2.1:22 -NT
+B. ssh -L 1111:100.1.1.2:22 cctc@100.1.1.1 -NT
+C. ssh -L 1111:100.1.1.2:22 cctc@10.50.1.150 -p 1111 -NT
+D. ssh cctc@10.50.1.150 -L 1111:100.1.1.2:22 -NT
+-D
+
+
+# For a Dynamic tunnel:
+
+ssh -D [local_port] [user]@[host]
+
+# Local Forwarding
+ssh -L [local_port]:[destination_host]:[destination_port] [user]@[SSH_server]
+
+# Remote Forwarding
+ssh -R [remote_port]:[destination_host]:[destination_port] [user]@[SSH_server]
+
+
+# For a Dynamic tunnel to A:
+ssh -D 9050 student_A@10.50.30.99 # -> This should be killed scan
+proxychains ./scan.sh
+
+# For a Local tunnel to A to tgt B:
+ssh student_A@10.50.30.99 -L 1234:192.168.1.39:22
+
+# For a Dynamic tunnel to B:
+ssh student_B@127.0.0.1 -p 1234 -D 9050
+proxychains ./scan.sh
+
+
+12. Tunnel Prep – 2nd Local thru 1st Local SSH 5
+Using the Tunnels Prep Diagram provided in the start to this task, please fill in the blanks to complete the following ssh command.
+
+Which ssh syntax would properly setup a 2nd Local tunnel to PC2 SSH port using the tunnel made in Question 6 as your first tunnel? (Max 2 Attempts)
+
+A. ssh -L 2222:100.1.1.2:22 cctc@localhost -p 1111 -NT (Ans)
+B. ssh -L 2222:100.1.1.2:22 cctc@10.50.1.150 -p 1111 -NT
+C. ssh cctc@100.1.1.1 -p 1111 -L 2222:100.1.1.2:22 -NT
+D. ssh cctc@localhost -p 1111 -L 2222:192.168.2.1:22 -NT
+
+
+13. Tunnel Prep – 2nd Local thru 1st Local HTTP
+5
+Using the Tunnels Prep Diagram provided in the start to this task, please fill in the blanks to complete the following ssh command.
+
+Which ssh syntax would properly setup a 2nd Local tunnel to PC2 HTTP port using the tunnel made in Question 6 as your first tunnel? (Max 2 Attempts)
+
+A. ssh -L 2222:192.168.2.1:80 cctc@localhost -p 1111 -NT (Ans)
+B. ssh cctc@localhost -p 1111 -L 2222:100.1.1.2:80 -NT
+C. ssh cctc@10.50.1.150 -p 1111 -L 2222:100.1.1.2:80 -NT
+D. ssh -L 2222:100.1.1.2:80 cctc@100.1.1.1 -p 1111 -NT
+
+ssh -L 2222:100.1.1.2:22 cctc@localhost -p 1111 -NT (Ans)
+
+ssh -L 1111:localhost:22 cctc@10.50.1.150 -NT
+
+pc_2 -> 192.168.2.1
+
+
+14. Tunnel Prep – Dynamic thru 2nd Local 5
+
+Using the Tunnels Prep Diagram provided in the start to this task, please fill in the blanks to complete the following ssh command.
+
+Which ssh syntax would allow us to establish a Dynamic tunnel using the Local tunnel created in Question 12? (Max 2 Attempts)
+
+A. ssh -D 9050 cctc@localhost -p 2222 -NT (A)
+B. ssh cctc@100.1.1.1 -p 2222 -D 9050 -NT
+C. ssh -p 2222 cctc@10.50.1.150 -D 9050 -NT
+D. ssh -D 9050 cctc@localhost -p 1111 -NT
+
+15. Tunnel Prep – What’s Wrong 1
+5
+Using the Tunnels Prep Diagram provided in the start to this task, please fill in the blanks to complete the following ssh command.
+
+An Admin created the following tunnels but found that the Dynamic tunnel would not connect. Where did the Admin make the error? (Max 2 Attempts)
+
+1.ssh cctc@10.50.1.150 -L 1234:100.1.1.2:22 -NT
+2.ssh -D 9050 cctc@100.1.1.2 -p 1234 -NT
+
+A. targeted wrong IP in line 1
+B. authenticated to wrong IP in line 1
+C. authenticated to wrong IP in line 2 (C)
+D. called wrong port in line 2
+
+
+16. Tunnel Prep – What’s Wrong 2
+5
+Using the Tunnels Prep Diagram provided in the start to this task, please fill in the blanks to complete the following ssh command.
+
+An Admin created the following tunnels but found that the Dynamic tunnel would not connect. Where did the Admin make the error? (Max 2 Attempts)
+
+1.ssh cctc@10.50.1.150 -L 1234:192.168.2.1:22 -NT
+2.ssh -L 4321:192.168.2.2:22 cctc@localhost -p 1234 -NT
+3.ssh cctc@localhost -p 4321 -D 9050 -NT
+
+A. targeted wrong IP in line 1 (A)
+B. targeted wrong IP in line 2
+C. called wrong port in line 2
+D. called wrong port in line 3
+
+
+17. Tunnel Prep – Local to 3rd Pivot TELNET
+5
+Using the Tunnels Prep Diagram provided in the start to this task, please fill in the blanks to complete the following ssh command.
+
+Which ssh syntax would properly setup a 3rd Local tunnel to PC3 TELNET port using the tunnels made in Question 6 and Question 12? (Max 2 Attempts)
+
+A. ssh -L 3333:192.168.2.2:23 -p 2222 cctc@100.1.1.1 -NT
+B. ssh -p 2222 cctc@localhost -L 3333:192.168.2.1:23 -NT
+C. ssh -L 3333:192.168.2.2:23 cctc@localhost -NT
+D. ssh -p 2222 cctc@localhost -L 3333:192.168.2.2:23 -NT (Ans)
+
+18. Tunnel Prep – Telnet to 3rd Pivot
+5
+Using the Tunnels Prep Diagram provided in the start to this task, please fill in the blanks to complete the following ssh command.
+
+Which syntax would allow us to telnet to PC3 using the tunnel make in Question 17? (Max 2 Attempts)
+
+A. telnet localhost:3333
+B. telnet localhost 3333 (B)
+C. telnet 192.168.2.2 3333
+D. telnet localhost -p 3333
+
+19. Tunnel Prep – Remote
+5
+Using the Tunnels Prep Diagram provided in the start to this task, please fill in the blanks to complete the following ssh command.
+
+Which syntax would properly setup a Remote tunnel from PC3 back to PC2 using PC3 SSH port as the target? (Max 2 Attempts)
+
+A. ssh cctc@localhost -p 3333 -R 4444:localhost:22 -NT
+B. ssh cctc@192.168.2.1 -R 4444:localhost:23 -NT
+C. ssh -R 4444:localhost:22 cctc@192.168.2.1 -NT (C)
+D. ssh -R 4444:192.168.2.2:22 cctc@localhost -NT
+
+
+20. Tunnel Prep – Local to Remote
+5
+Using the Tunnels Prep Diagram provided in the start to this task, please fill in the blanks to complete the following ssh command.
+
+Which syntax would properly setup a Local tunnel to map to the tunnel made in Question 19 using the tunnel made in Question 6 and Question 12? (Max 2 Attempts)
+
+A. ssh cctc@localhost -p 2222 -L 5555:localhost:4444 -NT (Ans)
+B. ssh cctc@localhost -p 2222 -L 5555:100.1.1.1:4444 -NT
+C. ssh -L 5555:localhost:4444 -p 2222 cctc@100.1.1.1 -NT
+D. ssh -L 5555:192.168.2.2:22 -p 4444 cctc@100.1.1.1 -NT
+
+Task 3 
+
+T3 is the authorized initial pivot
+Conduct passive recon on the Target T3, it appears to have access to the 10.3.0.0/24 subnet.
+Create a Local Port Forward from your Internet_Host to T3 targeting:
+ip: 10.3.0.27
+port: `HTTP``
+Initial ssh request was denied
+To create a tunnel, need to use the float IP as ssh to T3 is denied so,
+Ssh
+Need to create a local port to T3
+
+ssh net25_student25@10.50.33.143 -L 50511:10.3.8.27:80 -N
+
+After tunneling we can do the banner grab or listen to the port we created
+
+nc localhost 50511
+
+here we are using netcat to listen to the port and GET to grab the http
+
+Flag: We are not interested int he possibilities of defeat 
+
+T3 is the authorized initial pivot
+Conduct passive recon on the Target T3, it appears to have access to the 10.3.0.0/24
+subnet.
+Create a Dynamic Port Forward from Internet_Host to T3 then use proxychains to pull the
+flag.
+Target ip: 10.3.0.1
+Identify the flag on Cortina's FTP Server
+- **** when creating a port if you get error stating port already created delete the port using the command
+below
+Kill –9 pid
+
+ss -antlp
+
+-> img
+
+step 1 -> Create dynamic tunneling using t3 float ip 
+
+ssh net25_student25@10.50.33.143 -D 9050 -NT
+
 

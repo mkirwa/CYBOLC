@@ -2645,3 +2645,6 @@ Apr 6 13:37:31 linux-opstation-7qhp sudo: Saruman : TTY=pts/0 ; PWD=/home/Saruma
 
 
 PS C:\> Get-content 'C:\Windows\System32\WindowsPowerShell\v1.0\profile.ps1'
+
+
+ls -la -> will give you the size
