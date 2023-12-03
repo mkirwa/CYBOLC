@@ -584,6 +584,8 @@ Range of IPs for specific ports
 TCP
 for i in {1..254}; do nc -nvzw1 172.16.82.$i 20-23 80 2>&1 & done | grep -E 'succ|open'
 
+for i in {1..254}; do nc -nvzw1 172.16.101.$i 20-23 80 2>&1 & done | grep -E 'succ|open'
+
 This script loops through IP addresses from 172.16.82.1 to 172.16.82.254.
 It uses nc (Netcat) with -nvzw1 flags to attempt TCP connections to ports 20, 21, 22, 23, and 80 on each IP.
 The command checks for successful connections or open ports and outputs those results.
