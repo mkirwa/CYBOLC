@@ -700,14 +700,19 @@ ssh net4_student11@10.50.42.216 -L 1234:localhost:1234 -NT      # Establish Remo
 
 ##### Create a Remote Port Forward from T4 to T3 binding the source as one of Your authorized ports, from the Mission Prompt, targeting: ip: 10.2.0.2 port: HTTP #####
 
-ssh net4_student11@10.50.44.211 -R 1234:localhost:22 -NT      # Remote Port Forwarding from T4 to T3. Command (run on T4): This forwards port 1234 on T3 (10.50.44.211) to SSH (port 22) on T4.
+ssh net4_student11@10.50.44.211 -R 1234:localhost:22 -NT      # Establish a remote SSH tunnel from T4 to T3. Command (run on T4): This forwards port 1234 on T3 (10.50.44.211) to SSH (port 22) on T4.
 
 ###### Create a Local Port Forward from Internet_Host to T3 targeting the port you just established. ######
 
-ssh net4_student11@10.50.42.216 -L 1234:localhost:1234 -NT   # Local Port Forwarding from Internet_Host to T3:Create a tunnel from Internet_Host to T3.Command (run on Internet_Host): This forwards port 1234 on Internet_Host to port 1234 on T3 (10.50.42.216).
+ssh net4_student11@10.50.42.216 -L 1234:localhost:1234 -NT   # Local Port Forwarding from Internet_Host to T3:Create a tunnel from Internet_Host to T3.Command (run on Internet_Host): 
+                                                             # This forwards port 1234 on Internet_Host to port 1234 on T3 (10.50.42.216).
 
-telnet 10.50.44.211:23
 ##### When creating tunnels your authorized port ranges to utilize are NssXX (N = Net number, ss = Student Number and XX = is student assigned port number) #####
+
+##### Accessing T4's Resource via Tunnel: #####
+
+ssh net4_student11@localhost -p 1234 -L 1234:10.50.44.211:23 -NT        # Create an SSH tunnel from Internet_Host to access the telnet service on T4 through T3. Command (run on Internet_Host): is sets up a tunnel from port 1234 on your 
+                                                                        # localhost (Internet_Host) to the telnet service (port 23) on T4 (10.50.44.211) through T3.
 
 
 ##### Use curl or wget to pull the flag. #####
