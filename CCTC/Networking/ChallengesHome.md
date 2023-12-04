@@ -679,3 +679,44 @@ step 1 -> Create dynamic tunneling using t3 float ip
 ssh net25_student25@10.50.33.143 -D 9050 -NT
 
 
+(UNKNOWN) [10.50.42.216] 22 (ssh) open
+
+ssh net4_student11@10.50.42.216 -R 1234:localhost:22 -NT
+
+
+
+##### Conduct passive recon on the Target T4, it appears to have access to the 10.2.0.0/25 subnet. #####
+
+1. Ran `./scan.sh` 
+2. 10.52.42         # Network address
+3. 216              # starting host range
+4. 216              # Ending host range
+5. 21-23 80         # Ports space-delimited
+
+ssh net4_student11@10.50.42.216 -L 1234:localhost:1234 -NT      # Establish Remote Port Forwarding from T4 to T3:
+
+(UNKNOWN) [10.50.44.211] 23 (telnet) open
+
+
+##### Create a Remote Port Forward from T4 to T3 binding the source as one of Your authorized ports, from the Mission Prompt, targeting: ip: 10.2.0.2 port: HTTP #####
+
+ssh net4_student11@10.50.44.211 -R 1234:localhost:22 -NT      # Remote Port Forwarding from T4 to T3. Command (run on T4): This forwards port 1234 on T3 (10.50.44.211) to SSH (port 22) on T4.
+
+###### Create a Local Port Forward from Internet_Host to T3 targeting the port you just established. ######
+
+ssh net4_student11@10.50.42.216 -L 1234:localhost:1234 -NT   # Local Port Forwarding from Internet_Host to T3:Create a tunnel from Internet_Host to T3.Command (run on Internet_Host): This forwards port 1234 on Internet_Host to port 1234 on T3 (10.50.42.216).
+
+telnet 10.50.44.211:23
+##### When creating tunnels your authorized port ranges to utilize are NssXX (N = Net number, ss = Student Number and XX = is student assigned port number) #####
+
+
+##### Use curl or wget to pull the flag. #####
+
+curl http://localhost:1234          # Retrieve the Flag Using curl or wget: Using curl:
+wget -r http://localhost:1234       # Retrieve the Flag Using curl or wget: Using wget:
+
+
+##### Identify the flag on Mohammed Web Server #####
+
+
+

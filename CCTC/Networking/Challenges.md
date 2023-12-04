@@ -389,3 +389,43 @@ basic structure of the desired result.
 ### Answer ###
 ● Create a raw socket and code your message into the socket
 ● When viewing in Wireshark, the packet should not be malformed
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## 4. Tunnels Training - Remote Practice 5 ##
+
+T3 is the authorized initial pivot
+
+Conduct passive recon on the Target T4, it appears to have access to the 10.2.0.0/25 subnet.
+
+Create a Remote Port Forward from T4 to T3 binding the source as one of Your authorized ports, from the Mission Prompt, targeting:
+ip: 10.2.0.2 port: HTTP
+
+Create a Local Port Forward from Internet_Host to T3 targeting the port you just established.
+When creating tunnels your authorized port ranges to utilize are NssXX (N = Net number, ss = Student Number and XX = is student assigned port number)
+
+Use curl or wget to pull the flag.
+Identify the flag on Mohammed Web Server
+
+Hint: 
+internet_host$ telnet {T4_float_ip}
+pineland$ ssh netX_studentX@{T3_inside_ip} -R NssXX:localhost:22 -NT
+internet_host$ ssh netX_studentX@{T3_float_ip} -L NssXX:localhost:NssXX -NT
+internet_host$ ssh netX_studentX@localhost -p NssXX -L NssXX:10.2.0.2:80 -NT
+curl http://localhost:NssXX
+wget -r http://localhost:NssXX
+
+(UNKNOWN) [10.50.42.216] 22 (ssh) open
+
