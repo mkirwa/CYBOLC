@@ -768,86 +768,177 @@ http contains " "
 
 `ip.dst == 192.168.10.111 &&( http.request.method == "POST")` - look for info with "plugins" - only 2 have it. - reflex-gallery
 
-#### ####
+#### 30. Attack Analysis - Plugin CVE 10 ####
+
+Refer to challenge 29. What CVE is related to the plugin the web vulnerability scanner found? (you need to include the version in your research) Submit your answer as the cve listing (e.g. CVE-2019-9999)
+
+Hint
+Google search the 'plugin' from question 29
 
 #### Answer ####
 
+Google answer -> CVE for reflex-gallery
+
+https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2015-4133#:~:text=Unrestricted%20file%20upload%20vulnerability%20in,the%20file%20in%20uploads%2F%20directory.
+
+#### 31. Attack Analysis - Exploit 5 ####
+
+Reading the CVE details will provide you with the knowledge to know what the attacker is able to exploit.
+
+What was the Filename that was successfully uploaded by the attacker to 192.168.10.111?
+
+Hint
+What file type is referred to from research into the CVE from question 30?
+
+File that was uploaded from question 29.
+
+will be listed under 'filename'
+
+#### Answer ####
+
+ip.dst == 192.168.10.111 &&( http.request.method == "GET") || http contains "php" && http contains "reflex-gallery" 
+look through the encapsulated multipart part
+msf.php
+
+or follow tcp stream
+
+#### 32. Attack Analysis - Exploit 2 5 ####
+
+The malicious upload referred to in challenge 31 is used to start communication for a specific tool, what is the name of this tool/framework (not the attack payload)?
+
+Hint
+Research the CVE from the file in question 30 on exploit-db.com
+
+#### Answer ####
+
+Go to exploit.com and search for msf
+metasploit
+
+#### 33. Attack Analysis - Payload 10 ####
+
+Refer to challenge 32. Perform open-source research:
+
+This popular attack payload provides an interactive shell to the attacker, this payload uses in-memory DLL injection. Identify the payload name (this is a single word, not the payload in hex).
+
+Hint
+Google search the question
+
+#### Answer ####
+
+Meterpreter -> From Google 
+
+
+#### 34. Attack Analysis - Language 10 ####
+
+What programming language is this payload discovered in question 33 written in?
+
+Hint
+Google search the answer to question 33 to find the programming language its written in.
+
+#### Answer ####
+
+Answ -> Ruby
+
+#### 35. Attack Analysis - Payload UUID 10 ####
+
+Refering to the payload identified in Challenge 33, what is the Payload UUID identified in the session of the host that was first compromised?
+
+Enter answer in this format: \x11\x22\x33\x44\x55\x66\x77\x88\x99\xaa\xbb\xcc\xdd\xee\xff
+
+Hint
+Can use the filter: data contains " "
+Follow the streams and search for UUID
+
+#### Answer ####
+
+data contains "UUID" -> Wireshark
+follow TCP stream
+control F - UUID
+\x81\xc2\xe4\x1d\xc3\x06\xf6\xf6\xeb\xd8\xf8\xd7\xb2\xe2\xea\x5b
+
+#### 36. Attack Analysis - Attacked IP 5 ####
+
+The 192.168.10.111 web server is now under control of the attacker through a reverse TCP connection via the meterpreter session. The 192.168.10.111 server is used to pivot to another target and perform the same actions the attacker took against 192.168.10.111, what is its ip address?
+
+Hint
+Check conversations to see who else 192.168.10.111 is talking to.
+
+#### Answer ####
+
+statistics -> conversations # check the traffic 192.168.10.112
+
+#### 37. Attack Analysis - Malware Type 10 ####
+
+What type of malware is uploaded to the 192.168.10.112 server (not the malicious php upload to kick off the meterpreter session)? Look for a connection back to a malware repository in the TCP stream.
+
+Hint
+Recall back to the session from question 29.
+Search through the communication from the .112. Look for the .php POST request.
+
+From the stream:
+Find the IP:PORT address that it is supposed to connect to to download the malware from the stream.
+
+Filter for that IP:PORT and the .112.
+
+Find the malware in the stream next to github
+
+#### Answer ####
+
+ip.dst == 192.168.10.112  Exclude all the web traffic------look for fubky port number: 444 Follow the stream----search for github 
+ransomware
+
+#### 38. Attack Analysis - New Payload UUID 10 ####
+
+What is the payload UUID for the new meterpreter session on the host at 192.168.10.112?
+
+Enter andwer in this format: \x11\x22\x33\x44\x55\x66\x77\x88\x99\xaa\xbb\xcc\xdd\xee\xff\
+
+Hint
+Can use the filter: data contains " "
+
+Follow the streams and search for UUID
+
+#### Answer ####
+
+Filter =  `data contains "UUID"` Follow stream \xc5\x0f\xbc\x3a\x9f\x31\x91\x0b\x42\x66\x51\x69\x1b\x5c\x43\xa3
+
 #### ####
-
-
-
-#### Answer ######## ####
-
-
-
-#### Answer ######## ####
-
-
-
-#### Answer ######## ####
-
-
-
-#### Answer ######## ####
-
-
-
-#### Answer ######## ####
-
-
-
-#### Answer ######## ####
-
-
-
-#### Answer ######## ####
-
-
-
-#### Answer ######## ####
-
-
-
-#### Answer ######## ####
-
-
-
-#### Answer ######## ####
-
 
 
 #### Answer ####
 
+
 #### ####
 
 
-
-#### Answer ######## ####
-
+#### Answer ####
 
 
-#### Answer ######## ####
+#### ####
 
 
-
-#### Answer ######## ####
-
+#### Answer ####
 
 
-#### Answer ######## ####
+#### ####
 
 
-
-#### Answer ######## ####
-
+#### Answer ####
 
 
-#### Answer ######## ####
+#### ####
 
 
+#### Answer ####
 
-#### Answer ######## ####
 
+#### ####
+
+
+#### Answer ####
+
+
+#### ####
 
 
 #### Answer ####
