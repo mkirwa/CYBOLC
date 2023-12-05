@@ -739,15 +739,36 @@ Ans -> WPScan, Nikto
 
 What is the username and password that was attempted against the axis2 plugin? (submit answer in the following format: jeff:mynamisjeff)
 
+Hint
+Websites uses the POST method to submit data.
+
+Can use: http contains " "
+
 #### Answer ####
 
-#### ####
+http.request.method=="GET" && http contains "axis2" Follow tcp stream Search for axis2
+
+#### 29. Attack Analysis - Plugin 5 ####
+
+Consider the user agent strings identified in challenge 27.
+
+Analyze the related traffic, and identify what Plugin the vulnerability scan triggered on?
+
+Hint
+Vulnerability scanners using the POST method.
+http.request.method ==
+
+Follow streams until you find one that gives a successful response
+
+The 'plugin' will be annotated in a folder structure such as:
+/~/~/plugins/ {plugin name} /~/~
+http contains " "
 
 #### Answer ####
 
+`ip.dst == 192.168.10.111 &&( http.request.method == "POST")` - look for info with "plugins" - only 2 have it. - reflex-gallery
+
 #### ####
-
-
 
 #### Answer ####
 
