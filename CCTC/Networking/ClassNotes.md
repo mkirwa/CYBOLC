@@ -1007,8 +1007,6 @@ ssh student@10.50.30.99 -L 127.0.0.1:2222:10.50.21.41:22
 
 ssh student@192.168.1.39 -L 127.0.0.1:2222:10.50.21.99:22
 
-
-
 ssh student@192.168.1.39 -L 50511:10.3.8.27:80 -NT 
 
 # For a Dynamic tunnel:
@@ -1020,6 +1018,128 @@ ssh -L [local_port]:[destination_host]:[destination_port] [user]@[SSH_server]
 
 # Remote Forwarding
 ssh -R [remote_port]:[destination_host]:[destination_port] [user]@[SSH_server]
+ssh [user]@[SSH_server] -R [remote_port]:[destination_host]:[destination_port] 
+
+-L/-R created_port:target_IP:target_port
+
+Telnet Internet Host to Host A:
+	
+#### TUNNELING ACTIVITY 3 ####
+
+	Internet Host to Host A
+    >> ssh userA@10.50.29.89 -p 1234 -D 9050
+    >> ssh userA@10.50.29.89 -p 1234 -L 1111:172.17.17.28:23
+
+	Host A Host B
+    >> telnet localhost 1111
+
+    Host B Host A
+    >> ssh userA@172.17.17.17 -p 1234(authenticating_to_A) -R 2222(created_port_on_A):localhost(host_B):4321(ssh_port_on_B) # Ran on B back to A
+    >> ssh userA@10.50.29.89 -p 1234 -L 3333:localhost:2222 # Ran on the internet host. Authenticate back to A to target local_host_2222 on A
+    >> ssh userB@localhost -p 3333 -D 9050 # Creates a dynamic channel to B 
+
+    # Host B from C ---->  Lets get to Host C from B 
+    # Ran proxychains and got 1212 and 192.168.30.150
+    >> ssh userB@localhost -p 3333 (this_gets_me_to_B) -L 4444:192.168.30.150:1212
+
+    #  A dynamic tunnel to C 
+    >> ssh userC@localhost -p 4444 -D 9050 # Creating a dynamic tunnel to C, ssh to C 
+
+    # Ran proxychains and discovered host D with port 2932 and ip address 10.10.12.121
+
+    # We are going to c and creating a local tunnel. 
+    >> ssh userC@localhost -p 4444 -L 5555:10.10.12.121:2932
+
+    # SSH and use a dynamic tunnel to D 
+    >> ssh userD@localhost -p 5555 -D 9050
+
+    # 2222, 3333, 4444 and 5555 are all created ports... 
+
+
+
+#### TUNNELING ACTIVITY 2 ####
+
+    >> telnet userA@10.50.29.19
+	Host A  Internet Host SSH IP
+	ssh me@10.50.23.21 -R 1111:localhost:22      ------ REMOTE
+
+	Window 3 scan window Internet Host
+	--proxyChains 10.1.2.16.16/28
+	--proxychains nmap -Pn -sT 10.1.2.16.16 -p 21-23,80,2222
+
+	Window 2x1 (2)
+	Internet Host to Host A acc to B
+	>> ssh userA@localhost -p 1111 -L 1222:10.1.2.16.18:2222
+
+	Window 4
+	Internet Host to Host B
+	>> ssh userB@127.0.0.1 -p 1222 -D 9050      ------ CLOSE 9050 2x2
+
+	Window 3 Internet Host
+	--proxychains 172.16.10.96/27
+	--proxychains nmap -Pn -sT 172.16.10.96 -p 21-23,80,2323
+
+	Window 2x2 (3)
+	Internet Host  to Host B acc to C
+	ssh userB@localhost -p 1222 -L 3333:172.16.10.121:2323
+
+	Window 4 Internet Host to Host C
+	ssh userC@127.0.0.1 -p 3333 -D 9050      ------ CLOSE 9050 2x3
+
+	Window 3  Internet Host
+	--proxychains 192.168.10.64/26
+	--proxychains nmap -Pn -sT 192.168.10.69 -p 21-23,80
+
+	Window 2x3 (4)
+	ssh userC@localhost -p 3333 -L 4444:192.168.10.69:22
+
+	Window 5
+	Internet Host
+	ssh userD@127.0.0.1 -p4444 -D 9050
+
+
+Telnet Internet Host to Host A:
+	>> telnet userA@10.50.29.19
+	Host A  Internet Host SSH IP
+	ssh me@10.50.23.21 -R 1111:localhost:22      ------ REMOTE
+
+	Window 2
+	Internet Host to Host A
+	>> ssh userA@localhost -p 1111 -D 9050      ------ CLOSE 9050 2x1
+
+	Window 3 scan window Internet Host
+	--proxyChains 10.1.2.16.16/28
+	--proxychains nmap -Pn -sT 10.1.2.16.16 -p 21-23,80,2222
+
+	Window 2x1 (2)
+	Internet Host to Host A acc to B
+	>> ssh userA@localhost -p 1111 -L 1222:10.1.2.16.18:2222
+
+	Window 4
+	Internet Host to Host B
+	>> ssh userB@127.0.0.1 -p 1222 -D 9050      ------ CLOSE 9050 2x2
+
+	Window 3 Internet Host
+	--proxychains 172.16.10.96/27
+	--proxychains nmap -Pn -sT 172.16.10.96 -p 21-23,80,2323
+
+	Window 2x2 (3)
+	Internet Host  to Host B acc to C
+	ssh userB@localhost -p 1222 -L 3333:172.16.10.121:2323
+
+	Window 4 Internet Host to Host C
+	ssh userC@127.0.0.1 -p 3333 -D 9050      ------ CLOSE 9050 2x3
+
+	Window 3  Internet Host
+	--proxychains 192.168.10.64/26
+	--proxychains nmap -Pn -sT 192.168.10.69 -p 21-23,80
+
+	Window 2x3 (4)
+	ssh userC@localhost -p 3333 -L 4444:192.168.10.69:22
+
+	Window 5
+	Internet Host
+	ssh userD@127.0.0.1 -p4444 -D 9050
 
 
 # For a Dynamic tunnel to A:
@@ -1055,6 +1175,26 @@ ssh -L 1234:10.50.30.99:22 student@10.50.30.99
 # Remote Forwarding
 ssh -R [remote_port]:[destination_host]:[destination_port] [user]@[SSH_server]
 
-Entry Float IP: 10.50.44.68
 
-./
+# NETWORK ANALYSIS #
+
+In-Line
+    TAP - Test Access Point
+    MitM - Man-in-the-Middle
+Out of Band (Passive)
+    Switched Port Analyzer (SPAN)
+
+P0F (PASSIVE OS FINGERPRINTING)
+Looks at variations in initial TTL, fragmentation flag, default IP header packet length, window size, and TCP options
+
+Configuration stored in:
+
+ /etc/p0f/p0f.fp
+
+Statistics -> Protocol Hierachy
+Statistics -> ipV4
+Analyze->Expert Information
+
+
+
+

@@ -429,3 +429,405 @@ wget -r http://localhost:NssXX
 
 (UNKNOWN) [10.50.42.216] 22 (ssh) open
 
+
+
+# Networking - 5 - Network Analysis #
+
+#### 1. Attack Analysis - Total 5 ####
+How many total packets were captured in the pcap?
+
+Enter number with no comma's
+
+#### Answer ####
+
+statistics -> captured file properties 
+1908895
+
+# Networking - 5 - Network Analysis #
+
+#### 1. Attack Analysis - Total 5 ####
+
+Determine all IP addresses that were captured in the pcap, and list them in order. You should find 10.
+
+Example:
+
+1.1.1.1,2.2.2.2,3.3.3.3
+
+#### Answer ####
+
+91.189.89.199,192.168.10.101,192.168.10.111,192.168.10.112,192.168.41.1,192.168.41.2,192.168.41.130,192.168.41.254,224.0.0.251,239.255.255.250
+
+
+#### 3. Attack Analysis - Hosts5 ####
+
+How many hosts are in the capture?
+
+hint: 
+What types of IP address can be assigned to a host?
+
+#### Answer ####
+
+statistics -> end points 
+There are two broadcast addresses ffffffffff and 000000000 subtract those from the total 10-2=8 hosts
+
+#### 4. Attack Analysis - OSI Layer 5 ####
+
+
+What Transport Layer Protocol is the most prominent in the capture?
+
+#### Answer ####
+
+statistics -> ipv4
+
+check which is the more prominent
+
+UDP 
+
+#### 6. Attack Analysis - Cellular 5 ####
+
+There is traffic related to 2G & 3G Cellular Communications, which uses a packet oriented mobile data standard.
+
+What standard/protocol is performing this communication?
+be sure to name the protocol and not the standard being used!
+
+Hint: 
+Conduct Internet Research on 2G & 3G Cellular Communications
+Find the protocol in the PCAP
+
+#### Answer ####
+
+statistics -> protocol hierarchy -> GPRS Network Service
+
+#### 7. Attack Analysis - Address 1 - Types 5 ####
+
+Within the packet capture, the following IP Address was identified:
+
+239.x.x.x
+
+What type of address is this?
+
+Hint
+×
+Research this address class
+
+#### Answer ######## 
+
+Multicast
+
+#### 8. Attack Analysis - Address 2 - Protocol 5 ####
+
+The protocol being used to generate the traffic associated with 239.x.x.x is a UDP based protocol which is commonly used with UPnP for finding devices and services on the network.
+
+What is this protocol?
+
+Hint
+×
+Google search the protocol
+Filter on the address
+
+#### Answer ######## 
+
+Google to find the port for UPnP then run this on wireshark
+
+`udp.port==1900`
+
+#### 9. Attack Analysis - Address 3 - Source 5 ####
+
+What is the mac address of the device that is sending the multicast SSDP traffic?
+
+Example:
+00:00:00:00:00:00
+
+#### Answer ####
+
+Check -> Ethernet information from wireshark from the port that filtered upd.port==1900
+
+00:50:56:c0:00:08
+
+#### 10. Attack Analysis - Address 4 - User Agent 5 ####
+
+What user agent is making use of the protocol you discovered in Attack Analysis - Address 2 - Protocol?
+
+Hint
+Filter on the protocol from Question 8.
+Look for the USER-AGENT
+
+#### Answer ####
+
+Filter based on ssdp then look at the user-agent under SSDP in the results column 
+
+#### 11. Attack Analysis - DNS 1 - IP 5 ####
+
+What is the IP Address for the DNS Server in the packet capture?
+
+#### Answer ####
+
+Filter DNS 
+192.168.41.2
+
+### 12. Attack Analysis - DNS 2 - Port 5 ####
+
+What IP Address and Port is the query responding to?
+
+Example:
+XXX.XXX.XXX.XXX:PORT
+
+#### Answer #####
+
+From 11 above, check the source ip -> 192.168.10.111 and the source port -> 54966
+
+#### 13. Attack Analysis - Service 1 5 ####
+
+What is the Service indicated by the use of the following IP Address?
+
+224.0.0.251
+
+#### Answer ####
+
+Hint
+Google search the Multicast IP
+
+#### Answer ######## ####
+
+Google -> mDNS
+
+#### 14. Attack Analysis - Service 2 5 ####
+
+What is the FQDN and IP Address of the device indicated in the response to the query identified in `Attack Analysis - Service 1``? Look for the DNS A record.
+
+Example (No Spaces):
+keurig.domain,1.1.1.1
+
+Hint
+Look further into the responses from that address specified in Q13.
+Look at the DNS A record
+
+#### Answer ####
+
+ip.addr==224.0.0.251 # Run this in the search bar 
+Multicast Domain Name System -> Additional Records -> HP705A0FF92F8D.local: type A, class IN, addr 192.168.1.7
+
+Answer -> HP705A0FF92F8D.local,192.168.1.7
+
+#### 17. Attack Analysis - RCE 5 ####
+
+Remote arbitrary Code Execution was captured targeting 192.168.10.111 via a gaming protocol.
+
+What is the name of the game?
+
+Example:
+fortnite
+
+Hint
+Look for a "game" protocol being run
+
+#### Answer ####
+
+ip.addr==192.168.10.111 and udp
+look for protocols that aren't common 
+
+statistics -> hierarchy 
+
+Look through the protocols 
+
+Look under UDP -> Quake
+
+#### 19. Attack Analysis - Conversation 5 ####
+
+Determine the IP addresses for the top two talkers in the capture (the two hosts that generated the most traffic). (list in order e.g. 1.1.1.1,2.2.2.2)
+
+Hint
+Filter using 'Conversations'
+
+#### Answer ####
+
+statistics -> conversations
+
+Look at the most packets -> 192.168.10.101,192.168.10.111
+
+#### 21. Attack Analysis - Attacked Port 5 ####
+
+Filter traffic communication between the IP addresses of the hosts determined in challenge 19, a UDP flood is occurring. What port is being attacked?
+
+#### Answer ####
+
+ip.addr==192.168.10.101  and ip.addr==192.168.10.111 # On wireshark
+look at UDP on the results section look at the destination port 
+Ans -> 55
+
+#### 23. Attack Analysis - Type of Attack 5 ####
+
+What type of attack is the UDP flood discovered in challenge 22?
+
+#### Answer ####
+
+DOS
+
+#### 24. Attack Analysis - Type of Attack 2 5 ####
+
+Is this an automated attack? (yes/no)
+
+Once you have completed challenge questions 1 - 24 you can shorten the pcap to make Wireshark run faster.
+
+First run this filter to select everything but the flooding of UDP port 55.
+
+!(udp.port==55)
+
+Next export the selected packets as a new pcap using File > Export Specified Packets.
+
+Save as a new pcap and load it in Wireshark. You should now only have 86345 packets instead of the 1.9 million you had before.
+
+#### Answer ####
+
+It is DOS attack so it's an automated attack
+Ans -> Yes
+
+#### 26. Attack Analysis - Website Tool 5 ####
+
+What is the name of the website creation tool/software used on the 192.168.10.111 server indicated in the HTTP POST/GET messages and plugin scanning done by the attackers? (Supply the main software, not the plugin names)
+
+Hint
+Can use: http.request.method==" "
+
+#### Answer ####
+
+ip.addr==192.168.10.111 and http.request.method=="POST"
+
+word-press in the post messages
+
+#### 29. Attack Analysis - Plugin 5 ####
+
+Consider the user agent strings identified in challenge 27.
+
+Analyze the related traffic, and identify what Plugin the vulnerability scan triggered on?
+
+Hint
+Vulnerability scanners using the POST method.
+http.request.method ==
+
+Follow streams until you find one that gives a successful response
+
+The 'plugin' will be annotated in a folder structure such as:
+/~/~/plugins/ {plugin name} /~/~
+http contains " "
+
+#### Answer #####
+
+ip.addr==192.168.10.111 and http contains User-Agent
+
+#### 27. Attack Analysis - Scanning Tools 10 ####
+
+Wordpress provides a plethora of plugins, however these are notorious for vulnerabilities, and there are several ways to scan these types of servers. Perform OSR on some of the top tools that could be used.
+
+Determine which 2 tools were used for scanning against 192.168.10.111. These tools can be identified through examining the user-agent strings.
+
+(The answer has no spaces)
+
+scanner1,scanner2
+
+Hint:
+Search for User-Agent in the http header:
+http contains User-Agent
+
+#### Answer ####
+
+ip.addr==192.168.10.111 and http contains User-Agent
+Look at the data -> bruteforce
+Ans -> WPScan, Nikto
+
+#### 28. Attack Analysis - Credentials 10 ####
+
+What is the username and password that was attempted against the axis2 plugin? (submit answer in the following format: jeff:mynamisjeff)
+
+#### Answer ####
+
+#### ####
+
+#### Answer ####
+
+#### ####
+
+
+
+#### Answer ####
+
+#### ####
+
+
+
+#### Answer ######## ####
+
+
+
+#### Answer ######## ####
+
+
+
+#### Answer ######## ####
+
+
+
+#### Answer ######## ####
+
+
+
+#### Answer ######## ####
+
+
+
+#### Answer ######## ####
+
+
+
+#### Answer ######## ####
+
+
+
+#### Answer ######## ####
+
+
+
+#### Answer ######## ####
+
+
+
+#### Answer ######## ####
+
+
+
+#### Answer ####
+
+#### ####
+
+
+
+#### Answer ######## ####
+
+
+
+#### Answer ######## ####
+
+
+
+#### Answer ######## ####
+
+
+
+#### Answer ######## ####
+
+
+
+#### Answer ######## ####
+
+
+
+#### Answer ######## ####
+
+
+
+#### Answer ######## ####
+
+
+
+#### Answer ####
+
