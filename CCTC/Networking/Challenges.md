@@ -902,17 +902,27 @@ Follow the streams and search for UUID
 
 Filter =  `data contains "UUID"` Follow stream \xc5\x0f\xbc\x3a\x9f\x31\x91\x0b\x42\x66\x51\x69\x1b\x5c\x43\xa3
 
-#### ####
+#### 39. Attack Analysis - Malware Location 10 ####
 
+Refer back to challenge 37, the malware referenced in this question was identified as ransomware. What is the github repo from which the malware is downloaded? (submit your answer in the following format: https://github.com/horst_simco/malwarez)
 
-#### Answer ####
-
-
-#### ####
-
+Hint
+Follow the streams and search for the github repo URL
 
 #### Answer ####
 
+Seach from 38
+https://github.com/mauri870/ransomware 
+
+#### 40. Attack Analysis - Malware Language 10 ####
+
+According to the github site, the malware was determined to be ransomware. What programming language was used to write this?
+Hint
+Language is described in the Readme on the github site.
+
+#### Answer ####
+
+go
 
 #### ####
 
