@@ -1092,4 +1092,220 @@ What version of Apache is running on the web server at the 192.168.10.111 addres
 
 #### Answer ####
 
+### Networking - 6 - Filtering - Task 1 - Host Filtering ###
 
+
+IPTable Rule Definitions
+
+    Allow New and Established traffic to/from via SSH, TELNET, and RDP
+    Change the Default Policy in the Filter Table for the INPUT, OUTPUT, and FORWARD chains to DROP
+    Allow ping (ICMP) requests (and reply) to and from the Pivot.
+    Allow ports 6579 and 4444 for both udp and tcp traffic
+    Allow New and Established traffic to/from via HTTP
+
+Once these steps have been completed and tested, go to Pivot and open up a netcat listener on port 9001 and wait up to 2 minutes for your flag. If you did not successfully accomplish the tasks above, then you will not receive the flag.
+
+T1
+Hostname: BLUE_Host-1
+IP: 172.16.82.106
+Creds: student : password
+Action: Implement Host Filtering to Allow and Restrict Communications and Traffic
+
+#### Answer ####
+
+iptables -A INPUT -p tcp -m multiport --ports 80 -j ACCEPT 
+iptables -A OUTPUT -p tcp -m multiport --ports 80 -j ACCEPT 
+
+
+# Allow New and Established traffic to/from via SSH, TELNET, and RDP
+iptables -A INPUT -p tcp --dport 22 -m state --state NEW,ESTABLISHED -j ACCEPT
+iptables -A OUTPUT -p tcp --sport 22 -m state --state ESTABLISHED -j ACCEPT
+
+iptables -A INPUT -p tcp --dport 23 -m state --state NEW,ESTABLISHED -j ACCEPT
+iptables -A OUTPUT -p tcp --sport 23 -m state --state ESTABLISHED -j ACCEPT
+
+iptables -A INPUT -p tcp --dport 3389 -m state --state NEW,ESTABLISHED -j ACCEPT
+iptables -A OUTPUT -p tcp --sport 3389 -m state --state ESTABLISHED -j ACCEPT
+
+# Change the Default Policy in the Filter Table for the INPUT, OUTPUT, and FORWARD chains to DROP
+iptables -P INPUT DROP
+iptables -P OUTPUT DROP
+iptables -P FORWARD DROP
+
+# Allow ping (ICMP) requests (and reply) to and from the Pivot.
+iptables -A INPUT -p icmp --icmp-type echo-request -j ACCEPT
+iptables -A OUTPUT -p icmp --icmp-type echo-reply -j ACCEPT
+
+# Allow ports 6579 and 4444 for both udp and tcp traffic
+iptables -A INPUT -p tcp -m multiport --dports 6579,4444 -j ACCEPT
+iptables -A INPUT -p udp -m multiport --dports 6579,4444 -j ACCEPT
+
+# Allow New and Established traffic to/from via HTTP
+iptables -A INPUT -p tcp --dport 80 -m state --state NEW,ESTABLISHED -j ACCEPT
+iptables -A OUTPUT -p tcp --sport 80 -m state --state ESTABLISHED -j ACCEPT
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Allow New and Established traffic to/from via SSH, TELNET, and RDP
+iptables -A INPUT -p tcp -m multiport --sports 22,23,3389 -m state --state NEW,ESTABLISHED -j ACCEPT
+iptables -A INPUT -p tcp -m multiport --dports 22,23,3389 -m state --state NEW,ESTABLISHED -j ACCEPT
+
+iptables -A OUTPUT -p tcp -m multiport --sports 22,23,3389 -m state --state ESTABLISHED -j ACCEPT
+iptables -A OUTPUT -p tcp -m multiport --dports 22,23,3389 -m state --state ESTABLISHED -j ACCEPT
+
+
+# Change the Default Policy in the Filter Table for the INPUT, OUTPUT, and FORWARD chains to DROP
+iptables -P INPUT DROP
+iptables -P OUTPUT DROP
+iptables -P FORWARD DROP
+
+# Allow ports 6579 and 4444 for both udp and tcp traffic
+iptables -A INPUT -p tcp -m multiport --sports 6579,4444 -j ACCEPT
+iptables -A INPUT -p tcp -m multiport --dports 6579,4444 -j ACCEPT
+
+iptables -A INPUT -p udp -m multiport --sports 6579,4444 -j ACCEPT
+iptables -A INPUT -p udp -m multiport --dports 6579,4444 -j ACCEPT
+
+# Allow New and Established traffic to/from via HTTP
+iptables -A INPUT -p tcp --sport 80 -m state --state NEW,ESTABLISHED -j ACCEPT
+iptables -A INPUT -p tcp --dport 80 -m state --state NEW,ESTABLISHED -j ACCEPT
+
+iptables -A OUTPUT -p tcp --sport 80 -m state --state ESTABLISHED -j ACCEPT
+iptables -A OUTPUT -p tcp --dport 80 -m state --state ESTABLISHED -j ACCEPT
+
+
+
+
+
+
+
+IPTable Rule Definitions
+
+    Allow New and Established traffic to/from via SSH, TELNET, and RDP
+    Change the Default Policy in the Filter Table for the INPUT, OUTPUT, and FORWARD chains to DROP
+    Allow ping (ICMP) requests (and reply) to and from the Pivot.
+    Allow ports 6579 and 4444 for both udp and tcp traffic
+    Allow New and Established traffic to/from via HTTP
+
+
+
+# Allow New and Established traffic to via SSH, TELNET, and RDP
+iptables -A INPUT -p tcp -m multiport --sports 22,23,3389 -m state --state NEW,ESTABLISHED -j ACCEPT
+iptables -A INPUT -p tcp -m multiport --dports 22,23,3389 -m state --state NEW,ESTABLISHED -j ACCEPT
+
+# Allow New and Established traffic from via SSH, TELNET, and RDP
+iptables -A OUTPUT -p tcp -m multiport --sports 22,23,3389 -m state --state NEW,ESTABLISHED -j ACCEPT
+iptables -A OUTPUT -p tcp -m multiport --dports 22,23,3389 -m state --state NEW,ESTABLISHED -j ACCEPT
+
+# Change the Default Policy in the Filter Table for the INPUT, OUTPUT, and FORWARD chains to DROP
+iptables -P INPUT DROP
+iptables -P OUTPUT DROP
+iptables -P FORWARD DROP
+
+# Allow ICMP (ping) requests and replies # input 
+iptables -A INPUT -p icmp --src 10.10.0.40 --icmp-type echo-request -j ACCEPT
+iptables -A INPUT -p icmp --src 10.10.0.40 --icmp-type echo-reply -j ACCEPT
+
+# Allow ICMP (ping) requests and replies # output  
+iptables -A OUTPUT -p icmp --dst 10.10.0.40 --icmp-type echo-request -j ACCEPT
+iptables -A OUTPUT -p icmp --dst 10.10.0.40 --icmp-type echo-reply -j ACCEPT
+
+# Allow ports 6579 and 4444 for both tcp traffic # input 
+iptables -A INPUT -p tcp -m multiport --sports 6579,4444 -j ACCEPT
+iptables -A INPUT -p tcp -m multiport --dports 6579,4444 -j ACCEPT
+
+# Allow ports 6579 and 4444 for both tcp traffic # output 
+iptables -A OUTPUT -p tcp -m multiport --sports 6579,4444 -j ACCEPT
+iptables -A OUTPUT -p tcp -m multiport --dports 6579,4444 -j ACCEPT
+
+# Allow ports 6579 and 4444 for both udp traffic # input 
+iptables -A INPUT -p udp -m multiport --sports 6579,4444 -j ACCEPT
+iptables -A INPUT -p udp -m multiport --dports 6579,4444 -j ACCEPT
+
+# Allow ports 6579 and 4444 for both udp traffic # output 
+iptables -A OUTPUT -p udp -m multiport --sports 6579,4444 -j ACCEPT
+iptables -A OUTPUT -p udp -m multiport --dports 6579,4444 -j ACCEPT
+
+# Allow New and Established traffic to via HTTP # input 
+iptables -A INPUT -p tcp --sport 80 -m state --state NEW,ESTABLISHED -j ACCEPT
+iptables -A INPUT -p tcp --dport 80 -m state --state NEW,ESTABLISHED -j ACCEPT
+
+# Allow New and Established traffic from via HTTP # output
+iptables -A OUTPUT -p tcp --sport 80 -m state --state NEW,ESTABLISHED -j ACCEPT
+iptables -A OUTPUT -p tcp --dport 80 -m state --state NEW,ESTABLISHED -j ACCEPT
+
+467accfb25050296431008a1357eacb1
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+iptables -A INPUT -p tcp -m multiport --sports 22,23,3389 -m state --state NEW,ESTABLISHED -j ACCEPT
+iptables -A INPUT -p tcp -m multiport --dports 22,23,3389 -m state --state NEW,ESTABLISHED -j ACCEPT
+
+iptables -A OUTPUT -p tcp -m multiport --sports 22,23,3389 -m state --state ESTABLISHED -j ACCEPT
+iptables -A OUTPUT -p tcp -m multiport --dports 22,23,3389 -m state --state ESTABLISHED -j ACCEPT
+
+iptables -P INPUT DROP
+iptables -P OUTPUT DROP
+iptables -P FORWARD DROP
+
+iptables -A INPUT -p icmp --src 10.10.0.40 --icmp-type echo-request -j ACCEPT
+iptables -A INPUT -p icmp --src 10.10.0.40 --icmp-type echo-reply -j ACCEPT
+
+iptables -A OUTPUT -p icmp --dst 10.10.0.40 --icmp-type echo-request -j ACCEPT
+iptables -A OUTPUT -p icmp --dst 10.10.0.40 --icmp-type echo-reply -j ACCEPT
+
+iptables -A INPUT -p tcp -m multiport --sports 6579,4444 -j ACCEPT
+iptables -A INPUT -p tcp -m multiport --dports 6579,4444 -j ACCEPT
+
+iptables -A OUTPUT -p tcp -m multiport --sports 6579,4444 -j ACCEPT
+iptables -A OUTPUT -p tcp -m multiport --dports 6579,4444 -j ACCEPT
+
+iptables -A INPUT -p udp -m multiport --sports 6579,4444 -j ACCEPT
+iptables -A INPUT -p udp -m multiport --dports 6579,4444 -j ACCEPT
+
+iptables -A OUTPUT -p udp -m multiport --sports 6579,4444 -j ACCEPT
+iptables -A OUTPUT -p udp -m multiport --dports 6579,4444 -j ACCEPT
+
+iptables -A INPUT -p tcp --sport 80 -m state --state NEW,ESTABLISHED -j ACCEPT
+iptables -A INPUT -p tcp --dport 80 -m state --state NEW,ESTABLISHED -j ACCEPT
+
+iptables -A OUTPUT -p tcp --sport 80 -m state --state ESTABLISHED -j ACCEPT
+iptables -A OUTPUT -p tcp --dport 80 -m state --state ESTABLISHED -j ACCEPT
+
+
+
+ truncate -s 0 iptablerules.sh 
