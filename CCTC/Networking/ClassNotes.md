@@ -1009,18 +1009,37 @@ ssh student@192.168.1.39 -L 127.0.0.1:2222:10.50.21.99:22
 
 ssh student@192.168.1.39 -L 50511:10.3.8.27:80 -NT 
 
-# For a Dynamic tunnel:
+## For a Dynamic tunnel: ##
 
 ssh -D [local_port] [user]@[host]
 
-# Local Forwarding
-ssh -L [local_port]:[destination_host]:[destination_port] [user]@[SSH_server]
+## Local Forwarding ##
+ssh [user]@[SSH_server] -p servers_port_number -L [local_created_port]:[destination_host]:[destination_port] 
 
-# Remote Forwarding
+## Remote Forwarding ##
 ssh -R [remote_port]:[destination_host]:[destination_port] [user]@[SSH_server]
 ssh [user]@[SSH_server] -R [remote_port]:[destination_host]:[destination_port] 
 
 -L/-R created_port:target_IP:target_port
+
+### ESTABLISHING 1ST CONNECTIONS ###
+
+#### Going to a host with no firewall 1st step ####
+1. ssh to the destination e.g. host A with the port number and the ip address to that host i.e. hostA@hostA_ip_address -p destination_port -D 9050 e.g userA@10.50.29.89 -p 1234 -D 9050
+
+#### Going to a host with a firewall ####
+1. Create a local tunnel to the destination 
+2. telnet 
+3. create a remote tunnel back to the source from the destination
+4. From the source create a dynamic tunnel 
+5. Run proxy scans to identify the next tunnel 
+
+#### Going to a host with no firewall from another host ####
+1. Create a local tunnel to the destination  
+4. From the source create a dynamic tunnel 
+5. Run proxy scans to identify the next tunnel 
+
+ 
 
 Telnet Internet Host to Host A:
 	
@@ -1028,7 +1047,7 @@ Telnet Internet Host to Host A:
 
 	Internet Host to Host A
     >> ssh userA@10.50.29.89 -p 1234 -D 9050
-    >> ssh userA@10.50.29.89 -p 1234 -L 1111:172.17.17.28:23
+    >> ssh userA@10.50.29.89 -p 1234 -L 1111:172.17.17.28:23 ???? # there's a firewall to B, why are we creating this before telneting? 
 
 	Host A Host B
     >> telnet localhost 1111
@@ -1037,18 +1056,17 @@ Telnet Internet Host to Host A:
     >> ssh userA@172.17.17.17 -p 1234(authenticating_to_A) -R 2222(created_port_on_A):localhost(host_B):4321(ssh_port_on_B) # Ran on B back to A
     >> ssh userA@10.50.29.89 -p 1234 -L 3333:localhost:2222 # Ran on the internet host. Authenticate back to A to target local_host_2222 on A
     >> ssh userB@localhost -p 3333 -D 9050 # Creates a dynamic channel to B 
+	# Ran proxychains and got 1212 and 192.168.30.150
+
 
     # Host B from C ---->  Lets get to Host C from B 
-    # Ran proxychains and got 1212 and 192.168.30.150
     >> ssh userB@localhost -p 3333 (this_gets_me_to_B) -L 4444:192.168.30.150:1212
-
     #  A dynamic tunnel to C 
     >> ssh userC@localhost -p 4444 -D 9050 # Creating a dynamic tunnel to C, ssh to C 
-
     # Ran proxychains and discovered host D with port 2932 and ip address 10.10.12.121
 
     # We are going to c and creating a local tunnel. 
-    >> ssh userC@localhost -p 4444 -L 5555:10.10.12.121:2932
+    >> ssh userC@localhost -p 4444 -L 5555:10.10.12.121:2932 # Is this ran from the internet host???
 
     # SSH and use a dynamic tunnel to D 
     >> ssh userD@localhost -p 5555 -D 9050
