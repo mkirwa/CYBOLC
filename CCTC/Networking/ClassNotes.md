@@ -1282,6 +1282,8 @@ Explicit ACCEPT
 
 ###### IP Tables ######
 
+Iptables is a Linux firewall program that monitors traffic to and from a server. 
+
 iptbales -t [table/filter(default)/not/mangle] -[A(append)/I(insert)/R(specifies a table)/D(deletes_a_table)] [chain] [rule(do something. Anything coming from x going to Y)] -j [action = accept/reject/drop] 
 
 reject -> sends ICMP response
@@ -1300,6 +1302,358 @@ ip tables -p is to specify a protocol
 -p tcp [ --tcp-flags { SYN | ACK | PSH | RST | FIN | URG | ALL | NONE } ]
 -p udp [ --sport | --dport { port1 | port1:port2 } ]
 
+nft is the command line tool used to set up, maintain and inspect packet filtering and classification rules in the Linux kernel, in the nftables framework.
+
+nft add table [family/ip/ip6/inet] [name]
+
+nft add chain [family] [table] [chain] { type [type] hook [hook]
+    priority [priority] \; policy [policy] \;}
+* [chain] = User defined name for the chain.
+
+* [type] =  can be filter, route or nat.
+
+* [hook] = prerouting, ingress, input, forward, output or
+         postrouting.
+
+* [priority] = user provided integer. Lower number = higher
+             priority. default = 0. Use "--" before
+             negative numbers.
+
+* ; [policy] ; = set policy for the chain. Can be
+              accept (default) or drop.
+
+Use "\" to escape the ";" in bash -> \ is used to make sure it runs as one command... ; is a command separator
+
+nft add rule [family] [table] [chain] [matches (matches)] [statement]
+* [matches] = typically protocol headers(i.e. ip, ip6, tcp,
+            udp, icmp, ether, etc)
+
+* (matches) = these are specific to the [matches] field.
+
+* [statement] = action performed when packet is matched. Some
+              examples are: log, accept, drop, reject,
+              counter, nat (dnat, snat, masquerade)
+
+###### RULE MATCH OPTIONS ######
+
+ip [ saddr | daddr { ip | ip1-ip2 | ip/CIDR | ip1, ip2, ip3 } ]
+tcp flags { syn, ack, psh, rst, fin }
+tcp [ sport | dport { port1 | port1-port2 | port1, port2, port3 } ]
+udp [ sport| dport { port1 | port1-port2 | port1, port2, port3 } ]
+icmp [ type | code { type# | code# } ]
+
+###### RULE MATCH OPTIONS ######
+
+ct state { new, established, related, invalid, untracked }
+iif [iface]
+oif [iface]
+
+###### MODIFY NFTABLES ######
+
+nft { list | flush } ruleset
+nft { delete | list | flush } table [family] [table]
+nft { delete | list | flush } chain [family] [table] [chain]
+
+###### MODIFY NFTABLES ######
+
+List table with handle numbers
+
+nft list table [family] [table] [-a]
+Adds after position
+
+nft add rule [family] [table] [chain] [position <position>] [matches] [statement]
+Inserts before position
+
+nft insert rule [family] [table] [chain] [position <position>] [matches] [statement]
+Replaces rule at handle
+
+nft replace rule [family] [table] [chain] [handle <handle>] [matches] [statement]
+Deletes rule at handle
+
+nft delete rule [family] [table] [chain] [handle <handle>]
+
+nftables is a subsystem of the Linux kernel providing filtering and classification of network packets/datagrams/frames. It's the successor to iptables and offers a more efficient way to manage network packets. Understanding nftables involves comprehending tables, chains, rules, and match options. Here's a breakdown of these components:
+
+Tables
+Purpose: Tables are containers for several chains. They are primarily used to organize the structure of the firewall settings.
+Types: Tables can be of different types, like filter, nat, etc., each serving a different purpose or dealing with different kinds of network traffic.
+Scope: They define the namespace for chains. You can have multiple tables, each with its own set of chains.
+
+Chains
+Purpose: Chains are sequences of rules that get applied to packets. They are located within tables and represent the different points in the packet processing pathways where rules can be applied.
+Types: Chains can be predefined (like INPUT, OUTPUT, FORWARD in the filter table) or user-defined.
+Flow: Packets are processed sequentially through rules in a chain until a rule matches and decides the fate of the packet (accept, drop, queue, etc.) or the end of the chain is reached.
+
+Rules
+Purpose: Rules are the actual conditions that get applied to packets. Each rule contains criteria that a packet must match and an action to take if the packet matches the criteria.
+Structure: A rule is made up of matches (criteria like source/destination IP, port, protocol, etc.) and a target/action (like accept, drop, reject, etc.).
+Specificity: Rules are very specific and are where the bulk of the packet filtering logic resides.
+
+Rule Match Options
+Purpose: Match options are the conditions used within rules to match network packets. They specify what aspects of a packet should be examined.
+Examples: IP source/destination, port numbers, protocol type, TCP flags, etc.
+
+Flexibility: Match options are quite flexible and allow for a broad range of criteria to be defined.
+Differences and Relationships
+
+Tables vs Chains: Tables are like containers or namespaces for chains. Tables organize chains into distinct sets, often based on their function or the type of traffic they handle.
+
+Chains vs Rules: Chains are sequences of rules. A chain defines the path that packets follow and the rules within a chain define the actions taken on the packets.
+
+Rules vs Match Options: Rules contain match options. Match options are the specific conditions within a rule that a packet must meet for the rule's action to be executed.
+
+In summary, nftables organizes its firewall settings in a hierarchical manner: tables contain chains, chains contain rules, and rules contain match options. This structure provides a clear and flexible framework for defining complex firewall configurations.
+
+nfttables
+	chains
+		rules
+			match options
+
+iptables -t nat -A POSTROUTING -o eth0 -s 192.168.0.1 -j SNAT --to 1.1.1.1
+
+
+The iptables command you've provided is configuring a Source Network Address Translation (SNAT) rule. Here's a breakdown of what this command does:
+
+iptables: This is the command for interacting with the Linux kernel's netfilter framework, which is used for packet filtering, network address translation (NAT), and port translation.
+
+-t nat: This option specifies the table to which the rule is being added. In this case, it's the nat table, which is used for network address translation.
+
+-A POSTROUTING: The -A option appends a new rule to a chain, in this case, the POSTROUTING chain. The POSTROUTING chain is used for altering packets as they are about to leave the system.
+
+-o eth0: This specifies the output interface for the rule, which in this case is eth0. The rule will only apply to packets leaving through the eth0 network interface.
+
+-s 192.168.0.1: This is a source address match. The rule will only apply to packets originating from the IP address 192.168.0.1.
+
+-j SNAT: The -j option tells iptables to jump to the SNAT target (Source Network Address Translation) if the packet matches the rule. SNAT is used to change the source address of packets.
+
+--to 1.1.1.1: This part of the command specifies the new source IP address that will be used in the SNAT process. In this case, packets originating from 192.168.0.1 and leaving through the eth0 interface will have their source IP address changed to 1.1.1.1. USE MASQUERADE if you're using things like DHCP! 
+
+
+iptables -t nat -A PREROUTING -i eth0 -d 8.8.8.8 -j DNAT --to 10.0.0.1
+
+iptables: This is the command for interacting with the Linux kernel's netfilter framework, which is used for packet filtering, network address translation (NAT), and port translation.
+
+-t nat: This option specifies the table to which the rule is being added. In this case, it's the nat table, which is used for network address translation.
+
+-A PREROUTING: The -A option appends a new rule to a chain, in this case, the PREROUTING chain. The PREROUTING chain is used for altering packets as soon as they arrive, before routing decisions are made.
+
+-i eth0: This specifies the input interface for the rule, which in this case is eth0. The rule will only apply to packets arriving through the eth0 network interface.
+
+-d 8.8.8.8: This is a destination address match. The rule will only apply to packets intended for the IP address 8.8.8.8.
+
+-j DNAT: The -j option tells iptables to jump to the DNAT target (Destination Network Address Translation) if the packet matches the rule. DNAT is used to change the destination address of packets.
+
+--to 10.0.0.1: This part of the command specifies the new destination IP address that will be used in the DNAT process. In this case, packets destined for 8.8.8.8 and arriving through the eth0 interface will have their destination IP address changed to 10.0.0.1.
+
+In Simple Terms:
+When a packet destined for the IP address 8.8.8.8 arrives at the system through the eth0 interface, this rule will change its destination IP address to 10.0.0.1. This type of rule is commonly used in port forwarding scenarios where traffic intended for one address (like a public IP) is redirected to another address (like an internal IP). For instance, this could be used to redirect traffic that was originally intended to reach a public DNS server (8.8.8.8) to an internal DNS server (10.0.0.1) for handling.
+
+
+#### MANGLE -> #### 
+
+In Linux, the mangle table is used to alter the IP headers of packets. It can be used to: 
+Adjust the Time to Live (TTL) value of a packet
+Change other IP headers
+Alter locally-generated packets before routing
+
+iptables -t mangle -A POSTROUTING -o eth0 -j TTL --ttl-set 128
+iptables -t mangle -A POSTROUTING -o eth0 -j DSCP --set-dscp 26
+
+#### MANGLE EXAMPLES WITH NFTABLES ####
+
+nft add table ip MANGLE
+nft add chain ip MANGLE INPUT {type filter hook input priority 0 \; policy accept \;}
+nft add chain ip MANGLE OUTPUT {type filter hook output priority 0 \; policy accept \;}
+nft add rule ip MANGLE OUTPUT oif eth0 ip ttl set 128
+nft add rule ip MANGLE OUTPUT oif eth0 ip dscp set 26
+
+### Practicals 
+
+ssh student@172.16.82.106
+iptables -t filter -A INPUT -p tcp --dport 22 -m state --state NEW,ESTABLISHED -j ACCEPT
+ip tables -t filter -L
+
+iptables -t filter -A OUTPUT -p tcp --sport 22 -m state --state NEW,ESTABLISHED -j ACCEPT
+iptables -t filter -nL --line-numbers
+
+#change policy 
+
+sudo su
+iptables -t filter -A INPUT -p tcp --dport 22 -m state --state NEW,ESTABLISHED -j ACCEPT
+iptables -t filter -A OUTPUT -p tcp --sport 22 -m state --state NEW,ESTABLISHED -j ACCEPT
+iptables -t filter -nL --line-numbers  (this shows what rules you've created)
+iptables -t filter -P INPUT DROP
+iptables -t filter -P OUTPUT DROP
+
+shutdown -r 5 
+
+iptables -t filter -A INPUT -p tcp -m multiport --ports 22,23,80 -m  state --state NEW, ESTABLISHED -j ACCEPT
+iptables -t filter -A INPUT -p tcp -m multiport --ports 22,23,80 -m state --state NEW, ESTABLISHED -j ACCEPT
+
+root@blue-host-1-student-11:/home/student# iptables -t filter -A INPUT -p tcp -m multiport --ports 22,23,80 -m state --state NEW,ESTABLISHED -j ACCEPT
+root@blue-host-1-student-11:/home/student# iptables -t filter -A OUTPUT -p tcp -m multiport --ports 22,23,80 -m state --state NEW,ESTABLISHED -j ACCEPT
+
+
+flash your rules... 
+root@blue-host-1-student-11:/home/student# iptables -t filter -P INPUT ACCEPT
+root@blue-host-1-student-11:/home/student# iptables -t filter -P OUTPUT ACCEPT
+
+IF YOU DO THE FLASH BEFORE ACCEPT YOU WILL GET LOCKED OUT 
+
+root@blue-host-1-student-11:/home/student# iptables -t filter -L
+Chain INPUT (policy ACCEPT)
+target     prot opt source               destination         
+ACCEPT     tcp  --  anywhere             anywhere             tcp dpt:ssh state NEW,ESTABLISHED
+ACCEPT     tcp  --  anywhere             anywhere             multiport ports ssh,telnet,http state NEW,ESTABLISHED
+
+Chain FORWARD (policy ACCEPT)
+target     prot opt source               destination         
+
+Chain OUTPUT (policy ACCEPT)
+target     prot opt source               destination         
+ACCEPT     tcp  --  anywhere             anywhere             tcp spt:ssh state NEW,ESTABLISHED
+ACCEPT     tcp  --  anywhere             anywhere             multiport ports ssh,telnet,http state NEW,ESTABLISHED
+root@blue-host-1-student-11:/home/student# iptables -t filter -F
+root@blue-host-1-student-11:/home/student# iptables -t filter -L
+
+Chain INPUT (policy ACCEPT)
+target     prot opt source               destination         
+
+Chain FORWARD (policy ACCEPT)
+target     prot opt source               destination         
+
+Chain OUTPUT (policy ACCEPT)
+target     prot opt source               destination         
+root@blue-host-1-student-11:/home/student# 
+
+
+student@blue-internet-host-student-11:~$ ssh student@172.16.82.12
+^C
+student@blue-internet-host-student-11:~$ ssh student@172.16.82.112
+The authenticity of host '172.16.82.112 (172.16.82.112)' can't be established.
+ECDSA key fingerprint is SHA256:JbBAsMDNh8ECJx9qMCJ+KQSe06ZkcGLv1S3crHRGRNw.
+Are you sure you want to continue connecting (yes/no)? yes
+Warning: Permanently added '172.16.82.112' (ECDSA) to the list of known hosts.
+student@172.16.82.112's password: 
+Linux blue-host-3-student-11 4.19.0-18-cloud-amd64 #1 SMP Debian 4.19.208-1 (2021-09-29) x86_64
+
+The programs included with the Debian GNU/Linux system are free software;
+the exact distribution terms for each program are described in the
+individual files in /usr/share/doc/*/copyright.
+
+Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent
+permitted by applicable law.
+student@blue-host-3-student-11:~$ sudo su
+
+We trust you have received the usual lecture from the local System
+Administrator. It usually boils down to these three things:
+
+    #1) Respect the privacy of others.
+    #2) Think before you type.
+    #3) With great power comes great responsibility.
+
+[sudo] password for student: 
+root@blue-host-3-student-11:/home/student# nft add table ip TEST
+root@blue-host-3-student-11:/home/student# nft list ruleset
+table ip TEST {
+}
+root@blue-host-3-student-11:/home/student# nft add chain ip TEST INPUT { type filter hook input priority 0 \; policy accept \;}
+root@blue-host-3-student-11:/home/student# nft add chain ip TEST OUTPUT { type filter hook output priority 0 \; policy accept \;}
+root@blue-host-3-student-11:/home/student# nft list ruleset
+table ip TEST {
+	chain INPUT {
+		type filter hook input priority 0; policy accept;
+	}
+
+	chain OUTPUT {
+		type filter hook output priority 0; policy accept;
+	}
+}
+root@blue-host-3-student-11:/home/student# nft add rule ip TEST INPUT tcp sport { 22, 23, 80} ct state {new, established} accept
+root@blue-host-3-student-11:/home/student# nft add rule ip TEST OUTPUT tcp sport { 22, 23, 80} ct state {new, established} accept
+root@blue-host-3-student-11:/home/student# nft add rule ip TEST INPUT tcp dport { 22, 23, 80} ct state {new, established} accept
+root@blue-host-3-student-11:/home/student# nft list ruleset
+table ip TEST {
+	chain INPUT {
+		type filter hook input priority 0; policy accept;
+		tcp sport { ssh, telnet, http } ct state { established, new } accept
+		tcp dport { ssh, telnet, http } ct state { established, new } accept
+	}
+
+	chain OUTPUT {
+		type filter hook output priority 0; policy accept;
+		tcp sport { ssh, telnet, http } ct state { established, new } accept
+	}
+}
+root@blue-host-3-student-11:/home/student# nft add rule ip TEST OUTPUT tcp dport { 22, 23, 80} ct state {new, established} accept
+root@blue-host-3-student-11:/home/student# nft list ruleset
+table ip TEST {
+	chain INPUT {
+		type filter hook input priority 0; policy accept;
+		tcp sport { ssh, telnet, http } ct state { established, new } accept
+		tcp dport { ssh, telnet, http } ct state { established, new } accept
+	}
+
+	chain OUTPUT {
+		type filter hook output priority 0; policy accept;
+		tcp sport { ssh, telnet, http } ct state { established, new } accept
+		tcp dport { ssh, telnet, http } ct state { established, new } accept
+	}
+}
+root@blue-host-3-student-11:/home/student# nft list ruleset -a
+table ip TEST { # handle 1
+	chain INPUT { # handle 1
+		type filter hook input priority 0; policy accept;
+		tcp sport { ssh, telnet, http } ct state { established, new } accept # handle 8
+		tcp dport { ssh, telnet, http } ct state { established, new } accept # handle 14
+	}
+
+	chain OUTPUT { # handle 2
+		type filter hook output priority 0; policy accept;
+		tcp sport { ssh, telnet, http } ct state { established, new } accept # handle 11
+		tcp dport { ssh, telnet, http } ct state { established, new } accept # handle 17
+	}
+}
+root@blue-host-3-student-11:/home/student# nft insert rule ip TEST INPUT handle 17 icmp type 8 accept
+Error: Could not process rule: No such file or directory
+insert rule ip TEST INPUT handle 17 icmp type 8 accept
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+root@blue-host-3-student-11:/home/student# nft insert rule ip TEST INPUT handle 17 icmp type 8 accept
+Error: Could not process rule: No such file or directory
+insert rule ip TEST INPUT handle 17 icmp type 8 accept
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+root@blue-host-3-student-11:/home/student# nft insert rule ip TEST INPUT handle 14 icmp type 8 accept
+root@blue-host-3-student-11:/home/student# nft list ruleset -a
+table ip TEST { # handle 1
+	chain INPUT { # handle 1
+		type filter hook input priority 0; policy accept;
+		tcp sport { ssh, telnet, http } ct state { established, new } accept # handle 8
+		icmp type echo-request accept # handle 20
+		tcp dport { ssh, telnet, http } ct state { established, new } accept # handle 14
+	}
+
+	chain OUTPUT { # handle 2
+		type filter hook output priority 0; policy accept;
+		tcp sport { ssh, telnet, http } ct state { established, new } accept # handle 11
+		tcp dport { ssh, telnet, http } ct state { established, new } accept # handle 17
+	}
+}
+root@blue-host-3-student-11:/home/student# 
+
+
+FLASHING RULES SETS GETS RID OF EVERYTHING
+
+root@blue-host-3-student-11:/home/student# nft flush ruleset
+root@blue-host-3-student-11:/home/student# nft list ruleset -a
+root@blue-host-3-student-11:/home/student# 
+
+how to open nc listener... 
+nc -lvp 9001 -> etc ......
 
 
 
+CAD: Task 1 and 2 START FLAG
+×
+Task 1 IP/NFTables - Host Filtering: T@bl3sth@tF1lt3r
+
+Task 2 IP/NFTables - NAT: N@tF1lt3rsf0rL1f3

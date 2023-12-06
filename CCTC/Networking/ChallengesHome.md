@@ -1204,6 +1204,10 @@ Internet Host to Host A
     Do a -L to 19.168.0.40 and a dynamic channel and just run it!!
 
 ###### Establishing a Tunnel back to 192.168.0.40 ######
+1. ssh net4_student11@10.50.40.12 -p 22 -L 1111:192.168.0.40:22
+
+
 1. ssh net4_student@192.168.0.40 -p 1222 -D 9050
 
 
+ssh net4_student11@localhost -p 41163 -D 9050
