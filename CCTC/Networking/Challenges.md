@@ -924,32 +924,123 @@ Language is described in the Readme on the github site.
 
 go
 
+#### 41. Attack Analysis - OS Target 10 ####
+
+
+Refer back to challenge 38, the malware referenced in this question was identified as ransomware. What OS is targeted by the malware?
+
+Hint
+OS mentioned in Readme on the github site
+
+#### Answer ####
+
+windows
+
+#### 42. Attack Analysis - Architecture 10 ####
+
+The ransomware indicated in challenge 37 targets what type of system architecture?
+Hint
+Check the ransomware.manifest file on the github site.
+
+#### Answer ####
+
+x86
+
+#### 43. Attack Analysis - Assembly Description ####
+
+10 What is the assembly description attribute in the assembly manifest for the ransomware? 
+
+Hint
+Check the ransomware.manifest file on the github site.
+
+#### Answer ####
+
+Nothing to see here
+
+#### 44. Attack Analysis - Date 10 ####
+
+In the pcap, there is a protocol that provides clock synchronization between systems over packet-switched networks in this pcap. Use the information within this protocol's header to determine the date of this packet capture. (format your answer as follows: Oct 20, 2019)
+
+Hint
+search for a protocol that synchronizes network time
+
+#### Answer ####
+
+apply NTP as a filter
+
+#### 5. Attack Analysis - OS Type 10 ####
+
+p0f has extensive finger printing capabilities (as indicated by the name).
+
+Use p0f to read the pcap and determine the OS type of the host: 192.168.10.101
+
+#### Answer ####
+
+sudo p0f -r /home/activity_resources/pcaps/attack_analysis1.pcap 'src host 1 92.168.10.101'
+Linux 3.11
+
+#### 15. Attack Analysis - Vulnerability 10 ####
+
+Attackers will seek unique ways to avoid being caught. This Traffic has been reported to contain a vulnerability that crashes wireshark due to an out-of-bounds write, detailed in CVE-2017-13766
+
+What Protocol did the attackers use to achieve this and which server IP Address and Port was targeted?
+
+Example:
+PROTOCOL 1.1.1.1:PORT
+
+Hint
+Google search the CVE details
+Find the protocol mentioned in your internet research in the pcap.
+
+
+#### Answer ####
+
+Google 
+bittorrent
+
+#### 18. Attack Analysis - Vuze 10 ####
+
+The Vuze DHT protocol was used as an exploit against 192.168.10.111, indicated in the protocol hierarchy page of Wireshark.
+
+After analysis and some Open Source Research, what type of Application is Vuze?
+
+Hint
+Google search Vuze DHT
+
+#### Answer ####
+
+
+
+#### 20. Attack Analysis - OS Fingerprint 10 ####
+
+Initial TTL can be used to determine host operating systems. Use a tool that will perform fingerprinting based on other criteria to determine the OS of the host with the IP address 192.168.10.111.
+
+#### Answer ####
+
+sudo p0f -r /home/activity_resources/pcaps/attack_analysis1.pcap 'src host 1 92.168.10.101'
+Linux 3.11
+
+
+#### 22. Attack Analysis - Attacked Port 2 10 ####
+
+In the last challenge you discovered port 55 being targeted for attacks, this is within the well known range, what typical service is associated with it?
+
+Hint
+Google search the port
+
+#### Answer ####
+
+ISI Graphics Language
+
+#### 25. Attack Analysis - Server Version 10 ####
+
+What version of Apache is running on the web server at the 192.168.10.111 address according to raw signatures in p0f?
+
+#### Answer ####
+
 #### ####
 
 
 #### Answer ####
 
-
-#### ####
-
-
-#### Answer ####
-
-
-#### ####
-
-
-#### Answer ####
-
-
-#### ####
-
-
-#### Answer ####
-
-
-#### ####
-
-
-#### Answer ####
 
