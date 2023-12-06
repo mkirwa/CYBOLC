@@ -1257,5 +1257,49 @@ Statistics -> ipV4
 Analyze->Expert Information
 
 
+## FILTERING ## 
+
+BLOCK-LISTING VS ALLOW-LISTING
+Block-Listing (Formerly Black-List)
+
+Implicit ACCEPT
+
+Explicit DENY
+
+Allow-Listing (Formerly White-List)
+
+Implicit DENY
+
+Explicit ACCEPT
+
+#### FIREWALL FILTERING METHODS
+
+1. Stateless (Packet) Filtering (L3+4)
+2. Stateful Inspection (L4)
+3. Circuit-Level (L5)
+4. Application Layer (L7)
+5. Next Generation (NGFW) (L7) 
+
+###### IP Tables ######
+
+iptbales -t [table/filter(default)/not/mangle] -[A(append)/I(insert)/R(specifies a table)/D(deletes_a_table)] [chain] [rule(do something. Anything coming from x going to Y)] -j [action = accept/reject/drop] 
+
+reject -> sends ICMP response
+drop -> no response
+
+Do you wanna let them know that you dropped them or not? 
+
+iptables -t [table] -A [chain] [rules] -j [action]
+in an input chain, you don't need to specify the source... don't specify the source on a network...
+ip tables -p is to specify a protocol 
+
+###### IPTABLES RULES SYNTAX ######
+
+-p icmp [ --icmp-type { type# | code# } ]
+-p tcp [ --sport | --dport { port1 |  port1:port2 (cannot do comma delimited) } ]
+-p tcp [ --tcp-flags { SYN | ACK | PSH | RST | FIN | URG | ALL | NONE } ]
+-p udp [ --sport | --dport { port1 | port1:port2 } ]
+
+
 
 

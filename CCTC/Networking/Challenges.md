@@ -609,6 +609,47 @@ Multicast Domain Name System -> Additional Records -> HP705A0FF92F8D.local: type
 
 Answer -> HP705A0FF92F8D.local,192.168.1.7
 
+#### 15. Attack Analysis - Vulnerability 10 ####
+
+Attackers will seek unique ways to avoid being caught. This Traffic has been reported to contain a vulnerability that crashes wireshark due to an out-of-bounds write, detailed in CVE-2017-13766
+
+What Protocol did the attackers use to achieve this and which server IP Address and Port was targeted?
+
+Example:
+PROTOCOL 1.1.1.1:PORT
+
+Hint
+Google search the CVE details
+
+Find the protocol mentioned in your internet research in the pcap.
+
+#### Answer ####
+
+run `pn_ptcp` on the filter 
+ans-> PN-PTCP 192.168.10.1111:55
+
+#### 16. Attack Analysis - IOT 10 ####
+
+It was identified that an exploit targeting a prominent IOT Systems was captured targeting 192.168.10.111 over UDP port 55.
+
+This protocol was identified as an open global standard for wireless technology that uses low-power digital radio signals for indoor Personal Area Networks, uses the IEEE 802.15.4 specification as it's basis, which is often deployed in a mesh topology.
+
+What is the name of this Protocol and what is the Packet Type being flooded?
+
+Example: (No Spaces) PROTOCOL,PACKET_TYPE
+
+Hint
+Google search details from the question
+
+Find the protocol mentioned in your internet research in the pcap.
+
+#### Answer ####
+
+scop and udp.port==55
+
+Check the packets
+Ans-> SCoP,Hello
+
 #### 17. Attack Analysis - RCE 5 ####
 
 Remote arbitrary Code Execution was captured targeting 192.168.10.111 via a gaming protocol.
@@ -681,6 +722,14 @@ Save as a new pcap and load it in Wireshark. You should now only have 86345 pack
 
 It is DOS attack so it's an automated attack
 Ans -> Yes
+
+### 24. Attack Analysis - Type of Attack 2 5 ####
+
+What version of Apache is running on the web server at the 192.168.10.111 address according to raw signatures in p0f?
+
+#### Answer ####
+
+sudo p0f -r  attack_analysis1.pcap | grep Apache # See the version at the end
 
 #### 26. Attack Analysis - Website Tool 5 ####
 
