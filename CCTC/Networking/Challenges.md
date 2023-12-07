@@ -1113,199 +1113,174 @@ Action: Implement Host Filtering to Allow and Restrict Communications and Traffi
 
 #### Answer ####
 
-iptables -A INPUT -p tcp -m multiport --ports 80 -j ACCEPT 
-iptables -A OUTPUT -p tcp -m multiport --ports 80 -j ACCEPT 
-
-
-# Allow New and Established traffic to/from via SSH, TELNET, and RDP
-iptables -A INPUT -p tcp --dport 22 -m state --state NEW,ESTABLISHED -j ACCEPT
-iptables -A OUTPUT -p tcp --sport 22 -m state --state ESTABLISHED -j ACCEPT
-
-iptables -A INPUT -p tcp --dport 23 -m state --state NEW,ESTABLISHED -j ACCEPT
-iptables -A OUTPUT -p tcp --sport 23 -m state --state ESTABLISHED -j ACCEPT
-
-iptables -A INPUT -p tcp --dport 3389 -m state --state NEW,ESTABLISHED -j ACCEPT
-iptables -A OUTPUT -p tcp --sport 3389 -m state --state ESTABLISHED -j ACCEPT
-
-# Change the Default Policy in the Filter Table for the INPUT, OUTPUT, and FORWARD chains to DROP
-iptables -P INPUT DROP
-iptables -P OUTPUT DROP
-iptables -P FORWARD DROP
-
-# Allow ping (ICMP) requests (and reply) to and from the Pivot.
-iptables -A INPUT -p icmp --icmp-type echo-request -j ACCEPT
-iptables -A OUTPUT -p icmp --icmp-type echo-reply -j ACCEPT
-
-# Allow ports 6579 and 4444 for both udp and tcp traffic
-iptables -A INPUT -p tcp -m multiport --dports 6579,4444 -j ACCEPT
-iptables -A INPUT -p udp -m multiport --dports 6579,4444 -j ACCEPT
-
-# Allow New and Established traffic to/from via HTTP
-iptables -A INPUT -p tcp --dport 80 -m state --state NEW,ESTABLISHED -j ACCEPT
-iptables -A OUTPUT -p tcp --sport 80 -m state --state ESTABLISHED -j ACCEPT
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# Allow New and Established traffic to/from via SSH, TELNET, and RDP
+##### Allow New and Established traffic to via SSH, TELNET, and RDP #####
 iptables -A INPUT -p tcp -m multiport --sports 22,23,3389 -m state --state NEW,ESTABLISHED -j ACCEPT
 iptables -A INPUT -p tcp -m multiport --dports 22,23,3389 -m state --state NEW,ESTABLISHED -j ACCEPT
 
-iptables -A OUTPUT -p tcp -m multiport --sports 22,23,3389 -m state --state ESTABLISHED -j ACCEPT
-iptables -A OUTPUT -p tcp -m multiport --dports 22,23,3389 -m state --state ESTABLISHED -j ACCEPT
-
-
-# Change the Default Policy in the Filter Table for the INPUT, OUTPUT, and FORWARD chains to DROP
-iptables -P INPUT DROP
-iptables -P OUTPUT DROP
-iptables -P FORWARD DROP
-
-# Allow ports 6579 and 4444 for both udp and tcp traffic
-iptables -A INPUT -p tcp -m multiport --sports 6579,4444 -j ACCEPT
-iptables -A INPUT -p tcp -m multiport --dports 6579,4444 -j ACCEPT
-
-iptables -A INPUT -p udp -m multiport --sports 6579,4444 -j ACCEPT
-iptables -A INPUT -p udp -m multiport --dports 6579,4444 -j ACCEPT
-
-# Allow New and Established traffic to/from via HTTP
-iptables -A INPUT -p tcp --sport 80 -m state --state NEW,ESTABLISHED -j ACCEPT
-iptables -A INPUT -p tcp --dport 80 -m state --state NEW,ESTABLISHED -j ACCEPT
-
-iptables -A OUTPUT -p tcp --sport 80 -m state --state ESTABLISHED -j ACCEPT
-iptables -A OUTPUT -p tcp --dport 80 -m state --state ESTABLISHED -j ACCEPT
-
-
-
-
-
-
-
-IPTable Rule Definitions
-
-    Allow New and Established traffic to/from via SSH, TELNET, and RDP
-    Change the Default Policy in the Filter Table for the INPUT, OUTPUT, and FORWARD chains to DROP
-    Allow ping (ICMP) requests (and reply) to and from the Pivot.
-    Allow ports 6579 and 4444 for both udp and tcp traffic
-    Allow New and Established traffic to/from via HTTP
-
-
-
-# Allow New and Established traffic to via SSH, TELNET, and RDP
-iptables -A INPUT -p tcp -m multiport --sports 22,23,3389 -m state --state NEW,ESTABLISHED -j ACCEPT
-iptables -A INPUT -p tcp -m multiport --dports 22,23,3389 -m state --state NEW,ESTABLISHED -j ACCEPT
-
-# Allow New and Established traffic from via SSH, TELNET, and RDP
+##### Allow New and Established traffic from via SSH, TELNET, and RDP #####
 iptables -A OUTPUT -p tcp -m multiport --sports 22,23,3389 -m state --state NEW,ESTABLISHED -j ACCEPT
 iptables -A OUTPUT -p tcp -m multiport --dports 22,23,3389 -m state --state NEW,ESTABLISHED -j ACCEPT
 
-# Change the Default Policy in the Filter Table for the INPUT, OUTPUT, and FORWARD chains to DROP
+##### Change the Default Policy in the Filter Table for the INPUT, OUTPUT, and FORWARD chains to DROP #####
 iptables -P INPUT DROP
 iptables -P OUTPUT DROP
 iptables -P FORWARD DROP
 
-# Allow ICMP (ping) requests and replies # input 
+##### Allow ICMP (ping) requests and replies # input #####
 iptables -A INPUT -p icmp --src 10.10.0.40 --icmp-type echo-request -j ACCEPT
 iptables -A INPUT -p icmp --src 10.10.0.40 --icmp-type echo-reply -j ACCEPT
 
-# Allow ICMP (ping) requests and replies # output  
+##### Allow ICMP (ping) requests and replies # output #####
 iptables -A OUTPUT -p icmp --dst 10.10.0.40 --icmp-type echo-request -j ACCEPT
 iptables -A OUTPUT -p icmp --dst 10.10.0.40 --icmp-type echo-reply -j ACCEPT
 
-# Allow ports 6579 and 4444 for both tcp traffic # input 
+##### Allow ports 6579 and 4444 for both tcp traffic # input #####
 iptables -A INPUT -p tcp -m multiport --sports 6579,4444 -j ACCEPT
 iptables -A INPUT -p tcp -m multiport --dports 6579,4444 -j ACCEPT
 
-# Allow ports 6579 and 4444 for both tcp traffic # output 
+##### Allow ports 6579 and 4444 for both tcp traffic # output #####
 iptables -A OUTPUT -p tcp -m multiport --sports 6579,4444 -j ACCEPT
 iptables -A OUTPUT -p tcp -m multiport --dports 6579,4444 -j ACCEPT
 
-# Allow ports 6579 and 4444 for both udp traffic # input 
+##### Allow ports 6579 and 4444 for both udp traffic # input #####
 iptables -A INPUT -p udp -m multiport --sports 6579,4444 -j ACCEPT
 iptables -A INPUT -p udp -m multiport --dports 6579,4444 -j ACCEPT
 
-# Allow ports 6579 and 4444 for both udp traffic # output 
+##### Allow ports 6579 and 4444 for both udp traffic # output #####
 iptables -A OUTPUT -p udp -m multiport --sports 6579,4444 -j ACCEPT
 iptables -A OUTPUT -p udp -m multiport --dports 6579,4444 -j ACCEPT
 
-# Allow New and Established traffic to via HTTP # input 
+##### Allow New and Established traffic to via HTTP # input #####
 iptables -A INPUT -p tcp --sport 80 -m state --state NEW,ESTABLISHED -j ACCEPT
 iptables -A INPUT -p tcp --dport 80 -m state --state NEW,ESTABLISHED -j ACCEPT
 
-# Allow New and Established traffic from via HTTP # output
+##### Allow New and Established traffic from via HTTP # output #####
 iptables -A OUTPUT -p tcp --sport 80 -m state --state NEW,ESTABLISHED -j ACCEPT
 iptables -A OUTPUT -p tcp --dport 80 -m state --state NEW,ESTABLISHED -j ACCEPT
 
 467accfb25050296431008a1357eacb1
 
+truncate -s 0 iptablerules.sh 
+
+######################################################################################################
+
+### IP/NFTables - Filtering T3 5 ###
+
+IPTable Rule Definitions
+
+Allow New and Established traffic to/from via SSH, TELNET, and RDP
+
+Change the Default Policy in the Filter Table for the INPUT, OUTPUT, and FORWARD chains to DROP
+
+Allow New and Established traffic to/from via HTTP
+
+Once these steps have been completed and tested, go to Pivot and open up a netcat listener on port 9003 and wait up to 2 minutes for your flag. If you did not successfully accomplish the tasks above, then you will not receive the flag.
 
 
+T1
+Hostname: BLUE_Host-1
+IP: 172.16.82.106
+Creds: student : password
+Action: Implement Host Filtering to Allow and Restrict Communications and Traffic
 
+#### Answer ####
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+##### Allow New and Established traffic to via SSH, TELNET, and RDP #####
 iptables -A INPUT -p tcp -m multiport --sports 22,23,3389 -m state --state NEW,ESTABLISHED -j ACCEPT
 iptables -A INPUT -p tcp -m multiport --dports 22,23,3389 -m state --state NEW,ESTABLISHED -j ACCEPT
 
-iptables -A OUTPUT -p tcp -m multiport --sports 22,23,3389 -m state --state ESTABLISHED -j ACCEPT
-iptables -A OUTPUT -p tcp -m multiport --dports 22,23,3389 -m state --state ESTABLISHED -j ACCEPT
+##### Allow New and Established traffic from via SSH, TELNET, and RDP #####
+iptables -A OUTPUT -p tcp -m multiport --sports 22,23,3389 -m state --state NEW,ESTABLISHED -j ACCEPT
+iptables -A OUTPUT -p tcp -m multiport --dports 22,23,3389 -m state --state NEW,ESTABLISHED -j ACCEPT
 
+##### Set the default policy to DROP for INPUT, OUTPUT, and FORWARD chains #####
 iptables -P INPUT DROP
 iptables -P OUTPUT DROP
 iptables -P FORWARD DROP
 
-iptables -A INPUT -p icmp --src 10.10.0.40 --icmp-type echo-request -j ACCEPT
-iptables -A INPUT -p icmp --src 10.10.0.40 --icmp-type echo-reply -j ACCEPT
-
-iptables -A OUTPUT -p icmp --dst 10.10.0.40 --icmp-type echo-request -j ACCEPT
-iptables -A OUTPUT -p icmp --dst 10.10.0.40 --icmp-type echo-reply -j ACCEPT
-
-iptables -A INPUT -p tcp -m multiport --sports 6579,4444 -j ACCEPT
-iptables -A INPUT -p tcp -m multiport --dports 6579,4444 -j ACCEPT
-
-iptables -A OUTPUT -p tcp -m multiport --sports 6579,4444 -j ACCEPT
-iptables -A OUTPUT -p tcp -m multiport --dports 6579,4444 -j ACCEPT
-
-iptables -A INPUT -p udp -m multiport --sports 6579,4444 -j ACCEPT
-iptables -A INPUT -p udp -m multiport --dports 6579,4444 -j ACCEPT
-
-iptables -A OUTPUT -p udp -m multiport --sports 6579,4444 -j ACCEPT
-iptables -A OUTPUT -p udp -m multiport --dports 6579,4444 -j ACCEPT
-
+##### Allow New and Established traffic to via HTTP # input #####
 iptables -A INPUT -p tcp --sport 80 -m state --state NEW,ESTABLISHED -j ACCEPT
 iptables -A INPUT -p tcp --dport 80 -m state --state NEW,ESTABLISHED -j ACCEPT
 
-iptables -A OUTPUT -p tcp --sport 80 -m state --state ESTABLISHED -j ACCEPT
-iptables -A OUTPUT -p tcp --dport 80 -m state --state ESTABLISHED -j ACCEPT
+##### Allow New and Established traffic from via HTTP # output #####
+iptables -A OUTPUT -p tcp --sport 80 -m state --state NEW,ESTABLISHED -j ACCEPT
+iptables -A OUTPUT -p tcp --dport 80 -m state --state NEW,ESTABLISHED -j ACCEPT
 
 
+### IP/NFTables - Filtering T2 5 ###
 
- truncate -s 0 iptablerules.sh 
+NFTable Rule Definitions
+
+NFTable: CCTC
+Family: ip
+
+Create input and output base chains with:
+Hooks
+Priority of 0
+Policy as Accept
+
+Allow New and Established traffic to/from via SSH, TELNET, and RDP
+
+Change your chains to now have a policy of Drop
+
+Allow ping (ICMP) requests (and reply) to and from the Pivot.
+
+Allow ports 5050 and 5150 for both udp and tcp traffic to/from
+
+Allow New and Established traffic to/from via HTTP
+
+Once these steps have been completed and tested, go to Pivot and open up a netcat listener on port 9002 and wait up to 2 minutes for your flag. If you did not successfully accomplish the tasks above, then you will not receive the flag.
+
+#### Answer ####
+
+
+##### Create input and output base chains with a policy of Accept #####
+nft add chain ip CCTC input { type filter hook input priority 0; }
+nft add chain ip CCTC output { type filter hook output priority 0; }
+
+##### Rule 1: Allow New and Established traffic to/from SSH (port 22), TELNET (port 23), and RDP (port 3389) using the multiport module #####
+nft add rule ip CCTC input ip protocol tcp ct state new,established tcp sport { 22, 23, 3389 } accept
+nft add rule ip CCTC input ip protocol tcp ct state new,established tcp dport { 22, 23, 3389 } accept
+
+nft add rule ip CCTC output ip protocol tcp ct state new,established tcp sport { 22, 23, 3389 } accept
+nft add rule ip CCTC output ip protocol tcp ct state new,established tcp dport { 22, 23, 3389 } accept
+
+##### Rule 2: Change the chains to have a policy of Drop #####
+nft add rule ip CCTC input drop
+nft add rule ip CCTC output drop
+
+##### Rule 3: Allow ping (ICMP) requests (and replies) to and from the Pivot #####
+nft add rule ip CCTC input ip protocol icmp accept
+nft add rule ip CCTC output ip protocol icmp accept
+
+##### Rule 4: Allow ports 5050 and 5150 for both UDP and TCP traffic using the multiport module #####
+nft add rule ip CCTC input ip protocol { tcp, udp } ct state new,established multiport { 5050, 5150 } accept
+nft add rule ip CCTC output ip protocol { tcp, udp } ct state new,established multiport { 5050, 5150 } accept
+
+##### Rule 5: Allow New and Established traffic to/from HTTP (port 80) using the multiport module #####
+nft add rule ip CCTC input ip protocol tcp ct state new,established tcp dport 80 accept
+nft add rule ip CCTC output ip protocol tcp ct state new,established tcp sport 80 accept
+
+
+### IP/NFTables - Filtering Validation 10 ###
+
+For verification (only) of your IPTables and NFTables rules. This is NOT required for the flag:
+
+    Pivot can SSH into all three targets
+    Pivot can ping T1 and T2 but not T3
+    T1, T2 andT3 should not be able to PING each other
+    Pivot can access all three targets via HTTP
+    Monitor via TCPDump on T3 for web traffic from outside the network
+    Monitor via TCPDump on T1 for traffic on the allowed high ports
+    Monitor via TCPDump on T2 for traffic on the allowed high ports
+
+To get the Validation FLAG:
+
+Once you have received the flag for T1, T2, and T3, go to Pivot and perform an md5sum on the combination of T1 flag, T2 flag, and T3 flag combined and separated by underscores.
+
+For example:
+echo "T1flag_T2flag_T3flag" | md5sum
+Update the Stream Socket Message Sender script created in Networking - 2 - Socket Creation and Packet Manipulation.
+Send the result of the md5sum of all three flags separated by underscores to the same IP address and port (IP 172.16.1.15 Port 5309) to receive your flag.
+
+#### Answer ####
