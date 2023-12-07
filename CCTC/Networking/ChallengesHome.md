@@ -854,7 +854,7 @@ ssh net4_student11@10.50.42.216 -L 41144:localhost:41144
 ip a # To check the subnets 
 proxychains ./scan.sh # Scan for the ip using the subnet
 cat 10.3.0.27/flag.txt # To get the flag 
-
+3333
 
 ##### 8. Tunnels Training - Mojave FTP 10 #####
 

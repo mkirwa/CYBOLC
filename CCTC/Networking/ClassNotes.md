@@ -1039,6 +1039,50 @@ ssh [user]@[SSH_server] -R [remote_port]:[destination_host]:[destination_port]
 4. From the source create a dynamic tunnel 
 5. Run proxy scans to identify the next tunnel 
 
+#### TUNNELING ACTIVITY 4 ####
+
+	# Going from Internet Host to Host A 
+    >> ssh hostA@10.50.23.43 -D 9050
+    #  A dynamic tunnel to C 
+    
+	>> run proxy chain scans and identified Host B, on telnet 10.1.2.200 sshd 8976
+
+	# Create a local tunnel to be used for telnet
+	ssh hostA@10.50.23.43 -L 1111:10.1.2.200:23
+	telnet localhost 1111
+
+	# Let's create a remote tunnel back to A from B
+	ssh hostA@10.1.2.130 -p 22 -R 2222:localhost:8976
+
+	# A local tunnel from the internet host 
+	ssh hostA@10.50.23.43 -L 3333:localhost:2222
+	# A dynamic channel to B 
+	ssh hostB@localhost -p 3333 -D 9050
+
+	>> run proxy chain scans and identified Host C, with ip address 10.2.5.20 and sshd 22
+
+	# A local tunnel to host c 
+	ssh hostB@localhost -p 3333 -L 4444:10.2.5.20:22
+	# A dynamic channel to C
+	ssh hostC@localhost -p 4444 -D 9050
+
+	>> run proxy chain scans and identified Host D, with ip address 10.3.9.39 and sshd 3597
+
+	# Create a local tunnel to be used for telnet to D
+	ssh hosstC@localhost -p 4444 -L 5555:10.3.9.39:23
+	telnet localhost 5555
+
+	# Let's create a remote tunnel back to C from D
+	ssh hostC@10.3.9.33 -p 22 -R 6666:localhost:22
+
+	# A local tunnel from internet host 
+	ssh hostC@localhost -p 4444 -L 7777:localhost:6666
+
+	# Let's create a dynamic tunnel to D 
+	ssh hostD@localhost -p 7777 -D 9050
+
+	# Ran our proxy chains... 
+
 
 #### TUNNELING ACTIVITY 4 ####
 
