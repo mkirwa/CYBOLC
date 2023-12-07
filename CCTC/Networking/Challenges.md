@@ -1158,7 +1158,9 @@ iptables -A INPUT -p tcp --dport 80 -m state --state NEW,ESTABLISHED -j ACCEPT
 iptables -A OUTPUT -p tcp --sport 80 -m state --state NEW,ESTABLISHED -j ACCEPT
 iptables -A OUTPUT -p tcp --dport 80 -m state --state NEW,ESTABLISHED -j ACCEPT
 
-467accfb25050296431008a1357eacb1
+task 1 -> 467accfb25050296431008a1357eacb1
+task 2 -> 
+task 3 -> 05e5fb96e2a117e01fc1227f1c4d664c
 
 truncate -s 0 iptablerules.sh 
 
@@ -1205,6 +1207,19 @@ iptables -A INPUT -p tcp --dport 80 -m state --state NEW,ESTABLISHED -j ACCEPT
 ##### Allow New and Established traffic from via HTTP # output #####
 iptables -A OUTPUT -p tcp --sport 80 -m state --state NEW,ESTABLISHED -j ACCEPT
 iptables -A OUTPUT -p tcp --dport 80 -m state --state NEW,ESTABLISHED -j ACCEPT
+
+Ans -> 
+05e5fb96e2a117e01fc1227f1c4d664c
+
+
+
+iptables -t filter -P INPUT ACCEPT
+iptables -t filter -P OUTPUT ACCEPT
+iptables -t filter -F
+iptables -t filter -vL
+
+
+
 
 
 ### IP/NFTables - Filtering T2 5 ###

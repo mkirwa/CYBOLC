@@ -1031,7 +1031,7 @@ proxychains ./scan.sh with 10.5.0 range to from 0 to 100 -> use these to answer 
 
 
 
-##### Data Collection - Task 4 Start 5 #####
+### Data Collection - Task 4 Start 5 ###
  
 Level I Challenge
 Your initial target is T5
@@ -1285,3 +1285,264 @@ Two addresses to be found from 172.16.0.60
 
         HINTS
             FTP: The flag for this machine is being sent from net-ss-09. While logged into net-ssh-10. use tcpdump and ignore telnet traffic to look for the 8 character hidden in the message being repeated. 
+
+##### 10. Data Collection - Inner 80 Flag 15 #####
+
+What is the answer to the flag found on a high port on Net-SSH-08?
+
+###### Answer ######
+
+datagram 
+
+##### 11. Data Collection - Inner leet Flag 10 #####
+
+Enter the flag you retrieved from Net-SSH-07. It is found on a port number that is commonly used in leet speak.
+
+###### Answer ######
+
+<>< <>< <>< <>< 
+
+##### 13. Data Collection - Inner Pivot Access 5 #####
+
+Net-SSH-09 has access to another host with ONLY telnet and http ports exposed.
+
+What is the IP Address of the Host with these exposed ports?
+
+Hint
+This host is a pivot to access another host that only it has access to,
+
+###### Answer ######
+
+	ssh net4_comrade11@localhost -p 41168 -D 9050 # For running proxy scans....was not there ..... check what else is available 
+
+	-> presume that after running scans, I will find 172.16.0.100 ports 23 and 80
+
+	# if we telnet to 172.16.0.100 we will need a local host 
+	ssh net4_comrade11@localhost -p 41168 -L 41169:172.16.0.100:23
+
+	telnet localhost 41169 # 
+	tcpdump -X icmp # run tcpdump
+
+
+	Ans -> badb eef5
+
+
+
+
+
+
+iptables -L -n --line-numbers # Prints all the IP rules 
+
+
+### Networking - 6 - Filtering - Task 3 - Signatures ###
+
+Task 3: Signatures (Snort)
+START FLAG: this_whole_ids_is_out_of_line
+
+
+T4 Snort Server (Bob): 10.50.44.119
+Login Credentials: netN_studentX:passwordX (N=net number and X=student number)
+Alt SSH Port: 25
+* DO NOT CREATE YOUR RULES ON THIS SYSTEM *
+
+##### Signatures - Confirm 1 5 #####
+
+Enumerate services on T4 to gain access, and perform Passive Recon.
+
+What command was used to run snort on that machine.
+
+Exact Syntax with associated Options
+
+###### Answer ######
+
+ssh into 10.50.44.119
+ssh net4_student11@10.50.44.119 -p 25
+run `ps -ef | grep snort`
+
+Ans -> /usr/bin/snort -D -c /etc/snort/snort.conf
+
+##### Signatures - Confirm 2 5 #####
+
+Utilizing T4, which SNORT rule would create an alert when No TCP Flags are set or the URG, PUSH, and FIN TCP Flags are set?
+
+Full Filename of Rule (Not the entire path)
+
+###### Answer ######
+
+1. Step 1 -> `cd /etc/snort/rules` 
+2. Step 2 -> `cat nm.rules` ---- has flag
+Ans -> nm.rules
+
+##### Signatures - Confirm 3 5 #####
+
+Utilizing T4, which SNORT rule would create an alert when the Hex Indicator of a NOP Sled are detected?
+
+Full Filename of Rule
+
+###### Answer ######
+
+`cat shell.rules`------ x86 gives it away
+
+##### Signatures - Confirm 4 5 #####
+
+Utilizing T4, which SNORT rule would create an alert when a DNS Zone Transfer is detected with the content specified in CVE-1999-0532
+
+Full Filename of Rule
+
+###### Answer ######
+
+`cat dzt.rules`------ PROTOCOL-DNS dns zone transfer via TCP detected
+
+#####  Signatures - Confirm 5 5 #####
+
+Utilizing T4, which SNORT rule would create an alert when an ICMP Message is detected.
+
+Full Filename of Rule
+
+###### Answer ######
+
+`cat icmp.rules`
+
+#####  Signatures - ICMP 1 10 #####
+
+From here on you will create your rules on either your Opstation or INTERNET-HOST
+
+Using the provided Traffic Capture (/home/activity_resources/pcaps/ids.pcap) how many alerts are created with the default ICMP rule?
+
+###### Answer ######
+
+sudo snort -r ids.pcap -c /etc/snort/rules/icmp.rules
+ans -> 431
+
+#####  Signatures - ICMP 2 10 #####
+
+Utilizing your INTERNET_HOST, create a new rule called cows.rules.
+
+Rule Definition:
+alert
+any ICMP Messages Source to destination
+Message = Cows
+HEX content = DEADBEEF
+Set sid to 1000001
+
+Provide the complete working rule that you created as the flag with NO SPACES between the ( ).
+
+Example:
+
+TYPE proto IP PORT -> IP PORT (msg:" ";content:" ";sid:;)
+
+To verify if your rule is correct:
+
+cat cows.rule | md5sum
+
+Confirmation MD5sum: 5e68869ecd077d427c182a392fa8b858
+
+
+###### Answer ######
+
+alert icmp any any -> any any (msg:"Cows";content:"|DEADBEEF|";sid:1000001;)
+
+#####  Signatures - ICMP 3 10 #####
+
+Utilizing your INTERNET_HOST, and the provided Traffic Capture how many alerts are created with the content of DEADBEEF?
+
+###### Answer ######
+
+sudo snort -r ids.pcap -c /etc/snort/rules/cows.rule 
+
+Ans -> 80
+
+#####  Signatures - ICMP 4 10 #####
+
+Utilizing your INTERNET_HOST, create a new rule called dmz.rules.
+
+Rule Definition:
+alert
+any ICMP Echo Requests Detects Type 8 / Code 0 To 10.3.0.0/24
+Generate the message DMZ Ping
+Set sid to 1000002
+
+Provide the complete working rule that you created as the flag.
+
+Example:
+
+TYPE proto IP PORT -> IP PORT (msg:"";itype:;icode:;sid:;)
+
+To verify if your rule is correct:
+
+cat dmz.rules | md5sum
+
+Confirmation MD5sum: 67b29afecb382501f4bddbe0b7ad4b6e
+
+###### Answer ######
+
+alert icmp any any -> 10.3.0.0/24 8 (msg:"DMZ Ping"; itype:8; icode:0; sid:1000002;)
+
+##### Signatures - ICMP 5 10 #####
+
+Utilizing your INTERNET_HOST, and the provided Traffic Capture how many alerts are created for ICMP Echo Request messages to 10.3.0.0/24?
+
+###### Answer ######
+
+sudo snort -r ids.pcap -c /etc/snort/rules/dmz.rules
+Ans -> 120
+
+##### Signatures - SSH Brute 10 #####
+
+Utilizing your INTERNET_HOST, create a new rule that will:
+
+Track 3 ssh authentication attempts within 10 seconds coming from a Specific Source using both threshold.
+
+Utilizing the provided Traffic Capture how many alerts are created for SSH Brute Force attempts?
+
+###### Answer ######
+
+alert tcp any any -> any 22 (msg:"Possible SSH Brute Force Attempt";  threshold: type both, track by_src, count 3, seconds 10; sid:1000003;)
+
+Ans -> 9
+
+##### Signatures - RDP 10 #####
+
+Utilizing your INTERNET_HOST, create a new rule that will:
+
+Identify traffic using both TCP and UDP Protocols for RDP traffic going to 192.168.65.20.
+
+Utilizing the provided Traffic Capture how many alerts are created for RDP messages?
+
+###### Answer ######
+
+alert tcp any any -> 192.168.65.20 3389 (msg:"Detected TCP RDP Traffic"; sid:1000004;)
+alert udp any any -> 192.168.65.20 3389 (msg:"Detected UDP RDP Traffic"; sid:1000005;)
+
+Ans -> 234
+
+##### Signatures - Null Scan 10 #####
+
+Utilizing your INTERNET_HOST, create a new rule that will:
+
+Detect TCP Null scan to 10.3.0.0/24 regardless of the traffic flow state.
+
+Utilizing the provided Traffic Capture how many alerts are created for TCP Null scan?
+
+###### Answer ######
+
+alert tcp any any -> 10.3.0.0/24 any (msg:"RDP Incoming!"; flow:stateless; flags:0; sid:10000005;)
+
+Ans -> 327
+
+##### Signatures - WannaCry 15 #####
+
+
+WannaCry ransomware and other Malware often use SMB and CIFS protocols as an attack vector for propagation. Identify the ports these protocols use.
+
+Utilizing your INTERNET_HOST, and the provided Traffic Capture:
+
+How many alerts are created for WannaCry using the Identified Ports regardless of the traffic flow state going to 10.0.0.0/8.
+
+###### Answer ######
+
+Utilizing the provided Traffic Capture how many alerts are created for WannaCry?  
+alert tcp any any -> 10.0.0.0/8 445,139 (msg:"INCOMING MALWARE!"; flow:stateless; sid:10000008;) 
+alert udp any any -> 10.0.0.0/8 137,138 (msg:"INCOMING MALWARE!"; flow:stateless; sid:10000009;)
+
+Ans -> 33
