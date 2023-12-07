@@ -1214,3 +1214,74 @@ ssh net4_student11@localhost -p 41163 -D 9050
 
 
 Re-run 172.16.0.60-150 with high ports tomorrow for the flag
+
+
+
+Two addresses to be found from 172.16.0.60
+
+    172.16.0.80
+        OS: Linux
+        IP:
+        HN: Net-SSH-8
+        UN: net4_comrade11
+        PW: privet11
+        ports: 80,3389
+        The fals is the PDI for UDP at the transport layer
+        Flag: datagram
+
+        HINTS
+            FTP: You have entered the network space for Donovia, Credentials for this network are netN_comradeX, (N = your Net # X = Your student # )
+            HTTP: This machine is a possible pivot to access more machines in the network, but SSh is not open to hosts outside of this network 
+
+
+    172.16.0.70/.80?
+        OS: Linux
+        IP: 
+        HN: Net-SSH-7
+        UN: net4_comrade11
+        PW: privet11
+        ports: 80,1337
+        Flag: Who uses leet speak anymore?
+
+        HINTS 
+            HTTP: To get the flag for net-ssh-07, you will need to look for and connect to a port commonly used iwth a leet speak 
+            HTTP: To get the flag for this machine, you will need to look for and connect to the port commonly used for RDP 
+
+    172.16.0.90
+        OS: Linux
+        HN: Net-SSH-90
+        UN: net4_comrade11
+        PW: privet11
+        ports: 21,80, 2222 (ssh)
+        Flag: Http: Peanut Butter Jelly Time
+
+        HINTS
+            FTP: This is the only machine that can reach net-ssh-01. You will have to use an alternate port on this machine to identify ports on the final machine. 
+
+        # To ssh to this address from the Internet Host
+        # Create a local tunnel to 172.16.0.90
+        ssh net4_comrade11@localhost -p 41167 -L 41168:172.16.0.90:2222(confirm destination port...)
+        ssh net4_comrade11@localhost -p 41168 -D 9050 # For running proxy scans....was not there ..... check what else is available 
+
+        -> presume that after running scans, I will find 172.16.0.100 ports 23 and 80
+
+        # if we telnet to 172.16.0.100 we will need a local host 
+        ssh net4_comrade11@localhost -p 41168 -L 41169:172.16.0.100:23
+        telnet localhost 41169 # if this doesn't work, try the telnet below
+        run tcpdump -X icmp
+
+        # wrong way to telnet
+        telnet localhost -p 33007
+
+
+    172.16.0.100
+        THIS HAS A CONNECTION FROM 172.16.0.90
+        OS: Linux
+        HN: Net-SSH-10
+        UN: net4_comrade11
+        PW: privet11
+        ports: 23,80
+        Flag: Http:
+
+        HINTS
+            FTP: The flag for this machine is being sent from net-ss-09. While logged into net-ssh-10. use tcpdump and ignore telnet traffic to look for the 8 character hidden in the message being repeated. 
