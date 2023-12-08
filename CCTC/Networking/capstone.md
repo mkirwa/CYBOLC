@@ -443,31 +443,17 @@ What is the Answer referenced in “Hint-08a.png”? Provide the answer converte
     # Create a local tunnel to be used for telnet. Local tunnel to host A 
 	ssh net4_student11@10.50.41.66 -p 7777 -L 41103:10.2.2.7:23
 	telnet localhost 41103
+        username: net3_comrade15
+        password: Netflix and Chill
 
 	# Let's create a remote tunnel back to A from B
-	ssh net4_student11@10.2.2.6 -p 7777 -R 41104:10.2.2.7:41106   
+	ssh net4_student11@10.2.2.6 -p 7777 -R 41104:10.2.2.7:2222   
 
 	# A local tunnel from the internet host to host A
 	ssh net4_student11@10.50.41.66 -p 7777 -L 41105:localhost:41104  
 
 	# A dynamic channel to B 
-	ssh net4_student11@localhost -p 41105 -D 9050
+	ssh net3_comrade15@localhost -p 41105 -D 9050
 
-
-
-
-
-    # Create a local tunnel to be used for telnet to D
-	ssh hostC@localhost -p 4444 -L 5555:10.3.9.39:23 
-	telnet localhost 5555 
-
-	# Let's create a remote tunnel back to C from D
-	ssh hostC@10.3.9.33 -p 22 -R 6666:localhost(this_is_at_host_D):3597
-
-	# A local tunnel from internet host 
-	ssh hostC@localhost -p 4444 -L 7777:localhost(this_is_host_c_localhost):6666
-
-	# Let's create a dynamic tunnel to D 
-	ssh hostD@localhost -p 7777 -D 9050
 
 
