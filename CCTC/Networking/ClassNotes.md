@@ -1039,7 +1039,7 @@ ssh [user]@[SSH_server] -R [remote_port]:[destination_host]:[destination_port]
 4. From the source create a dynamic tunnel 
 5. Run proxy scans to identify the next tunnel 
 
-#### TUNNELING ACTIVITY 4 ####
+#### TUNNELING ACTIVITY 5 ####
 
 	# Going from Internet Host to Host A 
     >> ssh hostA@10.50.23.43 -p 22 -D 9050
@@ -1740,3 +1740,44 @@ student@blue-internet-host-student-11:~$ sudo snort -c /etc/snort/rules/google.r
 student@blue-internet-host-student-11:~$ sudo snort -D -c /etc/snort/rules/google.rules -l /var/log/snort
 student@blue-internet-host-student-11:~$ ping 8.8.8.8 -p 49204C4F56452050495A5A41
 
+5050 and 
+
+
+Allow ports 5050 and 5150 for both udp and tcp traffic to/from
+
+Allow New and Established traffic to/from via HTTP
+
+
+Flush all rules (this will remove all rules but keep the chains):
+
+sh
+Copy code
+sudo iptables -F
+Delete all custom chains:
+
+sh
+Copy code
+sudo iptables -X
+Optionally, you can also reset all counters:
+
+sh
+Copy code
+sudo iptables -Z
+
+
+### STEPS WHEN BUILDING A TUNNEL ###
+1. Make a map 
+2. Scan privot ip 
+3. Passive -
+		ip addr
+		ip neighbor
+		ss -anltp
+4. For port 80/21
+		wget -r http://ip-address
+		wget -r ftp://ip-address
+		
+		if you see hint-02a.png (means that it corresponds to box number 2)
+5. cd /user/share/cctc
+6. if you need a tool, you can run `where is [tool]` to see if the tool is installed. `which`
+7. If you see a multiple choice question, 
+8. echo "C" | base64 -> Converts an answer to base64....

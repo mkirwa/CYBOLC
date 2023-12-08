@@ -1159,8 +1159,14 @@ iptables -A OUTPUT -p tcp --sport 80 -m state --state NEW,ESTABLISHED -j ACCEPT
 iptables -A OUTPUT -p tcp --dport 80 -m state --state NEW,ESTABLISHED -j ACCEPT
 
 task 1 -> 467accfb25050296431008a1357eacb1
-task 2 -> 
+task 2 -> 9f7a33941828bdafd2755fd20176cdf4
 task 3 -> 05e5fb96e2a117e01fc1227f1c4d664c
+
+echo "467accfb25050296431008a1357eacb1_9f7a33941828bdafd2755fd20176cdf4_05e5fb96e2a117e01fc1227f1c4d664c" | md5sum
+
+953e720e688941b15b72c098022c51c3
+
+d3b88e04de1e76482a1972f36734a7d8
 
 truncate -s 0 iptablerules.sh 
 
@@ -1332,6 +1338,24 @@ nft add rule ip CCTC output ip protocol tcp ct state { new, established } tcp sp
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 nft add table ip CCTC
 # Create input and output base chains with:Hooks, Priority of 0, Policy as Accep
 nft add chain ip CCTC input { type filter hook input priority 0 \; policy accept \; }
@@ -1356,4 +1380,24 @@ nft insert rule ip CCTC input icmp type 8 ip saddr 10.10.0.40 accept
 nft insert rule ip CCTC input icmp type 0 ip saddr 10.10.0.40 accept
 nft insert rule ip CCTC input icmp type 8 ip daddr 10.10.0.40 accept
 nft insert rule ip CCTC input icmp type 0 ip daddr 10.10.0.40 accept
+
+# Allow ports 5050 and 5150 for both UDP and TCP traffic
+nft add rule ip CCTC input ip protocol tcp ct state { new, established } tcp dport { 5050, 5150 } accept
+nft add rule ip CCTC input ip protocol tcp ct state { new, established } tcp sport { 5050, 5150 } accept
+
+nft add rule ip CCTC input ip protocol udp ct state { new, established } udp dport { 5050, 5150 } accept
+nft add rule ip CCTC input ip protocol udp ct state { new, established } udp sport { 5050, 5150 } accept
+
+nft add rule ip CCTC output ip protocol tcp ct state { new, established } tcp sport { 5050, 5150 } accept
+nft add rule ip CCTC output ip protocol tcp ct state { new, established } tcp dport { 5050, 5150 } accept
+
+nft add rule ip CCTC output ip protocol udp ct state { new, established } udp sport { 5050, 5150 } accept
+nft add rule ip CCTC output ip protocol udp ct state { new, established } udp dport { 5050, 5150 } accept
+
+
+# Allow New and Established traffic to/from HTTP (port 80)
+nft add rule ip CCTC input ip protocol tcp ct state { new, established } tcp sport 80 accept
+nft add rule ip CCTC input ip protocol tcp ct state { new, established } tcp dport 80 accept
+nft add rule ip CCTC output ip protocol tcp ct state { new, established } tcp sport 80 accept
+nft add rule ip CCTC output ip protocol tcp ct state { new, established } tcp dport 80 accept
 
