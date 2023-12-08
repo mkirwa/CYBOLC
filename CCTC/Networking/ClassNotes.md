@@ -1039,6 +1039,50 @@ ssh [user]@[SSH_server] -R [remote_port]:[destination_host]:[destination_port]
 4. From the source create a dynamic tunnel 
 5. Run proxy scans to identify the next tunnel 
 
+#### TUNNELING ACTIVITY 4 ####
+
+	# Going from Internet Host to Host A 
+    >> ssh hostA@10.50.23.43 -p 22 -D 9050
+    #  A dynamic tunnel to C 
+    
+	>> run proxy chain scans and identified Host B, on telnet 10.1.2.200 sshd 8976
+
+	# Create a local tunnel to be used for telnet. Local tunnel to host A 
+	ssh hostA@10.50.23.43 -L 1111(created_on_the_internet_host):10.1.2.200:23
+	telnet localhost 1111
+
+	# Let's create a remote tunnel back to A from B
+	ssh hostA@10.1.2.130 -p 22 -R 2222(created_on_host_B):localhost:8976   
+
+	# A local tunnel from the internet host to host A
+	ssh hostA@10.50.23.43 -L 3333:localhost:2222  
+	# A dynamic channel to B 
+	ssh hostB@localhost -p 3333 -D 9050 # 3333 will be 2222(s)
+
+	>> run proxy chain scans and identified Host C, with ip address 10.2.5.20 and sshd 22
+
+	# A local tunnel to host c 
+	ssh hostB@localhost -p 3333 -L 4444:10.2.5.20:22 
+	# A dynamic channel to C
+	ssh hostC@localhost -p 4444 -D 9050
+
+	>> run proxy chain scans and identified Host D, with ip address 10.3.9.39 and sshd 3597
+
+	# Create a local tunnel to be used for telnet to D
+	ssh hostC@localhost -p 4444 -L 5555:10.3.9.39:23 
+	telnet localhost 5555 
+
+	# Let's create a remote tunnel back to C from D
+	ssh hostC@10.3.9.33 -p 22 -R 6666:localhost(this_is_at_host_D):3597
+
+	# A local tunnel from internet host 
+	ssh hostC@localhost -p 4444 -L 7777:localhost(this_is_host_c_localhost):6666
+
+	# Let's create a dynamic tunnel to D 
+	ssh hostD@localhost -p 7777 -D 9050
+
+	# Ran our proxy chains... 
+
 
 #### TUNNELING ACTIVITY 4 ####
 
@@ -1657,3 +1701,42 @@ CAD: Task 1 and 2 START FLAG
 Task 1 IP/NFTables - Host Filtering: T@bl3sth@tF1lt3r
 
 Task 2 IP/NFTables - NAT: N@tF1lt3rsf0rL1f3
+
+
+
+
+
+
+
+### PACKET FILTERING AND SNORTS ###
+
+#### BOX 1 ####
+student@blue-internet-host-student-11:~$ cd /etc/snort/
+student@blue-internet-host-student-11:/etc/snort$ ls
+rules  snort.conf
+
+#### BOX 2 ####
+tudent@blue-internet-host-student-11:~$ cd /etc/snort/rules/
+student@blue-internet-host-student-11:/etc/snort/rules$ ls
+icmp.rules
+student@blue-internet-host-student-11:/etc/snort/rules$ cat icmp.rules 
+alert icmp any any -> any any (msg:ICMP detected; sid:111; rev:1;)
+
+student@blue-internet-host-student-11:/etc/snort/rules$ sudo snort -r ids.pcap -c /etc/snort/rules/icmp.rules 
+
+
+#### BOX 3 ####
+
+
+
+#### BOX 4 ####
+student@blue-internet-host-student-11:~$ sudo snort -D -c /etc/sn
+snmp/  snort/ 
+student@blue-internet-host-student-11:~$ sudo snort -D -c /etc/snort/snort.conf 
+student@blue-internet-host-student-11:~$ sudo snort -D -c /etc/snort/snort.conf -l /var/log/snort
+student@blue-internet-host-student-11:~$ ps -ef | grep snort
+student@blue-internet-host-student-11:~$ sudo kill -9 23130
+student@blue-internet-host-student-11:~$ sudo snort -c /etc/snort/rules/google.rules -l /var/log/snort
+student@blue-internet-host-student-11:~$ sudo snort -D -c /etc/snort/rules/google.rules -l /var/log/snort
+student@blue-internet-host-student-11:~$ ping 8.8.8.8 -p 49204C4F56452050495A5A41
+
