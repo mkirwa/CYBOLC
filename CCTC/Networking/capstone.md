@@ -18,6 +18,13 @@ Q0hFRVNFCg==
 		ip addr
 		ip neighbor
 		ss -anltp
+
+		from ip address, you have subnets. 
+		if the ip address or the point is a pivot, run ip a vertical scans with the subnet range as the starting host range and ending host range
+
+		if the ip address or the point is not a pivot, ran to find what other ports are open on that address
+
+
 4. For port 80/21
 		wget -r http://ip-address
 		wget -r ftp://ip-address
@@ -455,5 +462,570 @@ What is the Answer referenced in “Hint-08a.png”? Provide the answer converte
 	# A dynamic channel to B 
 	ssh net3_comrade15@localhost -p 41105 -D 9050
 
+	# Run ip neighbor to find any near by addresses 
+	10.10.10.167
+	10.2.2.14
+	10.2.2.6
+	10.10.10.140
+
+	ss -anltp
+		doesn't generate anything really 
+
+	from running ip addr I found the following addresses:
+		10.2.2.7 -> eth0
+		10.10.10.129 -> eth1
+	
+	Scanning for eth1, I found these open addresses:
+		10.10.10.129 (23, 80)
+		10.10.10.140 (21)
+		10.10.10.167 (80)
+		10.10.10.182 (21 -> ftp)
+
+#### Capstone - 08 Port Discovery 5 ####
+
+What is the Answer referenced in “Hint-08a.png”? Provide the answer converted to BASE64.
+
+##### Ans #####
+
+Hint-08a: SSH is running on the port that corresponds with the HTTP status code for Moved Permanently. The flag for this system is the port number converted to BASE64
+
+HTTP Status Code for moved Permanently - 301
+MzAxCg==
+
+#### Capstone - 10 Port Discovery 5 ####
+
+What is the Answer referenced in “Hint-10a.png”? Provide the answer converted to BASE64.
+
+##### Ans #####
+
+Hint-10a: SSH is running  on the port that corresponds with the HTTP status code for not Found. The flag for this system is the port number converted to BASE64.
+
+Status-code: 404
+NDA0Cg==
+
+#### Capstone - 12 Port Discovery 5 ####
+
+What is the Answer referenced in “Hint-12a.png”? Provide the answer converted to BASE64.
+
+##### Ans #####
+
+Hint-12a: SSH is running on the port that corresponds with the HTTP status code for Gateway Timeout. The flag for this system is the port number converted to BASE64. 
+
+Status Code: 504
+NTA0Cg==
+
+#### Capstone - 09 Web Question 1 5 ####
+
+Using the questions found on Capstone-09 web-page.
+What is the Answer to Network Reconnaissance Question 1?
+
+##### Ans #####
+
+###### ESTABLISHING A LOCAL TUNNEL TO 10.10.10.140 ######
+ssh net3_comrade15@localhost -p 41105 -L 41106:10.10.10.140:301
+
+###### Dynamic tunnel ######
+ssh net4_student11@localhost -p 41106 -D 9050
+
+from running ip addr I found the following addresses:
+        10.10.10.140/25 -> eth0
+        192.168.10.44/27 -> eth1
+
+ip neighbor listed 
+	192.168.10.62
+
+Run vertical scans based on the subnet /27 which should be 32 hosts from .44
+	Ip addresses found
+		192.168.10.39
+		192.168.10.44
+
+Run horizontal scans from ports - 0- 65000, found 21, 3790, 4444, 5687 
+
+Question 2
+What type of recon is being performed if you are performing ARP scans and sending Gratuitous ARPs to perform a MitM attack?
+
+Provide the 2 word process in ALL CAPS and converted to Base64.
+
+i.e. [word1] [word2]
+
+echo "ACTIVE RECONNAISSANCE" | base64
+
+????????????
+
+#### Capstone - 09 Web Question 2 5 ####
+
+Using the questions found on Capstone-09 web-page.
+What is the Answer to Network Reconnaissance Question 2?
+
+Question 2
+What is the typical flag response (if any) would a Linux host perform when receiving a Stealth scan on an CLOSED port?
+
+Provide the 3 letter abbreviated name of the FLAG(s) in ALL CAPS, separated by / (use “NONE” if no response) and converted to Base64.
+
+##### Ans #####
+
+echo "RST" | base64
+UlNUCg==
+
+#### Capstone - 09 Web Question 3 5 ####
+
+Using the questions found on Capstone-09 web-page.
+What is the Answer to Network Reconnaissance Question 3?
+
+Question 3
+What command line tool can be used to pull DNS information from the server using TCP port 43?
+Provide the command in ALL CAPS and converted to Base64.
+
+##### Ans #####
+
+echo "WHOIS" | base64
+
+#### Capstone - 09 Web Question 4 5 ####
+
+Using the questions found on Capstone-09 web-page.
+What is the Answer to Network Reconnaissance Question 4?
+
+Question 4
+Which NMAP scan is able to determine open ports on a target by spoofing packets to make them looks as if they came from a zombie machine?
+
+Provide the scan name in ALL CAPS and converted to Base64.
+##### Ans #####
+
+echo "IDLE" | base64
+
+#### Capstone - 09 Web Question 5 5 ####
+
+Using the questions found on Capstone-09 web-page.
+What is the Answer to Network Reconnaissance Question 5?
+
+Question 5
+A cyber analyst wants to us Netcat to perform a banner grab on a target IP of 10.1.0.1 port 1111.
+Provide the exact command (without switches and including spaces) you would perform on the command line and converted to Base64.
+
+##### Ans #####
+
+echo "nc 10.1.0.1 1111" | base64
+bmMgMTAuMS4wLjEgMTExMQo=
+
+#### Capstone - 09 Web Question 5 5 ####
+
+Using the questions found on Capstone-11 web-page.
+What is the Answer to Movement & Redirection Question 3?
+
+##### Ans #####
+
+To get to the answer I ran through the steps below
+
+###### ESTABLISHING A LOCAL TUNNEL TO 10.10.10.167 ######
+
+ssh net3_comrade15@localhost -p 41105 -L 41108:10.10.10.167:404
+
+###### Dynamic tunnel to .167 ######
+ssh net4_student11@localhost -p 41108 -D 9050
+
+running ip addr on the dynamic tunnel, I found these addresses:
+
+127.0.0.1/8
+10.10.10.167/25
+192.168.10.70/27
+
+From running scans on subnet 192.168.10.70/27 I found the following ip addresses
+	192.168.10.70 -> port 80
+	192.168.10.80 ->port 21
+
+Connetcting to 192.168.10.80 using proxychains and wget, I got the hint below 
+
+Hint-11a -> There is a webservice running on the port that corresponds with the default port for Proxy-chains 
+
+port for hint-11a -> 9050
+
+Connected to proychains -wget http:192.168.10.80:9050 for questions on capstonev2 10
+
+Ans -> asymmetric
+
+QVNZTU1FVFJJQwo=
+
+#### Capstone Capstone - 11 Web Question 5 5 ####
+
+Using the questions found on Capstone-11 web-page.
+What is the Answer to Movement & Redirection Question 5?
+
+Which tool adds “FTP Like” services to SSH?
+Provide the exact tool acronym in ALL CAPS and converted to Base64.
+
+##### Ans #####
+
+Ans -> SFTP
+
+#### Capstone - 11 Web Question 1 10 ####
+
+Using the questions found on Capstone-11 web-page.
+What is the Answer to Movement & Redirection Question 1?
 
 
+      -----------     ------       ----------    -------
+      | Outside |     | FW |       | Inside |    | Web |
+      -----------     ------       ----------    -------
+      147.25.99.1                 192.168.1.27  188.8.8.8
+  
+
+
+A.) ssh outside@192.168.1.27 -L 1234:188.8.8.8:80 -NT
+
+B.) ssh inside@147.25.99.1 -L 9876:188.8.8.8:1234 -NT
+
+C.) ssh outside@147.25.99.1 -L 1234:188.8.8.8:80 -NT
+
+D.) ssh inside@192.168.1.27 -L 1234:188.8.8.8:80 -NT
+
+##### Ans #####
+
+Ans -> D
+echo "D" | base64
+RAo=
+
+#### Capstone - 11 Web Question 2 10 ####
+
+Using the questions found on Capstone-11 web-page.
+What is the Answer to Movement & Redirection Question 2?
+
+Which SSH syntax will properly setup a Remote port forward from the “Inside Host” to give “Outside Host” access to the Internal Website?
+
+      -----------     ------       ----------    -------
+      | Outside |     | FW |       | Inside |    | Web |
+      -----------     ------       ----------    -------
+      147.25.99.1                 192.168.1.27  192.168.1.10
+  
+
+
+A.) ssh Outside@147.25.99.1 -R 9876:192.168.1.10:80 -NT
+
+B.) ssh Inside@147.25.99.1 -R 9876:192.168.1.10:80 -NT
+
+C.) ssh Outside@192.168.1.10 -R 9876:147.25.99.1:80 -NT
+
+D.) ssh Inside@192.168.1.27 -R 9876:192.168.1.10:80 -NT
+
+
+echo "ssh Inside@192.168.1.27 -R 9876:192.168.1.10:80 -NT" | base64
+
+##### Ans #####
+
+Ans -> D
+echo "D" | base64
+RAo=
+
+#### Capstone - 11 Web Question 4 15 ####
+
+Using the questions found on Capstone-11 web-page.
+What is the Answer to Movement & Redirection Question 4?
+
+Question 4
+What exact SCP command would you use to copy a file called “secret.txt” from the 'tgt' home directory, to your current working directory, using the Dynamic tunnel you have established.
+
+      -----------     ------       ----------    -------
+      | outside |     | FW |       | inside |    | tgt |
+      -----------     ------       ----------    -------
+      147.25.99.1                 192.168.1.27  192.168.1.10
+  
+
+outside$: ssh inside@192.168.1.27 -D 9050 -NT
+Provide the command exactly as you would run in from the command line (including any appropriate spaces and all lower case) using proxychains and converted to Base64.
+proxychains scp {username}@{ip}:{path}/{filename} {target location}
+
+##### Ans #####
+
+echo "proxychains scp Inside@192.168.1.10:/home/tgt/secret.txt ." | base64
+proxychains scp inside@192.168.1.10:/home/tgt/secret.txt .
+
+proxychains scp /home/192.168.1.10/secret.txt .
+
+echo "proxychains scp /home/192.168.1.10/secret.txt ." | base64
+
+echo "proxychains scp inside@192.168.1.10:/home/tgt/secret.txt ." | base64
+
+
+echo "proxychains scp inside@192.168.1.27:/home/192.168.1.10/secret.txt . " | base64
+
+echo "proxychains scp inside@192.168.1.27:/home/tgt/secret.txt ." | base64
+
+proxychains scp net4_student11@192.168.10.101:/usr/share/cctc/ Temp_101_Folder/
+
+?????????
+
+#### Capstone - 13 Web Question 1 5 ####
+
+Using the questions found on Capstone-13 web-page.
+What is the Answer to Network Analysis Question 1?
+
+
+Question 
+Which option in Wireshark could you use if you wanted to identify which IP address are communicating with each other?
+Specify your answer in ALL CAPS and converted to Base64.
+
+
+##### Ans #####
+
+Conversations
+
+CONVERSATIONS
+
+echo "CONVERSATIONS" | base64
+
+#### Capstone - 13 Web Question 2 5 ####
+
+Using the questions found on Capstone-13 web-page.
+What is the Answer to Network Analysis Question 2?
+
+Question 2
+What is the name of the data type that is a Cisco proprietary protocol used for collecting IP traffic information and monitoring network flow?
+Specify your answer in ALL CAPS and converted to Base64.
+
+##### Ans #####
+
+NETFLOW
+
+echo "NETFLOW" | base64
+
+#### Capstone - 13 Web Question 3 5 ####
+
+Using the questions found on Capstone-13 web-page.
+What is the Answer to Network Analysis Question 3?
+
+Question 3
+A method of data collection where this device can be placed in line on the wire to capture traffic?
+What is this device called?
+Specify your one word answer in ALL CAPS and converted to Base64.
+
+##### Ans #####
+
+echo "TAP" | base64
+
+#### Capstone - 13 Web Question 4 5 ####
+
+Using the questions found on Capstone-13 web-page.
+What is the Answer to Network Analysis Question 4?
+
+Question 4
+A network admin starts to notice an increase in requests for certain files, changes to the registry and unusual tasks being run.
+
+This anomaly is an Indicator of ________?
+
+Specify your 1 word answer in ALL CAPS and converted to Base64.
+
+##### Ans #####
+
+ndicator of Compromise (IoC).
+
+echo "IOC" | base64
+
+#### Capstone - 13 Web Question 5 5 ####
+
+Using the questions found on Capstone-13 web-page.
+What is the Answer to Network Analysis Question 5?
+
+Question 5
+What type of malware doesn't use an encryption key but is capable of rewriting its code and signature patterns with each iteration?
+
+Specify your 1 word answer in ALL CAPS and converted to Base64.
+
+##### Ans #####
+
+Metamorphic
+
+METAMORPHIC
+
+echo "METAMORPHIC" | base64
+
+#### Capstone - 13 PCAP Question 1 5 ####
+
+Using the PCAP stored on Capstone-13.
+What is the Answer to Question 1 referenced in “Flag-13f.txt”
+
+copy the cctc directory to the local machine for analysis 
+
+##### Ans #####
+
+scp -r student@192.168.10.101:/usr/share/cctc/ Temp_101_Folder/
+
+proxychains scp -r net4_student11@192.168.10.101:/usr/share/cctc/ Temp_101_Folder/
+
+scp -r student@10.50.39.135:/home/student/Temp_101_Folder/cctc . 
+
+To answer these 8 questions, you will need extract the capstone-analysis-HEX-Encoded.pcap file that you will need extract, decode with XXD, and open with Wireshark.
+
+cd to the location of the file download
+xxd -r capstone-analysis_HEX-ENCODED.pcap capstone-analysis-decoded_home1.pcap
+-------------------------------------------------------------------------------
+
+Question 1:
+
+Which ip address initiated the attack against the FTP server?
+
+Provide the ip address in the x.x.x.x format and converted to Base64.
+
+echo "10.1.0.108" | base64
+
+????? ASK THE INSTRUCTOR HOW TO GO ABOUT THIS !!!!
+
+#### Capstone - 13 PCAP Question 2 5 ####
+
+Using the PCAP stored on Capstone-13.
+
+What is the Answer to Question 2 referenced in “Flag-13f.txt”
+
+##### Ans #####
+
+
+-------------------------------------------------------------------------------
+
+Question 2:
+
+How many failed attempts to guess the FTP password?
+
+Provide number and converted to Base64.
+
+-------------------------------------------------------------------------------
+
+frame contains "Login incorrect" -> 4 times 
+
+echo "4" | base64
+
+#### Capstone - 13 PCAP Question 3 5 ####
+
+Using the PCAP stored on Capstone-13.
+
+What is the Answer to Question 3 referenced in “Flag-13f.txt”
+
+##### Ans #####
+
+Question 3:
+
+What is the correct FTP password?
+
+Provide the exact password and converted to Base64.
+-------------------------------------------------------------------------------
+
+frame contains "Login" -> found PASS, w and the echo for that is dwo=
+
+#### Capstone - 13 PCAP Question 4 5 ####
+
+Using the PCAP stored on Capstone-13.
+
+What is the Answer to Question 4 referenced in “Flag-13f.txt”
+
+##### Ans #####
+
+
+Question 4:
+
+What is the system IP that was compromised?
+
+Provide the ip address in the x.x.x.x format and converted to Base64.
+
+-------------------------------------------------------------------------------
+
+10.2.0.2
+
+echo "10.2.0.2" | base64
+
+?????????  ASK INSTRUCTOR ABOUT THIS !!!!!!!!!
+
+#### Capstone - 13 PCAP Question 5 5 ####
+
+Using the PCAP stored on Capstone-13.
+
+What is the Answer to Question 5 referenced in “Flag-13f.txt”
+
+##### Ans #####
+
+Question 5:
+
+What is the FTP version?
+
+Provide the version number only and converted to Base64.
+
+-------------------------------------------------------------------------------
+
+Search ftp 
+
+Scroll through the packet list, and you may see packets with "Response: 220" in the "Info" column. This is the FTP server's welcome message, and it typically includes information about the server and its version.
+
+Ans -> 3.0.2
+
+echo "3.0.2" | base64
+
+#### Capstone - 13 PCAP Question 6 10 ####
+
+Using the PCAP stored on Capstone-13.
+
+What is the Answer to Question 6 referenced in “Flag-13f.txt”
+
+##### Ans #####
+
+Question 6:
+
+What is the name of the file taken by the attacker?
+
+Provide the filename exactly as shown and converted to Base64.
+
+-------------------------------------------------------------------------------
+
+echo "test.txt" | base64
+
+?????????  ASK INSTRUCTOR ABOUT THIS !!!!!!!!!
+
+#### Capstone - 13 PCAP Question 7 10 ####
+
+Using the PCAP stored on Capstone-13.
+
+What is the Answer to Question 7 referenced in “Flag-13f.txt”
+
+##### Ans #####
+
+Question 7:
+
+What was the message contained within the extracted file?
+
+Provide the message exactly as shown and converted to Base64.
+
+-------------------------------------------------------------------------------
+
+company_payroll_2019
+
+echo "Here comes the directory listing." | base64
+
+?????
+
+#### Capstone - 13 PCAP Question 8 10 ####
+
+Using the PCAP stored on Capstone-13.
+
+What is the Answer to Question 8 referenced in “Flag-13f.txt”
+
+##### Ans #####
+Question 8:
+
+What is the name of the file uploaded by the attacker?
+
+Provide the filename exactly as shown and converted to Base64.
+
+-------------------------------------------------------------------------------
+echo "company_payroll_2019" | base64
+
+
+
+
+
+
+
+###### Ans ######
+
+
+
+
+proxychains scp net4_student11@192.168.10.101:/usr/share/ .
+
+proxychains scp -r net4_student11@192.168.10.101:/usr/share/cctc/ Temp_101_Folder/
+
+proxychains scp net4_student11@192.168.10.101:/usr/share/cctc/ Temp_101_Folder/

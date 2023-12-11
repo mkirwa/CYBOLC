@@ -1306,32 +1306,32 @@ Send the result of the md5sum of all three flags separated by underscores to the
 
 #### Answer ####
 
-# Create the filter table if it doesn't exist
+##### Create the filter table if it doesn't exist #####
 nft add table ip CCTC
 
-# Create input and output base chains with a policy of Accept
+##### Create input and output base chains with a policy of Accept #####
 nft add chain ip CCTC input { type filter hook input priority 0\; policy accept \;}
 nft add chain ip CCTC output { type filter hook output priority 0\; policy accept \;}
 
-# Rule 1: Allow New and Established traffic to/from SSH (port 22), TELNET (port 23), and RDP (port 3389)
+##### Rule 1: Allow New and Established traffic to/from SSH (port 22), TELNET (port 23), and RDP (port 3389) #####
 nft add rule ip CCTC input ip protocol tcp ct state { new, established } tcp dport { 22, 23, 3389 } accept
 nft add rule ip CCTC output ip protocol tcp ct state { new, established } tcp sport { 22, 23, 3389 } accept
 
-# Rule 2: Change the chains to have a policy of Drop
+##### Rule 2: Change the chains to have a policy of Drop #####
 nft add rule ip CCTC input drop
 nft add rule ip CCTC output drop
 
-# Rule 3: Allow ping (ICMP) requests (and replies) to and from the Pivot
+##### Rule 3: Allow ping (ICMP) requests (and replies) to and from the Pivot #####
 nft add rule ip CCTC input ip protocol icmp accept
 nft add rule ip CCTC output ip protocol icmp accept
 
-# Rule 4: Allow ports 5050 and 5150 for both UDP and TCP traffic
+##### Rule 4: Allow ports 5050 and 5150 for both UDP and TCP traffic #####
 nft add rule ip CCTC input ip protocol tcp ct state { new, established } tcp dport { 5050, 5150 } accept
 nft add rule ip CCTC input ip protocol udp ct state { new, established } udp dport { 5050, 5150 } accept
 nft add rule ip CCTC output ip protocol tcp ct state { new, established } tcp sport { 5050, 5150 } accept
 nft add rule ip CCTC output ip protocol udp ct state { new, established } udp sport { 5050, 5150 } accept
 
-# Rule 5: Allow New and Established traffic to/from HTTP (port 80)
+##### Rule 5: Allow New and Established traffic to/from HTTP (port 80) #####
 nft add rule ip CCTC input ip protocol tcp ct state { new, established } tcp dport 80 accept
 nft add rule ip CCTC output ip protocol tcp ct state { new, established } tcp sport 80 accept
 
@@ -1357,21 +1357,21 @@ nft add rule ip CCTC output ip protocol tcp ct state { new, established } tcp sp
 
 
 nft add table ip CCTC
-# Create input and output base chains with:Hooks, Priority of 0, Policy as Accep
+##### Create input and output base chains with:Hooks, Priority of 0, Policy as Accep #####
 nft add chain ip CCTC input { type filter hook input priority 0 \; policy accept \; }
 nft add chain ip CCTC output { type filter hook output priority 0 \; policy accept \; }
 
-# Allow New and Established traffic to/from via SSH, TELNET, and RDP
+##### Allow New and Established traffic to/from via SSH, TELNET, and RDP #####
 nft insert rule ip CCTC output tcp dport { 22,23,3389} ct state { new, established} accept 
 nft insert rule ip CCTC output tcp sport { 22,23,3389} ct state { new, established} accept
 nft insert rule ip CCTC input tcp dport { 22,23,3389} ct state { new, established} accept
 nft insert rule ip CCTC input tcp sport { 22,23,3389} ct state { new, established} accept
 
-# Change your chains to now have a policy of Drop
+##### Change your chains to now have a policy of Drop #####
 sudo nft add chain ip CCTC input { type filter hook input priority 0 \; policy drop \; }
 sudo nft add chain ip CCTC output { type filter hook output priority 0 \; policy drop \; }
 
-# Allow ping (ICMP) requests (and reply) to and from the Pivot.
+##### Allow ping (ICMP) requests (and reply) to and from the Pivot. #####
 nft insert rule ip CCTC output icmp type 8 ip daddr 10.10.0.40 accept
 nft insert rule ip CCTC output icmp type 0 ip daddr 10.10.0.40 accept
 nft insert rule ip CCTC output icmp type 8 ip saddr 10.10.0.40 accept
@@ -1381,7 +1381,7 @@ nft insert rule ip CCTC input icmp type 0 ip saddr 10.10.0.40 accept
 nft insert rule ip CCTC input icmp type 8 ip daddr 10.10.0.40 accept
 nft insert rule ip CCTC input icmp type 0 ip daddr 10.10.0.40 accept
 
-# Allow ports 5050 and 5150 for both UDP and TCP traffic
+##### Allow ports 5050 and 5150 for both UDP and TCP traffic #####
 nft add rule ip CCTC input ip protocol tcp ct state { new, established } tcp dport { 5050, 5150 } accept
 nft add rule ip CCTC input ip protocol tcp ct state { new, established } tcp sport { 5050, 5150 } accept
 
@@ -1395,9 +1395,62 @@ nft add rule ip CCTC output ip protocol udp ct state { new, established } udp sp
 nft add rule ip CCTC output ip protocol udp ct state { new, established } udp dport { 5050, 5150 } accept
 
 
-# Allow New and Established traffic to/from HTTP (port 80)
+##### Allow New and Established traffic to/from HTTP (port 80) #####
 nft add rule ip CCTC input ip protocol tcp ct state { new, established } tcp sport 80 accept
 nft add rule ip CCTC input ip protocol tcp ct state { new, established } tcp dport 80 accept
 nft add rule ip CCTC output ip protocol tcp ct state { new, established } tcp sport 80 accept
 nft add rule ip CCTC output ip protocol tcp ct state { new, established } tcp dport 80 accept
 
+### IPTables/NFTables - NAT T5 5 ###
+
+IPTable Rule Definitions
+    On T1 edit the /proc/sys/net/ipv4/ip_forward file to enable IP Forwarding. Change the value from 0 to 1.
+    On T1 change the FORWARD policy back to ACCEPT.
+    Configure POSTROUTING chain to translate T5 IP address to T1 (Create the rule by specifying the Interface information first then Layer 3)
+Once these steps have been completed and tested, go to Pivot and open up a netcat listener on port 9004 and wait up to 2 minutes for your flag. If you did not successfully accomplish the tasks above, then you will not receive the flag.
+
+#### Answer ####
+
+sudo vim /proc/sys/net/ipv4/ip_forward
+sudo iptables -P FORWARD ACCEPT # How to change the iptables to forward. 
+sudo iptables -t nat -A POSTROUTING -o 172.16.82.106 -j SNAT --to-source 192.168.1.10 
+sudo iptables -t nat -A POSTROUTING -o eth0 -j SNAT --to-source 172.16.82.106
+
+### IPTables/NFTables - NAT T6 5 ###
+
+NFTable Rule Definitions
+
+NFTable: NAT
+Family: ip
+    On T2 edit the /proc/sys/net/ipv4/ip_forward file to enable IP Forwarding. Change the value from 0 to 1.
+
+    Create POSTROUTING and PREROUTING base chains with:
+    Hooks
+    Priority of 0
+    No Policy Needed
+
+    Configure POSTROUTING chain to translate T6 IP address to T2 (Create the rule by specifying the Interface information first then Layer 3)
+
+Once these steps have been completed and tested, go to Pivot and open up a netcat listener on port 9005 and wait up to 2 minutes for your flag. If you did not successfully accomplish the tasks above, then you will not receive the flag.
+
+#### Answer ####
+
+sudo nano /proc/sys/net/ipv4/ip_forward
+
+# Create POSTROUTING chain
+iptables -t nat -N POSTROUTING
+iptables -t nat -A POSTROUTING -j RETURN
+iptables -t nat -A POSTROUTING -j SNAT
+iptables -t nat -A POSTROUTING -j ACCEPT
+iptables -t nat -I POSTROUTING 1 -j POSTROUTING
+
+# Create PREROUTING chain
+iptables -t nat -N PREROUTING
+iptables -t nat -A PREROUTING -j RETURN
+iptables -t nat -A PREROUTING -j DNAT
+iptables -t nat -A PREROUTING -j ACCEPT
+iptables -t nat -I PREROUTING 1 -j PREROUTING
+
+iptables -t nat -A POSTROUTING -o eth0 -j SNAT --to-source 192.168.3.30
+
+net3_comrade15
