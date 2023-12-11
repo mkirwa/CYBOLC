@@ -1013,19 +1013,178 @@ Provide the filename exactly as shown and converted to Base64.
 -------------------------------------------------------------------------------
 echo "company_payroll_2019" | base64
 
+#### Capstone - 14 Web Question 1 5 ####
 
+Using the questions found on Capstone-14 web-page.
+What is the Answer to Network Filtering Question 1?
 
+Question 1
+In NAT, which Hook would I place a rule to change the source IP for all traffic thru this host?
+Specify your 1 word answer in ALL CAPS and converted to Base64.
 
+###### Ans ######
 
+There is a webservice running on the port that falls in the Expanded Extended Cisco Numbered ACL Range
+Ran proxy scans for all the ports and connected to 2223
 
+POSTROUTING
+
+echo "POSTROUTING" | base64
+
+#### Capstone - 14 Web Question 2 5 ####
+
+Using the questions found on Capstone-14 web-page.
+What is the Answer to Network Filtering Question 2?
+
+Question 2
+Which Hook would I apply rules that are destined for the ‘localhost’?
+Specify your 1 word answer in ALL CAPS and converted to Base64.
+
+###### Ans ######
+
+INPUT
+
+echo "INPUT" | base64
+
+#### Capstone - 14 Web Question 3 5 ####
+
+Using the questions found on Capstone-14 web-page.
+What is the Answer to Network Filtering Question 2?
+
+Question 3
+What recognition method do IDS/IPS primarily use to detect malicious traffic?
+Specify your 1 word answer in ALL CAPS and converted to Base64.
+
+###### Ans ######
+
+Signature-based
+
+SIGNATURE-BASED 
+
+echo "SIGNATURE" | base64
+
+#### Capstone - 14 Web Question 4 5 ####
+
+Using the questions found on Capstone-14 web-page.
+What is the Answer to Network Filtering Question 4?
+
+Question 4
+
+In iptables, which Table would I use if I wanted to preform packet alterations?
+Specify your 1 word answer in ALL CAPS and converted to Base64.
+
+###### Ans ######
+
+mangle
+
+MANGLE
+
+echo "MANGLE" | base64
+
+#### Capstone - 14 Web Question 5 5 ####
+
+Using the questions found on Capstone-14 web-page.
+What is the Answer to Network Filtering Question 5?
+
+Question 5
+
+What is the default family for NFTables?
+Specify your 1 word answer in ALL CAPS and converted to Base64.
+
+###### Ans ######
+
+IP 
+
+echo "IP" | base64
+
+#### Capstone - 14 Snort Question 1 5 ####
+
+What is the Answer to Question 1 referenced in “Flag-14f.txt”
+
+To answer these s questions, you will need to examine the Snort services running on this system.
+
+-------------------------------------------------------------------------------
+
+Question 1:
+
+How many rule files are on the system?
+
+Provide the number converted to Base64 as your answer.
 
 ###### Ans ######
 
 
+#### Capstone - 14 Snort Question 2 5 ####
+
+What is the Answer to Question 2 referenced in “Flag-14f.txt”
+
+-------------------------------------------------------------------------------
+
+Question 2:
+
+How many of the rules are currently in use to match on traffic?
+
+Provide the number converted to Base64 as your answer.
+
+###### Ans ######
+
+grep -v '^#' /etc/snort/rules/*.rules | grep -c '^[^#]'  
+
+????????????????  !!!!!!!!!!!!!!!!
 
 
-proxychains scp net4_student11@192.168.10.101:/usr/share/ .
+grep -v '^#' /etc/snort/rules/*.rules | wc -l
 
-proxychains scp -r net4_student11@192.168.10.101:/usr/share/cctc/ Temp_101_Folder/
+#### Capstone - 14 Snort Question 3 10 ####
 
-proxychains scp net4_student11@192.168.10.101:/usr/share/cctc/ Temp_101_Folder/
+What is the Answer to Question 3 referenced in “Flag-14f.txt”
+
+-------------------------------------------------------------------------------
+
+Question 3:
+
+Which rule will look for someone doing a null scan ?
+
+Provide only the filename as your answer (i.e. ‘file.rules’) and converted to Base64.
+
+###### Ans ######
+
+grep -v '^#' /etc/snort/rules/*.rules | grep 'Null Scan'
+
+grep /etc/snort/rules/*.rules | grep 'Null Scan'
+
+grep -E 'Null|Scan' /etc/snort/rules/*.rules
+
+grep -v '^#' /etc/snort/rules/*.rules | grep 'null'
+
+#### Capstone - 14 Snort Question 4 10 ####
+
+What is the Answer to Question 4 referenced in “Flag-14f.txt”
+
+-------------------------------------------------------------------------------
+
+Question 4:
+
+What is the exact Alert Message that is being triggered on the system?
+
+Convert the exact message as you see it and convert it to Base64 for your answer.
+
+---------------------------------------------------------------
+
+###### Ans ######
+
+
+#### Capstone - 14 Snort Question 5 15 ####
+
+What is the Answer to Question 5 referenced in “Flag-14f.txt”
+
+Question 5:
+
+From what IP is the attack coming from?
+
+Provide your answer in the x.x.x.x format and converted to Base64.
+
+-------------------------------------------------------------------------------
+
+###### Ans ######
+
