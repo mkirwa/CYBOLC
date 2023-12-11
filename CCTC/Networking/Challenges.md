@@ -1217,17 +1217,6 @@ iptables -A OUTPUT -p tcp --dport 80 -m state --state NEW,ESTABLISHED -j ACCEPT
 Ans -> 
 05e5fb96e2a117e01fc1227f1c4d664c
 
-
-
-iptables -t filter -P INPUT ACCEPT
-iptables -t filter -P OUTPUT ACCEPT
-iptables -t filter -F
-iptables -t filter -vL
-
-
-
-
-
 ### IP/NFTables - Filtering T2 5 ###
 
 NFTable Rule Definitions
@@ -1254,6 +1243,17 @@ Once these steps have been completed and tested, go to Pivot and open up a netca
 
 #### Answer ####
 
+
+iptables -t filter -P INPUT ACCEPT
+iptables -t filter -P OUTPUT ACCEPT
+iptables -t filter -F
+iptables -t filter -vL
+
+sudo iptables -t nat -F => Clear an iptable NAT
+
+echo "05e5fb96e2a117e01fc1227f1c4d664c_0c2ca80fad4accccce3bcecec1d238ce" | md5sum
+
+0c2ca80fad4accccce3bcecec1d238ce
 
 ##### Create input and output base chains with a policy of Accept #####
 nft add chain ip CCTC input { type filter hook input priority 0; }
@@ -1413,8 +1413,9 @@ Once these steps have been completed and tested, go to Pivot and open up a netca
 
 sudo vim /proc/sys/net/ipv4/ip_forward
 sudo iptables -P FORWARD ACCEPT # How to change the iptables to forward. 
-sudo iptables -t nat -A POSTROUTING -o 172.16.82.106 -j SNAT --to-source 192.168.1.10 
-sudo iptables -t nat -A POSTROUTING -o eth0 -j SNAT --to-source 172.16.82.106
+sudo iptables -t nat -A POSTROUTING -s 192.168.1.10 -o eth0 -j MASQUERADE
+
+ans -> 0c2ca80fad4accccce3bcecec1d238ce
 
 ### IPTables/NFTables - NAT T6 5 ###
 
@@ -1436,6 +1437,23 @@ Once these steps have been completed and tested, go to Pivot and open up a netca
 #### Answer ####
 
 sudo nano /proc/sys/net/ipv4/ip_forward
+change value to 1 
+
+# Create POSTROUTING chain
+sudo iptables -t nat -N POSTROUTING
+
+# Create PREROUTING chain
+sudo iptables -t nat -N PREROUTING
+
+sudo nft add table ip nat
+
+sudo nft add chain ip nat POSTROUTING { type nat hook postrouting priority 0 \; }
+sudo nft add chain ip nat PREROUTING { type nat hook prerouting priority 0 \; }
+
+
+sudo iptables -t nat -A POSTROUTING -s 192.168.3.30 -o eth0 -j MASQUERADE
+
+Ans-> be33fe60229f8b8ee22931a3820d30ac
 
 # Create POSTROUTING chain
 iptables -t nat -N POSTROUTING

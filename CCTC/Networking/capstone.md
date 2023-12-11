@@ -541,14 +541,14 @@ Run vertical scans based on the subnet /27 which should be 32 hosts from .44
 
 Run horizontal scans from ports - 0- 65000, found 21, 3790, 4444, 5687 
 
-Question 2
+Question 1
 What type of recon is being performed if you are performing ARP scans and sending Gratuitous ARPs to perform a MitM attack?
 
 Provide the 2 word process in ALL CAPS and converted to Base64.
 
 i.e. [word1] [word2]
 
-echo "ACTIVE RECONNAISSANCE" | base64
+echo "ACTIVE INTERNAL" | base64
 
 ????????????
 
@@ -735,23 +735,7 @@ proxychains scp {username}@{ip}:{path}/{filename} {target location}
 
 ##### Ans #####
 
-echo "proxychains scp Inside@192.168.1.10:/home/tgt/secret.txt ." | base64
-proxychains scp inside@192.168.1.10:/home/tgt/secret.txt .
-
-proxychains scp /home/192.168.1.10/secret.txt .
-
-echo "proxychains scp /home/192.168.1.10/secret.txt ." | base64
-
-echo "proxychains scp inside@192.168.1.10:/home/tgt/secret.txt ." | base64
-
-
-echo "proxychains scp inside@192.168.1.27:/home/192.168.1.10/secret.txt . " | base64
-
-echo "proxychains scp inside@192.168.1.27:/home/tgt/secret.txt ." | base64
-
-proxychains scp net4_student11@192.168.10.101:/usr/share/cctc/ Temp_101_Folder/
-
-?????????
+echo "proxychains scp tgt@192.168.1.10:/home/tgt/secret.txt ." | base64
 
 #### Capstone - 13 Web Question 1 5 ####
 
@@ -993,6 +977,8 @@ Provide the message exactly as shown and converted to Base64.
 
 company_payroll_2019
 
+hi
+
 echo "Here comes the directory listing." | base64
 
 ?????
@@ -1111,6 +1097,12 @@ How many rule files are on the system?
 
 Provide the number converted to Base64 as your answer.
 
+find /etc/snort/rules/ -name "*.rules" 2>/dev/null | wc -l
+
+Gives the answer as 24
+
+echo "24" | base64
+
 ###### Ans ######
 
 
@@ -1128,12 +1120,9 @@ Provide the number converted to Base64 as your answer.
 
 ###### Ans ######
 
-grep -v '^#' /etc/snort/rules/*.rules | grep -c '^[^#]'  
+grep -c '^include' /etc/snort/snort.conf
 
-????????????????  !!!!!!!!!!!!!!!!
-
-
-grep -v '^#' /etc/snort/rules/*.rules | wc -l
+echo "7" | base64
 
 #### Capstone - 14 Snort Question 3 10 ####
 
@@ -1149,13 +1138,13 @@ Provide only the filename as your answer (i.e. ‘file.rules’) and converted t
 
 ###### Ans ######
 
-grep -v '^#' /etc/snort/rules/*.rules | grep 'Null Scan'
+grep -v '^#' /etc/snort/rules/*.rules | grep 'flags: 0'
 
-grep /etc/snort/rules/*.rules | grep 'Null Scan'
+Will give, alien-abductions.rules 
 
-grep -E 'Null|Scan' /etc/snort/rules/*.rules
+echo "alien-abductions.rules" | base64
 
-grep -v '^#' /etc/snort/rules/*.rules | grep 'null'
+YWxpZW4tYWJkdWN0aW9ucy5ydWxlcwo=
 
 #### Capstone - 14 Snort Question 4 10 ####
 
@@ -1170,6 +1159,24 @@ What is the exact Alert Message that is being triggered on the system?
 Convert the exact message as you see it and convert it to Base64 for your answer.
 
 ---------------------------------------------------------------
+
+message that says to print whenever a rule triggers.....
+
+/var/log/snort/ -> logs are stored here. 
+cat /var/log/snort/README.txt -> See where the messages are stored 
+ps -ef | grep snort -> See where else snort is running
+
+Looks like the file is being stored here -> /etc/snort/snort.conf 
+root      9922     1  0 Dec10 ?        00:00:05 /usr/bin/snort -D -c /etc/snort/snort.conf -l /var/log/capstone
+
+ls /var/log/capstone/ -> Check what's in that folder 
+cat /var/log/capstone/alert -> See what the alert says. 
+
+The message below is listed on the alert. 
+
+Answ -> Who got that kinda monies to pay that!
+
+echo "Who got that kinda monies to pay that!" | base64
 
 ###### Ans ######
 
@@ -1188,3 +1195,13 @@ Provide your answer in the x.x.x.x format and converted to Base64.
 
 ###### Ans ######
 
+From the alert in question 4, 
+
+12/11-14:44:31.574629 192.168.10.99:34682 -> 192.168.10.111:139
+
+looks like the message is coming from 192.168.10.99
+
+echo "192.168.10.99" | base64
+
+
+###### STUDY ACTIVE INTERNAL / PASSIVE ######
