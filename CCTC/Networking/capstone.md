@@ -153,28 +153,6 @@ student@blue-internet-host-student-11:~$ proxychains telnet 10.1.1.11
 To answer these 4 questions, you will need to use tcpdump and BPF's against the capstone-bpf.pcap file.
 
 
--------------------------------------------------------------------------------
-
-Question 1:
-
-Using BPF’s, determine how many packets with a DSCP of 26 being sent to the host 10.0.0.103.
-
-Provide the number of packets converted to BASE64.
-
--------------------------------------------------------------------------------
-
-
-##### Ans #####
-
-tcpdump -n -r capstone-bpf.pcap 'ip[6] & 0x20 != 0 or ip[6:2] & 0x1fff != 0' | wc -l | base64
-
-MjcyOQo=
-
-#### Capstone - 02 PCAP Question 3 10 ####
-
-Using the PCAP stored on Capstone-02.
-
-What is the Answer to Question 3 referenced in “Flag-02f.txt”
 
 Question 2:
 
@@ -184,23 +162,35 @@ Provide the number of packets converted to BASE64.
 
 -------------------------------------------------------------------------------
 
-
-tcpdump -n -r {pcap} "BPF Filter" | wc -l
-
 ##### Ans #####
 
-tcpdump -n -r capstone-bpf.pcap 'ip[6] & 0x40 != 0 and tcp[13] = 0x05' | wc -l | base64
+tcpdump -n -r capstone-bpf.pcap 'ip[6] & 0x20 != 0 or ip[6:2] & 0x1fff != 0' | wc -l | base64
 
--> MTA5Cg==
+MjcyOQo=
 
-#### Capstone - 02 PCAP Question 1 15 ####
+##### Interpretting the answer #####
+
+-n: This option prevents tcpdump from converting addresses (like host addresses and port numbers) to names.
+-r capstone-bpf.pcap: This option specifies that tcpdump should read from the pcap file capstone-bpf.pcap.
+The filter expression is the most complex part:
+
+ip[6] & 0x20 != 0: This part of the filter expression checks the IP header's flags and fragmentation offset field. Specifically, ip[6] refers to the byte in the IP header that contains the flags and the high-order bits of the fragmentation offset. The & 0x20 part checks if the "More Fragments" flag is set. This flag is used in IP fragmentation and is set for all fragments except the last one.
+
+or ip[6:2] & 0x1fff != 0: This part continues the check for fragmentation. ip[6:2] accesses 2 bytes starting from the sixth byte of the IP header (including the flags and the entire fragmentation offset), and & 0x1fff applies a mask to isolate the 13 bits of the fragmentation offset field. The check != 0 determines if this is not the first fragment (i.e., if the packet is a middle or last fragment in a series).
+
+A "mask" is a binary pattern used to extract, modify, or manipulate specific bits from another binary pattern.
+In the context of your tcpdump filter (ip[6:2] & 0x1fff), 0x1fff is the mask being applied. In binary, 0x1fff is 0001 1111 1111 1111, which has 13 bits set to 1.
+
+In summary, this tcpdump command is used to filter and display packets from the capstone-bpf.pcap file that are either not the first fragment in a fragmented set of IP packets (ip[6] & 0x20 != 0) or are middle or last fragments (ip[6:2] & 0x1fff != 0). This command is particularly useful for analyzing fragmented IP traffic.
+
+
+#### Capstone - 02 PCAP Question 3 10 ####
 
 Using the PCAP stored on Capstone-02.
 
-What is the Answer to Question 1 referenced in “Flag-02f.txt”
+What is the Answer to Question 3 referenced in “Flag-02f.txt”
 
 tcpdump -n -r {pcap} "BPF Filter" | wc -l
-
 
 Question 3:
 
@@ -210,10 +200,51 @@ Provide the number of packets converted to BASE64.
 
 -------------------------------------------------------------------------------
 
+##### Ans #####
+
+tcpdump -n -r capstone-bpf.pcap 'ip[6] & 0x40 != 0 and tcp[13] = 0x05' | wc -l | base64
+
+-> MTA5Cg==
+
+##### Interpretting the answer #####
+
+ip[6] & 0x40 != 0: This part of the filter expression examines the IP header, specifically the byte that contains the flags and a portion of the fragmentation offset. The expression & 0x40 isolates the "Don't Fragment" (DF) flag bit. If the DF bit is set (!= 0), the expression evaluates to true. This filter selects IP packets where the "Don't Fragment" flag is set.
+
+tcp[13] = 0x05: This part of the filter expression examines the TCP header, specifically the 13th byte, which contains flags indicating the state of the TCP connection. In TCP flag encoding, 0x05 represents the ACK and RST flags being set. An ACK is used to acknowledge the receipt of a packet, and RST is used to reset the connection. This filter selects TCP packets where both the ACK and RST flags are set.
+
+Putting it all together, this tcpdump command filters for and displays packets from the specified pcap file that are TCP packets with both ACK and RST flags set and are IP packets with the "Don't Fragment" flag set. This command is useful for analyzing specific network issues or behaviors, such as connections being reset in scenarios where fragmentation is not allowed.
+
+
+#### Capstone - 02 PCAP Question 1 15 ####
+
+Using the PCAP stored on Capstone-02.
+
+What is the Answer to Question 1 referenced in “Flag-02f.txt”
+
+tcpdump -n -r {pcap} "BPF Filter" | wc -l
+
+Question 1:
+
+Using BPF’s, determine how many packets with a DSCP of 26 being sent to the host 10.0.0.103.
+
+Provide the number of packets converted to BASE64.
+
+-------------------------------------------------------------------------------
 
 ##### Ans #####
 
 tcpdump -n -r capstone-bpf.pcap 'ip[1] & 0xfc == 104 and dst host 10.0.0.103' | wc -l | base64
+
+##### Interpretting the answer #####
+
+ip[1] & 0xfc == 104: This part of the expression is filtering based on the IP header:
+ip[1]: Refers to the second byte of the IP header, which contains the Differentiated Services Code Point (DSCP) and Explicit Congestion Notification (ECN).
+& 0xfc: This applies a bitmask to the DSCP/ECN byte, isolating the DSCP portion (first 6 bits of the byte). 0xfc in binary is 11111100.
+
+== 104: This compares the masked value to 104 (in binary 01101000). This checks whether the DSCP value is 26 (011010 shifted left by two bits, as DSCP occupies the most significant 6 bits of the byte).
+and dst host 10.0.0.103: This filters packets where the destination IP address is 10.0.0.103.
+
+In summary, this command will display packets from the pcap file that have a DSCP value of 26 and are destined for the host 10.0.0.103. This type of filtering is useful for analyzing network traffic with specific QoS settings (as indicated by DSCP values) going to a particular destination.
 
 #### Capstone - 02 PCAP Question 4 15 ####
 
@@ -233,6 +264,19 @@ Write a tcpdump script for this scenario: An attacker is targeting the host 10.0
 
 tcpdump -n -r capstone-bpf.pcap 'tcp[tcpflags] == tcp-syn+tcp-ack and src host 10.0.0.104' | awk '{print $3}' | cut -d. -f1-5 | sort | uniq | wc -l | base64
 
+The filter:
+tcp[tcpflags] == tcp-syn+tcp-ack: Filters TCP packets where the TCP flags set are SYN and ACK. This typically indicates a response to a SYN packet, part of the TCP three-way handshake.
+
+src host 10.0.0.104: Further filters these packets to those originating from the source IP address 10.0.0.104.
+
+awk '{print $3}'
+This extracts and prints the third field from each line of the tcpdump output. In tcpdump output, this usually corresponds to the source IP address and port (e.g., 10.0.0.104.443).
+
+cut -d. -f1-5
+Splits the line by the delimiter . and selects the first 5 fields. This effectively retains the entire IP address and port (since an IP address has 4 fields, and the port is the 5th field).
+
+sort | uniq
+Sorts the lines and then passes them to uniq, which removes any duplicate lines
 
 ### Networking - 7 - Capstone v2 03 ###
 
