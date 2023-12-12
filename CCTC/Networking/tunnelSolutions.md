@@ -1,6 +1,6 @@
 ## TUNNELING ACTIVITY 1 ##
 
-![Alt Text](/Users/mahlonkirwa/Desktop/BOLC/CCTC/Networking/tunnel1.png)
+![Alt Text](tunnel1.png)
 
 ##### Going from Internet Host to Host A and creating a dynamic tunnel on the fly #####
 
