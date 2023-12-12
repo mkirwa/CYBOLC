@@ -13,7 +13,7 @@ Q0hFRVNFCg==
 
 ### STEPS WHEN BUILDING A TUNNEL ###
 1. Make a map 
-2. Scan privot ip 
+2. Scan pivot ip 
 3. Passive -
 		ip addr
 		ip neighbor
@@ -163,27 +163,6 @@ Provide the number of packets converted to BASE64.
 
 -------------------------------------------------------------------------------
 
-Question 2:
-
-What is the total number of fragmented packets?
-
-Provide the number of packets converted to BASE64.
-
--------------------------------------------------------------------------------
-
-Question 3:
-
-How many packets have the DF flag set and has ONLY the RST and FIN TCP Flags set?
-
-Provide the number of packets converted to BASE64.
-
--------------------------------------------------------------------------------
-
-Question 4:
-
-An attacker is targeting the host 10.0.0.104 with either a TCP full or half open scan. Based off the pcap, how many ports are open?
-
-Provide the number of ports converted to BASE64.
 
 ##### Ans #####
 
@@ -196,6 +175,15 @@ MjcyOQo=
 Using the PCAP stored on Capstone-02.
 
 What is the Answer to Question 3 referenced in “Flag-02f.txt”
+
+Question 2:
+
+What is the total number of fragmented packets?
+
+Provide the number of packets converted to BASE64.
+
+-------------------------------------------------------------------------------
+
 
 tcpdump -n -r {pcap} "BPF Filter" | wc -l
 
@@ -213,6 +201,16 @@ What is the Answer to Question 1 referenced in “Flag-02f.txt”
 
 tcpdump -n -r {pcap} "BPF Filter" | wc -l
 
+
+Question 3:
+
+How many packets have the DF flag set and has ONLY the RST and FIN TCP Flags set?
+
+Provide the number of packets converted to BASE64.
+
+-------------------------------------------------------------------------------
+
+
 ##### Ans #####
 
 tcpdump -n -r capstone-bpf.pcap 'ip[1] & 0xfc == 104 and dst host 10.0.0.103' | wc -l | base64
@@ -222,6 +220,12 @@ tcpdump -n -r capstone-bpf.pcap 'ip[1] & 0xfc == 104 and dst host 10.0.0.103' | 
 Using the PCAP stored on Capstone-02.
 What is the Answer to Question 4 referenced in “Flag-02f.txt”
 tcpdump -n -r {pcap} "BPF Filter" | wc -l
+
+Question 4:
+
+An attacker is targeting the host 10.0.0.104 with either a TCP full or half open scan. Based off the pcap, how many ports are open?
+
+Provide the number of ports converted to BASE64.
 
 ##### Ans #####
 
