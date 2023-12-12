@@ -87,3 +87,35 @@ run proxychain scans and identified Host D with ip 192.168.10.69 sshd 22
 `ssh hostD@localhost -p 6666 -D 9050`
 
 kill dynamic tunnel, `kill -9 #PID_NO`
+
+## TUNNELING ACTIVITY 3 ##
+
+![Alt Text](tunnel3.png)
+
+##### Create A local tunnel to D from C #####
+
+Internet Host to Host A
+ssh userA@10.50.29.89 -p 1234 -D 9050
+ssh userA@10.50.29.89 -p 1234 -L 1111:172.17.17.28:23 
+
+Host A Host B
+telnet localhost 1111
+
+Host B Host A
+ssh userA@172.17.17.17 -p 1234(authenticating_to_A) -R 2222(created_port_on_A):localhost(host_B):4321(ssh_port_on_B) # Ran on B back to A
+ssh userA@10.50.29.89 -p 1234 -L 3333:localhost:2222 # Ran on the internet host. Authenticate back to A to target local_host_2222 on A
+ssh userB@localhost -p 3333 -D 9050 # Creates a dynamic channel to B 
+# Ran proxychains and got 1212 and 192.168.30.150
+
+
+# Host B from C ---->  Lets get to Host C from B 
+ssh userB@localhost -p 3333 (this_gets_me_to_B) -L 4444:192.168.30.150:1212
+#  A dynamic tunnel to C 
+ssh userC@localhost -p 4444 -D 9050 # Creating a dynamic tunnel to C, ssh to C 
+# Ran proxychains and discovered host D with port 2932 and ip address 10.10.12.121
+
+# We are going to c and creating a local tunnel. 
+ssh userC@localhost -p 4444 -L 5555:10.10.12.121:2932 # Is this ran from the internet host???
+
+# SSH and use a dynamic tunnel to D 
+ ssh userD@localhost -p 5555 -D 9050
