@@ -44,8 +44,6 @@ run proxychain scans and identified host D 172.16.1.8 with port 22
 
 ![Alt Text](tunnel2.png)
 
-### TUNNELING ACTIVITY 2 ###
-
 ##### Telnet to Host A #####
 
 `telnet hostA@10.50.23.19`
