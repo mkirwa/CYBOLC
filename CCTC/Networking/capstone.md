@@ -434,19 +434,21 @@ echo "I just want to say LOVE YOU SAN" | base64
 
 SSBqdXN0IHdhbnQgdG8gc2F5IExPVkUgWU9VIFNBTgo=
 
+the -X option is used to print both the packet's header and its data in both hex and ASCII. T
+
 #### Capstone - 04 IP Discovery 15 ####
 
 What is the IP referenced in “Hint-04b”. Provide the exact dotted decimal IP address discovered for next pivot.
 
 hint-05b -> RIPv2 seems to be running on the 10.1.1.0/25 network. Try to sniff out the traffic to find out what networks its advertising in its updates. What you find will bte the IP address of the next environment pivot to access from your INTERNET_HOST 
 
-
 tcpdump --interface eth0 -vvv dst 224.0.0.9
+
+##### Ans #####
 
 Look at the tcpdump
 
 10.50.41.66/32
-
 
 #### Capstone - 06 Port Discovery 5 ####
 
@@ -598,7 +600,6 @@ i.e. [word1] [word2]
 
 echo "ACTIVE INTERNAL" | base64
 
-????????????
 
 #### Capstone - 09 Web Question 2 5 ####
 
@@ -716,7 +717,7 @@ What is the Answer to Movement & Redirection Question 1?
       -----------     ------       ----------    -------
       147.25.99.1                 192.168.1.27  188.8.8.8
   
-
+Which SSH syntax will properly setup a Local port forward from the "Outside Host” to give Inside Host” access to the Internal Website?
 
 A.) ssh outside@192.168.1.27 -L 1234:188.8.8.8:80 -NT
 
@@ -898,7 +899,7 @@ Provide the ip address in the x.x.x.x format and converted to Base64.
 
 echo "10.1.0.108" | base64
 
-????? ASK THE INSTRUCTOR HOW TO GO ABOUT THIS !!!!
+Look at the destination ports..... this identifies 
 
 #### Capstone - 13 PCAP Question 2 5 ####
 
@@ -961,8 +962,6 @@ Provide the ip address in the x.x.x.x format and converted to Base64.
 
 echo "10.2.0.2" | base64
 
-?????????  ASK INSTRUCTOR ABOUT THIS !!!!!!!!!
-
 #### Capstone - 13 PCAP Question 5 5 ####
 
 Using the PCAP stored on Capstone-13.
@@ -1005,8 +1004,6 @@ Provide the filename exactly as shown and converted to Base64.
 
 echo "test.txt" | base64
 
-?????????  ASK INSTRUCTOR ABOUT THIS !!!!!!!!!
-
 #### Capstone - 13 PCAP Question 7 10 ####
 
 Using the PCAP stored on Capstone-13.
@@ -1027,9 +1024,8 @@ company_payroll_2019
 
 hi
 
-echo "Here comes the directory listing." | base64
+echo "hi" | base64
 
-?????
 
 #### Capstone - 13 PCAP Question 8 10 ####
 
@@ -1046,6 +1042,25 @@ Provide the filename exactly as shown and converted to Base64.
 
 -------------------------------------------------------------------------------
 echo "company_payroll_2019" | base64
+
+
+### BRIEF NOTES ON PREROUTING VS POSTROUTING ###
+
+PREROUTING: Occurs before a routing decision is made, allowing for alterations to incoming packets that can affect how and where they are routed.
+
+Purpose: The PREROUTING chain is used for packets as soon as they enter the network stack, before the kernel makes decisions about routing them.
+Use Cases:
+Destination NAT (DNAT): Commonly used for modifying the destination address of incoming packets. For instance, when you want to redirect incoming traffic to a different IP address or port, often used in port forwarding scenarios.
+Packet Alteration: Can be used to modify or inspect packets before they are routed to their destination.
+
+
+POSTROUTING: Occurs after the routing decision, enabling alterations to outgoing packets that can mask or modify their source characteristics.
+
+Purpose: The POSTROUTING chain is used for packets as they are about to leave the network stack.
+Use Cases:
+Source NAT (SNAT): Commonly used for modifying the source address of outgoing packets. This is particularly useful for masquerading - a technique where multiple private IP addresses are masked behind a single public IP address.
+Packet Alteration: Adjustments or modifications to packets after they have been routed, but before they leave the host or network interface.
+
 
 #### Capstone - 14 Web Question 1 5 ####
 
@@ -1252,4 +1267,41 @@ looks like the message is coming from 192.168.10.99
 echo "192.168.10.99" | base64
 
 
-###### STUDY ACTIVE INTERNAL / PASSIVE ######
+### STUDY ACTIVE INTERNAL /  PASSIVE EXTERNAL ###
+
+1. Active Internal Reconnaissance
+Nature: Conducted from within an organization’s network.
+Method: Directly interacts with internal network resources. It involves scanning the internal network, identifying live systems, open ports, running services, and possibly detecting vulnerabilities or misconfigurations.
+Examples:
+Using a tool like Nmap to scan internal IP ranges.
+Attempting to exploit vulnerabilities on internal servers.
+Conducting penetration tests against internal applications.
+
+2. Active External Reconnaissance
+Nature: Conducted from outside the organization’s network.
+Method: Involves direct interaction with externally facing network resources. This includes identifying open ports on external servers, detecting services running on these ports, and possibly finding vulnerabilities.
+Examples:
+Port scanning an organization’s external IP addresses.
+Conducting vulnerability scans on external web applications.
+Enumerating DNS records to gather information about external network infrastructure.
+
+3. Passive Internal Reconnaissance
+Nature: Conducted from within an organization’s network.
+Method: Involves collecting information without directly engaging with the network resources. This could be observing network traffic, analyzing internal documentation, or reviewing configuration files without altering them.
+Examples:
+Monitoring network traffic to identify which internal applications are being used.
+Reading through internal network documentation or policy manuals.
+Accessing and analyzing internal network diagrams.
+
+4. Passive External Reconnaissance
+Nature: Conducted from outside the organization’s network.
+Method: Involves collecting information without sending traffic to the target. This could include gathering data from public sources such as websites, social media, or public records.
+Examples:
+Researching company employees and roles through LinkedIn.
+Gathering information from an organization’s public-facing website.
+Using search engines to find data leaks or sensitive information inadvertently exposed online.
+
+Summary
+Active methods involve direct interaction with the target network, either internal or external, which can potentially be detected.
+Passive methods involve collecting information without direct interaction, minimizing the risk of detection but often providing less detailed information than active methods.
+Both Internal and External methods can be active or passive, with the difference lying in the position of the actor (inside or outside the network perimeter) and the target of their reconnaissance (internal network resources vs. external-facing assets).
