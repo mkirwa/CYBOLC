@@ -1,6 +1,6 @@
 ## TUNNELING ACTIVITY 1 ##
 
-<p>![Alt Text](tunnel1.png) {: style="background-color: white"}</p>
+![Alt Text](tunnel1.png)
 
 ##### Going from Internet Host to Host A and creating a dynamic tunnel on the fly #####
 
@@ -42,7 +42,7 @@ run proxychain scans and identified host D 172.16.1.8 with port 22
 
 ## TUNNELING ACTIVITY 2 ##
 
-![Alt Text](tunnel2.png){: style="background-color: white"}
+![Alt Text](tunnel2.png)
 
 ##### Telnet to Host A #####
 
@@ -90,7 +90,7 @@ kill dynamic tunnel, `kill -9 #PID_NO`
 
 ## TUNNELING ACTIVITY 3 ##
 
-![Alt Text](tunnel3.png){: style="background-color: white"}
+![Alt Text](tunnel3.png)
 
 ##### Create a dynamic tunnel to the internet host #####
 
@@ -138,7 +138,7 @@ Ran proxychains and discovered host D with port 2932 and ip address 10.10.12.121
 
 ## TUNNELING ACTIVITY 4 ##
 
-![Alt Text](tunnel4.png){: style="background-color: white"}
+![Alt Text](tunnel4.png)
 
 ##### Telnet directly to A #####
 
