@@ -1,6 +1,6 @@
 ## TUNNELING ACTIVITY 1 ##
 
-![Alt Text](tunnel1.png){: style="background-color: white"}
+![Alt Text](tunnel1.png) {: style="background-color: white"}
 
 ##### Going from Internet Host to Host A and creating a dynamic tunnel on the fly #####
 
