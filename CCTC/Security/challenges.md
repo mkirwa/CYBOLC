@@ -379,3 +379,7 @@ Natasha Romanoff has been identified as a major contracting officer for the Mini
 Investigate Ministry website and identify vulnerabilities which could allow collection through usage of command injection, directory traversal, or unrestricted file upload
 
 Flag for Basic HTTP Understanding -> g91LjrKECe4IPR1hLRsG
+
+## SQL Injection ##
+
+

