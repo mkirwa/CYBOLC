@@ -1,4 +1,88 @@
-## Reverse Enginnering ## 
+## Reverse Enginnering Day 1 Notes ## 
+
+Registers tell CORE using ALU in a cpu instructions to perform. For instance if it's a 1 + 1 the 1 will be one registers e.g. R8 and R9 so essentially add R8 and R9 together. Register is the place where the math/instrution is stored before it is performed. It is the most volatile place in the system. Every bit is one transistor. A transistor is capable of storing a 1 or a 0. Resistor, transistors and capacitors??????? Electrical engineering. General purpose registers. 
+
+#### Understand x86_64 registers ####
+
+General Register - A multipurpose register that can be used by either programmer or user to store data or a memory location address
+There are 16 general purpose 64 bit registers. These registers can be broken down into smaller sections. Take %rbx for example. To call its entire 64 bits, you would use %rbx. However, to call its lower 32 bits, you would call %ebx. It can then be broken down further into the lower 16 and 8 bits as bx and bl, respectively.
+x86 was originally a 32 bit architecture. It originally had eight 32 bit general purpose registers: EAX, ECX, EDX, EBX, ESP, EBP, ESI, and EDI.
+
+%rax -> the first return register. 
+%rbp -> the base pointer that keeps track of the base of the stack. Not a general prpose 64-bit registers. 
+%rsp -> the stack pointer that points to the top of the stack.
+
+Arguments passed to functions as something like [%ebp-0x8] e stands for 32 bit. 
+
+HEAP -> Memory that can be allocated and deallocated.
+STACK -> A contigous section of memory used for passing arguments.
+FLAGS REGISTER -> Contains the current state of the processor. 
+
+64-Bit | Lower-32-bits | lower-16-bits | Description
+---------------------------------------------------------------------------------------------------------------
+RIP    | EIP           | IP            | Instruction Pointer; holds address for next instruction to be executed
+
+increments and decrements are faster than adding or subtracting because you don't have to access registers. 
+
+Address space layout randomization (ASLR) -> is a memory-protection process for operating systems (OSes) that guards against buffer-overflow attacks by randomizing the location where system executables are loaded into memory.
+
+%rbp is the base pointer that keeps track of the base of the stack. You will see arguments passed to functions as something like ivar_8 [%rbp-0x8]. This is the offset of the memory address that contains argument data passed to the function.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## Reverse Enginnering Challenges ## 
 
 1. What is %RAX and %EAX main purpose?
 
@@ -113,8 +197,8 @@ A return code of 0 is generally a clean exit of the program
 21. What is returned to stdout when executed?
 
 int main(void){
-    char word1[4] = "word";
-    char word2[5] = "words";
+    char *word1 = "word";
+    char *word2= "words";
     if(strcmp(word1,word2)==0){
         printf("same");
     }else{

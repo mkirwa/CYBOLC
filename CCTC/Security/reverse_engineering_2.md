@@ -1,14 +1,47 @@
 ## Reverse Enginnering 2 ##
 
+press h key to convert 
+
+search -> for strings -> type the string. 
+
+
+
+proxychains scp -r student@192.168.28.111:192.168.28.111/longTermStorage student@10.50.27.161:C:\Users\student\Desktop\TEMP_FOLDER_192.168
+
+
+
+
+
+
+
+
+
+
+
+
+
+## Reverse Enginnering 2 ##
+
 1. Situation: Various teams have extracted binaries from Donovian development networks. Analyze the given binaries to find weaknesses and create signatures.
 
 Provided: compiled executable: (entry.exe) source code: (entry.c) Task: Run the executable with expected input and retrieve success message. Method: disassemble the executable and follow the program’s execution to discover its f unctionality, and expected input.
 
 Ensure that before you move on from this challenge that you have fully understood what you have done to disassemble and reverse engineer this binary and how it is related to the provided source code.
 
-What is the key for this binary?
+T1
+Hostname: web.site.donovia
+IP: 192.168.28.111
+OS: unknown
+Creds: comrade::StudentWebExploitPassword
+Last Known SSH Port: unknown
+PSP: Unknown
+Malware: Unknown
+Action: Extract approved binaries under directory titled "longTermStorage".
 
-Step 1: Create a Dynamic tunnel to Jumpbox `ssh student@10.50.33.231 - D 9050 –NT`
+What is the key for this binary?
+step 1: ssh into the linops: `ssh student@10.50.24.96`
+
+Step 1: Create a Dynamic tunnel to Jumpbox `ssh student@10.50.23.132 -D 9050`
 
 Step 2: Scan the Donovian Ip to see what ports are open `proxychains nmap -sT -Pn 192.168.28.111`
 
@@ -33,6 +66,7 @@ Copy the file from linu box(right side) to the windows (left side)
 ![Alt Text](reverse_engineering_images/reverse_engineering_2_03.png)
 
 Key: 123@magicKey
+
 
 2. Basic Algorithm
 

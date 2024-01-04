@@ -5,7 +5,10 @@ find IPs on vta.cybbh.space
 class info: 10.50.46.45/classinfo.html
 Keep this output in your notes, password for pivot/-jump box and CTFd, 10.50 is your Jump box for challenges
 
-CTFd: 10.50.20.250:8000
+OLD CTFd: 10.50.20.250:8000
+
+New CTFd: 10.50.20.30:8000
+
 
 ssh into my workstation -> ssh -X student@10.50.39.223
 password: password 
@@ -13,6 +16,25 @@ password: password
 JUMP_BOX!!!
 username: MAKI-502-B
 password: d07PevVUniUxBNR
+
+Record deleted successfully
+Stack Number  |	Username	| Password	        |    lin.internet
+-------------------------------------------------------------------
+16	          |  MAKI-502-B	|  d07PevVUniUxBNR  |	    10.50.23.132
+
+to ssh into the jumpbox -> ssh student@10.50.23.132 with the password as d07PevVUniUxBNR
+
+linux-ops ip address: 10.50.24.96
+    username: student
+    password: password
+jump-box: 10.50.23.132
+    username: student
+    password: d07PevVUniUxBNR
+
+winops: 10.50.27.161
+
+
+OLD-INFO----- 
 Stack Number: 16
 lin.internet: 10.50.49.22
 linux-ops ip address: 10.50.39.223
