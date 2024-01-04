@@ -16,7 +16,7 @@ Step 2: Scan the Donovian Ip to see what ports are open `proxychains nmap -sT -P
 
 Step 3: wget the http server since port 80 is open and also from the lonTermStorage directory `proxychains wget -r http://192.168.28.111/longTermStorage`
 
-![Alt Text](reverse_engineering_2_02.png)
+![Alt Text](reverse_engineering_images/reverse_engineering_2_02.png)
 
 Step 4: longtermStorage has entry.c and entry.exe files on it
 
@@ -30,7 +30,7 @@ Pass: password
 
 Copy the file from linu box(right side) to the windows (left side)
 
-![Alt Text](reverse_engineering_2_03.png)
+![Alt Text](reverse_engineering_images/reverse_engineering_2_03.png)
 
 Key: 123@magicKey
 
@@ -46,11 +46,11 @@ Step 1: Open Ghidra and import the file to Ghidra
 
 Step 2: Open .exe on cmd and run the file with random input
 
-![Alt Text](reverse_engineering_2_04.png)
+![Alt Text](reverse_engineering_images/reverse_engineering_2_04.png)
 
 Step 5:
 
-![Alt Text](reverse_engineering_2_05.png)
+![Alt Text](reverse_engineering_images/reverse_engineering_2_05.png)
 
 Here, the while loop says if 11 <local_8 = 2 this condition is meet the loop continues
 
@@ -82,7 +82,7 @@ Provided: compiled executable: (sdst2.exe) Task: Run the executable with expecte
 
 Show the instructor how you solved this to be awarded points.
 
-![Alt Text](reverse_engineering_2_07.png)
+![Alt Text](reverse_engineering_images/reverse_engineering_2_07.png)
 
 Ra the program and found the success----followed the function
 
@@ -114,7 +114,7 @@ Now, for this function to run value of sVar1 cannot be 0. because the sVar1=_str
 
 We can input any numberas var1 but it has to match the registry number as sVar1 is comparing it with registry number
 
-![Alt Text](reverse_engineering_2_10.png)
+![Alt Text](reverse_engineering_images/reverse_engineering_2_10.png)
 
 6. Situation:
 
@@ -122,15 +122,15 @@ Various teams have extracted binaries from Donovian development networks. Analyz
 
 What value determines successful execution of the binary?
 
-![Alt Text](reverse_engineering_2_XXX.png)
+![Alt Text](reverse_engineering_images/reverse_engineering_2_11.png)
 
 For this function to run uVar1 == 9985, here uVar1 = checkKey() which is our function. Following thr checkkey() function
 
-![Alt Text](reverse_engineering_2_XXX.png)
+![Alt Text](reverse_engineering_images/reverse_engineering_2_12.png)
 
 The C library function int atoi(const char *str) converts the string argument str to an integer (type int).
 
-![Alt Text](reverse_engineering_2_XXX.png)
+![Alt Text](reverse_engineering_images/reverse_engineering_2_13.png)
 
 Here variable 1 and 2 determines if uVar4= 9985
 
@@ -140,4 +140,4 @@ Provided: compiled executable: (patching.exe) Task: Provide a patched executable
 
 Use your imagination to show the patched file to the instructor and they will give you the points if you have completed the challenge successfully
 
-![Alt Text](reverse_engineering_2_XXX.png)
+![Alt Text](reverse_engineering_images/reverse_engineering_2_14.png)
