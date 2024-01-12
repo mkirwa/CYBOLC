@@ -34,11 +34,6 @@ jump-box: 10.50.23.132
 winops: 10.50.27.161
 
 
-OLD-INFO----- 
-Stack Number: 16
-lin.internet: 10.50.49.22
-linux-ops ip address: 10.50.39.223
-
 VTA_creds: https://vta.cybbh.space/horizon/project/
 Username: mahlon.k.kirwa80
 password: regular linux password
@@ -52,6 +47,7 @@ Link slides and what not - https://sec.cybbh.io/public/security/latest/index.htm
 Instances - https://vta.cybbh.space/horizon/project/instances/
 
 ## SECURITY MODULES ##
+
 
 LESSONS:
 1. Penetration testing
