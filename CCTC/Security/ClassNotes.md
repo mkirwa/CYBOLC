@@ -2,6 +2,8 @@
 Please log into Lins-ops
 find IPs on vta.cybbh.space
 
+control shift V to preview
+
 class info: 10.50.46.45/classinfo.html
 Keep this output in your notes, password for pivot/-jump box and CTFd, 10.50 is your Jump box for challenges
 
