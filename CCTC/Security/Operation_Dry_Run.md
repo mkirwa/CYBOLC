@@ -425,4 +425,4 @@ Ask about persistence Registry
 
 #### Pivot to Found Targets ####
 
-TODO: REVIEW METASPOILT AND PUT THE NOTES ON HERE!!! Reverse_TCP 
+TODO: REVIEW METASPOILT AND PUT THE NOTES ON HERE!!! Reverse_TCP and BUFFER OVERFLOW!!
