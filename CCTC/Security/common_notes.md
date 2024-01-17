@@ -52,7 +52,7 @@ Step 4. Perform nmap scans on targets to find attackers from linops
 
 Step 5. Perfrom enumeration on the found target IP on port 80
 
-Step 6. Change proxy settings on browser TODO: TAKE SCREENSHOTS OF HOW THE PROXY WEBSITES SHOULD LOOK LIKE!!!
+Step 6. Change proxy settings on browser ![Alt Text](images/proxy_settings.png)
 
 Step 7. Perform SQL injections http://ip.address/login.php?username=tom' OR 1='1 & passwd=tom' OR 1='1
         Or enter the information on the login page 
