@@ -167,7 +167,7 @@ Once this process has be finished you should now be able to ssh on the target sy
 
 SQL able examples -> https://www.programiz.com/sql/select
 
-
+Web exploitation day 2 -> https://sec.cybbh.io/public/security/latest/lessons/lesson-5-sql_sg.html
 
 
 ### Challenges ###
