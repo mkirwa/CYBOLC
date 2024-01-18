@@ -83,7 +83,6 @@ Popular scripts: ftp-anon.nse, http-enum.nse, smb-os-discovery.nse
 How to get information about a certain script -> proxychains nmap [target_ip_address]-Pn -p [target_port] --script-help [target_script]
                                                              nmap ip 192.168.28.97-100, 100,105,111,120 -pm
 
-John the ripper -> https://www.freecodecamp.org/news/crack-passwords-using-john-the-ripper-pentesting-tutorial/
 
 ## Web Exploits CSS ##
 

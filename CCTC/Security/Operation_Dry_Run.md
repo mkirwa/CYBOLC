@@ -1,6 +1,11 @@
 
 ## OPERATION: DRY RUN ##
 
+
+John the ripper -> https://www.freecodecamp.org/news/crack-passwords-using-john-the-ripper-pentesting-tutorial/
+
+Reverse shell -> https://ioflood.com/blog/bash-reverse-shell/
+
 SITREP: This is a dry run operation to prepare you for tomorrow's real operation. You will be provided with a mission task sheet, RoE, and scope.
 
 Maintain 'low visibility' on the wire, as security products may be in place, and document your actions and results as you will be expected to provide OpNotes at the end of the operation.
