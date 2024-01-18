@@ -137,7 +137,7 @@ Step 3. Seach string success
 
 Step 4. Open the function with the success message. 
 
-undefined4 FUN_00401100(void)
+```undefined4 FUN_00401100(void)
 
 {
   FILE *pFVar1;
@@ -159,11 +159,12 @@ undefined4 FUN_00401100(void)
   }
   return 0;
 }
-
+```
 Opening the FUN_00401000() function we find: 
 
 void FUN_00401000(void)
 
+``` 
 {
   FILE *pFVar1;
   
@@ -174,12 +175,14 @@ void FUN_00401000(void)
   _fclose(pFVar1);
   return;
 
-}
+} 
+```
 
 Opening secret_00422004 -> I find the value 80111
 
 Look at the function that generates  iVar2 = FUN_00401060(); we get, 
 
+```
 undefined4 FUN_00401060(void)
 
 {
@@ -202,6 +205,7 @@ undefined4 FUN_00401060(void)
   }
   return uVar1;
 }
+```
 
 For the message to be successful we have to have 17535 and the other value is 8011 so subtracting these two the value that we need is -> 9524
 
@@ -261,7 +265,7 @@ Step 3. Seach string success
 Step 4. Open the function with the success message. 
 
 
-undefined4 FUN_00401170(void)
+```undefined4 FUN_00401170(void)
 
 {
   BOOL BVar1;
@@ -304,11 +308,13 @@ undefined4 FUN_00401170(void)
   return 0;
 }
 
+```
+
 Step 5. Open this function -> iVar3 = FUN_00401060();
 
 We get: 
 
-void FUN_00401060(void)
+```void FUN_00401060(void)
 
 {
   size_t sVar1;
@@ -336,7 +342,7 @@ void FUN_00401060(void)
   FUN_0040135a(local_8 ^ (uint)&stack0xfffffffc);
   return;
 }
-
+```
 Run sdst2.exe
 
 Step 5. Open Registry Editor
@@ -383,6 +389,7 @@ Step 4. Open the function with the success message.
 
 undefined8 main(void)
 
+```
 {
   undefined8 uVar1;
   long in_FS_OFFSET;
@@ -408,11 +415,11 @@ undefined8 main(void)
   }
   return 0;
 }
+```
 
 Step 5. Checking checkKey(); function we get;
 
-
-undefined8 checkKey(void)
+```undefined8 checkKey(void)
 
 {
   int iVar1;
@@ -456,7 +463,7 @@ undefined8 checkKey(void)
   }
   return uVar4;
 }
-
+```
 The answer will be 18765
 
 #### Software Doing Software Things 3 - Part 2 5 ####

@@ -408,6 +408,9 @@ Enter the contents of the files in your users directory - > C:\Users\Lroth\
 Ask about persistence Registry 
 
         Registry Editor 
+
+            Registry Editor -> HKEY_CURRENT_USER -> SOFTWARE -> Microsoft -> KEYED3
+
         Services  -> Description
         Task Scheduler / Manager  -> Schedule
 
