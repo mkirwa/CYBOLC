@@ -6,6 +6,8 @@ John the ripper -> https://www.freecodecamp.org/news/crack-passwords-using-john-
 
 Reverse shell -> https://ioflood.com/blog/bash-reverse-shell/
 
+cronjobs -> https://www.linode.com/docs/guides/how-to-list-cron-jobs/
+
 SITREP: This is a dry run operation to prepare you for tomorrow's real operation. You will be provided with a mission task sheet, RoE, and scope.
 
 Maintain 'low visibility' on the wire, as security products may be in place, and document your actions and results as you will be expected to provide OpNotes at the end of the operation.
