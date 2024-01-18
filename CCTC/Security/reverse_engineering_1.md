@@ -28,59 +28,7 @@ Address space layout randomization (ASLR) -> is a memory-protection process for 
 
 %rbp is the base pointer that keeps track of the base of the stack. You will see arguments passed to functions as something like ivar_8 [%rbp-0x8]. This is the offset of the memory address that contains argument data passed to the function.
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+https://sec.cybbh.io/public/security/latest/lessons/lesson-6-reverse_sg.html
 
 ## Reverse Enginnering Challenges ## 
 
